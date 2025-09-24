@@ -25,12 +25,13 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Store job postings as `.md` files for processing
   - Use descriptive filenames (e.g., `CompanyName_Role_Date.md`)
 
-## Four-Step Application Process
+## Five-Step Application Process
 
 1. **Step 1 - Initial Draft**: Creates tailored resume using HAM-Z methodology and cultural profile preferences
 2. **Step 2 - Provenance Check**: Analyzes credibility, evidence gaps, and risk factors
 3. **Step 3 - Final Resume**: Produces hardened version addressing all credibility concerns
 4. **Step 4 - Cover Letter** (Optional): Generates strategic cover letter with requirements-matching table
+5. **Step 5 - Document Conversion** (Optional): Converts markdown to professional Word DOCX format
 
 ## Available Slash Commands
 
@@ -47,6 +48,16 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Includes strategic requirements-matching table
   - Maintains provenance chain
 
+- `/convert <file-path-or-pattern> [output-directory]`: Converts to Word DOCX format
+  - Uses pandoc for professional conversion
+  - Supports patterns: `resume`, `coverletter`, `all`, file paths
+  - Preserves formatting and creates submission-ready documents
+
+- `/install-pandoc [force]`: Installs pandoc for document conversion
+  - Auto-detects operating system and package manager
+  - Verifies installation and conversion capabilities
+  - Required dependency for Step 5 functionality
+
 ## Custom Agents
 
 The repository includes specialized agents for each step:
@@ -54,7 +65,8 @@ The repository includes specialized agents for each step:
 - `step2-provenance-check`: Comprehensive credibility analysis
 - `step3-final-resume`: Final hardened version production
 - `step4-cover-letter`: Strategic cover letter with requirements table
-- `resume-tailoring-specialist`: Deprecated orchestrator (use 4-step process instead)
+- `step5-document-converter`: Markdown to Word DOCX conversion using pandoc
+- `resume-tailoring-specialist`: Deprecated orchestrator (use 5-step process instead)
 
 ## Working with Resume Files
 
@@ -99,6 +111,7 @@ The system supports different cultural profiles for resume tailoring. When not s
 - No build/compile commands needed (markdown-based system)
 - No test framework (validation through provenance analysis)
 - Git for version control: `git status`, `git add`, `git commit`
+- Pandoc for document conversion: `pandoc --version` to verify installation
 
 ### Key Validation Steps
 When creating or modifying resumes:

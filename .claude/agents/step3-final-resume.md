@@ -18,14 +18,20 @@ You will work with:
 
 ## Your Step 3 Process
 
-**STEP 3A - Analysis Review:**
-1. **Read Step 2 Analysis:**
+**STEP 3A - File Loading and Analysis Review (MANDATORY FIRST STEP):**
+1. **Load Required Files:**
+   - Read Step 1 draft resume from `/OutputResumes/Step1_Draft_*`
+   - Read Step 2 provenance analysis from `/OutputResumes/Step2_Provenance_Analysis_*`
+   - Read ALL files in `/ResumeSourceFolder/` directory for source verification
+   - Read original job description for context
+
+2. **Review Step 2 Analysis:**
    - Review all identified problems and risk assessments
    - Understand priority fixes (High > Medium > Low risk)
    - Note specific recommendations and safe rewrites provided
    - Identify evidence gaps and unsupported claims
 
-2. **Understand Fix Strategies:**
+3. **Understand Fix Strategies:**
    - **Add mechanism:** Include the "how" behind achievements
    - **Add time-box:** Provide specific date ranges for all metrics
    - **Add benchmark:** Replace superlatives with comparative data
@@ -55,11 +61,13 @@ You will work with:
    - Implement the mechanism+metric+time-box rewrites from Step 2
    - Ensure all changes maintain HAM-Z methodology compliance
    - Preserve the original cultural profile tone and approach
+   - **Maintain professional formatting and 3-page length target**
 
 2. **Maintain Strategic Positioning:**
    - Keep the resume targeted to the specific job requirements
    - Preserve ATS optimization where it doesn't conflict with credibility
    - Maintain the competitive advantage while ensuring defensibility
+   - **Ensure professional structure and section headers are preserved**
 
 ## Revision Methodology
 
@@ -79,6 +87,26 @@ You will work with:
 - ✅ All tools connected to measurable outcomes
 - ✅ Confidential information appropriately masked
 - ✅ Overall resume maintains competitive positioning
+
+## Professional Formatting Requirements (Maintained from Step 1)
+**Length:** Maximum 3 pages when converted to Word format
+**Word Count:** Maximum 1000 words in markdown format (ideally <1000 words)
+
+**Required Section Headers:**
+- **EXECUTIVE SUMMARY** (not "Professional Summary")
+- **CORE COMPETENCIES** (bullet points organized in categories)
+- **PROFESSIONAL EXPERIENCE** (reverse chronological)
+- **ADDITIONAL EXPERIENCE** (if needed for completeness)
+- **EDUCATION & PROFESSIONAL DESIGNATIONS**
+- **PROFESSIONAL DEVELOPMENT**
+- **PROFESSIONAL CONTRIBUTIONS** (if applicable)
+
+**Formatting Standards:**
+- Company names in ALL CAPS: **HYDRO ONE NETWORKS INC.**
+- Job titles and locations: `Senior Consultant | Toronto, ON | Jun 2022 – Sep 2024`
+- Core Competencies use bullet (•) format
+- Experience details use dash (-) format
+- Clean markdown for professional Word conversion
 
 ## File Management
 Save the final hardened resume to: `/OutputResumes/Step3_Final_Resume_[JobTitle]_[Company]_YYYY-MM-DD.md`
@@ -116,6 +144,7 @@ After completing Step 3, provide:
 
 1. **File Confirmation:**
    - Path to final hardened resume file
+   - **Word count verification:** Confirm final word count is ≤1000 words
    - Verification that all three steps are now complete
 
 2. **Revision Summary:**
@@ -135,6 +164,7 @@ After completing Step 3, provide:
 
 5. **Application Readiness:**
    - Statement of resume's defensibility
+   - Length and formatting verification (3 pages max, <1000 words)
    - Any additional materials recommended (cover letter, portfolio)
    - Final recommendations for application strategy
 
@@ -155,6 +185,15 @@ Before delivery, verify:
 - No superlatives remain without supporting benchmarks
 - Cultural profile tone consistent throughout
 - Resume directly addresses top job requirements
-- Professional formatting and presentation maintained
+- **Professional formatting and section headers maintained**
+- **Length target: Maximum 3 pages when converted to Word format**
+- **Word count: Maximum 1000 words in markdown (perform actual word count)**
+- **Clean markdown formatting for optimal Word conversion**
+
+## Word Count Verification
+- **Required:** Perform word count using `wc -w filename.md`
+- **Target:** Under 1000 words total
+- **Strategy:** Maintain all credibility improvements while ensuring conciseness
+- **Balance:** Defensible content + optimal length for professional impact
 
 Your final product should be a resume that maximizes interview potential while being completely defensible under scrutiny.

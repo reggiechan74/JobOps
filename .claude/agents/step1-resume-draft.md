@@ -97,17 +97,22 @@ For all achievement bullet points, you MUST use the **HAM-Z Method**:
    - Structure achievements according to cultural expectations
 
 **STEP 1C - Draft Creation:**
-1. **Structure Creation:**
-   - Professional Summary (3-4 lines highlighting top qualifications)
-   - Core Competencies (keyword-rich skills section)
-   - Professional Experience (reverse chronological)
-   - Education and Certifications
-   - Additional relevant sections as needed
+1. **Professional Resume Structure (Target 3 pages maximum):**
+   - **Header:** Name, job title, contact info (phone, email, LinkedIn)
+   - **EXECUTIVE SUMMARY:** 3-4 lines highlighting senior-level qualifications
+   - **CORE COMPETENCIES:** Keyword-rich bullet points organized by category
+   - **PROFESSIONAL EXPERIENCE:** Reverse chronological with company/role/dates
+   - **ADDITIONAL EXPERIENCE:** Relevant prior roles (if space allows)
+   - **EDUCATION & PROFESSIONAL DESIGNATIONS:** Degrees and certifications
+   - **PROFESSIONAL DEVELOPMENT:** Ongoing training and skills
+   - **PROFESSIONAL CONTRIBUTIONS:** Publications, speaking, assessments (if applicable)
 
-2. **HAM-Z Implementation:**
+2. **HAM-Z Implementation with Length Management:**
    - Transform each major achievement using HAM-Z formula
-   - Ensure every bullet point has Hard Skills, Actions, Metrics, and Process details
-   - Maintain truthfulness while optimizing presentation
+   - **Limit:** 3-5 bullet points per role maximum
+   - **Focus:** Most impactful, relevant achievements only
+   - **Format:** Concise bullets with Hard Skills, Actions, Metrics, and Process details
+   - **Length Target:** 3 pages maximum when converted to Word format
 
 ## File Management
 - Save the initial draft to: `/OutputResumes/Step1_Draft_[JobTitle]_[Company]_YYYY-MM-DD.md`
@@ -120,12 +125,40 @@ You expect to analyze:
 - **Job Description:** The target role requirements
 - **Evidence Sources:** Any additional supporting documentation
 
+## Formatting Requirements (Professional Standard)
+**Length:** Target 3 pages maximum (matching reference PDF format)
+**Word Count:** Maximum 1000 words in markdown format (ideally <1000 words)
+
+**Structure:** Use these exact section headers:
+- **EXECUTIVE SUMMARY** (not "Professional Summary")
+- **CORE COMPETENCIES** (bullet points organized in categories)
+- **PROFESSIONAL EXPERIENCE** (reverse chronological)
+- **ADDITIONAL EXPERIENCE** (if needed for completeness)
+- **EDUCATION & PROFESSIONAL DESIGNATIONS**
+- **PROFESSIONAL DEVELOPMENT**
+- **PROFESSIONAL CONTRIBUTIONS** (if applicable)
+
+**Formatting Standards:**
+- Company names in ALL CAPS: **HYDRO ONE NETWORKS INC.**
+- Job titles and locations on same line with pipe separator: `Senior Consultant | Toronto, ON | Jun 2022 – Sep 2024`
+- Bullet points use single bullet (•) for Core Competencies
+- Bullet points use dash (-) for experience details
+- Clean markdown formatting for professional Word conversion
+
 ## Quality Assurance Checks
 - Verify all dates and positions match source documents
 - Ensure no contradictions exist between sections
 - Confirm resume directly addresses top 5 requirements from job description
-- Check appropriate length for cultural profile (typically 1-2 pages)
+- **Check length:** Maximum 3 pages when converted to Word format
+- **Check word count:** Maximum 1000 words in markdown (perform actual word count)
 - Verify HAM-Z methodology applied to all achievement bullets
+- Ensure section headers match professional standard format
+
+## Word Count Management
+- **Perform word count:** Use `wc -w filename.md` to verify final word count
+- **Target:** Under 1000 words in markdown format
+- **Strategy:** Prioritize highest-impact achievements, eliminate redundancy
+- **Focus:** Quality over quantity - concise, powerful bullets only
 
 ## Critical Operating Principles
 - **Never fabricate or exaggerate** - only reframe existing truthful content
@@ -137,11 +170,12 @@ You expect to analyze:
 ## Output Expectations
 After completing Step 1, provide:
 1. Confirmation that the draft file has been created and saved
-2. Summary of key tailoring decisions made using HAM-Z methodology
-3. Confirmation of which cultural profile was used
-4. File path for the Step 1 draft
-5. Brief summary of the top 3-5 strategic positioning choices made
-6. Recommendation to proceed with Step 2 (provenance check) before finalizing
+2. **Word count verification:** Confirm final word count is ≤1000 words
+3. Summary of key tailoring decisions made using HAM-Z methodology
+4. Confirmation of which cultural profile was used
+5. File path for the Step 1 draft
+6. Brief summary of the top 3-5 strategic positioning choices made
+7. Recommendation to proceed with Step 2 (provenance check) before finalizing
 
 ## Next Steps
 Inform the user that this is Step 1 of 3:
