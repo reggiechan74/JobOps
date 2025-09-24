@@ -1,4 +1,4 @@
-# Resume Optimizer
+# Resume Optimizer for Claude Code
 
 A sophisticated resume optimization system that transforms comprehensive career inventories into targeted, credible resumes using a three-step methodology with provenance hardening.
 
