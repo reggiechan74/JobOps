@@ -24,11 +24,35 @@ The system employs a three-step process that ensures every claim is backed by ev
 
 ```
 resumeoptimizer/
-├── ResumeSourceFolder/       # Master resume documents (your career inventory)
-├── SourceMaterial/           # Methodology guides and frameworks
-├── OutputResumes/            # Generated resumes and analysis reports
-├── .claude/                  # Claude Code agents and commands
-└── [job-description].md      # Job postings for targeting
+├── .claude/                           # Claude Code configuration
+│   ├── agents/                        # Specialized processing agents
+│   │   ├── step1-resume-draft.md      # Initial targeted resume creation
+│   │   ├── step2-provenance-check.md  # Enhanced credibility analysis
+│   │   ├── step3-final-resume.md      # Final hardened resume production
+│   │   └── step4-cover-letter.md      # Strategic cover letter generation
+│   ├── commands/                      # Slash command definitions
+│   │   ├── buildresume.md             # Complete 3-step resume build
+│   │   ├── provenance.md              # Standalone provenance analysis
+│   │   ├── coverletter.md             # Cover letter generation
+│   │   ├── convert.md                 # Markdown to Word conversion
+│   │   └── install-pandoc.md          # Pandoc installation utility
+│   └── settings.local.json            # Local Claude Code settings
+├── Job_Postings/                      # Target job descriptions
+│   └── *.md                           # Job postings in markdown format
+├── OutputResumes/                     # Generated resumes and analysis
+│   ├── Step1_Draft_*.md               # Initial targeted drafts
+│   ├── Step2_Provenance_Analysis_*.md # Credibility analysis reports
+│   ├── Step3_Final_Resume_*.md        # Interview-ready final resumes
+│   ├── Step4_CoverLetter_*.md         # Strategic cover letters
+│   └── *.docx                         # Word format conversions (Step 5)
+├── ResumeSourceFolder/                # Master career inventory
+│   ├── Comprehensive_CV_MASTER_COPY_*.md        # Complete work history
+│   └── Comprehensive_CV_Technology_Capability.md # Technical skills inventory
+├── SourceMaterial/                    # Methodology documentation
+│   └── .gitkeep                       # (Directory reserved for guides)
+├── CLAUDE.md                          # System instructions for Claude Code
+├── comprehensive_work_history_FAQ.md  # Master resume philosophy
+└── README.md                          # This documentation
 ```
 
 ## Quick Start
@@ -57,6 +81,17 @@ This executes all three steps automatically:
 2. Performs provenance analysis
 3. Produces final hardened resume
 
+**Optional Step 4**: Generate a strategic cover letter with requirements table:
+```
+/coverletter OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md AltoJobPost.md
+```
+
+**Optional Step 5**: Convert to professional Word format for submission:
+```
+/install-pandoc    # Install pandoc if needed
+/convert all       # Convert all documents to Word format
+```
+
 ## Available Commands
 
 ### Complete Resume Build
@@ -84,31 +119,61 @@ This executes all three steps automatically:
 - Maps critical job requirements to proven experience
 - Maintains evidence chain from master documents
 
-## The Four-Step Process
+### Document Conversion
+```
+/convert <file-path-or-pattern> [output-directory]
+```
+- Converts markdown documents to professional Word DOCX format
+- Supports single files, patterns, or type-based conversion
+- Uses pandoc for high-quality professional formatting
+- Examples: `/convert resume`, `/convert "Step3_*.md"`, `/convert all`
+
+### Pandoc Installation
+```
+/install-pandoc [force]
+```
+- Automatically installs pandoc for your operating system
+- Detects platform and uses appropriate package manager
+- Verifies installation and conversion capabilities
+- Required for Step 5 document conversion functionality
+
+## The Five-Step Process
 
 ### Step 1: Initial Draft Creation
-- Analyzes job requirements and keywords
-- Applies cultural profile preferences
-- Uses HAM-Z methodology for bullet points
-- Creates targeted first draft optimized for ATS
+- **Job Analysis**: Deep analysis of requirements, keywords, and cultural context
+- **Cultural Profiling**: Applies region-specific resume conventions (Canadian, US, European, etc.)
+- **HAM-Z Application**: Transforms experience using Hard Skills + Action + Metrics + Structure formula
+- **ATS Optimization**: Creates targeted first draft optimized for applicant tracking systems
+- **Output**: `Step1_Draft_[Role]_[Company]_[Date].md`
 
-### Step 2: Provenance Analysis
-- Verifies every claim against master documents
-- Identifies evidence gaps and credibility risks
-- Categorizes issues by severity (High/Medium/Low)
-- Provides specific recommendations for fixes
+### Step 2: Provenance Analysis (Enhanced Anti-Hallucination System)
+- **Mandatory Evidence Verification**: Every claim cross-referenced against master documents with exact quotes
+- **Line Number Validation**: Verifies all quoted references actually exist in source materials
+- **Critical Risk Detection**: Flags fabricated capabilities, skills, or experience not documented
+- **Hallucination Prevention**: Zero tolerance for assumed language skills, geographic experience, or industry knowledge
+- **Risk Categorization**: Classifies issues as Critical/High/Medium/Low with specific remediation strategies
+- **Output**: `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`
 
 ### Step 3: Final Resume Production
-- Incorporates all provenance recommendations
-- Maintains competitive positioning
-- Ensures complete defensibility
-- Produces interview-ready final version
+- **Systematic Hardening**: Incorporates all provenance recommendations while maintaining competitive positioning
+- **Evidence-Based Claims**: Ensures every bullet point can withstand interview-level scrutiny
+- **Defensive Positioning**: Balances aggressive positioning with complete defensibility
+- **Interview Readiness**: Produces final version ready for submission and interview preparation
+- **Output**: `Step3_Final_Resume_[Role]_[Company]_[Date].md`
 
 ### Step 4: Cover Letter Generation (Optional)
-- Creates compelling cover letter from validated resume
-- Features requirements-matching table for visual impact
-- Maps job requirements to specific achievements
-- Maintains provenance chain from master documents
+- **Strategic Narrative**: Creates compelling cover letter from validated Step 3 resume
+- **Requirements Mapping**: Features visual requirements-matching table for hiring manager impact
+- **Evidence Chain**: Maps specific job requirements to proven achievements from master documents
+- **Hiring Manager Focus**: Tailors messaging to decision-maker priorities and pain points
+- **Output**: `Step4_CoverLetter_[Role]_[Company]_[Date].md`
+
+### Step 5: Document Conversion (Optional)
+- **Professional Formatting**: Converts markdown documents to submission-ready Word DOCX format
+- **Pandoc Integration**: Uses pandoc for high-quality conversion preserving tables and styling
+- **Batch Processing**: Supports single files, patterns, or bulk conversion (`resume`, `coverletter`, `all`)
+- **Enterprise Ready**: Creates polished documents meeting corporate submission standards
+- **Output**: `[OriginalName].docx` for any converted markdown document
 
 ## HAM-Z™ Methodology
 
@@ -120,6 +185,12 @@ Example:
 > Achieved 50% reduction in lease processing time (60→30 days) by leveraging VTS platform expertise to implement automated workflow system across 150-property portfolio
 
 ## Provenance Risk Categories
+
+### Critical Risk (Cannot Proceed)
+- **Fabricated Claims**: Any capability, skill, or experience not documented in master materials
+- **Language Skills**: Claims about bilingual abilities without explicit documentation
+- **Industry Experience**: Assumed expertise in sectors not covered in work history
+- **Geographic Experience**: Claims about regional knowledge without supporting evidence
 
 ### High Risk (Must Fix)
 - Unbounded metrics without timeframes
@@ -151,16 +222,35 @@ Output files follow this pattern:
 - Step 1: `Step1_Draft_[Role]_[Company]_[Date].md`
 - Step 2: `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`
 - Step 3: `Step3_Final_Resume_[Role]_[Company]_[Date].md`
+- Step 4: `Step4_CoverLetter_[Role]_[Company]_[Date].md`
+- Step 5: `[OriginalName].docx` (Word versions of any markdown document)
 
 ## Requirements
 
 - Claude Code CLI installed and configured
 - Master resume documents in markdown format
 - Job descriptions in markdown format
+- `pandoc` installed for Step 5 document conversion (optional)
+
+## Why a Comprehensive Work History?
+
+**The Hallucination Problem**: Traditional 2-page resumes create a fundamental issue when using AI for tailoring. When you try to customize a condensed resume, AI tools must fill gaps with plausible-sounding but fictional content, leading to claims you can't defend in interviews.
+
+**The Solution**: A comprehensive 20+ page master resume serves as your "database of truth" - every achievement, metric, and skill is documented with full context. This allows AI to **select** relevant experiences rather than **invent** them.
+
+### Key Benefits:
+- **No Hallucinations**: Enhanced provenance system prevents AI from inventing capabilities
+- **Interview Confidence**: Every bullet point traces to documented experience with line-by-line verification
+- **Provenance Verification**: All claims verified against source material with mandatory quote-checking
+- **Career Pattern Recognition**: Discover valuable themes in your experience
+- **Evidence-Based Targeting**: Only documented skills and achievements used in tailoring
+
+📖 **Read the complete explanation**: [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md)
 
 ## Support
 
 For issues or improvements, please check:
+- `comprehensive_work_history_FAQ.md` for master resume philosophy
 - `CLAUDE.md` for technical implementation details
 - `SourceMaterial/` for methodology documentation
 - `.claude/agents/` for agent-specific logic
