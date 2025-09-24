@@ -17,12 +17,20 @@ This is a resume optimization system that uses a three-step methodology to creat
   - `CV_Provenance_Hardening_Pass_Check_Prompt.md`: Provenance analysis framework
 
 - **OutputResumes/**: Generated resume drafts and analysis outputs
+  - Step 1 drafts: Initial targeted resumes
+  - Step 2 analyses: Provenance check reports
+  - Step 3 finals: Hardened, interview-ready resumes
 
-## Three-Step Resume Process
+- **Job_Postings/**: Target job descriptions in markdown format
+  - Store job postings as `.md` files for processing
+  - Use descriptive filenames (e.g., `CompanyName_Role_Date.md`)
+
+## Four-Step Application Process
 
 1. **Step 1 - Initial Draft**: Creates tailored resume using HAM-Z methodology and cultural profile preferences
 2. **Step 2 - Provenance Check**: Analyzes credibility, evidence gaps, and risk factors
 3. **Step 3 - Final Resume**: Produces hardened version addressing all credibility concerns
+4. **Step 4 - Cover Letter** (Optional): Generates strategic cover letter with requirements-matching table
 
 ## Available Slash Commands
 
@@ -34,21 +42,35 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Checks draft against master resume documents
   - Identifies credibility issues and evidence gaps
 
+- `/coverletter <step3-resume-file> <job-description-file> [hiring-manager-name]`: Creates cover letter
+  - Generates from validated Step 3 resume
+  - Includes strategic requirements-matching table
+  - Maintains provenance chain
+
 ## Custom Agents
 
 The repository includes specialized agents for each step:
 - `step1-resume-draft`: Initial targeted resume creation
 - `step2-provenance-check`: Comprehensive credibility analysis
 - `step3-final-resume`: Final hardened version production
-- `resume-tailoring-specialist`: Deprecated orchestrator (use 3-step process instead)
+- `step4-cover-letter`: Strategic cover letter with requirements table
+- `resume-tailoring-specialist`: Deprecated orchestrator (use 4-step process instead)
 
 ## Working with Resume Files
 
 When processing resumes:
 1. Always read from `ResumeSourceFolder/` for master data
-2. Job descriptions are typically stored as `.md` files in the root
-3. Output resumes should be saved to `OutputResumes/` with descriptive timestamps
-4. Use the HAM-Z formula: **Achieved [Metric-Driven Result] by leveraging [Hard Skill] to [perform specific action/process]**
+2. Job descriptions should be stored in `Job_Postings/` directory as `.md` files
+3. Legacy job descriptions may exist in root directory (e.g., `AltoJobPost.md`)
+4. Output resumes should be saved to `OutputResumes/` with descriptive timestamps
+5. Use the HAM-Z formula: **Achieved [Metric-Driven Result] by leveraging [Hard Skill] to [perform specific action/process]**
+
+## File Organization Best Practices
+
+- **Job Postings**: Use format `Job_Postings/CompanyName_Role_Date.md`
+- **Output Files**: Automatically named with step, role, company, and date
+- **Master Resume**: Keep only verified, defensible content in source documents
+- **Evidence Trail**: Maintain clear provenance from master to final resume
 
 ## Provenance Analysis Categories
 
@@ -70,3 +92,27 @@ The system supports different cultural profiles for resume tailoring. When not s
 - Clear role boundaries
 - Specific technologies and methodologies
 - Conservative language without superlatives
+
+## Important Commands and Tools
+
+### Development Commands
+- No build/compile commands needed (markdown-based system)
+- No test framework (validation through provenance analysis)
+- Git for version control: `git status`, `git add`, `git commit`
+
+### Key Validation Steps
+When creating or modifying resumes:
+1. Run provenance check after any draft creation
+2. Verify all metrics have timeframes and mechanisms
+3. Ensure cultural profile alignment
+4. Check for duplicate achievements across roles
+
+## System Architecture
+
+The resume optimization system follows a pipeline architecture:
+1. **Input Layer**: Job postings + Master resume data
+2. **Processing Layer**: Three-step transformation pipeline with HAM-Z methodology
+3. **Validation Layer**: Provenance hardening and risk assessment
+4. **Output Layer**: Credible, targeted resumes ready for submission
+
+Each step in the pipeline has dedicated agents that maintain consistency and quality throughout the transformation process.

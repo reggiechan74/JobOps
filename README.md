@@ -75,7 +75,16 @@ This executes all three steps automatically:
 - Cross-references against master resume documents
 - Generates detailed risk assessment report
 
-## The Three-Step Process
+### Cover Letter Generation
+```
+/coverletter <step3-resume-file> <job-description-file> [hiring-manager-name]
+```
+- Creates strategic cover letter from Step 3 validated resume
+- Includes requirements-matching table for visual impact
+- Maps critical job requirements to proven experience
+- Maintains evidence chain from master documents
+
+## The Four-Step Process
 
 ### Step 1: Initial Draft Creation
 - Analyzes job requirements and keywords
@@ -94,6 +103,12 @@ This executes all three steps automatically:
 - Maintains competitive positioning
 - Ensures complete defensibility
 - Produces interview-ready final version
+
+### Step 4: Cover Letter Generation (Optional)
+- Creates compelling cover letter from validated resume
+- Features requirements-matching table for visual impact
+- Maps job requirements to specific achievements
+- Maintains provenance chain from master documents
 
 ## HAM-Z™ Methodology
 
