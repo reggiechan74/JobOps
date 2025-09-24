@@ -1,5 +1,15 @@
-# Resume Output Files
-OutputResumes/
+# Resume Output Files (except .gitkeep)
+OutputResumes/*
+!OutputResumes/.gitkeep
 
-# Source Resume Documents
-ResumeSourceFolder/
+# Source Resume Documents (except .gitkeep)
+ResumeSourceFolder/*
+!ResumeSourceFolder/.gitkeep
+
+# Source Material (except .gitkeep)
+SourceMaterial/*
+!SourceMaterial/.gitkeep
+
+# Job Postings (except .gitkeep)
+Job_Postings/*
+!Job_Postings/.gitkeep
