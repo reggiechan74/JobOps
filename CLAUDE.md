@@ -58,6 +58,12 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Verifies installation and conversion capabilities
   - Required dependency for Step 5 functionality
 
+- `/assessjob <job-posting-file>`: Expert HR assessment of candidate vs job
+  - Loads scoring rubric from SourceMaterial/jobscoringrubric.md
+  - Performs web research for domain expertise
+  - Generates 100-point assessment with evidence
+  - Provides hiring recommendations and interview strategy
+
 ## Custom Agents
 
 The repository includes specialized agents for each step:
@@ -66,6 +72,7 @@ The repository includes specialized agents for each step:
 - `step3-final-resume`: Final hardened version production
 - `step4-cover-letter`: Strategic cover letter with requirements table
 - `step5-document-converter`: Markdown to Word DOCX conversion using pandoc
+- `candidate-assessment`: Expert HR/domain assessment against job descriptions
 - `resume-tailoring-specialist`: Deprecated orchestrator (use 5-step process instead)
 
 ## Working with Resume Files
