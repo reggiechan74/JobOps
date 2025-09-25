@@ -70,6 +70,10 @@ Create comprehensive assessment report in `OutputResumes/Assessment_[Company]_[R
 ```markdown
 # Candidate Assessment Report: [Role] at [Company]
 Date: [Assessment Date]
+Candidate: [Candidate Name]
+Position: [Position being applied for]
+Organization: [Organization name]
+Reports to: [Hiring Manager Name and/or Title]
 
 ## Executive Summary
 [2-3 sentences: Overall fit, key strengths, primary concerns, recommendation]
