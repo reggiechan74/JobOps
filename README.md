@@ -94,6 +94,7 @@ resumeoptimizer/
 │   └── .gitkeep                       # Directory placeholder
 ├── .gitignore                         # Git ignore rules
 ├── CLAUDE.md                          # System instructions for Claude Code
+├── Master_Resume_Comprehensive_Setup_Guide_v1.md  # Ultra-detailed master resume creation guide
 ├── README.md                          # This documentation
 ├── comprehensive_work_history_FAQ.md  # Master resume philosophy
 └── LICENSE                            # Repository license
@@ -103,10 +104,15 @@ resumeoptimizer/
 
 ### 1. Setup Your Master Resume
 
+**📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - a 75+ page ultra-detailed guide covering the complete methodology for building your career database.
+
 Place your comprehensive career inventory in `ResumeSourceFolder/`:
-- Complete work history with all projects and achievements
-- Technology capabilities and skills inventory
-- Awards, publications, and certifications
+- Complete work history with all projects and achievements using HAMZ-Extended framework
+- Technology capabilities and skills inventory with proficiency assessments
+- Awards, publications, and certifications with full context and validation
+- Academic credentials including curriculum details and competency documentation
+
+**Critical**: Your master resume prevents AI hallucination by providing complete source material. Every claim must be defensible in interview settings with specific examples, metrics, and mechanisms documented.
 
 ### 2. Add Job Description
 
@@ -403,7 +409,9 @@ Output files follow this pattern:
 - **Career Pattern Recognition**: Discover valuable themes in your experience
 - **Evidence-Based Targeting**: Only documented skills and achievements used in tailoring
 
-📖 **Read the complete explanation**: [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md)
+### Essential Documentation Resources:
+📖 **Complete Setup Guide**: [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - Ultra-detailed 75+ page methodology
+📖 **Philosophy Overview**: [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md) - Quick conceptual explanation
 
 ## Support
 
