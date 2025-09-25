@@ -102,7 +102,22 @@ resumeoptimizer/
 
 ## Quick Start
 
-### 1. Setup Your Master Resume
+### 1. Setup Your Master Resume: The Anti-Hallucination Foundation
+
+**The Core Problem**: Traditional 2-page resumes create a fundamental issue when using AI for tailoring. When you try to customize a condensed resume, AI tools must fill gaps with plausible-sounding but fictional content, leading to claims you can't defend in interviews.
+
+**The Solution**: A comprehensive 20+ page master resume serves as your "database of truth" - every achievement, metric, and skill is documented with full context. This allows AI to **select** relevant experiences rather than **invent** them.
+
+#### Why This Approach Works
+
+**Key Benefits**:
+- **No Hallucinations**: Enhanced provenance system prevents AI from inventing capabilities
+- **Interview Confidence**: Every bullet point traces to documented experience with line-by-line verification
+- **Provenance Verification**: All claims verified against source material with mandatory quote-checking
+- **Career Pattern Recognition**: Discover valuable themes in your experience
+- **Evidence-Based Targeting**: Only documented skills and achievements used in tailoring
+
+#### Implementation Guide
 
 **📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - a 75+ page ultra-detailed guide covering the complete methodology for building your career database.
 
@@ -112,7 +127,11 @@ Place your comprehensive career inventory in `ResumeSourceFolder/`:
 - Awards, publications, and certifications with full context and validation
 - Academic credentials including curriculum details and competency documentation
 
-**Critical**: Your master resume prevents AI hallucination by providing complete source material. Every claim must be defensible in interview settings with specific examples, metrics, and mechanisms documented.
+**Critical Standard**: Every claim must be defensible in interview settings with specific examples, metrics, and mechanisms documented.
+
+#### Documentation Resources
+📖 **Complete Setup Guide**: [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - Ultra-detailed 75+ page methodology
+📖 **Philosophy Overview**: [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md) - Quick conceptual explanation
 
 ### 2. Add Job Description
 
@@ -396,22 +415,6 @@ Output files follow this pattern:
 - Job descriptions in markdown format
 - `pandoc` installed for Step 5 document conversion (optional)
 
-## Why a Comprehensive Work History?
-
-**The Hallucination Problem**: Traditional 2-page resumes create a fundamental issue when using AI for tailoring. When you try to customize a condensed resume, AI tools must fill gaps with plausible-sounding but fictional content, leading to claims you can't defend in interviews.
-
-**The Solution**: A comprehensive 20+ page master resume serves as your "database of truth" - every achievement, metric, and skill is documented with full context. This allows AI to **select** relevant experiences rather than **invent** them.
-
-### Key Benefits:
-- **No Hallucinations**: Enhanced provenance system prevents AI from inventing capabilities
-- **Interview Confidence**: Every bullet point traces to documented experience with line-by-line verification
-- **Provenance Verification**: All claims verified against source material with mandatory quote-checking
-- **Career Pattern Recognition**: Discover valuable themes in your experience
-- **Evidence-Based Targeting**: Only documented skills and achievements used in tailoring
-
-### Essential Documentation Resources:
-📖 **Complete Setup Guide**: [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - Ultra-detailed 75+ page methodology
-📖 **Philosophy Overview**: [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md) - Quick conceptual explanation
 
 ## Support
 
