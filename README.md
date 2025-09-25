@@ -55,7 +55,6 @@ resumeoptimizer/
 │   ├── Comprehensive_CV_MASTER_COPY_v35.md       # Complete work history
 │   └── Comprehensive_CV_Technology_Capability.md # Technical skills inventory
 ├── Scoring_Rubrics/                   # Assessment rubrics and frameworks
-│   ├── jobscoringrubric.md           # Master template for assessments
 │   └── Rubric_*_*_*.md               # Dynamic job-specific rubrics
 ├── SourceMaterial/                    # Reserved for methodology guides
 │   └── .gitkeep                       # Placeholder (guides stored elsewhere)

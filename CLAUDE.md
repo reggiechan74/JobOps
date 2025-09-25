@@ -17,8 +17,7 @@ This is a resume optimization system that uses a three-step methodology to creat
   - `CV_Provenance_Hardening_Pass_Check_Prompt.md`: Provenance analysis framework
 
 - **Scoring_Rubrics/**: Contains assessment rubrics and scoring frameworks
-  - `jobscoringrubric.md`: Master template for job assessment scoring
-  - Dynamic rubrics: Job-specific rubrics created by `/assessjob` command
+  - Dynamic rubrics: Job-specific rubrics created by `/assessjob` command with embedded detailed scoring framework
   - Format: `Rubric_[Company]_[Role]_[Date].md` for each assessment
 
 - **OutputResumes/**: Generated resume drafts and analysis outputs
