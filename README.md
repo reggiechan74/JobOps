@@ -96,9 +96,19 @@ Place your comprehensive career inventory in `ResumeSourceFolder/`:
 
 Create a markdown file with the target job description in the root directory (e.g., `AltoJobPost.md`)
 
-### 3. Generate Optimized Resume
+### 3. Assess Job Opportunity First
 
-Use the slash command to run the complete optimization process:
+Before investing time in resume creation, assess your fit for the position:
+
+```
+/assessjob AltoJobPost.md
+```
+
+This generates a comprehensive assessment report showing your candidacy strength and identifies critical gaps. **Only proceed if the assessment shows reasonable fit** (typically 60%+ match).
+
+### 4. Generate Optimized Resume (If Assessment is Positive)
+
+Use the slash command to run the complete resume development process:
 
 ```
 /buildresume AltoJobPost.md Canadian
@@ -109,27 +119,26 @@ This executes the core resume development process:
 2. Performs provenance analysis
 3. Produces final hardened resume
 
-**Step 4**: Assess your candidacy from HR perspective:
-```
-/assessjob AltoJobPost.md
-```
+### 5. Prepare for Interview
 
-**Step 5**: Create study guide to address gaps:
+**Create study guide to address gaps:**
 ```
 /briefing OutputResumes/Assessment_[Company]_[Role]_[Date].md AltoJobPost.md gaps-only
 ```
 
-**Step 6**: Generate customized interview questions:
+**Generate customized interview questions:**
 ```
 /interviewprep OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md AltoJobPost.md
 ```
 
-**Step 7**: Generate strategic cover letter (Optional):
+### 6. Finalize Application (Optional)
+
+**Generate strategic cover letter:**
 ```
 /coverletter OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md AltoJobPost.md
 ```
 
-**Step 8**: Convert to professional Word format (Optional):
+**Convert to professional Word format:**
 ```
 /install-pandoc    # Install pandoc if needed
 /convert all       # Convert all documents to Word format
@@ -137,7 +146,17 @@ This executes the core resume development process:
 
 ## Available Commands
 
-### Complete Resume Build
+### Step 1: Opportunity Assessment
+```
+/assessjob <job-description-file>
+```
+- **START HERE**: Assess your fit before creating resume
+- Creates dynamic job-specific scoring rubric from job posting
+- Generates 100-point assessment with evidence
+- Provides go/no-go recommendation based on candidacy strength
+- Only proceed to resume creation if assessment shows reasonable fit (60%+)
+
+### Steps 2-4: Resume Development (Use Only After Positive Assessment)
 ```
 /buildresume <job-description-file> [cultural-profile]
 ```
@@ -217,16 +236,28 @@ This executes the core resume development process:
 
 ## The Complete 8-Step Application Process
 
-### Phase 1: Resume Development (Steps 1-3)
+### Phase 1: Opportunity Assessment (Step 1)
 
-#### Step 1: Initial Draft Creation
+#### Step 1: Job Assessment & Candidate Evaluation
+- **Dynamic Rubric Creation**: Generates job-specific 100-point scoring framework from job posting
+- **Domain Knowledge Integration**: Performs web research for industry standards and role expectations
+- **Comprehensive Evaluation**: Maps candidate evidence to each job requirement systematically
+- **Risk Analysis**: Identifies gaps and provides mitigation strategies for hiring decisions
+- **Go/No-Go Decision**: Determines if opportunity is worth pursuing based on fit score and gap analysis
+- **Outputs**:
+  - `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md` (custom scoring criteria)
+  - `OutputResumes/Assessment_[Company]_[Role]_[Date].md` (detailed evaluation report)
+
+### Phase 2: Resume Development (Steps 2-4)
+
+#### Step 2: Initial Draft Creation
 - **Job Analysis**: Deep analysis of requirements, keywords, and cultural context
 - **Cultural Profiling**: Applies region-specific resume conventions (Canadian, US, European, etc.)
 - **HAM-Z Application**: Transforms experience using Hard Skills + Action + Metrics + Structure formula
 - **ATS Optimization**: Creates targeted first draft optimized for applicant tracking systems
 - **Output**: `Step1_Draft_[Role]_[Company]_[Date].md`
 
-#### Step 2: Provenance Analysis (Enhanced Anti-Hallucination System)
+#### Step 3: Provenance Analysis (Enhanced Anti-Hallucination System)
 - **Mandatory Evidence Verification**: Every claim cross-referenced against master documents with exact quotes
 - **Line Number Validation**: Verifies all quoted references actually exist in source materials
 - **Critical Risk Detection**: Flags fabricated capabilities, skills, or experience not documented
@@ -234,27 +265,17 @@ This executes the core resume development process:
 - **Risk Categorization**: Classifies issues as Critical/High/Medium/Low with specific remediation strategies
 - **Output**: `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`
 
-#### Step 3: Final Resume Production
+#### Step 4: Final Resume Production
 - **Systematic Hardening**: Incorporates all provenance recommendations while maintaining competitive positioning
 - **Evidence-Based Claims**: Ensures every bullet point can withstand interview-level scrutiny
 - **Defensive Positioning**: Balances aggressive positioning with complete defensibility
 - **Interview Readiness**: Produces final version ready for submission and interview preparation
 - **Output**: `Step3_Final_Resume_[Role]_[Company]_[Date].md`
 
-### Phase 2: Interview Preparation (Steps 4-6)
-
-#### Step 4: Candidate Assessment
-- **Dynamic Rubric Creation**: Generates job-specific 100-point scoring framework from job posting
-- **Domain Knowledge Integration**: Performs web research for industry standards and role expectations
-- **Comprehensive Evaluation**: Maps candidate evidence to each job requirement systematically
-- **Risk Analysis**: Identifies gaps and provides mitigation strategies for hiring decisions
-- **Interview Strategy**: Recommends specific areas to probe and assessment approaches
-- **Outputs**:
-  - `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md` (custom scoring criteria)
-  - `OutputResumes/Assessment_[Company]_[Role]_[Date].md` (detailed evaluation report)
+### Phase 3: Interview Preparation (Steps 5-6)
 
 #### Step 5: Gap Analysis and Study Guide Creation
-- **Critical Gap Identification**: Analyzes assessment to pinpoint skill gaps and weaknesses
+- **Critical Gap Identification**: Analyzes Step 1 assessment to pinpoint skill gaps and weaknesses
 - **Learning Resource Research**: Web research for current best practices and training materials
 - **Structured Study Plan**: Creates detailed study guide with actionable timelines
 - **Two Modes**: gaps-only (focus on critical weaknesses) or comprehensive preparation
@@ -262,17 +283,17 @@ This executes the core resume development process:
 - **Output**: `Briefing_Notes/Briefing_[Company]_[Role]_[Mode]_[Date].md`
 
 #### Step 6: Customized Interview Question Generation
-- **Resume-Job Alignment**: Generates questions based on specific resume content vs job requirements
+- **Resume-Job Alignment**: Generates questions based on Step 4 final resume content vs job requirements
 - **Question Balance**: Mix of technical, behavioral, and experience verification questions
 - **Strategic Guidance**: STAR format coaching and answer frameworks for each question
 - **Follow-up Preparation**: Anticipated follow-up questions and response strategies
-- **Risk Mitigation**: Red flags to avoid and strength positioning techniques
+- **Risk Mitigation**: Red flags to avoid and strength positioning techniques based on Step 1 gaps
 - **Output**: `Briefing_Notes/Interview_Prep_[Company]_[Role]_[Date].md`
 
-### Phase 3: Application Finalization (Steps 7-8)
+### Phase 4: Application Finalization (Steps 7-8)
 
 #### Step 7: Cover Letter Generation (Optional)
-- **Strategic Narrative**: Creates compelling cover letter from validated Step 3 resume
+- **Strategic Narrative**: Creates compelling cover letter from validated Step 4 final resume
 - **Requirements Mapping**: Features visual requirements-matching table for hiring manager impact
 - **Evidence Chain**: Maps specific job requirements to proven achievements from master documents
 - **Hiring Manager Focus**: Tailors messaging to decision-maker priorities and pain points
@@ -330,13 +351,15 @@ Example:
 ## File Naming Convention
 
 Output files follow this pattern:
-**Resume Development (Steps 1-3):**
-- Step 1: `Step1_Draft_[Role]_[Company]_[Date].md`
-- Step 2: `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`
-- Step 3: `Step3_Final_Resume_[Role]_[Company]_[Date].md`
+**Opportunity Assessment (Step 1):**
+- Step 1: `Assessment_[Company]_[Role]_[Date].md` and `Rubric_[Company]_[Role]_[Date].md`
 
-**Interview Preparation (Steps 4-6):**
-- Step 4: `Assessment_[Company]_[Role]_[Date].md` and `Rubric_[Company]_[Role]_[Date].md`
+**Resume Development (Steps 2-4):**
+- Step 2: `Step1_Draft_[Role]_[Company]_[Date].md`
+- Step 3: `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`
+- Step 4: `Step3_Final_Resume_[Role]_[Company]_[Date].md`
+
+**Interview Preparation (Steps 5-6):**
 - Step 5: `Briefing_[Company]_[Role]_[Mode]_[Date].md`
 - Step 6: `Interview_Prep_[Company]_[Role]_[Date].md`
 
