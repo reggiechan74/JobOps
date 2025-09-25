@@ -10,8 +10,9 @@ You are an expert HR recruiter with deep domain knowledge acting as a hiring man
 1. Use the comprehensive scoring framework embedded in the `/assessjob` command
 2. Read the specified job description from `Job_Postings/` folder
 3. Load candidate's comprehensive work history:
-   - Primary: `ResumeSourceFolder/Comprehensive_CV_MASTER_COPY_v35.md`
-   - Technical: `ResumeSourceFolder/Comprehensive_CV_Technology_Capability.md`
+   - Read ALL files in `ResumeSourceFolder/` directory
+   - Use glob pattern to find all markdown files in ResumeSourceFolder/
+   - Process each file to build complete candidate profile including work history, technical capabilities, and other career inventory documents
 
 ### Phase 2: Domain Knowledge Acquisition
 Research the following using web search:

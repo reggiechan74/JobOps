@@ -29,7 +29,7 @@ The system employs an 8-step process organized into three phases: resume develop
 ```
 resumeoptimizer/
 ├── .claude/                           # Claude Code configuration
-│   ├── agents/                        # Specialized processing agents (8 agents)
+│   ├── agents/                        # Specialized processing agents (7 agents)
 │   │   ├── candidate-assessment.md           # HR assessment with domain expertise
 │   │   ├── interview-briefing.md             # Gap analysis and study guides
 │   │   ├── interview-question-generator.md   # Customized interview questions
@@ -49,25 +49,34 @@ resumeoptimizer/
 │   │   └── provenance.md              # Standalone provenance analysis
 │   └── settings.local.json            # Local Claude Code settings
 ├── Briefing_Notes/                    # Interview preparation materials
-│   ├── Briefing_*.md                  # Skill gap study guides
-│   ├── Interview_Prep_*.md            # Customized interview questions
 │   └── .gitkeep                       # Directory placeholder
 ├── Job_Postings/                      # Target job descriptions
-│   └── AltoJobPost.md                 # Sample job posting
+│   ├── .gitkeep                       # Directory placeholder
+│   ├── AltoJobPost.md                 # Sample job posting
+│   ├── City_of_Toronto_Director.md    # City of Toronto role
+│   └── JLL_VP_Office_Leasing.md       # JLL VP position
 ├── OutputResumes/                     # Generated resumes and analysis
+│   ├── .gitkeep                       # Directory placeholder
 │   ├── Assessment_*.md                # Candidate assessment reports
 │   ├── Step1_Draft_*.md               # Initial targeted drafts
 │   ├── Step2_Provenance_Analysis_*.md # Credibility analysis reports
 │   ├── Step3_Final_Resume_*.md        # Interview-ready final resumes
 │   ├── Step4_CoverLetter_*.md         # Strategic cover letters
-│   └── *.docx                         # Word format conversions
-├── ResumeSourceFolder/                # Master career inventory (2 files)
+│   └── *.pdf                          # Converted documents
+├── ResumeSourceFolder/                # Master career inventory
+│   ├── .gitkeep                       # Directory placeholder
 │   ├── Comprehensive_CV_MASTER_COPY_v35.md       # Complete work history
 │   └── Comprehensive_CV_Technology_Capability.md # Technical skills inventory
+├── Sample_Output/                     # Example outputs for demonstration
+│   ├── Assessment_Building_Ontario_Fund_*.md     # Sample assessment report
+│   ├── Briefing_Building_Ontario_Fund_*.md       # Sample briefing note
+│   ├── Building_Ontario_Fund.md                  # Sample job posting
+│   └── Rubric_Building_Ontario_Fund_*.md         # Sample scoring rubric
 ├── Scoring_Rubrics/                   # Assessment rubrics and frameworks
 │   └── Rubric_*_*_*.md               # Dynamic job-specific rubrics
 ├── SourceMaterial/                    # Reserved for methodology guides
-│   └── .gitkeep                       # Placeholder (guides stored elsewhere)
+│   └── .gitkeep                       # Directory placeholder
+├── .gitignore                         # Git ignore rules
 ├── CLAUDE.md                          # System instructions for Claude Code
 ├── README.md                          # This documentation
 ├── comprehensive_work_history_FAQ.md  # Master resume philosophy
