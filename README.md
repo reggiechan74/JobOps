@@ -12,6 +12,22 @@ Resume Optimizer uses the HAM-Z™ methodology to create powerful, defensible re
 
 The system employs an 8-step process organized into three phases: resume development (Steps 1-3), interview preparation (Steps 4-6), and application finalization (Steps 7-8), ensuring every claim is backed by evidence and every achievement is quantified with mechanism, metrics, and timeframe.
 
+### Theoretical Foundation: Assessment-First Hiring
+
+This application was designed around the **Assessment-First Hiring Model**, a system dynamics approach that addresses the fundamental inefficiency in modern job markets. The theoretical framework, detailed in [`SourceMaterial/System_Dynamics_Analysis_Assessment_First_Hiring_v3.md`](SourceMaterial/System_Dynamics_Analysis_Assessment_First_Hiring_v3.md), demonstrates how AI-assisted resume embellishment has created a "Vicious Cycle of Embellishment" where:
+
+- 73.4% of job seekers use AI tools to enhance resumes
+- Signal-to-noise ratio has degraded to **-2.5 dB** (more noise than signal)
+- Employers add screening layers, incentivizing further embellishment
+
+The assessment-first model breaks this cycle by evaluating candidate fit *before* application creation, potentially achieving:
+- **35-60% reduction** in misaligned applications
+- **30-60% decrease** in time-to-hire
+- **40-80% improvement** in overall market matching efficiency
+- **+3.2 to +10.4 dB improvement** in signal quality
+
+This theoretical foundation explains why the system starts with `/assessjob` rather than resume creation - preventing wasted effort on fundamentally poor matches while ensuring only high-probability applications receive full development.
+
 ## Key Features
 
 - **HAM-Z™ Methodology**: Combines Hard Skills, Actions, Metrics, and Structure with XYZ narrative format
