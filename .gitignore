@@ -13,3 +13,7 @@ SourceMaterial/*
 # Job Postings (except .gitkeep)
 Job_Postings/*
 !Job_Postings/.gitkeep
+
+# Briefing Notes (except .gitkeep)
+Briefing_Notes/*
+!Briefing_Notes/.gitkeep

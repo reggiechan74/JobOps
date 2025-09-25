@@ -29,17 +29,32 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Store job postings as `.md` files for processing
   - Use descriptive filenames (e.g., `CompanyName_Role_Date.md`)
 
-## Five-Step Application Process
+- **Briefing_Notes/**: Interview preparation and skill gap study guides
+  - Gap analysis briefings: Focus on addressing identified weaknesses
+  - Full preparation briefings: Comprehensive interview readiness guides
+  - Interview question sets: Customized questions with answer strategies
+  - Format: `Briefing_[Company]_[Role]_[Mode]_[Date].md` and `Interview_Prep_[Company]_[Role]_[Date].md`
 
+## Complete Application Process
+
+### Core Resume Development (Steps 1-3)
 1. **Step 1 - Initial Draft**: Creates tailored resume using HAM-Z methodology and cultural profile preferences
 2. **Step 2 - Provenance Check**: Analyzes credibility, evidence gaps, and risk factors
 3. **Step 3 - Final Resume**: Produces hardened version addressing all credibility concerns
-4. **Step 4 - Cover Letter** (Optional): Generates strategic cover letter with requirements-matching table
-5. **Step 5 - Document Conversion** (Optional): Converts markdown to professional Word DOCX format
+
+### Interview Preparation (Steps 4-6)
+4. **Step 4 - Assessment & Gap Analysis**: Evaluates candidate against job requirements with scoring rubric
+5. **Step 5 - Study Guide Creation**: Generates briefing notes to address skill gaps or comprehensive prep
+6. **Step 6 - Interview Question Prep**: Creates customized questions with strategic answer guidance
+
+### Application Finalization (Steps 7-8)
+7. **Step 7 - Cover Letter** (Optional): Generates strategic cover letter with requirements-matching table
+8. **Step 8 - Document Conversion** (Optional): Converts markdown to professional Word DOCX format
 
 ## Available Slash Commands
 
-- `/buildresume <job-description-file> [cultural-profile]`: Runs complete 3-step process
+### Core Resume Development
+- `/buildresume <job-description-file> [cultural-profile]`: Runs complete 3-step resume process
   - Default cultural profile: Canadian
   - Creates draft, performs provenance check, produces final resume
 
@@ -47,38 +62,65 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Checks draft against master resume documents
   - Identifies credibility issues and evidence gaps
 
-- `/coverletter <step3-resume-file> <job-description-file> [hiring-manager-name]`: Creates cover letter
-  - Generates from validated Step 3 resume
-  - Includes strategic requirements-matching table
-  - Maintains provenance chain
-
-- `/convert <file-path-or-pattern> [output-directory]`: Converts to Word DOCX format
-  - Uses pandoc for professional conversion
-  - Supports patterns: `resume`, `coverletter`, `all`, file paths
-  - Preserves formatting and creates submission-ready documents
-
-- `/install-pandoc [force]`: Installs pandoc for document conversion
-  - Auto-detects operating system and package manager
-  - Verifies installation and conversion capabilities
-  - Required dependency for Step 5 functionality
-
-- `/assessjob <job-posting-file>`: Expert HR assessment of candidate vs job
+### Interview Preparation Workflow
+- `/assessjob <job-posting-file>`: Expert HR assessment of candidate vs job (Step 4)
   - Creates dynamic job-specific scoring rubric from job posting
   - Saves custom rubric to Scoring_Rubrics/ folder for reuse
   - Performs web research for domain expertise
   - Generates 100-point assessment with evidence
   - Provides hiring recommendations and interview strategy
 
+- `/briefing <assessment-report> <job-description> [gaps-only]`: Creates study guide briefing (Step 5)
+  - Analyzes assessment to identify skill gaps and weaknesses
+  - Researches current best practices and learning resources
+  - Generates detailed study guide with timelines
+  - Two modes: gaps-only focus or comprehensive preparation
+  - Includes interview questions, hands-on exercises, and quick references
+
+- `/interviewprep <resume-file> <job-description> [number-of-questions]`: Generate interview questions (Step 6)
+  - Creates likely interview questions based on resume-job alignment
+  - Defaults to 10 questions if number not specified
+  - Balances technical and behavioral questions
+  - Provides answer strategies and STAR format guidance
+  - Includes follow-up questions and red flags to avoid
+
+### Application Finalization
+- `/coverletter <step3-resume-file> <job-description-file> [hiring-manager-name]`: Creates cover letter (Step 7)
+  - Generates from validated Step 3 resume
+  - Includes strategic requirements-matching table
+  - Maintains provenance chain
+
+- `/convert <file-path-or-pattern> [output-directory]`: Converts to Word DOCX format (Step 8)
+  - Uses pandoc for professional conversion
+  - Supports patterns: `resume`, `coverletter`, `all`, file paths
+  - Preserves formatting and creates submission-ready documents
+
+### System Setup
+- `/install-pandoc [force]`: Installs pandoc for document conversion
+  - Auto-detects operating system and package manager
+  - Verifies installation and conversion capabilities
+  - Required dependency for document conversion functionality
+
 ## Custom Agents
 
 The repository includes specialized agents for each step:
+
+### Resume Development Agents
 - `step1-resume-draft`: Initial targeted resume creation
 - `step2-provenance-check`: Comprehensive credibility analysis
 - `step3-final-resume`: Final hardened version production
-- `step4-cover-letter`: Strategic cover letter with requirements table
-- `step5-document-converter`: Markdown to Word DOCX conversion using pandoc
-- `candidate-assessment`: Expert HR/domain assessment against job descriptions
-- `resume-tailoring-specialist`: Deprecated orchestrator (use 5-step process instead)
+
+### Interview Preparation Agents
+- `candidate-assessment`: Expert HR/domain assessment against job descriptions (Step 4)
+- `interview-briefing`: Creates comprehensive study guides for skill gaps and interview prep (Step 5)
+- `interview-question-generator`: Generates customized interview questions with answer strategies (Step 6)
+
+### Application Support Agents
+- `step4-cover-letter`: Strategic cover letter with requirements table (Step 7)
+- `step5-document-converter`: Markdown to Word DOCX conversion using pandoc (Step 8)
+
+### Legacy Agents
+- `resume-tailoring-specialist`: Deprecated orchestrator (use 8-step process instead)
 
 ## Working with Resume Files
 
@@ -134,10 +176,21 @@ When creating or modifying resumes:
 
 ## System Architecture
 
-The resume optimization system follows a pipeline architecture:
-1. **Input Layer**: Job postings + Master resume data
-2. **Processing Layer**: Three-step transformation pipeline with HAM-Z methodology
-3. **Validation Layer**: Provenance hardening and risk assessment
-4. **Output Layer**: Credible, targeted resumes ready for submission
+The resume optimization system follows a comprehensive 8-step pipeline architecture:
 
-Each step in the pipeline has dedicated agents that maintain consistency and quality throughout the transformation process.
+### Phase 1: Resume Development (Steps 1-3)
+1. **Input Layer**: Job postings + Master resume data
+2. **Processing Layer**: HAM-Z methodology transformation with cultural profile adaptation
+3. **Validation Layer**: Provenance hardening and credibility assessment
+4. **Output Layer**: Final, defensible resume ready for submission
+
+### Phase 2: Interview Preparation (Steps 4-6)
+5. **Assessment Layer**: HR-level candidate evaluation with scoring rubrics
+6. **Learning Layer**: Gap analysis and skill development planning
+7. **Practice Layer**: Customized interview question generation with strategic guidance
+
+### Phase 3: Application Finalization (Steps 7-8)
+8. **Communication Layer**: Strategic cover letter with requirements matching
+9. **Presentation Layer**: Professional document conversion for submission
+
+Each step in the pipeline has dedicated agents that maintain consistency and quality throughout the complete application process, from initial resume creation to final interview preparation.
