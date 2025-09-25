@@ -16,6 +16,11 @@ This is a resume optimization system that uses a three-step methodology to creat
   - `CV_Master_Resume_Guide_v3.md`: Complete HAM-Z methodology guide
   - `CV_Provenance_Hardening_Pass_Check_Prompt.md`: Provenance analysis framework
 
+- **Scoring_Rubrics/**: Contains assessment rubrics and scoring frameworks
+  - `jobscoringrubric.md`: Master template for job assessment scoring
+  - Dynamic rubrics: Job-specific rubrics created by `/assessjob` command
+  - Format: `Rubric_[Company]_[Role]_[Date].md` for each assessment
+
 - **OutputResumes/**: Generated resume drafts and analysis outputs
   - Step 1 drafts: Initial targeted resumes
   - Step 2 analyses: Provenance check reports
@@ -59,7 +64,8 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Required dependency for Step 5 functionality
 
 - `/assessjob <job-posting-file>`: Expert HR assessment of candidate vs job
-  - Loads scoring rubric from SourceMaterial/jobscoringrubric.md
+  - Creates dynamic job-specific scoring rubric from job posting
+  - Saves custom rubric to Scoring_Rubrics/ folder for reuse
   - Performs web research for domain expertise
   - Generates 100-point assessment with evidence
   - Provides hiring recommendations and interview strategy

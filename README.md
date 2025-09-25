@@ -19,40 +19,50 @@ The system employs a three-step process that ensures every claim is backed by ev
 - **Cultural Profiles**: Tailors resume style to regional expectations (Canadian, US, European, etc.)
 - **Risk Assessment**: Categorizes claims by defensibility (High/Medium/Low risk)
 - **Master Resume System**: Maintains comprehensive career inventory separate from targeted resumes
+- **Dynamic Job Scoring**: Creates custom assessment rubrics for each job posting
+- **Candidate Assessment**: Expert HR evaluation with domain-specific knowledge
 
 ## Directory Structure
 
 ```
 resumeoptimizer/
 ├── .claude/                           # Claude Code configuration
-│   ├── agents/                        # Specialized processing agents
+│   ├── agents/                        # Specialized processing agents (5 agents)
+│   │   ├── candidate-assessment.md    # HR assessment with domain expertise
 │   │   ├── step1-resume-draft.md      # Initial targeted resume creation
 │   │   ├── step2-provenance-check.md  # Enhanced credibility analysis
 │   │   ├── step3-final-resume.md      # Final hardened resume production
 │   │   └── step4-cover-letter.md      # Strategic cover letter generation
-│   ├── commands/                      # Slash command definitions
+│   ├── commands/                      # Slash command definitions (7 commands)
+│   │   ├── assessjob.md               # Candidate assessment with dynamic rubrics
 │   │   ├── buildresume.md             # Complete 3-step resume build
-│   │   ├── provenance.md              # Standalone provenance analysis
-│   │   ├── coverletter.md             # Cover letter generation
 │   │   ├── convert.md                 # Markdown to Word conversion
-│   │   └── install-pandoc.md          # Pandoc installation utility
+│   │   ├── coverletter.md             # Cover letter generation
+│   │   ├── install-pandoc.md          # Pandoc installation utility
+│   │   ├── prime.md                   # Load documentation into context
+│   │   └── provenance.md              # Standalone provenance analysis
 │   └── settings.local.json            # Local Claude Code settings
 ├── Job_Postings/                      # Target job descriptions
-│   └── *.md                           # Job postings in markdown format
+│   └── AltoJobPost.md                 # Sample job posting
 ├── OutputResumes/                     # Generated resumes and analysis
+│   ├── Assessment_*.md                # Candidate assessment reports
 │   ├── Step1_Draft_*.md               # Initial targeted drafts
 │   ├── Step2_Provenance_Analysis_*.md # Credibility analysis reports
 │   ├── Step3_Final_Resume_*.md        # Interview-ready final resumes
 │   ├── Step4_CoverLetter_*.md         # Strategic cover letters
-│   └── *.docx                         # Word format conversions (Step 5)
-├── ResumeSourceFolder/                # Master career inventory
-│   ├── Comprehensive_CV_MASTER_COPY_*.md        # Complete work history
+│   └── *.docx                         # Word format conversions
+├── ResumeSourceFolder/                # Master career inventory (2 files)
+│   ├── Comprehensive_CV_MASTER_COPY_v35.md       # Complete work history
 │   └── Comprehensive_CV_Technology_Capability.md # Technical skills inventory
-├── SourceMaterial/                    # Methodology documentation
-│   └── .gitkeep                       # (Directory reserved for guides)
+├── Scoring_Rubrics/                   # Assessment rubrics and frameworks
+│   ├── jobscoringrubric.md           # Master template for assessments
+│   └── Rubric_*_*_*.md               # Dynamic job-specific rubrics
+├── SourceMaterial/                    # Reserved for methodology guides
+│   └── .gitkeep                       # Placeholder (guides stored elsewhere)
 ├── CLAUDE.md                          # System instructions for Claude Code
+├── README.md                          # This documentation
 ├── comprehensive_work_history_FAQ.md  # Master resume philosophy
-└── README.md                          # This documentation
+└── LICENSE                            # Repository license
 ```
 
 ## Quick Start
@@ -137,7 +147,18 @@ This executes all three steps automatically:
 - Verifies installation and conversion capabilities
 - Required for Step 5 document conversion functionality
 
-## The Five-Step Process
+### Candidate Assessment
+```
+/assessjob <job-description-file>
+```
+- Creates dynamic job-specific scoring rubric from job posting
+- Performs web research for domain expertise and industry standards
+- Generates comprehensive 100-point assessment with evidence mapping
+- Saves custom rubric to `Scoring_Rubrics/` for reuse and audit trail
+- Provides hiring recommendations, interview strategies, and gap analysis
+- Outputs both rubric and assessment report with full traceability
+
+## The Six-Step Process (Five Core + Assessment)
 
 ### Step 1: Initial Draft Creation
 - **Job Analysis**: Deep analysis of requirements, keywords, and cultural context
@@ -174,6 +195,16 @@ This executes all three steps automatically:
 - **Batch Processing**: Supports single files, patterns, or bulk conversion (`resume`, `coverletter`, `all`)
 - **Enterprise Ready**: Creates polished documents meeting corporate submission standards
 - **Output**: `[OriginalName].docx` for any converted markdown document
+
+### Step 6: Candidate Assessment (Optional - From Hiring Manager Perspective)
+- **Dynamic Rubric Creation**: Generates job-specific 100-point scoring framework from job posting
+- **Domain Knowledge Integration**: Performs web research for industry standards and role expectations
+- **Comprehensive Evaluation**: Maps candidate evidence to each job requirement systematically
+- **Risk Analysis**: Identifies gaps and provides mitigation strategies for hiring decisions
+- **Interview Strategy**: Recommends specific areas to probe and assessment approaches
+- **Outputs**:
+  - `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md` (custom scoring criteria)
+  - `OutputResumes/Assessment_[Company]_[Role]_[Date].md` (detailed evaluation report)
 
 ## HAM-Z™ Methodology
 
