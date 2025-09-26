@@ -70,6 +70,13 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Generates 100-point assessment with evidence
   - Provides hiring recommendations and interview strategy
 
+- `/comparejobs <assessment-file-1> <assessment-file-2> [assessment-file-3] [assessment-file-4]`: Compare multiple job assessments
+  - Analyzes 2-4 assessments from OutputResumes/ folder
+  - Provides strategic hiring insights and role prioritization
+  - Identifies consistent patterns and transferable skills
+  - Generates comprehensive comparison report with recommendations
+  - Supports career planning and negotiation positioning
+
 - `/briefing <assessment-report> <job-description> [gaps-only]`: Creates study guide briefing (Step 5)
   - Analyzes assessment to identify skill gaps and weaknesses
   - Researches current best practices and learning resources

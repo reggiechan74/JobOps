@@ -53,10 +53,11 @@ resumeoptimizer/
 │   │   ├── step2-provenance-check.md         # Enhanced credibility analysis
 │   │   ├── step3-final-resume.md             # Final hardened resume production
 │   │   └── step4-cover-letter.md             # Strategic cover letter generation
-│   ├── commands/                      # Slash command definitions (9 commands)
+│   ├── commands/                      # Slash command definitions (10 commands)
 │   │   ├── assessjob.md               # Candidate assessment with dynamic rubrics
 │   │   ├── briefing.md                # Interview preparation briefing
 │   │   ├── buildresume.md             # Complete 3-step resume build
+│   │   ├── comparejobs.md             # Multi-assessment comparison and analysis
 │   │   ├── convert.md                 # Markdown to Word conversion
 │   │   ├── coverletter.md             # Cover letter generation
 │   │   ├── install-pandoc.md          # Pandoc installation utility
@@ -74,6 +75,7 @@ resumeoptimizer/
 ├── OutputResumes/                     # Generated resumes and analysis
 │   ├── .gitkeep                       # Directory placeholder
 │   ├── Assessment_*.md                # Candidate assessment reports
+│   ├── Comparison_*.md                # Multi-job comparison analyses
 │   ├── Step1_Draft_*.md               # Initial targeted drafts
 │   ├── Step2_Provenance_Analysis_*.md # Credibility analysis reports
 │   ├── Step3_Final_Resume_*.md        # Interview-ready final resumes
@@ -119,7 +121,7 @@ resumeoptimizer/
 
 #### Implementation Guide
 
-**📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - a 75+ page ultra-detailed guide covering the complete methodology for building your career database.
+**📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - an ultra-detailed guide covering the complete methodology for building your career database.
 
 Place your comprehensive career inventory in `ResumeSourceFolder/`:
 - Complete work history with all projects and achievements using HAMZ-Extended framework
@@ -160,7 +162,14 @@ This executes the core resume development process:
 2. Performs provenance analysis
 3. Produces final hardened resume
 
-### 5. Prepare for Interview
+### 5. Compare Multiple Opportunities (If Applicable)
+
+**Compare assessments to prioritize opportunities:**
+```
+/comparejobs Assessment_Company1_Role1_Date.md Assessment_Company2_Role2_Date.md
+```
+
+### 6. Prepare for Interview
 
 **Create study guide to address gaps:**
 ```
@@ -172,7 +181,7 @@ This executes the core resume development process:
 /interviewprep OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md AltoJobPost.md
 ```
 
-### 6. Finalize Application (Optional)
+### 7. Finalize Application (Optional)
 
 **Generate strategic cover letter:**
 ```
@@ -252,6 +261,17 @@ This executes the core resume development process:
 - Saves custom rubric to `Scoring_Rubrics/` for reuse and audit trail
 - Provides hiring recommendations, interview strategies, and gap analysis
 - Outputs both rubric and assessment report with full traceability
+
+#### Multi-Job Comparison Analysis
+```
+/comparejobs <assessment-file-1> <assessment-file-2> [assessment-file-3] [assessment-file-4]
+```
+- Compare 2-4 assessment files from `OutputResumes/` folder for strategic insights
+- Analyzes performance patterns across different roles and companies
+- Provides role prioritization and optimal career strategy recommendations
+- Identifies transferable skills and consistent strengths/gaps across opportunities
+- Generates comprehensive comparison report with negotiation positioning advice
+- Supports strategic career planning and multi-offer decision making
 
 #### Gap Analysis Briefing
 ```
@@ -408,13 +428,33 @@ Output files follow this pattern:
 - Step 7: `Step4_CoverLetter_[Role]_[Company]_[Date].md`
 - Step 8: `[OriginalName].docx` (Word versions of any markdown document)
 
+## Example: Multi-Job Comparison Workflow
+
+When evaluating multiple opportunities simultaneously, use the comparison command to make strategic decisions:
+
+```bash
+# First, assess each opportunity individually
+/assessjob JLL_VP_Office_Leasing.md
+/assessjob Canerector_Vice_President_Real_Estate.md
+/assessjob CityOfToronto_SeniorDirector.md
+
+# Then compare assessments to identify best fit
+/comparejobs Assessment_JLL_VP_Office_Leasing_2025-09-25.md Assessment_Canerector_Vice_President_Real_Estate_2025-09-26.md Assessment_CityOfToronto_SeniorDirectorAssetManagement_2025-09-25.md
+```
+
+**Sample Output**:
+- **Strategic Rankings**: Which roles offer the best career advancement
+- **Score Comparison**: Detailed breakdown across all evaluation categories
+- **Negotiation Positioning**: Where you have strongest leverage for salary/terms
+- **Risk Analysis**: Which opportunities have highest probability of success
+- **Interview Strategy**: Tailored approaches for each opportunity
+
 ## Requirements
 
 - Claude Code CLI installed and configured
 - Master resume documents in markdown format
 - Job descriptions in markdown format
 - `pandoc` installed for Step 5 document conversion (optional)
-
 
 ## Support
 
