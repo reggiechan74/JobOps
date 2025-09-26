@@ -39,21 +39,29 @@ This theoretical foundation explains why the system starts with `/assessjob` rat
 - **Candidate Assessment**: Expert HR evaluation with domain-specific knowledge
 - **Interview Preparation**: Gap analysis briefings and customized question generation
 - **Strategic Coaching**: Comprehensive study guides with learning resources
+- **Distributed OSINT Intelligence**: Professional-grade company research with parallel specialized agents
 
 ## Directory Structure
 
 ```
 resumeoptimizer/
 ├── .claude/                           # Claude Code configuration
-│   ├── agents/                        # Specialized processing agents (7 agents)
+│   ├── agents/                        # Specialized processing agents (13 agents)
 │   │   ├── candidate-assessment.md           # HR assessment with domain expertise
 │   │   ├── interview-briefing.md             # Gap analysis and study guides
 │   │   ├── interview-question-generator.md   # Customized interview questions
+│   │   ├── osint-agent.md                    # Master OSINT orchestrator and unified analysis
+│   │   ├── osint-compensation.md             # Salary benchmarking and total rewards analysis
+│   │   ├── osint-corporate.md                # Corporate structure and financial intelligence
+│   │   ├── osint-culture.md                  # Employee sentiment and workplace culture
+│   │   ├── osint-leadership.md               # Executive backgrounds and leadership analysis
+│   │   ├── osint-legal.md                    # Litigation history and regulatory compliance
+│   │   ├── osint-market.md                   # Industry analysis and competitive positioning
 │   │   ├── step1-resume-draft.md             # Initial targeted resume creation
 │   │   ├── step2-provenance-check.md         # Enhanced credibility analysis
 │   │   ├── step3-final-resume.md             # Final hardened resume production
 │   │   └── step4-cover-letter.md             # Strategic cover letter generation
-│   ├── commands/                      # Slash command definitions (10 commands)
+│   ├── commands/                      # Slash command definitions (11 commands)
 │   │   ├── assessjob.md               # Candidate assessment with dynamic rubrics
 │   │   ├── briefing.md                # Interview preparation briefing
 │   │   ├── buildresume.md             # Complete 3-step resume build
@@ -62,11 +70,20 @@ resumeoptimizer/
 │   │   ├── coverletter.md             # Cover letter generation
 │   │   ├── install-pandoc.md          # Pandoc installation utility
 │   │   ├── interviewprep.md           # Customized interview questions
+│   │   ├── osint.md                   # Distributed OSINT intelligence orchestration
 │   │   ├── prime.md                   # Load documentation into context
 │   │   └── provenance.md              # Standalone provenance analysis
 │   └── settings.local.json            # Local Claude Code settings
 ├── Briefing_Notes/                    # Interview preparation materials
 │   └── .gitkeep                       # Directory placeholder
+├── Intelligence_Reports/              # OSINT intelligence reports with citations
+│   ├── [Company]_Corporate_Intelligence_[Date].md    # Corporate structure and financials
+│   ├── [Company]_Legal_Intelligence_[Date].md        # Litigation history and compliance
+│   ├── [Company]_Leadership_Intelligence_[Date].md   # Executive backgrounds and analysis
+│   ├── [Company]_Compensation_Intelligence_[Date].md # Salary benchmarking and total rewards
+│   ├── [Company]_Culture_Intelligence_[Date].md      # Employee sentiment and workplace culture
+│   ├── [Company]_Market_Intelligence_[Date].md       # Industry analysis and competitive positioning
+│   └── [Company]_Master_Intelligence_[Date].md       # Comprehensive integrated analysis
 ├── Job_Postings/                      # Target job descriptions
 │   ├── .gitkeep                       # Directory placeholder
 │   ├── AltoJobPost.md                 # Sample job posting
@@ -295,6 +312,72 @@ This executes the core resume development process:
 - Includes red flags to avoid and strength positioning strategies
 - Output saved to `Briefing_Notes/Interview_Prep_[Company]_[Role]_[Date].md`
 
+### Distributed OSINT Intelligence System
+
+#### Comprehensive Company Intelligence
+```
+/osint <company-name>
+```
+- **Professional-grade intelligence gathering** using distributed system of 6 specialized agents
+- **Parallel processing** for maximum efficiency and comprehensive coverage
+- **Master Intelligence Report** with integrated findings and strategic recommendations
+
+#### OSINT Agent Specializations:
+- **Corporate Intelligence** (osint-corporate): Company structure, financials, strategic positioning
+- **Legal Intelligence** (osint-legal): Litigation history, regulatory compliance, legal risks
+- **Leadership Intelligence** (osint-leadership): Executive backgrounds, leadership analysis
+- **Compensation Intelligence** (osint-compensation): Salary benchmarking, benefits, total rewards
+- **Culture Intelligence** (osint-culture): Employee sentiment, workplace culture analysis
+- **Market Intelligence** (osint-market): Industry analysis, competitive positioning
+
+#### Key Features:
+- **Multi-Jurisdictional Legal Research**: CanLII, PACER, BAILII, and international legal databases
+- **Comprehensive Compensation Analysis**: Glassdoor, Levels.fyi, PayScale, Blind, and equity analysis
+- **Employee Sentiment Tracking**: Anonymous forums, review platforms, and culture assessment
+- **Executive Background Verification**: Professional networks, board memberships, reputation analysis
+- **Industry Competitive Intelligence**: Market positioning, disruption risks, growth opportunities
+- **Corporate Financial Health**: Revenue trends, debt analysis, strategic partnerships
+- **Rigorous Source Attribution**: Every claim includes citations with URLs and reliability ratings
+- **Intelligence Classification**: All information marked as [VERIFIED], [INFERRED], [CALCULATED], or [ASSUMPTION]
+- **Confidence Indicators**: HIGH/MEDIUM/LOW confidence levels for all major findings
+- **Professional Citation Standards**: Numbered footnotes with detailed source information and access dates
+
+#### Use Cases:
+- **Pre-Interview Intelligence**: Comprehensive company research before job interviews
+- **Job Offer Evaluation**: Due diligence before accepting employment offers
+- **Negotiation Preparation**: Compensation benchmarking and leverage analysis
+- **Business Partnership Assessment**: Risk evaluation for strategic partnerships
+- **Investment Due Diligence**: Comprehensive company assessment for investment decisions
+- **Competitive Intelligence**: Market positioning and competitor analysis
+
+#### Intelligence Reporting Standards:
+All OSINT reports follow rigorous intelligence community standards with complete source attribution:
+
+- **Citation Requirements**: Every factual claim includes inline citations¹ with source URLs where available
+- **Information Classification System**:
+  - `[VERIFIED]` - Confirmed from primary sources with direct URLs and verification
+  - `[INFERRED]` - Logical conclusions drawn from available data with reasoning explained
+  - `[CALCULATED]` - Mathematical derivations from source data with methodology disclosed
+  - `[ASSUMPTION]` - Reasonable assumptions with stated reasoning and limitations
+- **Confidence Indicators**: All findings labeled as HIGH CONFIDENCE, MEDIUM CONFIDENCE, or LOW CONFIDENCE
+- **Source Quality Ratings**: Sources rated as (HIGH RELIABILITY), (MEDIUM RELIABILITY), or (LOW RELIABILITY)
+- **Professional Footnotes**: Numbered footnote system with complete source information, publication dates, and access dates
+- **Methodology Transparency**: Calculation methods, sampling limitations, and analytical frameworks disclosed
+- **Intelligence Gaps**: Explicit identification of information unavailable or requiring additional research
+
+#### Sample Intelligence Citation Format:
+```
+Company revenue of $2.5 billion¹ [VERIFIED - HIGH CONFIDENCE]
+Market position suggests strong competitive advantage² [INFERRED - MEDIUM CONFIDENCE]
+Employee productivity calculated at $425,000 per employee³ [CALCULATED - HIGH CONFIDENCE]
+Estimated growth rate of 15% based on industry standards⁴ [ASSUMPTION - LOW CONFIDENCE]
+
+¹ Example Corp, "2024 Annual Report", March 15, 2025, https://investor.example.com/annual-report-2024, (HIGH RELIABILITY) - Accessed September 26, 2025
+² TechAnalyst Weekly, "Market Analysis", Sept 10, 2025, https://techanalyst.com/analysis, (MEDIUM RELIABILITY) - Accessed September 26, 2025
+³ Calculation methodology: Revenue ($2.5B) ÷ Employees (5,882) = $425,000 per employee
+⁴ Industry benchmark source with stated assumptions and limitations
+```
+
 ## The Complete 8-Step Application Process
 
 ### Phase 1: Opportunity Assessment (Step 1)
@@ -428,7 +511,9 @@ Output files follow this pattern:
 - Step 7: `Step4_CoverLetter_[Role]_[Company]_[Date].md`
 - Step 8: `[OriginalName].docx` (Word versions of any markdown document)
 
-## Example: Multi-Job Comparison Workflow
+## Example Workflows
+
+### Multi-Job Comparison Workflow
 
 When evaluating multiple opportunities simultaneously, use the comparison command to make strategic decisions:
 
@@ -448,6 +533,37 @@ When evaluating multiple opportunities simultaneously, use the comparison comman
 - **Negotiation Positioning**: Where you have strongest leverage for salary/terms
 - **Risk Analysis**: Which opportunities have highest probability of success
 - **Interview Strategy**: Tailored approaches for each opportunity
+
+### Comprehensive Company Intelligence Workflow
+
+For thorough company research before interviews or major decisions:
+
+```bash
+# Comprehensive OSINT intelligence gathering
+/osint Canerector
+
+# Follow up with job-specific assessment
+/assessjob Canerector_Vice_President_Real_Estate.md
+
+# Create targeted resume if assessment is positive
+/buildresume Canerector_Vice_President_Real_Estate.md Canadian
+
+# Prepare for interview with study guide
+/briefing Assessment_Canerector_Vice_President_Real_Estate_2025-09-26.md Canerector_Vice_President_Real_Estate.md gaps-only
+```
+
+**OSINT Sample Output**:
+- **Master Intelligence Report**: Comprehensive analysis across all intelligence domains with integrated findings
+- **6 Specialized Intelligence Reports**: Individual detailed reports saved to `Intelligence_Reports/` folder:
+  - `[Company]_Corporate_Intelligence_[Date].md` - Financial health, strategic positioning with source citations
+  - `[Company]_Legal_Intelligence_[Date].md` - Litigation history with case citations and court database URLs
+  - `[Company]_Leadership_Intelligence_[Date].md` - Executive backgrounds with LinkedIn and interview sources
+  - `[Company]_Compensation_Intelligence_[Date].md` - Salary data with Glassdoor/Levels.fyi citations and sample sizes
+  - `[Company]_Culture_Intelligence_[Date].md` - Employee reviews with platform URLs and confidence ratings
+  - `[Company]_Market_Intelligence_[Date].md` - Industry analysis with market research report citations
+- **Enhanced Attribution**: Every claim includes citations, confidence levels, and source reliability ratings
+- **Professional Standards**: Intelligence community-level reporting with footnotes and methodology disclosure
+- **Strategic Recommendations**: Employment/investment/partnership guidance with complete evidence chain
 
 ## Requirements
 
