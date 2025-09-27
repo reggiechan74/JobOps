@@ -401,6 +401,54 @@ Job Posting: {{ARG1}}
 4. Consider recency of experience (weight recent more heavily)
 5. Account for career progression and growth trajectory
 
+## CRITICAL: EVIDENCE-BASED SCORING VERIFICATION FOR RUBRIC USERS
+
+When applying this rubric to assess candidates:
+
+### 1. Evidence Citation Requirement
+For every score above "Basic" (1 point), you MUST:
+- Quote specific CV text supporting the score
+- Identify exact CV section/line numbers
+- Distinguish between direct experience vs transferable skills
+- Verify claimed experience duration and recency
+
+### 2. Domain Specificity Verification
+NEVER assume domain equivalency without explicit evidence:
+- Different industries require different expertise (healthcare ≠ finance ≠ retail ≠ manufacturing)
+- Different functions require different skills (sales ≠ operations ≠ engineering ≠ marketing)
+- Different company sizes require different capabilities (startup ≠ enterprise ≠ mid-market)
+- Different asset/product types require specialized knowledge
+
+### 3. Experience Type Classification
+Before scoring, verify and classify experience as:
+- **Direct**: Exact same role/industry/function as job requirement
+- **Adjacent**: Related but different (specify differences)
+- **Transferable**: Different but applicable skills (justify transfer logic)
+- **Assumed**: No explicit evidence (score as "None" or "Basic" only)
+
+### 4. Cross-Reference Protocol
+Before scoring each section:
+- Ask: "Where exactly in the CV does this evidence appear?"
+- Verify: Does the evidence match the specific skill/experience requirement?
+- Challenge: What evidence contradicts a high score?
+- Validate: Are years of experience consistent with claimed expertise level?
+
+### 5. Quality Control Checklist
+□ Every score ≥2 has specific CV citation with line numbers
+□ Domain/industry experience explicitly verified (not inferred)
+□ Years of experience match claimed specialization level
+□ Leadership scope verified vs assumed
+□ Technical skills backed by specific project examples
+□ Achievement metrics directly quoted from CV
+□ No conflation of different industries/functions/company types
+
+### 6. Scoring Revision Protocol
+If evidence doesn't support initial score:
+- Immediately revise score downward to match actual evidence
+- Document the correction reasoning in assessment notes
+- Recalculate total score and recommendation level
+- Update executive summary to reflect corrected analysis
+
 ### Critical Factors:
 - Any "must-have" requirement scored below 3 may disqualify
 - Consider minimum acceptable scores for each category
