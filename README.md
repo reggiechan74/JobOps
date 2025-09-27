@@ -61,13 +61,15 @@ resumeoptimizer/
 │   │   ├── step2-provenance-check.md         # Enhanced credibility analysis
 │   │   ├── step3-final-resume.md             # Final hardened resume production
 │   │   └── step4-cover-letter.md             # Strategic cover letter generation
-│   ├── commands/                      # Slash command definitions (11 commands)
+│   ├── commands/                      # Slash command definitions (13 commands)
+│   │   ├── assesscandidate.md         # Assess candidate using pre-created rubric
 │   │   ├── assessjob.md               # Candidate assessment with dynamic rubrics
 │   │   ├── briefing.md                # Interview preparation briefing
 │   │   ├── buildresume.md             # Complete 3-step resume build
 │   │   ├── comparejobs.md             # Multi-assessment comparison and analysis
 │   │   ├── convert.md                 # Markdown to Word conversion
 │   │   ├── coverletter.md             # Cover letter generation
+│   │   ├── createrubric.md            # Create reusable scoring rubric only
 │   │   ├── install-pandoc.md          # Pandoc installation utility
 │   │   ├── interviewprep.md           # Customized interview questions
 │   │   ├── osint.md                   # Distributed OSINT intelligence orchestration
@@ -268,10 +270,29 @@ This executes the core resume development process:
 
 ### Interview Preparation Commands
 
-#### Candidate Assessment
+#### Modular Assessment Workflow
+```
+/createrubric <job-posting-file>
+```
+- **Creates reusable scoring rubric only** from job posting analysis
+- Performs web research for domain expertise and industry standards
+- Generates detailed 100-point scoring framework with granular criteria
+- Saves to `Scoring_Rubrics/` for consistent evaluation across candidates
+- Enables standardized assessment process for multiple applicants
+
+```
+/assesscandidate <rubric-file> <job-posting-file>
+```
+- **Assesses candidate using pre-created rubric** for consistent evaluation
+- Applies existing scoring criteria without modification for fairness
+- Maps candidate evidence to specific rubric requirements systematically
+- Maintains complete audit trail linking rubric criteria to assigned scores
+- Enables comparison across multiple candidates using same standards
+
 ```
 /assessjob <job-description-file>
 ```
+- **Complete assessment in one step** - creates rubric AND evaluates candidate
 - Creates dynamic job-specific scoring rubric from job posting
 - Performs web research for domain expertise and industry standards
 - Generates comprehensive 100-point assessment with evidence mapping
@@ -518,12 +539,22 @@ Output files follow this pattern:
 When evaluating multiple opportunities simultaneously, use the comparison command to make strategic decisions:
 
 ```bash
-# First, assess each opportunity individually
+# Option 1: Complete assessment workflow (rubric + assessment)
 /assessjob JLL_VP_Office_Leasing.md
 /assessjob Canerector_Vice_President_Real_Estate.md
 /assessjob CityOfToronto_SeniorDirector.md
 
-# Then compare assessments to identify best fit
+# Option 2: Modular assessment workflow (separate rubric creation)
+/createrubric JLL_VP_Office_Leasing.md
+/createrubric Canerector_Vice_President_Real_Estate.md
+/createrubric CityOfToronto_SeniorDirector.md
+
+# Then assess using pre-created rubrics for consistency
+/assesscandidate Rubric_JLL_VP_Office_Leasing_2025-09-27.md JLL_VP_Office_Leasing.md
+/assesscandidate Rubric_Canerector_Vice_President_Real_Estate_2025-09-27.md Canerector_Vice_President_Real_Estate.md
+/assesscandidate Rubric_CityOfToronto_SeniorDirector_2025-09-27.md CityOfToronto_SeniorDirector.md
+
+# Finally, compare assessments to identify best fit
 /comparejobs Assessment_JLL_VP_Office_Leasing_2025-09-25.md Assessment_Canerector_Vice_President_Real_Estate_2025-09-26.md Assessment_CityOfToronto_SeniorDirectorAssetManagement_2025-09-25.md
 ```
 

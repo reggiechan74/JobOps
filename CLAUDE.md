@@ -17,7 +17,8 @@ This is a resume optimization system that uses a three-step methodology to creat
   - `CV_Provenance_Hardening_Pass_Check_Prompt.md`: Provenance analysis framework
 
 - **Scoring_Rubrics/**: Contains assessment rubrics and scoring frameworks
-  - Dynamic rubrics: Job-specific rubrics created by `/assessjob` command with embedded detailed scoring framework
+  - Dynamic rubrics: Job-specific rubrics created by `/assessjob` or `/createrubric` commands with embedded detailed scoring framework
+  - Reusable rubrics: Created by `/createrubric` for consistent evaluation across multiple candidates
   - Format: `Rubric_[Company]_[Role]_[Date].md` for each assessment
 
 - **OutputResumes/**: Generated resume drafts and analysis outputs
@@ -63,7 +64,21 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Identifies credibility issues and evidence gaps
 
 ### Interview Preparation Workflow
-- `/assessjob <job-posting-file>`: Expert HR assessment of candidate vs job (Step 4)
+
+#### Modular Assessment Commands
+- `/createrubric <job-posting-file>`: Create reusable scoring rubric only
+  - Generates detailed job-specific 100-point scoring framework
+  - Performs web research for domain expertise and industry standards
+  - Saves to Scoring_Rubrics/ folder for consistent evaluation
+  - Enables standardized assessment across multiple candidates
+
+- `/assesscandidate <rubric-file> <job-posting-file>`: Assess using pre-created rubric
+  - Uses existing scoring rubric for consistent candidate evaluation
+  - Applies rubric criteria without modification for fairness
+  - Maps candidate evidence to specific rubric requirements
+  - Maintains complete audit trail and traceability
+
+- `/assessjob <job-posting-file>`: Complete assessment in one step (Step 4)
   - Creates dynamic job-specific scoring rubric from job posting
   - Saves custom rubric to Scoring_Rubrics/ folder for reuse
   - Performs web research for domain expertise
@@ -122,6 +137,10 @@ The repository includes specialized agents for each step:
 - `interview-briefing`: Creates comprehensive study guides for skill gaps and interview prep (Step 5)
 - `interview-question-generator`: Generates customized interview questions with answer strategies (Step 6)
 
+### Modular Assessment Agents
+- `general-purpose`: Used by `/createrubric` for rubric-only generation
+- `candidate-assessment`: Used by `/assesscandidate` for rubric-based evaluation
+
 ### Application Support Agents
 - `step4-cover-letter`: Strategic cover letter with requirements table (Step 7)
 - `step5-document-converter`: Markdown to Word DOCX conversion using pandoc (Step 8)
@@ -167,6 +186,19 @@ The system supports different cultural profiles for resume tailoring. When not s
 - Conservative language without superlatives
 
 ## Important Commands and Tools
+
+### Assessment Workflow Options
+
+#### Option 1: Complete Assessment (Traditional)
+```bash
+/assessjob JobPosting.md  # Creates rubric + performs assessment
+```
+
+#### Option 2: Modular Assessment (Recommended for Multiple Candidates)
+```bash
+/createrubric JobPosting.md  # Create reusable rubric once
+/assesscandidate Rubric_Company_Role_Date.md JobPosting.md  # Assess each candidate
+```
 
 ### Development Commands
 - No build/compile commands needed (markdown-based system)
