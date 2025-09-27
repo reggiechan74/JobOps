@@ -8,7 +8,7 @@
 - **Critical Success Factors:** Demonstrate learning agility, leverage domain expertise, show strategic thinking, address experience gaps proactively
 
 ### Strategic Context
-Based on your profile, the interview will likely focus on validating your exceptional Ontario infrastructure domain expertise while probing your readiness to bridge into traditional investment management. Your unique background (Hydro One + Metrolinx experience) is rare and valuable, but you'll need to demonstrate ability to learn investment fundamentals quickly.
+Based on your profile, the interview will likely focus on validating your exceptional Ontario infrastructure domain expertise while probing your readiness to bridge into traditional investment management. Your unique background ([Redacted] + [Redacted] experience) is rare and valuable, but you'll need to demonstrate ability to learn investment fundamentals quickly.
 
 ---
 
@@ -24,7 +24,7 @@ Based on your profile, the interview will likely focus on validating your except
 - Draw parallels to your property portfolio optimization experience (141% value increase vs 35% market)
 - Reference your understanding of risk-return profiles from infrastructure asset management
 - Show awareness of institutional investor requirements from your Crown corporation experience
-- **Example to reference:** "In my Hydro One role managing 224,000 acres across multiple tenure types, I developed risk frameworks for different asset categories - this analytical approach would transfer to investment strategy development"
+- **Example to reference:** "In my [Redacted] role managing 224,000 acres across multiple tenure types, I developed risk frameworks for different asset categories - this analytical approach would transfer to investment strategy development"
 
 **Potential Follow-ups:**
 1. "How would you balance public interest mandates with commercial return requirements?"
@@ -34,7 +34,7 @@ Based on your profile, the interview will likely focus on validating your except
 ---
 
 #### Question 2: Ontario Infrastructure Ecosystem (Technical/Experience)
-**Question:** "Given your experience with Hydro One and Metrolinx, how would you leverage your Ontario infrastructure network to identify investment opportunities and build relationships with potential co-investors?"
+**Question:** "Given your experience with [Redacted] and [Redacted], how would you leverage your Ontario infrastructure network to identify investment opportunities and build relationships with potential co-investors?"
 
 **Context:** This plays to your strongest differentiator. The interviewer wants to understand the practical value of your domain expertise for BOF's mandate.
 
@@ -53,7 +53,7 @@ Based on your profile, the interview will likely focus on validating your except
 ---
 
 #### Question 3: Technology and Innovation Leadership (Behavioral/Technical)
-**Question:** "You've demonstrated strong technology adoption capabilities, including AI integration at Hydro One. How would you modernize BOF's investment operations and what systems would you prioritize for implementation?"
+**Question:** "You've demonstrated strong technology adoption capabilities, including AI integration at [Redacted]. How would you modernize BOF's investment operations and what systems would you prioritize for implementation?"
 
 **Context:** This leverages your proven technology leadership while probing strategic thinking about institutional investment platforms.
 
@@ -77,11 +77,11 @@ Based on your profile, the interview will likely focus on validating your except
 **Context:** Critical for BOF role given diverse stakeholders (government, institutional investors, Indigenous communities). Your track record suggests strong capabilities here.
 
 **Recommended Approach:**
-- Use STAR format with specific example (Ontario Line property acquisition with 1,200 properties)
+- Use STAR format with specific example ([Redacted] property acquisition with 1,200 properties)
 - Demonstrate systematic approach to stakeholder analysis
 - Show ability to find win-win solutions
 - Emphasize communication and relationship-building skills
-- **Example to reference:** "During the Ontario Line acquisition involving 1,200 properties, I achieved 90% amicable settlements by developing comprehensive stakeholder mapping and tailored communication strategies"
+- **Example to reference:** "During the [Redacted] acquisition involving 1,200 properties, I achieved 90% amicable settlements by developing comprehensive stakeholder mapping and tailored communication strategies"
 
 **Potential Follow-ups:**
 1. "How would you handle a situation where government priorities conflict with investor returns?"
@@ -157,7 +157,7 @@ Based on your profile, the interview will likely focus on validating your except
 - Show understanding of institutional risk frameworks
 - Demonstrate analytical thinking about risk-return optimization
 - Connect to your Crown corporation regulatory experience
-- **Example to reference:** "Managing 224,000 acres across multiple tenure types at Hydro One required comprehensive risk frameworks for regulatory, environmental, and operational exposures - this experience directly informs investment risk assessment"
+- **Example to reference:** "Managing 224,000 acres across multiple tenure types at [Redacted] required comprehensive risk frameworks for regulatory, environmental, and operational exposures - this experience directly informs investment risk assessment"
 
 **Potential Follow-ups:**
 1. "How would you stress-test infrastructure investments against economic scenarios?"
@@ -176,7 +176,7 @@ Based on your profile, the interview will likely focus on validating your except
 - Reference experience navigating Crown corporation objectives
 - Demonstrate stakeholder management skills
 - Show ability to find creative solutions
-- **Example to reference:** "In my Metrolinx role, I regularly balanced public transit objectives with private property rights, achieving 90% amicable settlements through creative structuring"
+- **Example to reference:** "In my [Redacted] role, I regularly balanced public transit objectives with private property rights, achieving 90% amicable settlements through creative structuring"
 
 **Potential Follow-ups:**
 1. "How would you communicate investment decisions to government stakeholders?"
@@ -207,7 +207,7 @@ Based on your profile, the interview will likely focus on validating your except
 ### Quick Reference Sheet
 
 #### Top 3 Achievements to Emphasize
-1. **Ontario Infrastructure Domain Expertise**: Unique combination of Hydro One (224,000 acres) and Metrolinx (1,200 property acquisitions) experience
+1. **Ontario Infrastructure Domain Expertise**: Unique combination of [Redacted] (224,000 acres) and [Redacted] (1,200 property acquisitions) experience
 2. **Quantifiable Value Creation**: 141% portfolio value increase, 51% rent growth achievement, $800M Macau turnaround success
 3. **Technology Innovation Leadership**: VTS implementation with 50% efficiency gains, AI-powered process optimization, 90% adoption rates
 
@@ -221,8 +221,8 @@ Based on your profile, the interview will likely focus on validating your except
 #### Behavioral Examples to Prepare (STAR Format)
 1. **Leadership**: Leading VTS implementation across multi-office organization with 90% adoption rate
 2. **Problem-Solving**: $800M Macau office turnaround from 50% to 80% occupancy
-3. **Stakeholder Management**: Ontario Line property acquisition with 90% amicable settlements
-4. **Innovation**: AI-powered stakeholder analysis implementation at Hydro One
+3. **Stakeholder Management**: [Redacted] property acquisition with 90% amicable settlements
+4. **Innovation**: AI-powered stakeholder analysis implementation at [Redacted]
 5. **Value Creation**: Industrial portfolio optimization achieving 141% vs 35% market performance
 
 #### Strategic Positioning Points
@@ -234,7 +234,7 @@ Based on your profile, the interview will likely focus on validating your except
 ---
 
 ### Opening Statement (60-second pitch)
-"I bring a unique combination of deep Ontario infrastructure expertise and proven value creation capabilities to BOF's investment strategy role. My experience managing $1.5B+ in infrastructure assets across Hydro One's 224,000 acres and Metrolinx's major transit projects provides rare operational insight that most investment professionals lack. I've consistently delivered exceptional results - 141% portfolio value increase, 90% settlement success rates, and 50% process efficiency improvements through technology innovation. While I'm eager to develop traditional investment management expertise, my infrastructure domain knowledge and analytical capabilities position me to bridge the gap between operational excellence and investment strategy in ways that create unique value for BOF's mandate."
+"I bring a unique combination of deep Ontario infrastructure expertise and proven value creation capabilities to BOF's investment strategy role. My experience managing $1.5B+ in infrastructure assets across [Redacted]'s 224,000 acres and [Redacted]'s major transit projects provides rare operational insight that most investment professionals lack. I've consistently delivered exceptional results - 141% portfolio value increase, 90% settlement success rates, and 50% process efficiency improvements through technology innovation. While I'm eager to develop traditional investment management expertise, my infrastructure domain knowledge and analytical capabilities position me to bridge the gap between operational excellence and investment strategy in ways that create unique value for BOF's mandate."
 
 ### Closing Statement
 "This conversation reinforces my enthusiasm for BOF's mission and this role. My infrastructure expertise combined with proven analytical capabilities and technology leadership creates a unique profile for modernizing investment operations while maintaining institutional discipline. I'm excited about the learning opportunity in traditional investment management and confident my track record of successful transitions, coupled with my domain expertise, will enable me to contribute meaningfully to BOF's growth objectives. I'm particularly drawn to the opportunity to attract institutional capital for Ontario's critical infrastructure needs - it directly connects my operational experience with strategic impact."
@@ -253,7 +253,7 @@ Dear [Interviewer Name],
 
 Thank you for the engaging discussion about BOF's investment strategy role. I'm even more excited about the opportunity to bring my Ontario infrastructure expertise to support BOF's mandate of attracting institutional capital for critical infrastructure projects.
 
-Our conversation about [specific topic discussed] reinforced how my operational background with Hydro One and Metrolinx can provide unique insights for investment strategy development. I'm particularly interested in [reference specific opportunity or challenge discussed] and how my experience with [relevant example] could contribute to BOF's objectives.
+Our conversation about [specific topic discussed] reinforced how my operational background with [Redacted] and [Redacted] can provide unique insights for investment strategy development. I'm particularly interested in [reference specific opportunity or challenge discussed] and how my experience with [relevant example] could contribute to BOF's objectives.
 
 I look forward to the next steps in the process and appreciate your consideration.
 

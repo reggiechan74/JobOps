@@ -18,7 +18,7 @@ Custom rubric created specifically for Elevation Capital VP Land Development rol
 **Required Skills (15 points total) - As Defined in Job Posting:**
 - **Design-Build Project Management**: 1/3 - Basic: Limited design-build experience through Artis condo conversion project (2145-2155 Dunwin Drive), but lacks extensive multi-phase development leadership
 - **Construction/Field Operations Management**: 0/3 - None: No demonstrated field construction or GC operations experience; background is in asset management and property acquisition
-- **Infrastructure Development**: 2/3 - Proficient: Strong infrastructure experience through Hydro One corridor management and Metrolinx transit projects, but focused on linear infrastructure rather than site development
+- **Infrastructure Development**: 2/3 - Proficient: Strong infrastructure experience through [Redacted] corridor management and [Redacted] transit projects, but focused on linear infrastructure rather than site development
 - **Multi-Jurisdictional Project Coordination**: 2/3 - Proficient: Demonstrated through international experience (Hong Kong, Asia Pacific) and multi-province work (ON, BC), but limited to real estate transactions vs. construction projects
 - **High-Net-Worth Client Management**: 1/3 - Basic: Some institutional client experience and UHNWI inferential experience through luxury condo development, but no direct UHNWI development client management
 
@@ -46,9 +46,9 @@ Custom rubric created specifically for Elevation Capital VP Land Development rol
 
 **Primary Duties Match (12 points):**
 - **Multi-Phase Project Execution**: 1/3 - Basic: Limited to single condo conversion project, no extensive multi-phase development portfolio
-- **Team Building & Management**: 2/3 - Proficient: Demonstrated team leadership at Artis (mentored 4+ analysts) and Metrolinx (managed 10+ property professionals)
-- **Infrastructure Coordination**: 2/3 - Proficient: Strong through Hydro One corridor management and utility coordination, though focused on existing infrastructure
-- **Stakeholder Interface & Budget Management**: 2/3 - Proficient: Strong stakeholder management through Metrolinx expropriations and institutional client relationships, budget management demonstrated
+- **Team Building & Management**: 2/3 - Proficient: Demonstrated team leadership at Artis (mentored 4+ analysts) and [Redacted] (managed 10+ property professionals)
+- **Infrastructure Coordination**: 2/3 - Proficient: Strong through [Redacted] corridor management and utility coordination, though focused on existing infrastructure
+- **Stakeholder Interface & Budget Management**: 2/3 - Proficient: Strong stakeholder management through [Redacted] expropriations and institutional client relationships, budget management demonstrated
 
 **Scope & Complexity (8 points):**
 - Team Size/Budget: 2/4 - Led teams but not at development project scale; managed portfolios but not development budgets
@@ -87,7 +87,7 @@ Custom rubric created specifically for Elevation Capital VP Land Development rol
 
 ### Strengths
 - **Exceptional Real Estate Expertise**: 20+ years institutional real estate experience with $1.5B+ portfolio management
-- **Infrastructure Knowledge**: Deep understanding of corridor management, utility coordination, and complex land rights through Hydro One and Metrolinx roles
+- **Infrastructure Knowledge**: Deep understanding of corridor management, utility coordination, and complex land rights through [Redacted] and [Redacted] roles
 - **Analytical Excellence**: Advanced financial modeling, quantitative analysis, and sophisticated pricing strategies
 - **Technology Leadership**: Early adopter and implementer of enterprise systems (VTS, Argus, AI tools) with proven adoption success
 - **Project Management**: Demonstrated ability to manage complex, multi-stakeholder projects with regulatory compliance
@@ -131,16 +131,16 @@ Custom rubric created specifically for Elevation Capital VP Land Development rol
 |---|---|---|---|
 | Design-Build Project Management | Limited - Artis condo conversion only | 1 project, 2018-2021 | 1/3 |
 | Construction/Field Operations | None demonstrated | No field experience | 0/3 |
-| Infrastructure Development | Strong - Hydro One, Metrolinx | Linear infrastructure focus | 2/3 |
+| Infrastructure Development | Strong - [Redacted], [Redacted] | Linear infrastructure focus | 2/3 |
 | Multi-Jurisdictional Coordination | Proficient - International, multi-province | Real estate transactions | 2/3 |
 | UHNWI Client Management | Limited - Inferred only | No direct evidence | 1/3 |
 
 ### Key Achievements Relevant to Role
 1. **Artis Condo Conversion (2018-2021)**: Led $5M office-to-condo conversion with full consultant team management, 97.5% sales success
 2. **VTS Implementation**: Led enterprise digital transformation achieving 90% adoption and 50% process time reduction
-3. **Hydro One Revenue Optimization**: Identified $5M+ revenue recovery through strategic analysis and stakeholder management
+3. **[Redacted] Revenue Optimization**: Identified $5M+ revenue recovery through strategic analysis and stakeholder management
 4. **Portfolio Performance**: Achieved 141% industrial portfolio value increase and 51% rent growth through strategic initiatives
-5. **Metrolinx Acquisition Leadership**: Managed 1,200+ property acquisition program with 90% amicable settlement rate
+5. **[Redacted] Acquisition Leadership**: Managed 1,200+ property acquisition program with 90% amicable settlement rate
 
 ## Interview Strategy
 

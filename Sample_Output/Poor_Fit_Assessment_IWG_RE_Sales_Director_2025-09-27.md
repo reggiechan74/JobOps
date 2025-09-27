@@ -54,7 +54,7 @@ Assessment performed using custom rubric created from IWG Real Estate Sales Dire
 
 **Scope & Complexity (8 points):**
 - Team Size/Budget: 1/4 - Individual contributor experience primarily, though managed teams in consulting context
-- Project Complexity: 3/4 - Highly complex projects (HK$800M Macau, Ontario Line acquisitions) but in consulting rather than sales context
+- Project Complexity: 3/4 - Highly complex projects (HK$800M Macau, [Redacted] acquisitions) but in consulting rather than sales context
 
 #### 4. Achievements & Impact: 15/15
 

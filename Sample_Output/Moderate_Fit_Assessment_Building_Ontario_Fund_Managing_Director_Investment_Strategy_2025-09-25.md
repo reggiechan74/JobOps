@@ -38,7 +38,7 @@ Reggie Chan presents as a highly experienced real estate and infrastructure prof
 
 • **Advanced Technology Integration**: Pioneer in AI adoption for institutional workflows, led enterprise system implementations (VTS, Yardi, Argus), achieved 90% adoption rates with 50% process time reduction
 
-• **Ontario Infrastructure Experience**: Direct experience with Hydro One (224,000 acres across multiple tenure types) and Metrolinx (major transit corridor acquisitions), understanding of Crown corporation operations and regulatory framework
+• **Ontario Infrastructure Experience**: Direct experience with [Redacted] (224,000 acres across multiple tenure types) and [Redacted] (major transit corridor acquisitions), understanding of Crown corporation operations and regulatory framework
 
 • **Analytical & Process Excellence**: Advanced Excel modeling (20+ years), published thought leadership on innovative analysis methodologies, developed comprehensive frameworks adopted organization-wide
 
@@ -64,7 +64,7 @@ Reggie Chan presents as a highly experienced real estate and infrastructure prof
 |---------------|----------|-------|---------|-------|
 | **Investment Management** | Asset management, not investment management | 20+ | Current | 2/5 |
 | **Portfolio Construction** | Property portfolio optimization, not financial portfolio | 15+ | Current | 1/5 |
-| **Ontario Financing Ecosystem** | Hydro One, Metrolinx, Crown corporation experience | 3 | Current | 4/4 |
+| **Ontario Financing Ecosystem** | [Redacted], [Redacted], Crown corporation experience | 3 | Current | 4/4 |
 | **Infrastructure Knowledge** | Transit corridors, utility right-of-way, P3 projects | 20+ | Current | 3/3 |
 | **Analytics & Risk Management** | Advanced Excel, Argus DCF, some risk frameworks | 20+ | Current | 2/3 |
 | **Investment Systems** | Argus, VTS, Yardi - property focused, not investment focused | 15+ | 2021 | 1/3 |
@@ -74,11 +74,11 @@ Reggie Chan presents as a highly experienced real estate and infrastructure prof
 
 ## Key Achievements Relevant to Role
 
-1. **Infrastructure Portfolio Optimization**: Managed 224,000 acres across multiple tenure types at Hydro One, developed comprehensive encroachment management strategy targeting $5M+ revenue recovery, created enterprise cost optimization framework
+1. **Infrastructure Portfolio Optimization**: Managed 224,000 acres across multiple tenure types at [Redacted], developed comprehensive encroachment management strategy targeting $5M+ revenue recovery, created enterprise cost optimization framework
 
 2. **Technology-Driven Transformation**: Led VTS implementation achieving 50% reduction in processing time, 90% adoption rate, and "Rookie of the Year" recognition; pioneered AI-powered workflows reducing manual effort by 80%
 
-3. **Complex Stakeholder Management**: Led property acquisition for Ontario Line (1,200 properties) and Eglinton Crosstown West Extension, achieved 90% amicable settlement rate, navigated multi-jurisdictional regulatory environments
+3. **Complex Stakeholder Management**: Led property acquisition for [Redacted] (1,200 properties) and [Redacted], achieved 90% amicable settlement rate, navigated multi-jurisdictional regulatory environments
 
 4. **Value Creation Excellence**: Increased industrial portfolio value by 141% through strategic asset management, achieved market-leading rental rates, completed successful $5M condo conversion project
 
@@ -103,7 +103,7 @@ Reggie Chan presents as a highly experienced real estate and infrastructure prof
 **Candidate vs Typical Applicants**: Most Managing Director candidates come from pension funds, investment banks, or institutional asset managers with traditional investment management backgrounds. Reggie's asset management expertise is complementary but not directly competitive.
 
 **Unique Differentiators**:
-- Deep Ontario infrastructure domain knowledge (rare combination of Hydro One and Metrolinx experience)
+- Deep Ontario infrastructure domain knowledge (rare combination of [Redacted] and [Redacted] experience)
 - Technology innovation leadership in traditionally conservative sector
 - Proven ability to extract value from underperforming assets
 - Experience bridging public and private sector requirements
@@ -167,7 +167,7 @@ Reggie Chan presents as a highly experienced real estate and infrastructure prof
 Reggie Chan represents a unique profile that could bring transformational value to BOF but requires careful consideration and structured development:
 
 **Case For Hiring:**
-- Exceptional domain expertise in Ontario infrastructure ecosystem (Hydro One, Metrolinx experience rare and directly relevant)
+- Exceptional domain expertise in Ontario infrastructure ecosystem ([Redacted], [Redacted] experience rare and directly relevant)
 - Proven value creation track record with quantifiable results exceeding $1B in portfolio optimization
 - Technology leadership that could modernize BOF operations and create competitive advantage
 - Strong analytical capabilities with advanced modeling skills and framework development experience
@@ -216,14 +216,14 @@ BOF should consider Reggie if they value domain transformation over traditional 
 
 ### A. Complete Work History Timeline
 
-**2025-Present**: Hydro One - Senior Project Consultant (Crown Corporation Experience)
+**2025-Present**: [Redacted] - Senior Project Consultant (Crown Corporation Experience)
 - Enterprise cost optimization targeting $22.3M recurring revenue
 - 224,000 acres land portfolio management across multiple tenure types
 - AI-powered stakeholder analysis and strategic framework development
 
-**2022-2024**: Metrolinx - Senior Consultant (Major Transit Projects)
-- Ontario Line property acquisition (1,200 properties)
-- Eglinton Crosstown West Extension management
+**2022-2024**: [Redacted] - Senior Consultant (Major Transit Projects)
+- [Redacted] property acquisition (1,200 properties)
+- [Redacted] management
 - 90% amicable settlement rate on complex expropriations
 
 **2012-2021**: Artis REIT - Vice President (C$1.5B Portfolio)
@@ -260,7 +260,7 @@ BOF should consider Reggie if they value domain transformation over traditional 
 - **Innovation Strength**: Proven ability to rapidly adopt and implement new technology platforms
 
 **Ontario Infrastructure Domain Expertise:**
-- **Verified**: Direct experience with two major Crown corporations (Hydro One, Metrolinx)
+- **Verified**: Direct experience with two major Crown corporations ([Redacted], [Redacted])
 - **Scope**: 224,000+ acres management, major transit projects, complex regulatory navigation
 - **Relationships**: Established network within Ontario infrastructure ecosystem
 - **Value**: Rare combination of operational knowledge and strategic perspective

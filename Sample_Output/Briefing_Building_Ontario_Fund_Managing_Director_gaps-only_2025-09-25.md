@@ -260,7 +260,7 @@ Portfolio Construction Steps:
 5. Co-investment opportunity structuring
 
 ### Mitigation Strategy
-"My experience managing complex stakeholder relationships with Crown corporations and multi-jurisdictional partners translates directly to institutional investor management. At Hydro One and Metrolinx, I successfully navigated relationships with government stakeholders, Indigenous communities, and private partners - skills directly applicable to managing sophisticated institutional LPs."
+"My experience managing complex stakeholder relationships with Crown corporations and multi-jurisdictional partners translates directly to institutional investor management. At [Redacted] and [Redacted], I successfully navigated relationships with government stakeholders, Indigenous communities, and private partners - skills directly applicable to managing sophisticated institutional LPs."
 
 ---
 
@@ -491,7 +491,7 @@ When questioned about gaps, immediately pivot to related strengths:
 ### Confidence Builders
 
 **Your Unique Value Proposition:**
-- Only candidate with both Hydro One and Metrolinx experience
+- Only candidate with both [Redacted] and [Redacted] experience
 - Proven ability to generate alpha (141% vs. 35% market return)
 - Technology innovator in conservative industry
 - Bridge between operations and investment strategy
@@ -517,8 +517,8 @@ When questioned about gaps, immediately pivot to related strengths:
 
 ### Infrastructure Expertise Showcase
 - [ ] Prepare 5 specific Ontario infrastructure examples
-- [ ] Ready Hydro One value creation story
-- [ ] Metrolinx stakeholder management example
+- [ ] Ready [Redacted] value creation story
+- [ ] [Redacted] stakeholder management example
 - [ ] Technology transformation case study
 - [ ] Quantified achievements summary
 

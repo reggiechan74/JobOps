@@ -20,11 +20,11 @@ Custom rubric created from Canerector job posting, focusing on industrial real e
 - **Leasing Operations & Strategy** (3/3): Expert level - Completed 700+ lease transactions totaling 4M sq ft, achieved 51% rent growth vs competitors' 26%, developed sophisticated competitive pricing models
 - **Acquisitions & Dispositions** (3/3): Expert level - Led major acquisitions including $800M Macau turnaround, extensive due diligence across multiple markets, proven transaction leadership
 - **Financial Analysis & Modeling** (3/3): Expert level - Advanced Excel modeling (20+ years), Argus DCF expertise, published thought leadership on innovative lease analysis, CFA designation
-- **Stakeholder Management & Collaboration** (3/3): Expert level - Regular board presentations, complex municipal negotiations (Metrolinx), extensive broker networks, proven senior executive engagement
+- **Stakeholder Management & Collaboration** (3/3): Expert level - Regular board presentations, complex municipal negotiations ([Redacted]), extensive broker networks, proven senior executive engagement
 
 **Preferred Skills (10 points total) - Nice-to-Haves from Posting:**
 - **Property Development & Construction** (2/2): Strong - Led $5M condo conversion at Dunwin Drive, construction project management certification, extensive renovation experience
-- **Public Sector Experience** (2/2): Strong - 2+ years Metrolinx (1,200 property acquisitions), regulatory compliance expertise, government relationship management
+- **Public Sector Experience** (2/2): Strong - 2+ years [Redacted] (1,200 property acquisitions), regulatory compliance expertise, government relationship management
 - **Multi-Jurisdictional Experience** (1/2): Basic - Canada focus with Hong Kong/Asia experience, limited US exposure
 - **Technology Implementation** (2/2): Strong - Led VTS enterprise implementation (90% adoption), Argus DCF rollouts, AI-powered process innovations
 - **Bilingual Capabilities** (0/2): None - English only, no French capability demonstrated
