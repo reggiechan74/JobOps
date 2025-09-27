@@ -561,10 +561,13 @@ Create assessment report using the dynamic rubric scores:
 [How candidate compares to typical applicants based on market research]
 
 ## Hiring Recommendation
-[ ] Strongly Recommend - Exceptional fit
-[ ] Recommend - Strong candidate with minor gaps
-[ ] Consider - Meets requirements with development needs
-[ ] Not Recommended - Significant gaps
+
+[ ] **90-100**: Exceptional candidate - exceeds requirements significantly
+[ ] **80-89**: Excellent candidate - strong match, minor gaps if any
+[ ] **70-79**: Good candidate - solid match, some development areas
+[ ] **60-69**: Potential candidate - meets core requirements, notable gaps
+[ ] **50-59**: Borderline candidate - significant gaps, consider if high potential
+[ ] **Below 50**: Not recommended - major gaps in critical areas
 
 ### Justification
 [Evidence-based reasoning]
