@@ -1,0 +1,23 @@
+{
+  "name": "resumeoptimizer",
+  "version": "1.0.0",
+  "description": "Resume optimization system with Playwright MCP server for browser automation",
+  "scripts": {
+    "install-browsers": "npx playwright install chrome",
+    "install-all": "npm install && npm run install-browsers"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server-playwright": "^0.6.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2"
+  },
+  "keywords": [
+    "resume",
+    "optimization",
+    "playwright",
+    "mcp"
+  ],
+  "author": "",
+  "license": "ISC"
+}

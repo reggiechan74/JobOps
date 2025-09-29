@@ -29,6 +29,7 @@ This is a resume optimization system that uses a three-step methodology to creat
 - **Job_Postings/**: Target job descriptions in markdown format
   - Store job postings as `.md` files for processing
   - Use descriptive filenames (e.g., `CompanyName_Role_Date.md`)
+  - Search results automatically saved as `SearchResults_[Query]_[Date].md` with complete job descriptions
 
 - **Briefing_Notes/**: Interview preparation and skill gap study guides
   - Gap analysis briefings: Focus on addressing identified weaknesses
@@ -117,6 +118,20 @@ This is a resume optimization system that uses a three-step methodology to creat
   - Supports patterns: `resume`, `coverletter`, `all`, file paths
   - Preserves formatting and creates submission-ready documents
 
+### Job Search & Intelligence
+- `/searchjobs <search-query> [location] [--company=name] [--save] [--limit=N]`: Search hiring.cafe for job postings
+  - Two-phase hybrid search: Fast API search + Playwright scraping for complete job descriptions
+  - Search by keywords, location, company name
+  - Optional flags: --company=name, --save, --limit=N (default: 20, max recommended: 50)
+  - Returns structured job listings with complete verbatim job descriptions
+  - Automatically saves results to Job_Postings/ folder when --save flag provided
+  - Format: `SearchResults_[Query]_[Date].md` with full market analysis
+
+- `/osint <company-name>`: Comprehensive company intelligence gathering
+  - Deploys 6 specialized OSINT agents in parallel
+  - Analyzes corporate structure, legal, leadership, compensation, culture, market
+  - Generates Master Intelligence Report for strategic decision-making
+
 ### System Setup
 - `/install-pandoc [force]`: Installs pandoc for document conversion
   - Auto-detects operating system and package manager
@@ -144,6 +159,20 @@ The repository includes specialized agents for each step:
 ### Application Support Agents
 - `step4-cover-letter`: Strategic cover letter with requirements table (Step 7)
 - `step5-document-converter`: Markdown to Word DOCX conversion using pandoc (Step 8)
+
+### Job Search & Intelligence Agents
+- `hiringcafe-search`: Phase 1 API search agent - fast job discovery with structured metadata
+  - Searches hiring.cafe API using keyword, location, and company filters
+  - Returns job metadata: title, company, location, category, seniority, apply URLs
+  - Provides summary statistics and market insights
+  - Phase 2 (main session) uses Playwright MCP to scrape complete verbatim job descriptions
+- `osint-agent`: Orchestrates comprehensive company intelligence gathering operations
+- `osint-corporate`: Corporate structure, financials, and strategic positioning analysis
+- `osint-legal`: Litigation history, regulatory compliance, and legal risk assessment
+- `osint-leadership`: Executive backgrounds and leadership analysis
+- `osint-compensation`: Salary benchmarking and total rewards intelligence
+- `osint-culture`: Employee sentiment and workplace culture analysis
+- `osint-market`: Industry analysis and competitive landscape intelligence
 
 ### Legacy Agents
 - `resume-tailoring-specialist`: Deprecated orchestrator (use 8-step process instead)

@@ -33,444 +33,270 @@ This theoretical foundation explains why the system starts with `/assessjob` rat
 - **HAM-Z™ Methodology**: Combines Hard Skills, Actions, Metrics, and Structure with XYZ narrative format
 - **Provenance Hardening**: Comprehensive credibility analysis to identify and fix evidence gaps
 - **Cultural Profiles**: Tailors resume style to regional expectations (Canadian, US, European, etc.)
-- **Risk Assessment**: Categorizes claims by defensibility (High/Medium/Low risk)
 - **Master Resume System**: Maintains comprehensive career inventory separate from targeted resumes
 - **Dynamic Job Scoring**: Creates custom assessment rubrics for each job posting
-- **Candidate Assessment**: Expert HR evaluation with domain-specific knowledge
 - **Interview Preparation**: Gap analysis briefings and customized question generation
-- **Strategic Coaching**: Comprehensive study guides with learning resources
 - **Distributed OSINT Intelligence**: Professional-grade company research with parallel specialized agents
+- **Hybrid Job Search**: API search combined with Playwright scraping for complete job descriptions
 
 ## Directory Structure
 
 ```
 resumeoptimizer/
 ├── .claude/                           # Claude Code configuration
-│   ├── agents/                        # Specialized processing agents (13 agents)
-│   │   ├── candidate-assessment.md           # HR assessment with domain expertise
-│   │   ├── interview-briefing.md             # Gap analysis and study guides
-│   │   ├── interview-question-generator.md   # Customized interview questions
-│   │   ├── osint-agent.md                    # Master OSINT orchestrator and unified analysis
-│   │   ├── osint-compensation.md             # Salary benchmarking and total rewards analysis
-│   │   ├── osint-corporate.md                # Corporate structure and financial intelligence
-│   │   ├── osint-culture.md                  # Employee sentiment and workplace culture
-│   │   ├── osint-leadership.md               # Executive backgrounds and leadership analysis
-│   │   ├── osint-legal.md                    # Litigation history and regulatory compliance
-│   │   ├── osint-market.md                   # Industry analysis and competitive positioning
-│   │   ├── step1-resume-draft.md             # Initial targeted resume creation
-│   │   ├── step2-provenance-check.md         # Enhanced credibility analysis
-│   │   ├── step3-final-resume.md             # Final hardened resume production
-│   │   └── step4-cover-letter.md             # Strategic cover letter generation
-│   ├── commands/                      # Slash command definitions (13 commands)
-│   │   ├── assesscandidate.md         # Assess candidate using pre-created rubric
-│   │   ├── assessjob.md               # Candidate assessment with dynamic rubrics
-│   │   ├── briefing.md                # Interview preparation briefing
-│   │   ├── buildresume.md             # Complete 3-step resume build
-│   │   ├── comparejobs.md             # Multi-assessment comparison and analysis
-│   │   ├── convert.md                 # Markdown to Word conversion
-│   │   ├── coverletter.md             # Cover letter generation
-│   │   ├── createrubric.md            # Create reusable scoring rubric only
-│   │   ├── install-pandoc.md          # Pandoc installation utility
-│   │   ├── interviewprep.md           # Customized interview questions
-│   │   ├── osint.md                   # Distributed OSINT intelligence orchestration
-│   │   ├── prime.md                   # Load documentation into context
-│   │   └── provenance.md              # Standalone provenance analysis
+│   ├── agents/                        # 15 specialized processing agents
+│   │   ├── candidate-assessment.md    # HR-level job fit assessment
+│   │   ├── hiringcafe-search.md      # Job search via hiring.cafe API
+│   │   ├── interview-briefing.md     # Study guide and gap analysis
+│   │   ├── interview-question-generator.md # Custom interview questions
+│   │   ├── osint-agent.md            # Master OSINT orchestrator
+│   │   ├── osint-compensation.md     # Salary and benefits intelligence
+│   │   ├── osint-corporate.md        # Company structure and financials
+│   │   ├── osint-culture.md          # Workplace culture analysis
+│   │   ├── osint-leadership.md       # Executive background checks
+│   │   ├── osint-legal.md            # Litigation and compliance
+│   │   ├── osint-market.md           # Industry and competition
+│   │   ├── step1-resume-draft.md     # Initial tailored resume
+│   │   ├── step2-provenance-check.md # Credibility verification
+│   │   ├── step3-final-resume.md     # Hardened final resume
+│   │   └── step4-cover-letter.md     # Strategic cover letter
+│   ├── commands/                      # 14 slash command definitions
+│   │   ├── assesscandidate.md        # /assesscandidate - Use pre-created rubric
+│   │   ├── assessjob.md              # /assessjob - Complete assessment
+│   │   ├── briefing.md               # /briefing - Interview prep guide
+│   │   ├── buildresume.md            # /buildresume - 3-step resume process
+│   │   ├── comparejobs.md            # /comparejobs - Multi-job analysis
+│   │   ├── convert.md                # /convert - Markdown to DOCX
+│   │   ├── coverletter.md            # /coverletter - Generate letter
+│   │   ├── createrubric.md           # /createrubric - Rubric only
+│   │   ├── install-pandoc.md         # /install-pandoc - Setup converter
+│   │   ├── interviewprep.md          # /interviewprep - Question generator
+│   │   ├── osint.md                  # /osint - Company intelligence
+│   │   ├── prime.md                  # /prime - System primer
+│   │   ├── provenance.md             # /provenance - Standalone check
+│   │   └── searchjobs.md             # /searchjobs - hiring.cafe search
 │   └── settings.local.json            # Local Claude Code settings
+├── .playwright-mcp/                   # Playwright browser automation cache
 ├── Briefing_Notes/                    # Interview preparation materials
-│   └── .gitkeep                       # Directory placeholder
-├── Intelligence_Reports/              # OSINT intelligence reports with citations
-│   ├── [Company]_Corporate_Intelligence_[Date].md    # Corporate structure and financials
-│   ├── [Company]_Legal_Intelligence_[Date].md        # Litigation history and compliance
-│   ├── [Company]_Leadership_Intelligence_[Date].md   # Executive backgrounds and analysis
-│   ├── [Company]_Compensation_Intelligence_[Date].md # Salary benchmarking and total rewards
-│   ├── [Company]_Culture_Intelligence_[Date].md      # Employee sentiment and workplace culture
-│   ├── [Company]_Market_Intelligence_[Date].md       # Industry analysis and competitive positioning
-│   └── [Company]_Master_Intelligence_[Date].md       # Comprehensive integrated analysis
-├── Job_Postings/                      # Target job descriptions
-│   ├── .gitkeep                       # Directory placeholder
-│   ├── AltoJobPost.md                 # Sample job posting
-│   ├── City_of_Toronto_Director.md    # City of Toronto role
-│   └── JLL_VP_Office_Leasing.md       # JLL VP position
-├── OutputResumes/                     # Generated resumes and analysis
-│   ├── .gitkeep                       # Directory placeholder
-│   ├── Assessment_*.md                # Candidate assessment reports
-│   ├── Comparison_*.md                # Multi-job comparison analyses
-│   ├── Step1_Draft_*.md               # Initial targeted drafts
+│   └── Briefing_*_*_*_*.md           # Gap analysis and study guides
+├── Intelligence_Reports/              # OSINT company intelligence reports
+│   ├── [Company]_*_Intelligence_*.md  # Specialized intelligence reports
+│   └── [Company]_Master_Intelligence_*.md # Consolidated reports
+├── Job_Postings/                      # Job descriptions and search results
+│   ├── [Company]_[Role].md           # Manual job postings
+│   └── SearchResults_*_*_*.md        # Automated search results with full descriptions
+├── OutputResumes/                     # Generated resumes and assessments
+│   ├── Assessment_*_*_*.md           # Job fit assessments with scores
+│   ├── Comparison_*_*_*.md           # Multi-job comparison reports
+│   ├── Interview_Prep_*_*_*.md       # Customized interview questions
+│   ├── Step1_Draft_*_*_*.md          # Initial tailored resumes
 │   ├── Step2_Provenance_Analysis_*.md # Credibility analysis reports
-│   ├── Step3_Final_Resume_*.md        # Interview-ready final resumes
-│   ├── Step4_CoverLetter_*.md         # Strategic cover letters
-│   └── *.pdf                          # Converted documents
-├── ResumeSourceFolder/                # Master career inventory
-│   ├── .gitkeep                       # Directory placeholder
-│   ├── Comprehensive_CV_MASTER_COPY_v35.md       # Complete work history
+│   ├── Step3_Final_Resume_*_*_*.md   # Final hardened resumes
+│   └── Step4_CoverLetter_*_*_*.md    # Strategic cover letters
+├── ResumeSourceFolder/                # Master career inventory (source of truth)
+│   ├── Comprehensive_CV_MASTER_COPY_v35.md    # Complete work history
 │   └── Comprehensive_CV_Technology_Capability.md # Technical skills inventory
-├── Sample_Output/                     # Example outputs for demonstration
-│   ├── Assessment_Building_Ontario_Fund_*.md     # Sample assessment report
-│   ├── Briefing_Building_Ontario_Fund_*.md       # Sample briefing note
-│   ├── Building_Ontario_Fund.md                  # Sample job posting
-│   └── Rubric_Building_Ontario_Fund_*.md         # Sample scoring rubric
-├── Scoring_Rubrics/                   # Assessment rubrics and frameworks
-│   └── Rubric_*_*_*.md               # Dynamic job-specific rubrics
-├── SourceMaterial/                    # Reserved for methodology guides
-│   └── .gitkeep                       # Directory placeholder
-├── .gitignore                         # Git ignore rules
+├── Sample_Output/                     # Example outputs for reference
+│   ├── *_Fit_Assessment_*.md         # Sample assessments (Poor/Moderate/Great)
+│   ├── Briefing_*_*_*.md             # Sample briefing notes
+│   ├── Interview_Prep_*_*_*.md       # Sample interview preparations
+│   └── Rubric_*_*_*.md               # Sample scoring rubrics
+├── Scoring_Rubrics/                   # Reusable assessment rubrics
+│   └── Rubric_[Company]_[Role]_[Date].md # Job-specific scoring frameworks
+├── SourceMaterial/                    # Methodology and analysis documents
+│   ├── System_Dynamics_Analysis_Assessment_First_Hiring_v3.md # Theoretical foundation
+│   ├── Critical_Analysis_Model_Assumptions.md # System analysis
+│   └── [various development files]    # Internal development documentation
 ├── CLAUDE.md                          # System instructions for Claude Code
-├── Master_Resume_Comprehensive_Setup_Guide_v1.md  # Ultra-detailed master resume creation guide
+├── JOB_SEARCH_GUIDE.md               # Job search workflow documentation
+├── LICENSE                            # License file
+├── Master_Resume_Comprehensive_Setup_Guide_v1.md # Master resume methodology
 ├── README.md                          # This documentation
-├── comprehensive_work_history_FAQ.md  # Master resume philosophy
-└── LICENSE                            # Repository license
+├── SETUP.md                          # Setup and installation instructions
+├── comprehensive_work_history_FAQ.md  # Master resume philosophy FAQ
+└── package.json                       # Node.js dependencies (for pandoc)
 ```
 
 ## Quick Start
 
-### 1. Setup Your Master Resume: The Anti-Hallucination Foundation
+### 1. Setup Your Master Resume
 
 **The Core Problem**: Traditional 2-page resumes create a fundamental issue when using AI for tailoring. When you try to customize a condensed resume, AI tools must fill gaps with plausible-sounding but fictional content, leading to claims you can't defend in interviews.
 
 **The Solution**: A comprehensive 20+ page master resume serves as your "database of truth" - every achievement, metric, and skill is documented with full context. This allows AI to **select** relevant experiences rather than **invent** them.
 
-#### Why This Approach Works
-
-**Key Benefits**:
-- **No Hallucinations**: Enhanced provenance system prevents AI from inventing capabilities
-- **Interview Confidence**: Every bullet point traces to documented experience with line-by-line verification
-- **Provenance Verification**: All claims verified against source material with mandatory quote-checking
-- **Career Pattern Recognition**: Discover valuable themes in your experience
-- **Evidence-Based Targeting**: Only documented skills and achievements used in tailoring
-
-#### Implementation Guide
-
-**📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - an ultra-detailed guide covering the complete methodology for building your career database.
+**📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) for complete methodology and [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md) for quick conceptual explanation.
 
 Place your comprehensive career inventory in `ResumeSourceFolder/`:
 - Complete work history with all projects and achievements using HAMZ-Extended framework
 - Technology capabilities and skills inventory with proficiency assessments
 - Awards, publications, and certifications with full context and validation
-- Academic credentials including curriculum details and competency documentation
 
 **Critical Standard**: Every claim must be defensible in interview settings with specific examples, metrics, and mechanisms documented.
 
-#### Documentation Resources
-📖 **Complete Setup Guide**: [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) - Ultra-detailed 75+ page methodology
-📖 **Philosophy Overview**: [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md) - Quick conceptual explanation
+### 2. Find and Add Job Descriptions
 
-### 2. Add Job Description
+**Option A: Search hiring.cafe**
+```bash
+/searchjobs "your search query" "location" --save
+```
+Searches hiring.cafe and automatically saves complete verbatim job descriptions to `Job_Postings/` folder.
 
-Create a markdown file with the target job description in the root directory (e.g., `AltoJobPost.md`)
+**Option B: Manual job posting**
+Create a markdown file in `Job_Postings/` directory (e.g., `Job_Postings/CompanyName_Role_Date.md`)
 
 ### 3. Assess Job Opportunity First
 
-Before investing time in resume creation, assess your fit for the position:
+Before investing time in resume creation, assess your fit:
 
-```
-/assessjob AltoJobPost.md
+```bash
+/assessjob Job_Postings/AltoJobPost.md
 ```
 
-This generates a comprehensive assessment report showing your candidacy strength and identifies critical gaps. **Only proceed if the assessment shows reasonable fit** (typically 60%+ match).
+Generates comprehensive assessment report showing candidacy strength and identifies critical gaps. **Only proceed if assessment shows reasonable fit** (typically 60%+ match).
 
 ### 4. Generate Optimized Resume (If Assessment is Positive)
 
-Use the slash command to run the complete resume development process:
-
-```
-/buildresume AltoJobPost.md Canadian
+```bash
+/buildresume Job_Postings/AltoJobPost.md Canadian
 ```
 
-This executes the core resume development process:
-1. Creates initial targeted draft
-2. Performs provenance analysis
-3. Produces final hardened resume
+Executes the core 3-step resume development process: draft creation, provenance analysis, final hardened resume.
 
 ### 5. Compare Multiple Opportunities (If Applicable)
 
-**Compare assessments to prioritize opportunities:**
-```
+```bash
 /comparejobs Assessment_Company1_Role1_Date.md Assessment_Company2_Role2_Date.md
 ```
 
 ### 6. Prepare for Interview
 
 **Create study guide to address gaps:**
-```
-/briefing OutputResumes/Assessment_[Company]_[Role]_[Date].md AltoJobPost.md gaps-only
+```bash
+/briefing OutputResumes/Assessment_[Company]_[Role]_[Date].md Job_Postings/AltoJobPost.md gaps-only
 ```
 
 **Generate customized interview questions:**
-```
-/interviewprep OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md AltoJobPost.md
+```bash
+/interviewprep OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md Job_Postings/AltoJobPost.md
 ```
 
 ### 7. Finalize Application (Optional)
 
 **Generate strategic cover letter:**
-```
-/coverletter OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md AltoJobPost.md
+```bash
+/coverletter OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md Job_Postings/AltoJobPost.md
 ```
 
 **Convert to professional Word format:**
-```
+```bash
 /install-pandoc    # Install pandoc if needed
 /convert all       # Convert all documents to Word format
 ```
 
-## Available Commands
+## Core Commands Reference
 
-### Step 1: Opportunity Assessment
-```
+### Opportunity Assessment
+```bash
 /assessjob <job-description-file>
 ```
-- **START HERE**: Assess your fit before creating resume
-- Creates dynamic job-specific scoring rubric from job posting
-- Generates 100-point assessment with evidence
-- Provides go/no-go recommendation based on candidacy strength
-- Only proceed to resume creation if assessment shows reasonable fit (60%+)
+**START HERE** - Creates dynamic scoring rubric and 100-point assessment with go/no-go recommendation.
 
-### Steps 2-4: Resume Development (Use Only After Positive Assessment)
-```
+### Resume Development
+```bash
 /buildresume <job-description-file> [cultural-profile]
 ```
-- Runs the full 3-step optimization process
-- Cultural profiles: Canadian (default), US, European, UK, Australian
-- Output saved to `OutputResumes/` with timestamps
+Runs full 3-step optimization (draft, provenance check, final resume). Cultural profiles: Canadian (default), US, European, UK, Australian.
 
-### Provenance Check Only
+### Modular Assessment Workflow
+```bash
+/createrubric <job-posting-file>                              # Create reusable scoring rubric only
+/assesscandidate <rubric-file> <job-posting-file>            # Assess using pre-created rubric
+/comparejobs <assessment-1> <assessment-2> [assessment-3]    # Compare multiple assessments
 ```
-/provenance <draft-resume-file>
-```
-- Analyzes existing resume draft for credibility issues
-- Cross-references against master resume documents
-- Generates detailed risk assessment report
 
-### Cover Letter Generation
+### Interview Preparation
+```bash
+/briefing <assessment-report> <job-description> [gaps-only]  # Create study guide
+/interviewprep <resume-file> <job-description> [N]           # Generate interview questions
 ```
-/coverletter <step3-resume-file> <job-description-file> [hiring-manager-name]
-```
-- Creates strategic cover letter from Step 3 validated resume
-- Includes requirements-matching table for visual impact
-- Maps critical job requirements to proven experience
-- Maintains evidence chain from master documents
 
-### Document Conversion
+### Job Search System
+```bash
+/searchjobs <query> [location] [--company=name] [--save] [--limit=N]
 ```
-/convert <file-path-or-pattern> [output-directory]
-```
-- Converts markdown documents to professional Word DOCX format
-- Supports single files, patterns, or type-based conversion
-- Uses pandoc for high-quality professional formatting
-- Examples: `/convert resume`, `/convert "Step3_*.md"`, `/convert all`
+Two-phase hybrid search: API search + Playwright scraping for complete verbatim job descriptions. Default 20 jobs, max 50 recommended.
 
-### Pandoc Installation
+**Examples:**
+```bash
+/searchjobs "software engineer" "Toronto"
+/searchjobs "data analyst" --company=Deloitte --save
+/searchjobs "python developer" "Mississauga" --save --limit=30
 ```
-/install-pandoc [force]
-```
-- Automatically installs pandoc for your operating system
-- Detects platform and uses appropriate package manager
-- Verifies installation and conversion capabilities
-- Required for Step 5 document conversion functionality
 
-### Interview Preparation Commands
-
-#### Modular Assessment Workflow
-```
-/createrubric <job-posting-file>
-```
-- **Creates reusable scoring rubric only** from job posting analysis
-- Performs web research for domain expertise and industry standards
-- Generates detailed 100-point scoring framework with granular criteria
-- Saves to `Scoring_Rubrics/` for consistent evaluation across candidates
-- Enables standardized assessment process for multiple applicants
-
-```
-/assesscandidate <rubric-file> <job-posting-file>
-```
-- **Assesses candidate using pre-created rubric** for consistent evaluation
-- Applies existing scoring criteria without modification for fairness
-- Maps candidate evidence to specific rubric requirements systematically
-- Maintains complete audit trail linking rubric criteria to assigned scores
-- Enables comparison across multiple candidates using same standards
-
-```
-/assessjob <job-description-file>
-```
-- **Complete assessment in one step** - creates rubric AND evaluates candidate
-- Creates dynamic job-specific scoring rubric from job posting
-- Performs web research for domain expertise and industry standards
-- Generates comprehensive 100-point assessment with evidence mapping
-- Saves custom rubric to `Scoring_Rubrics/` for reuse and audit trail
-- Provides hiring recommendations, interview strategies, and gap analysis
-- Outputs both rubric and assessment report with full traceability
-
-#### Multi-Job Comparison Analysis
-```
-/comparejobs <assessment-file-1> <assessment-file-2> [assessment-file-3] [assessment-file-4]
-```
-- Compare 2-4 assessment files from `OutputResumes/` folder for strategic insights
-- Analyzes performance patterns across different roles and companies
-- Provides role prioritization and optimal career strategy recommendations
-- Identifies transferable skills and consistent strengths/gaps across opportunities
-- Generates comprehensive comparison report with negotiation positioning advice
-- Supports strategic career planning and multi-offer decision making
-
-#### Gap Analysis Briefing
-```
-/briefing <assessment-report> <job-description> [gaps-only]
-```
-- Analyzes assessment results to identify critical skill gaps
-- Researches current best practices and learning resources
-- Creates detailed study guide with actionable timelines
-- Two modes: gaps-only (focus on weaknesses) or comprehensive preparation
-- Includes hands-on exercises, quick references, and interview strategies
-- Output saved to `Briefing_Notes/Briefing_[Company]_[Role]_[Mode]_[Date].md`
-
-#### Interview Questions Generator
-```
-/interviewprep <resume-file> <job-description> [number-of-questions]
-```
-- Generates customized interview questions based on resume-job alignment
-- Defaults to 10 questions if number not specified
-- Balances technical and behavioral questions using STAR format
-- Provides strategic answer guidance and follow-up question preparation
-- Includes red flags to avoid and strength positioning strategies
-- Output saved to `Briefing_Notes/Interview_Prep_[Company]_[Role]_[Date].md`
-
-### Distributed OSINT Intelligence System
-
-#### Comprehensive Company Intelligence
-```
+### Company Intelligence
+```bash
 /osint <company-name>
 ```
-- **Professional-grade intelligence gathering** using distributed system of 6 specialized agents
-- **Parallel processing** for maximum efficiency and comprehensive coverage
-- **Master Intelligence Report** with integrated findings and strategic recommendations
+Deploys 6 specialized OSINT agents in parallel for comprehensive intelligence: Corporate, Legal, Leadership, Compensation, Culture, Market.
 
-#### OSINT Agent Specializations:
-- **Corporate Intelligence** (osint-corporate): Company structure, financials, strategic positioning
-- **Legal Intelligence** (osint-legal): Litigation history, regulatory compliance, legal risks
-- **Leadership Intelligence** (osint-leadership): Executive backgrounds, leadership analysis
-- **Compensation Intelligence** (osint-compensation): Salary benchmarking, benefits, total rewards
-- **Culture Intelligence** (osint-culture): Employee sentiment, workplace culture analysis
-- **Market Intelligence** (osint-market): Industry analysis, competitive positioning
-
-#### Key Features:
-- **Multi-Jurisdictional Legal Research**: CanLII, PACER, BAILII, and international legal databases
-- **Comprehensive Compensation Analysis**: Glassdoor, Levels.fyi, PayScale, Blind, and equity analysis
-- **Employee Sentiment Tracking**: Anonymous forums, review platforms, and culture assessment
-- **Executive Background Verification**: Professional networks, board memberships, reputation analysis
-- **Industry Competitive Intelligence**: Market positioning, disruption risks, growth opportunities
-- **Corporate Financial Health**: Revenue trends, debt analysis, strategic partnerships
-- **Rigorous Source Attribution**: Every claim includes citations with URLs and reliability ratings
-- **Intelligence Classification**: All information marked as [VERIFIED], [INFERRED], [CALCULATED], or [ASSUMPTION]
-- **Confidence Indicators**: HIGH/MEDIUM/LOW confidence levels for all major findings
-- **Professional Citation Standards**: Numbered footnotes with detailed source information and access dates
-
-#### Use Cases:
-- **Pre-Interview Intelligence**: Comprehensive company research before job interviews
-- **Job Offer Evaluation**: Due diligence before accepting employment offers
-- **Negotiation Preparation**: Compensation benchmarking and leverage analysis
-- **Business Partnership Assessment**: Risk evaluation for strategic partnerships
-- **Investment Due Diligence**: Comprehensive company assessment for investment decisions
-- **Competitive Intelligence**: Market positioning and competitor analysis
-
-#### Intelligence Reporting Standards:
-All OSINT reports follow rigorous intelligence community standards with complete source attribution:
-
-- **Citation Requirements**: Every factual claim includes inline citations¹ with source URLs where available
-- **Information Classification System**:
-  - `[VERIFIED]` - Confirmed from primary sources with direct URLs and verification
-  - `[INFERRED]` - Logical conclusions drawn from available data with reasoning explained
-  - `[CALCULATED]` - Mathematical derivations from source data with methodology disclosed
-  - `[ASSUMPTION]` - Reasonable assumptions with stated reasoning and limitations
-- **Confidence Indicators**: All findings labeled as HIGH CONFIDENCE, MEDIUM CONFIDENCE, or LOW CONFIDENCE
-- **Source Quality Ratings**: Sources rated as (HIGH RELIABILITY), (MEDIUM RELIABILITY), or (LOW RELIABILITY)
-- **Professional Footnotes**: Numbered footnote system with complete source information, publication dates, and access dates
-- **Methodology Transparency**: Calculation methods, sampling limitations, and analytical frameworks disclosed
-- **Intelligence Gaps**: Explicit identification of information unavailable or requiring additional research
-
-#### Sample Intelligence Citation Format:
-```
-Company revenue of $2.5 billion¹ [VERIFIED - HIGH CONFIDENCE]
-Market position suggests strong competitive advantage² [INFERRED - MEDIUM CONFIDENCE]
-Employee productivity calculated at $425,000 per employee³ [CALCULATED - HIGH CONFIDENCE]
-Estimated growth rate of 15% based on industry standards⁴ [ASSUMPTION - LOW CONFIDENCE]
-
-¹ Example Corp, "2024 Annual Report", March 15, 2025, https://investor.example.com/annual-report-2024, (HIGH RELIABILITY) - Accessed September 26, 2025
-² TechAnalyst Weekly, "Market Analysis", Sept 10, 2025, https://techanalyst.com/analysis, (MEDIUM RELIABILITY) - Accessed September 26, 2025
-³ Calculation methodology: Revenue ($2.5B) ÷ Employees (5,882) = $425,000 per employee
-⁴ Industry benchmark source with stated assumptions and limitations
+### Document Management
+```bash
+/provenance <draft-resume-file>                              # Standalone credibility check
+/coverletter <step3-resume> <job-description> [manager]      # Strategic cover letter
+/convert <file-path-or-pattern> [output-directory]          # Markdown to Word DOCX
+/install-pandoc [force]                                      # Install pandoc utility
 ```
 
-## The Complete 8-Step Application Process
+## The 8-Step Application Process
 
 ### Phase 1: Opportunity Assessment (Step 1)
-
-#### Step 1: Job Assessment & Candidate Evaluation
-- **Dynamic Rubric Creation**: Generates job-specific 100-point scoring framework from job posting
-- **Domain Knowledge Integration**: Performs web research for industry standards and role expectations
-- **Comprehensive Evaluation**: Maps candidate evidence to each job requirement systematically
-- **Risk Analysis**: Identifies gaps and provides mitigation strategies for hiring decisions
-- **Go/No-Go Decision**: Determines if opportunity is worth pursuing based on fit score and gap analysis
-- **Outputs**:
-  - `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md` (custom scoring criteria)
-  - `OutputResumes/Assessment_[Company]_[Role]_[Date].md` (detailed evaluation report)
+**Job Assessment & Candidate Evaluation**
+- Dynamic rubric creation with 100-point scoring framework
+- Domain knowledge integration via web research
+- Comprehensive evaluation mapping candidate evidence to requirements
+- Go/no-go decision based on fit score and gap analysis
 
 ### Phase 2: Resume Development (Steps 2-4)
+**Step 2: Initial Draft Creation**
+- Job analysis with cultural profiling
+- HAM-Z methodology application
+- ATS optimization
 
-#### Step 2: Initial Draft Creation
-- **Job Analysis**: Deep analysis of requirements, keywords, and cultural context
-- **Cultural Profiling**: Applies region-specific resume conventions (Canadian, US, European, etc.)
-- **HAM-Z Application**: Transforms experience using Hard Skills + Action + Metrics + Structure formula
-- **ATS Optimization**: Creates targeted first draft optimized for applicant tracking systems
-- **Output**: `Step1_Draft_[Role]_[Company]_[Date].md`
+**Step 3: Provenance Analysis**
+- Mandatory evidence verification against master documents
+- Line number validation with exact quotes
+- Critical risk detection for fabricated capabilities
+- Risk categorization (Critical/High/Medium/Low)
 
-#### Step 3: Provenance Analysis (Enhanced Anti-Hallucination System)
-- **Mandatory Evidence Verification**: Every claim cross-referenced against master documents with exact quotes
-- **Line Number Validation**: Verifies all quoted references actually exist in source materials
-- **Critical Risk Detection**: Flags fabricated capabilities, skills, or experience not documented
-- **Hallucination Prevention**: Zero tolerance for assumed language skills, geographic experience, or industry knowledge
-- **Risk Categorization**: Classifies issues as Critical/High/Medium/Low with specific remediation strategies
-- **Output**: `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`
-
-#### Step 4: Final Resume Production
-- **Systematic Hardening**: Incorporates all provenance recommendations while maintaining competitive positioning
-- **Evidence-Based Claims**: Ensures every bullet point can withstand interview-level scrutiny
-- **Defensive Positioning**: Balances aggressive positioning with complete defensibility
-- **Interview Readiness**: Produces final version ready for submission and interview preparation
-- **Output**: `Step3_Final_Resume_[Role]_[Company]_[Date].md`
+**Step 4: Final Resume Production**
+- Systematic hardening incorporating all provenance recommendations
+- Evidence-based claims withstanding interview scrutiny
+- Interview-ready final version
 
 ### Phase 3: Interview Preparation (Steps 5-6)
+**Step 5: Gap Analysis and Study Guide Creation**
+- Critical gap identification from assessment
+- Learning resource research with web search
+- Structured study plan with actionable timelines
+- Two modes: gaps-only or comprehensive preparation
 
-#### Step 5: Gap Analysis and Study Guide Creation
-- **Critical Gap Identification**: Analyzes Step 1 assessment to pinpoint skill gaps and weaknesses
-- **Learning Resource Research**: Web research for current best practices and training materials
-- **Structured Study Plan**: Creates detailed study guide with actionable timelines
-- **Two Modes**: gaps-only (focus on critical weaknesses) or comprehensive preparation
-- **Practical Elements**: Includes hands-on exercises, quick references, and interview strategies
-- **Output**: `Briefing_Notes/Briefing_[Company]_[Role]_[Mode]_[Date].md`
-
-#### Step 6: Customized Interview Question Generation
-- **Resume-Job Alignment**: Generates questions based on Step 4 final resume content vs job requirements
-- **Question Balance**: Mix of technical, behavioral, and experience verification questions
-- **Strategic Guidance**: STAR format coaching and answer frameworks for each question
-- **Follow-up Preparation**: Anticipated follow-up questions and response strategies
-- **Risk Mitigation**: Red flags to avoid and strength positioning techniques based on Step 1 gaps
-- **Output**: `Briefing_Notes/Interview_Prep_[Company]_[Role]_[Date].md`
+**Step 6: Customized Interview Question Generation**
+- Resume-job alignment analysis
+- Technical, behavioral, and verification questions
+- STAR format coaching and answer frameworks
+- Follow-up preparation and risk mitigation
 
 ### Phase 4: Application Finalization (Steps 7-8)
+**Step 7: Cover Letter Generation (Optional)**
+- Strategic narrative from validated resume
+- Requirements-matching table for visual impact
+- Evidence chain to master documents
 
-#### Step 7: Cover Letter Generation (Optional)
-- **Strategic Narrative**: Creates compelling cover letter from validated Step 4 final resume
-- **Requirements Mapping**: Features visual requirements-matching table for hiring manager impact
-- **Evidence Chain**: Maps specific job requirements to proven achievements from master documents
-- **Hiring Manager Focus**: Tailors messaging to decision-maker priorities and pain points
-- **Output**: `Step4_CoverLetter_[Role]_[Company]_[Date].md`
-
-#### Step 8: Document Conversion (Optional)
-- **Professional Formatting**: Converts markdown documents to submission-ready Word DOCX format
-- **Pandoc Integration**: Uses pandoc for high-quality conversion preserving tables and styling
-- **Batch Processing**: Supports single files, patterns, or bulk conversion (`resume`, `coverletter`, `all`)
-- **Enterprise Ready**: Creates polished documents meeting corporate submission standards
-- **Output**: `[OriginalName].docx` for any converted markdown document
-
+**Step 8: Document Conversion (Optional)**
+- Markdown to Word DOCX conversion
+- Pandoc integration for professional formatting
+- Batch processing support
 
 ## HAM-Z™ Methodology
 
@@ -484,10 +310,9 @@ Example:
 ## Provenance Risk Categories
 
 ### Critical Risk (Cannot Proceed)
-- **Fabricated Claims**: Any capability, skill, or experience not documented in master materials
-- **Language Skills**: Claims about bilingual abilities without explicit documentation
-- **Industry Experience**: Assumed expertise in sectors not covered in work history
-- **Geographic Experience**: Claims about regional knowledge without supporting evidence
+- Fabricated capabilities, skills, or experience not documented in master materials
+- Language skills without explicit documentation
+- Industry or geographic experience without supporting evidence
 
 ### High Risk (Must Fix)
 - Unbounded metrics without timeframes
@@ -505,111 +330,56 @@ Example:
 - Confidentiality concerns
 - Minor formatting inconsistencies
 
-## Best Practices
-
-1. **Maintain Master Resume**: Keep your career inventory comprehensive and updated
-2. **One Job, One Resume**: Always tailor to specific role requirements
-3. **Evidence First**: Every claim should be defensible with documentation
-4. **Quantify Everything**: Use numbers, percentages, timeframes consistently
-5. **Cultural Awareness**: Match resume style to target market expectations
-
-## File Naming Convention
-
-Output files follow this pattern:
-**Opportunity Assessment (Step 1):**
-- Step 1: `Assessment_[Company]_[Role]_[Date].md` and `Rubric_[Company]_[Role]_[Date].md`
-
-**Resume Development (Steps 2-4):**
-- Step 2: `Step1_Draft_[Role]_[Company]_[Date].md`
-- Step 3: `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`
-- Step 4: `Step3_Final_Resume_[Role]_[Company]_[Date].md`
-
-**Interview Preparation (Steps 5-6):**
-- Step 5: `Briefing_[Company]_[Role]_[Mode]_[Date].md`
-- Step 6: `Interview_Prep_[Company]_[Role]_[Date].md`
-
-**Application Finalization (Steps 7-8):**
-- Step 7: `Step4_CoverLetter_[Role]_[Company]_[Date].md`
-- Step 8: `[OriginalName].docx` (Word versions of any markdown document)
-
 ## Example Workflows
 
 ### Multi-Job Comparison Workflow
-
-When evaluating multiple opportunities simultaneously, use the comparison command to make strategic decisions:
-
 ```bash
-# Option 1: Complete assessment workflow (rubric + assessment)
+# Option 1: Complete assessment workflow
 /assessjob JLL_VP_Office_Leasing.md
 /assessjob Canerector_Vice_President_Real_Estate.md
 /assessjob CityOfToronto_SeniorDirector.md
+/comparejobs Assessment_JLL*.md Assessment_Canerector*.md Assessment_CityOfToronto*.md
 
-# Option 2: Modular assessment workflow (separate rubric creation)
+# Option 2: Modular assessment workflow
 /createrubric JLL_VP_Office_Leasing.md
 /createrubric Canerector_Vice_President_Real_Estate.md
-/createrubric CityOfToronto_SeniorDirector.md
-
-# Then assess using pre-created rubrics for consistency
-/assesscandidate Rubric_JLL_VP_Office_Leasing_2025-09-27.md JLL_VP_Office_Leasing.md
-/assesscandidate Rubric_Canerector_Vice_President_Real_Estate_2025-09-27.md Canerector_Vice_President_Real_Estate.md
-/assesscandidate Rubric_CityOfToronto_SeniorDirector_2025-09-27.md CityOfToronto_SeniorDirector.md
-
-# Finally, compare assessments to identify best fit
-/comparejobs Assessment_JLL_VP_Office_Leasing_2025-09-25.md Assessment_Canerector_Vice_President_Real_Estate_2025-09-26.md Assessment_CityOfToronto_SeniorDirectorAssetManagement_2025-09-25.md
+/assesscandidate Rubric_JLL*.md JLL_VP_Office_Leasing.md
+/assesscandidate Rubric_Canerector*.md Canerector_Vice_President_Real_Estate.md
+/comparejobs Assessment_JLL*.md Assessment_Canerector*.md
 ```
 
-**Sample Output**:
-- **Strategic Rankings**: Which roles offer the best career advancement
-- **Score Comparison**: Detailed breakdown across all evaluation categories
-- **Negotiation Positioning**: Where you have strongest leverage for salary/terms
-- **Risk Analysis**: Which opportunities have highest probability of success
-- **Interview Strategy**: Tailored approaches for each opportunity
-
-### Comprehensive Company Intelligence Workflow
-
-For thorough company research before interviews or major decisions:
-
+### Job Search and Intelligence Workflow
 ```bash
-# Comprehensive OSINT intelligence gathering
-/osint Canerector
-
-# Follow up with job-specific assessment
-/assessjob Canerector_Vice_President_Real_Estate.md
-
-# Create targeted resume if assessment is positive
-/buildresume Canerector_Vice_President_Real_Estate.md Canadian
-
-# Prepare for interview with study guide
-/briefing Assessment_Canerector_Vice_President_Real_Estate_2025-09-26.md Canerector_Vice_President_Real_Estate.md gaps-only
+# Complete workflow from job discovery to application
+/searchjobs "real estate director" "Toronto" --save --limit=20
+/osint Deloitte
+/assessjob Job_Postings/SearchResults_Leasing_Toronto_2025-09-29.md
+/buildresume Job_Postings/SearchResults_Leasing_Toronto_2025-09-29.md Canadian
+/briefing Assessment_Deloitte*.md Job_Postings/SearchResults*.md gaps-only
+/interviewprep OutputResumes/Step3_Final_Resume*.md Job_Postings/SearchResults*.md
 ```
 
-**OSINT Sample Output**:
-- **Master Intelligence Report**: Comprehensive analysis across all intelligence domains with integrated findings
-- **6 Specialized Intelligence Reports**: Individual detailed reports saved to `Intelligence_Reports/` folder:
-  - `[Company]_Corporate_Intelligence_[Date].md` - Financial health, strategic positioning with source citations
-  - `[Company]_Legal_Intelligence_[Date].md` - Litigation history with case citations and court database URLs
-  - `[Company]_Leadership_Intelligence_[Date].md` - Executive backgrounds with LinkedIn and interview sources
-  - `[Company]_Compensation_Intelligence_[Date].md` - Salary data with Glassdoor/Levels.fyi citations and sample sizes
-  - `[Company]_Culture_Intelligence_[Date].md` - Employee reviews with platform URLs and confidence ratings
-  - `[Company]_Market_Intelligence_[Date].md` - Industry analysis with market research report citations
-- **Enhanced Attribution**: Every claim includes citations, confidence levels, and source reliability ratings
-- **Professional Standards**: Intelligence community-level reporting with footnotes and methodology disclosure
-- **Strategic Recommendations**: Employment/investment/partnership guidance with complete evidence chain
+## File Naming Conventions
+
+- **Assessment**: `Assessment_[Company]_[Role]_[Date].md` and `Rubric_[Company]_[Role]_[Date].md`
+- **Resume Development**: `Step1_Draft_[Role]_[Company]_[Date].md`, `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`, `Step3_Final_Resume_[Role]_[Company]_[Date].md`
+- **Interview Prep**: `Briefing_[Company]_[Role]_[Mode]_[Date].md`, `Interview_Prep_[Company]_[Role]_[Date].md`
+- **Application**: `Step4_CoverLetter_[Role]_[Company]_[Date].md`, `[OriginalName].docx`
 
 ## Requirements
 
 - Claude Code CLI installed and configured
-- Master resume documents in markdown format
-- Job descriptions in markdown format
-- `pandoc` installed for Step 5 document conversion (optional)
+- Master resume documents in markdown format in `ResumeSourceFolder/`
+- Job descriptions in markdown format in `Job_Postings/`
+- `pandoc` installed for document conversion (optional, use `/install-pandoc`)
 
 ## Support
 
-For issues or improvements, please check:
-- `comprehensive_work_history_FAQ.md` for master resume philosophy
-- `CLAUDE.md` for technical implementation details
-- `SourceMaterial/` for methodology documentation
-- `.claude/agents/` for agent-specific logic
+For issues or improvements:
+- `comprehensive_work_history_FAQ.md` - Master resume philosophy
+- `CLAUDE.md` - Technical implementation details
+- `SourceMaterial/` - Methodology documentation
+- `.claude/agents/` - Agent-specific logic
 
 ## License
 
