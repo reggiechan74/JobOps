@@ -137,10 +137,13 @@ Reports to: [Hiring Manager Name and/or Title]
 
 ## Hiring Recommendation
 
-☐ **Strongly Recommend** - Exceptional candidate, fast-track process
-☐ **Recommend** - Strong candidate, proceed with standard process
-☐ **Consider** - Viable candidate, compare with others
-☐ **Not Recommended** - Significant gaps, keep on file
+[ ] **90-100**: Exceptional candidate - exceeds requirements significantly
+[ ] **80-89**: Excellent candidate - strong match, minor gaps if any
+[ ] **70-79**: Good candidate - solid match, some development areas
+[ ] **60-69**: Potential candidate - meets core requirements, notable gaps
+[ ] **50-59**: Borderline candidate - significant gaps, consider if high potential
+[ ] **Below 50**: Not recommended - major gaps in critical areas
+
 
 ### Recommendation Rationale
 [Detailed evidence-based justification]
