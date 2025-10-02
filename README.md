@@ -392,6 +392,25 @@ Example:
 - Target coordinates in markdown format in `Job_Postings/`
 - `pandoc` installed for document conversion (optional, use `/install-pandoc`)
 
+### Optional: Tactical Statusline Configuration
+
+Add JobOps branding to your Claude Code statusline (local repository only):
+
+Edit `.claude/settings.local.json` and add:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bash",
+    "args": ["-c", "jq -r '\"⚔️ JobOps | \" + (.model.display_name // \"unknown\") + \" | 📁 \" + (.workspace.current_dir | split(\"/\") | last)'"],
+    "padding": 1
+  }
+}
+```
+
+This displays: **`⚔️ JobOps | [Model] | 📁 [Directory]`** at the bottom of your terminal during Claude Code sessions.
+
 ## Mission Support
 
 For tactical assistance:
