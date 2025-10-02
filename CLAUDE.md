@@ -4,7 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Purpose
 
-This is a resume optimization system that uses a three-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
+**JobOps - Intelligence-Driven Application Warfare System**
+
+This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
+
+**Current Version:** 1.0.0 (see CHANGELOG.md for version history)
 
 ## Key Directories
 
@@ -261,3 +265,64 @@ The resume optimization system follows a comprehensive 8-step pipeline architect
 9. **Presentation Layer**: Professional document conversion for submission
 
 Each step in the pipeline has dedicated agents that maintain consistency and quality throughout the complete application process, from initial resume creation to final interview preparation.
+
+## Version Tracking and Updates
+
+JobOps follows [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH):
+
+### When Making Changes
+
+**PATCH version (1.0.X)** - Increment for:
+- Bug fixes and minor improvements
+- Documentation updates
+- Small enhancements to existing features
+- Non-breaking changes
+
+**MINOR version (1.X.0)** - Increment for:
+- New features and capabilities
+- New slash commands or agents
+- Backward-compatible functionality additions
+- Significant enhancements
+
+**MAJOR version (X.0.0)** - Increment for:
+- Breaking changes or incompatible API changes
+- Major system rewrites or architecture changes
+- Removal of deprecated features
+- Changes requiring user intervention
+
+### Update Process
+
+When making significant changes:
+
+1. **Update version in package.json**:
+   - Change the `version` field to reflect the new version number
+
+2. **Update version in README.md**:
+   - Update the version badge near the top of the file
+
+3. **Update CHANGELOG.md**:
+   - Add new version section following Keep a Changelog format
+   - Document all changes under appropriate categories:
+     - Added (new features)
+     - Changed (changes to existing functionality)
+     - Deprecated (soon-to-be-removed features)
+     - Removed (removed features)
+     - Fixed (bug fixes)
+     - Security (security improvements)
+
+4. **Commit with version tag**:
+   ```bash
+   git add package.json README.md CHANGELOG.md
+   git commit -m "Release version X.Y.Z"
+   git tag -a vX.Y.Z -m "Version X.Y.Z"
+   git push && git push --tags
+   ```
+
+### Version Information Location
+
+- **package.json**: Primary version source (line 3)
+- **README.md**: Version badge with changelog link (line 7)
+- **CHANGELOG.md**: Complete version history and release notes
+- **CLAUDE.md**: Current version reference (line 11)
+
+Always keep version numbers synchronized across all files when releasing new versions.
