@@ -1,5 +1,9 @@
 # JobOps - Intelligence-Driven Application Warfare System
 
+<p align="center">
+  <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
+</p>
+
 A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
 ## Quick Start
