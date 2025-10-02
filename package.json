@@ -1,7 +1,7 @@
 {
-  "name": "resumeoptimizer",
+  "name": "jobops",
   "version": "1.0.0",
-  "description": "Resume optimization system with Playwright MCP server for browser automation",
+  "description": "Intelligence-Driven Application Warfare System - Tactical job application platform with resume development, OSINT intelligence, and interview preparation",
   "scripts": {
     "install-browsers": "npx playwright install chrome",
     "install-all": "npm install && npm run install-browsers"
@@ -14,10 +14,20 @@
   },
   "keywords": [
     "resume",
-    "optimization",
+    "job-search",
+    "interview-prep",
+    "osint",
+    "intelligence",
+    "assessment",
     "playwright",
-    "mcp"
+    "mcp",
+    "career",
+    "tactical"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reggiechan74/JobOps.git"
+  },
   "author": "",
   "license": "ISC"
 }
