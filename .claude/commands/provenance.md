@@ -56,4 +56,19 @@ The provenance analysis will be saved with detailed findings including:
 - Actionable recommendations for each credibility concern
 - Priority ranking for addressing issues
 
+Start the report with:
+
+```yaml
+---
+draft_file: $1
+generated_by: /provenance
+generated_on: <ISO8601 timestamp>
+output_type: resume_provenance
+status: analysis
+version: 1.0
+---
+```
+
+Update timestamps and `version` when re-running.
+
 This analysis ensures your resume maintains competitive positioning while being completely defensible under scrutiny.

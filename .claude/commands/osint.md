@@ -32,6 +32,22 @@ Launch all 6 specialized OSINT agents simultaneously to maximize intelligence ga
 - `[CompanyName]_Culture_Intelligence_[Date].md`
 - `[CompanyName]_Market_Intelligence_[Date].md`
 
+**YAML FRONT MATTER**: Prepend each specialized report with:
+
+```yaml
+---
+company: {{ARG1}}
+report_type: corporate|legal|leadership|compensation|culture|market
+generated_by: /osint
+generated_on: <ISO8601 timestamp>
+output_type: intelligence_report
+status: final
+version: 1.0
+---
+```
+
+Set `report_type` to the appropriate domain. Update timestamps and versioning on reruns.
+
 Example deployment pattern:
 ```
 Deploy all 6 OSINT agents simultaneously to research [COMPANY]:
@@ -45,6 +61,26 @@ Deploy all 6 OSINT agents simultaneously to research [COMPANY]:
 
 ### Phase 2: Intelligence Synthesis & Integration
 After receiving all 6 specialized intelligence reports, synthesize findings into a comprehensive Master Intelligence Report following the structure below. The Master Intelligence Report MUST be saved to the `/Intelligence_Reports` folder as `[CompanyName]_Master_Intelligence_[Date].md`.
+
+Prepend the master report with:
+
+```yaml
+---
+company: {{ARG1}}
+generated_by: /osint master
+generated_on: <ISO8601 timestamp>
+sources:
+  - corporate
+  - legal
+  - leadership
+  - compensation
+  - culture
+  - market
+output_type: intelligence_report_master
+status: final
+version: 1.0
+---
+```
 
 ## Master Intelligence Report Format
 

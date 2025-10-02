@@ -12,6 +12,25 @@ Compare 2-4 assessment files from the OutputResumes folder to analyze candidate 
 
 ## Step-by-Step Process
 
+### YAML front matter for comparison report
+Prepend the comparison output with:
+
+```yaml
+---
+assessments:
+  - {{ARG1}}
+  - {{ARG2}}
+  # Append {{ARG3}} and {{ARG4}} if provided
+generated_by: /comparejobs
+generated_on: <ISO8601 timestamp>
+output_type: assessment_comparison
+status: draft
+version: 1.0
+---
+```
+
+Replace the placeholder comment with the additional assessment filenames you compare. Insert before the report heading and update on reruns.
+
 ### 1. Load Assessment Files
 - Read the specified assessment files from `OutputResumes/{{ARG1}}`, `OutputResumes/{{ARG2}}`, and optionally `OutputResumes/{{ARG3}}` and `OutputResumes/{{ARG4}}`
 - If file extensions are missing, assume `.md` extension

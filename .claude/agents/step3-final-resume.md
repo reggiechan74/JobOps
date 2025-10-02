@@ -111,6 +111,25 @@ You will work with:
 ## File Management
 Save the final hardened resume to: `/OutputResumes/Step3_Final_Resume_[JobTitle]_[Company]_YYYY-MM-DD.md`
 
+### YAML front matter (mandatory)
+Insert the following metadata before the resume content:
+
+```yaml
+---
+job_file: Job_Postings/<source file name>
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: /buildresume step3-final-resume
+generated_on: <ISO8601 timestamp>
+output_type: resume_final
+status: final
+version: 1.0
+---
+```
+
+Update values each time you regenerate (including `version` when you deliver revisions).
+
 ## Critical Operating Principles
 - **Evidence-Based Only:** Include only claims supported by master resume or documented sources
 - **Mechanism+Metric+Time-box:** Ensure all achievements follow this structure

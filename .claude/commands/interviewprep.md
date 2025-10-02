@@ -22,6 +22,27 @@ Generate a comprehensive set of interview questions that an employer would likel
 
 ## Step-by-Step Process
 
+### YAML front matter for interview prep output
+Save the question set to `OutputResumes/Interview_Prep_*` with this prefix:
+
+```yaml
+---
+resume_file: {{ARG1}}
+job_file: Job_Postings/{{ARG2}}
+question_count: {{ARG3 or 10}}
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: /interviewprep
+generated_on: <ISO8601 timestamp>
+output_type: interview_prep
+status: draft
+version: 1.0
+---
+```
+
+Include the block before the first heading and update counts/timestamps on reruns.
+
 ### 1. Load Required Documents
 - Read the tailored resume from `{{ARG1}}` (check OutputResumes/ directory)
 - Read the job description from `Job_Postings/{{ARG2}}` (add .md extension if needed)

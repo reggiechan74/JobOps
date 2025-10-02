@@ -12,6 +12,40 @@ Create a job-specific scoring rubric from the {{ARG1}} job posting, then evaluat
 
 ## Step-by-Step Process
 
+### YAML front matter for generated files
+Every markdown artifact you create (rubric and assessment report) must start with YAML metadata populated with real values.
+
+- **Rubric file** (`Scoring_Rubrics/Rubric_*`):
+  ```yaml
+  ---
+  job_file: Job_Postings/{{ARG1}}
+  role: <role title>
+  company: <company name>
+  generated_by: /assessjob rubric
+  generated_on: <ISO8601 timestamp>
+  output_type: rubric
+  status: final
+  version: 1.0
+  ---
+  ```
+- **Assessment file** (`OutputResumes/Assessment_*`):
+  ```yaml
+  ---
+  job_file: Job_Postings/{{ARG1}}
+  role: <role title>
+  company: <company name>
+  candidate: <full candidate name>
+  generated_by: /assessjob
+  generated_on: <ISO8601 timestamp>
+  output_type: assessment
+  status: draft
+  version: 1.0
+  overall_score: <XX/100>
+  ---
+  ```
+
+Insert the appropriate block before any headings, updating timestamps and scores, and bump `version` if you rerun the analysis.
+
 ### 1. Load Required Documents
 - Read the job posting from `Job_Postings/{{ARG1}}` (add .md extension if needed)
 - Load ALL candidate work history files from `ResumeSourceFolder/` directory:

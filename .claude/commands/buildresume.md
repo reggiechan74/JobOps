@@ -14,6 +14,29 @@ I'll create a complete resume by running all three steps of the resume optimizat
 2. **Step 2**: Perform comprehensive provenance analysis for credibility
 3. **Step 3**: Create final hardened resume addressing all issues
 
+### YAML front matter requirement
+
+Every markdown file generated during this command must begin with a YAML front matter block so downstream tooling can parse metadata without heuristics. Populate the fields with real values before writing any body content.
+
+- **Step 1 draft** (`OutputResumes/Step1_Draft_*`):
+  ```yaml
+  ---
+  job_file: {{ARG1}}
+  role: <target role title>
+  company: <hiring company>
+  candidate: <full candidate name>
+  generated_by: /buildresume step1-resume-draft
+  generated_on: <ISO8601 timestamp>
+  output_type: resume_step1
+  status: draft
+  version: 1.0
+  ---
+  ```
+- **Step 2 provenance analysis** (`OutputResumes/Step2_Provenance_Analysis_*`): use the same fields but set `generated_by` to `/buildresume step2-provenance-check`, `output_type` to `resume_provenance`, and `status` to `analysis`.
+- **Step 3 final resume** (`OutputResumes/Step3_Final_Resume_*`): set `generated_by` to `/buildresume step3-final-resume`, `output_type` to `resume_final`, and `status` to `final`. Increment `version` if you regenerate after revisions.
+
+Always include the front matter before any markdown headings or narrative.
+
 Let me run the complete 3-step resume building process:
 
 ## Step 1: Creating Initial Resume Draft

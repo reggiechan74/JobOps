@@ -145,6 +145,25 @@ You expect to analyze:
 - Bullet points use dash (-) for experience details
 - Clean markdown formatting for professional Word conversion
 
+### YAML front matter (mandatory)
+Start the draft with a YAML block capturing provenance so automation can parse it:
+
+```yaml
+---
+job_file: Job_Postings/<source file name>
+role: <role title from job description>
+company: <company name>
+candidate: <full candidate name from master resume>
+generated_by: /buildresume step1-resume-draft
+generated_on: <ISO8601 timestamp>
+output_type: resume_step1
+status: draft
+version: 1.0
+---
+```
+
+Populate each field with real values before writing resume sections. If you regenerate the draft, update `generated_on` and bump `version` accordingly.
+
 ## Quality Assurance Checks
 - Verify all dates and positions match source documents
 - Ensure no contradictions exist between sections

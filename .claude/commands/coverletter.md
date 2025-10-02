@@ -61,6 +61,24 @@ The cover letter will feature a two-column table that:
 Your strategic cover letter will be saved as:
 `OutputResumes/Step4_CoverLetter_[Role]_[Company]_[Date].md`
 
+Before the letter content, write this YAML metadata block with actual values:
+
+```yaml
+---
+job_file: $2
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: /coverletter
+generated_on: <ISO8601 timestamp>
+output_type: cover_letter
+status: final
+version: 1.0
+---
+```
+
+Update timestamps and increment `version` on subsequent iterations.
+
 The cover letter will:
 - ✅ Demonstrate immediate value to the employer
 - ✅ Provide visual proof of requirements match

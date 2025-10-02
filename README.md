@@ -2,6 +2,21 @@
 
 A comprehensive job application system that transforms career inventories into targeted resumes and provides complete interview preparation using an 8-step methodology with provenance hardening.
 
+## Quick Start
+
+1. Install dependencies: `npm run install-all`
+2. Populate `ResumeSourceFolder/` with your master resume inventory and add target roles to `Job_Postings/`
+3. Start the Playwright MCP server (see "Run the Playwright MCP server" in `SETUP.md`) so Claude Code can reach browser automation
+4. Launch Claude Code in this repository and run slash commands such as `/assessjob Job_Postings/Example.md` followed by `/buildresume`
+
+## Architecture Overview
+
+- **Claude Code CLI** orchestrates the workflow: users issue slash commands that call specialized agents under `.claude/`
+- **Playwright MCP server** provides headless browser automation for job sourcing and intelligence gathering
+- **Content directories** (`ResumeSourceFolder/`, `Job_Postings/`, `OutputResumes/`, `Briefing_Notes/`) hold source materials, generated analyses, and deliverables
+- **HAM-Z agents** execute each step: resume drafting, provenance hardening, and interview preparation
+- **Scoring and OSINT resources** in `Scoring_Rubrics/` and `Intelligence_Reports/` feed assessments and research deliverables
+
 ## Overview
 
 Resume Optimizer uses the HAM-Z™ methodology to create powerful, defensible resumes that are:
@@ -117,7 +132,7 @@ resumeoptimizer/
 └── package.json                       # Node.js dependencies (for pandoc)
 ```
 
-## Quick Start
+## Detailed Workflow
 
 ### 1. Setup Your Master Resume
 

@@ -12,6 +12,24 @@ Analyze the {{ARG1}} job posting and generate a detailed, reusable scoring rubri
 
 ## Step-by-Step Process
 
+### YAML front matter for rubric output
+Write the rubric to `Scoring_Rubrics/Rubric_*` and begin the file with:
+
+```yaml
+---
+job_file: Job_Postings/{{ARG1}}
+role: <role title>
+company: <company name>
+generated_by: /createrubric
+generated_on: <ISO8601 timestamp>
+output_type: rubric
+status: final
+version: 1.0
+---
+```
+
+Insert this before the first heading and bump `version` if you update the rubric later.
+
 ### 1. Load Job Posting
 - Read the job posting from `Job_Postings/{{ARG1}}` (add .md extension if needed)
 - If the file doesn't exist in Job_Postings/, check the root directory for legacy files

@@ -20,6 +20,27 @@ Create a comprehensive briefing note that either:
 
 ## Step-by-Step Process
 
+### YAML front matter for briefing note
+When saving the briefing to `Briefing_Notes/`, prepend this metadata:
+
+```yaml
+---
+assessment_file: {{ARG1}}
+job_file: Job_Postings/{{ARG2}}
+mode: "<use gaps-only when ARG3 is provided, otherwise full>"
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: /briefing
+generated_on: <ISO8601 timestamp>
+output_type: briefing
+status: draft
+version: 1.0
+---
+```
+
+Insert it before the first heading and refresh fields (including `mode` set to `gaps-only` when applicable) each time you regenerate.
+
 ### 1. Load Required Documents
 - Read the assessment report from `{{ARG1}}` (check OutputResumes/ or Scoring_Rubrics/ directories)
 - Read the job description from `Job_Postings/{{ARG2}}` (add .md extension if needed)

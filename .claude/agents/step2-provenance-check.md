@@ -104,6 +104,24 @@ You will apply the CV Provenance Hardening methodology with these detection heur
    - Recommend removals for unsupportable claims
 
 ## Required Output Structure
+Begin the provenance report with YAML front matter:
+
+```yaml
+---
+job_file: Job_Postings/<source file name>
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: /buildresume step2-provenance-check
+generated_on: <ISO8601 timestamp>
+output_type: resume_provenance
+status: analysis
+version: 1.0
+---
+```
+
+Update these values with accurate metadata (bump `version` on subsequent iterations) before writing any analysis sections.
+
 Your analysis must follow this exact format:
 
 ### === PROBLEM_STATEMENTS ===

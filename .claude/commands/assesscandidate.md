@@ -12,6 +12,27 @@ Use the existing scoring rubric from {{ARG1}} to evaluate the candidate against 
 
 ## Step-by-Step Process
 
+### YAML front matter for assessment output
+The generated assessment in `OutputResumes/Assessment_*` must start with:
+
+```yaml
+---
+job_file: Job_Postings/{{ARG2}}
+rubric_file: Scoring_Rubrics/{{ARG1}}
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: /assesscandidate
+generated_on: <ISO8601 timestamp>
+output_type: assessment
+status: draft
+version: 1.0
+overall_score: <XX/100>
+---
+```
+
+Insert this block before any headings and update timestamps, scores, and versioning on reruns.
+
 ### 1. Load Required Documents
 - Read the scoring rubric from `Scoring_Rubrics/{{ARG1}}` (add .md extension if needed)
 - Read the job posting from `Job_Postings/{{ARG2}}` (add .md extension if needed)

@@ -67,6 +67,23 @@ Apply the 100-point scoring rubric with evidence:
 
 Create comprehensive assessment report in `OutputResumes/Assessment_[Company]_[Role]_[Date].md` with:
 
+```yaml
+---
+job_file: Job_Postings/{{job description file name}}
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: {{command name or default "candidate-assessment"}}
+generated_on: <ISO8601 timestamp>
+output_type: assessment
+status: draft
+version: 1.0
+overall_score: <XX/100>
+---
+```
+
+Insert this YAML front matter before any markdown headings. If the invoking command is known (e.g., `/assessjob`, `/assesscandidate`), set `generated_by` accordingly; otherwise default to `candidate-assessment`. Update `generated_on`, `overall_score`, and increment `version` on subsequent revisions.
+
 ```markdown
 # Candidate Assessment Report: [Role] at [Company]
 Date: [Assessment Date]

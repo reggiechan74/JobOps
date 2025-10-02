@@ -115,6 +115,24 @@ Before finalizing, I verify:
 The cover letter will be saved as:
 `OutputResumes/Step4_CoverLetter_[Role]_[Company]_[Date].md`
 
+Begin the file with YAML metadata:
+
+```yaml
+---
+job_file: Job_Postings/<source file name>
+role: <role title>
+company: <company name>
+candidate: <full candidate name>
+generated_by: /coverletter
+generated_on: <ISO8601 timestamp>
+output_type: cover_letter
+status: final
+version: 1.0
+---
+```
+
+Update the values each time you generate a new letter (bump `version` if you revise).
+
 With clear sections:
 - Contact header
 - Date and recipient information

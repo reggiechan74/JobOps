@@ -152,6 +152,40 @@ After completing both phases, present comprehensive results to the user:
 When the `--save` flag is provided, save the complete search results to:
 `Job_Postings/SearchResults_[SanitizedQuery]_[Date].md`
 
+Prepend the file with:
+
+```yaml
+---
+query: "<search query from ARG1>"
+location: "<location from ARG2, or leave blank if none>"
+company_filter: "<company value from --company flag, or leave blank>"
+result_count: <number of jobs saved>
+generated_by: /searchjobs
+generated_on: <ISO8601 timestamp>
+output_type: job_search_results
+status: final
+version: 1.0
+---
+```
+
+If you also save individual job postings, begin each posting file with:
+
+```yaml
+---
+company: <company name>
+role: <job title>
+location: <city, region>
+posting_date: <YYYY-MM-DD if available>
+source: <URL>
+source_type: hiring_cafe
+generated_by: /searchjobs
+generated_on: <ISO8601 timestamp>
+output_type: job_posting
+status: captured
+version: 1.0
+---
+```
+
 File format:
 ```markdown
 # Job Search Results: [Query]
