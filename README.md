@@ -1,6 +1,6 @@
-# Resume Optimizer for Claude Code
+# JobOps - Intelligence-Driven Application Warfare System
 
-A comprehensive job application system that transforms career inventories into targeted resumes and provides complete interview preparation using an 8-step methodology with provenance hardening.
+A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
 ## Quick Start
 
@@ -19,7 +19,7 @@ A comprehensive job application system that transforms career inventories into t
 
 ## Overview
 
-Resume Optimizer uses the HAM-Z™ methodology to create powerful, defensible resumes that are:
+JobOps uses the HAM-Z™ methodology to create powerful, defensible resumes that are:
 - **Strategically positioned** for specific roles
 - **Culturally attuned** to regional preferences
 - **Provenance-hardened** to withstand scrutiny
