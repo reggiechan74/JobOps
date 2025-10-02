@@ -42,6 +42,7 @@ version: 1.0
 Insert it before the first heading and refresh fields (including `mode` set to `gaps-only` when applicable) each time you regenerate.
 
 ### 1. Load Required Documents
+✓ Loading reconnaissance assessment and target specifications
 - Read the assessment report from `{{ARG1}}` (check OutputResumes/ or Scoring_Rubrics/ directories)
 - Read the job description from `Job_Postings/{{ARG2}}` (add .md extension if needed)
 - Determine mode: gaps-only if {{ARG3}} == "gaps-only", otherwise full preparation
@@ -61,6 +62,7 @@ Insert it before the first heading and refresh fields (including `mode` set to `
 - Note soft skills and cultural fit expectations
 
 ### 3. Conduct Research for Each Gap/Requirement
+✓ Gathering intelligence on skill gaps and requirements
 
 Use WebSearch and WebFetch to research:
 - Current best practices and methodologies
@@ -70,6 +72,7 @@ Use WebSearch and WebFetch to research:
 - Real-world application examples
 
 ### 4. Generate Briefing Note Structure
+✓ Compiling intelligence brief with training protocol
 
 Create a comprehensive briefing document with the following sections:
 

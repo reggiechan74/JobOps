@@ -40,6 +40,7 @@ Always include the front matter before any markdown headings or narrative.
 Let me run the complete 3-step resume building process:
 
 ## Step 1: Creating Initial Resume Draft
+✓ Initiating strike package assembly
 
 I'll start by reading the job description file and creating the initial draft using the $2 cultural profile.
 
@@ -49,7 +50,7 @@ First, let me read the job description:
 
 Now I'll run the step1-resume-draft agent with the specified cultural profile:
 
-**Running Step 1 Agent...**
+**✓ Deploying Step 1 Agent - Initial Draft Creation**
 
 I'm launching the step1-resume-draft agent to create an initial tailored resume draft based on the job requirements. This agent will:
 - Analyze the job requirements from $1
@@ -58,8 +59,9 @@ I'm launching the step1-resume-draft agent to create an initial tailored resume 
 - Create a targeted first draft optimized for the role
 
 ## Step 2: Provenance Analysis
+✓ Executing credibility verification sweep
 
-**Running Step 2 Agent...**
+**✓ Deploying Step 2 Agent - Provenance Verification**
 
 Now I'll launch the step2-provenance-check agent to analyze the Step 1 draft for:
 - Credibility issues and evidence gaps
@@ -69,8 +71,9 @@ Now I'll launch the step2-provenance-check agent to analyze the Step 1 draft for
 - Recommendations for strengthening credibility
 
 ## Step 3: Final Hardened Resume
+✓ Producing deployment-ready final resume
 
-**Running Step 3 Agent...**
+**✓ Deploying Step 3 Agent - Hardened Resume Production**
 
 Finally, I'll launch the step3-final-resume agent to:
 - Incorporate all recommendations from Step 2 analysis
@@ -78,11 +81,11 @@ Finally, I'll launch the step3-final-resume agent to:
 - Produce a fully defensible final resume
 - Ensure maximum interview potential
 
-## Summary
+## Mission Summary
 
-All three steps of the resume optimization process will be completed:
+All three steps of the resume assembly process will be completed:
 - ✅ Step 1: Initial targeted draft created
-- ✅ Step 2: Comprehensive provenance analysis performed
+- ✅ Step 2: Comprehensive provenance verification performed
 - ✅ Step 3: Final hardened resume produced
 
-Your complete, optimized resume will be ready for application with full credibility and competitive positioning.
+Your deployment-ready resume will be ready for mission execution with full credibility and competitive positioning.

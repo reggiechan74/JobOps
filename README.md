@@ -6,7 +6,7 @@
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
-## Quick Start
+## Rapid Deployment Protocol
 
 1. Install dependencies: `npm run install-all`
 2. Populate `ResumeSourceFolder/` with your master resume inventory and add target roles to `Job_Postings/`
@@ -21,15 +21,15 @@
 - **HAM-Z agents** execute each step: resume drafting, provenance hardening, and interview preparation
 - **Scoring and OSINT resources** in `Scoring_Rubrics/` and `Intelligence_Reports/` feed assessments and research deliverables
 
-## Overview
+## Tactical Capabilities
 
-JobOps uses the HAM-Z™ methodology to create powerful, defensible resumes that are:
+JobOps deploys the HAM-Z™ methodology to create powerful, defensible strike packages that are:
 - **Strategically positioned** for specific roles
 - **Culturally attuned** to regional preferences
 - **Provenance-hardened** to withstand scrutiny
 - **ATS-optimized** for applicant tracking systems
 
-The system employs an 8-step process organized into three phases: resume development (Steps 1-3), interview preparation (Steps 4-6), and application finalization (Steps 7-8), ensuring every claim is backed by evidence and every achievement is quantified with mechanism, metrics, and timeframe.
+Deploy a tactical 8-step offensive organized into three phases: strike package assembly (Steps 1-3), interview preparation (Steps 4-6), and mission execution (Steps 7-8), ensuring every claim is verified and every achievement is weaponized with mechanism, metrics, and timeframe.
 
 ### Theoretical Foundation: Assessment-First Hiring
 
@@ -45,20 +45,20 @@ The assessment-first model breaks this cycle by evaluating candidate fit *before
 - **40-80% improvement** in overall market matching efficiency
 - **+3.2 to +10.4 dB improvement** in signal quality
 
-This theoretical foundation explains why the system starts with `/assessjob` rather than resume creation - preventing wasted effort on fundamentally poor matches while ensuring only high-probability applications receive full development.
+This theoretical foundation explains why JobOps begins with target reconnaissance (`/assessjob`) rather than immediate resume creation - preventing wasted effort on fundamentally poor targets while ensuring only high-probability opportunities receive full tactical deployment.
 
-## Key Features
+## Weapons Systems
 
-- **HAM-Z™ Methodology**: Combines Hard Skills, Actions, Metrics, and Structure with XYZ narrative format
-- **Provenance Hardening**: Comprehensive credibility analysis to identify and fix evidence gaps
-- **Cultural Profiles**: Tailors resume style to regional expectations (Canadian, US, European, etc.)
-- **Master Resume System**: Maintains comprehensive career inventory separate from targeted resumes
-- **Dynamic Job Scoring**: Creates custom assessment rubrics for each job posting
-- **Interview Preparation**: Gap analysis briefings and customized question generation
-- **Distributed OSINT Intelligence**: Professional-grade company research with parallel specialized agents
-- **Hybrid Job Search**: API search combined with Playwright scraping for complete job descriptions
+- **HAM-Z™ Methodology**: Combines Hard Skills, Actions, Metrics, and Structure with XYZ narrative format to create precision-targeted achievements
+- **Provenance Hardening**: Comprehensive credibility verification to identify and eliminate fabricated claims
+- **Cultural Profiles**: Adapts resume style to regional theater expectations (Canadian, US, European, etc.)
+- **Arsenal Inventory**: Maintains comprehensive career database separate from mission-specific deployments
+- **Dynamic Target Scoring**: Creates custom reconnaissance rubrics for each opportunity
+- **Interview Preparation**: Gap analysis intelligence briefings and tactical rehearsal question generation
+- **Distributed OSINT Intelligence**: Professional-grade company reconnaissance with parallel specialized agents
+- **Target Acquisition System**: Hybrid search combining API reconnaissance + Playwright deep-scan for complete intelligence
 
-## Directory Structure
+## Arsenal Organization
 
 ```
 resumeoptimizer/
@@ -136,13 +136,13 @@ resumeoptimizer/
 └── package.json                       # Node.js dependencies (for pandoc)
 ```
 
-## Detailed Workflow
+## Tactical Operations Workflow
 
-### 1. Setup Your Master Resume
+### 1. Build Your Arsenal Inventory
 
-**The Core Problem**: Traditional 2-page resumes create a fundamental issue when using AI for tailoring. When you try to customize a condensed resume, AI tools must fill gaps with plausible-sounding but fictional content, leading to claims you can't defend in interviews.
+**The Core Problem**: Traditional 2-page resumes create a critical shortage when deploying AI for tailoring. When you attempt to customize condensed resumes, AI tools must fabricate plausible-sounding but fictional claims, leading to failures under interview scrutiny.
 
-**The Solution**: A comprehensive 20+ page master resume serves as your "database of truth" - every achievement, metric, and skill is documented with full context. This allows AI to **select** relevant experiences rather than **invent** them.
+**The Solution**: A comprehensive 20+ page arsenal inventory serves as your "full career database" - every achievement, metric, and skill is documented with complete context. This allows AI to **deploy** verified content rather than **fabricate** it.
 
 **📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) for complete methodology and [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md) for quick conceptual explanation.
 
@@ -151,100 +151,100 @@ Place your comprehensive career inventory in `ResumeSourceFolder/`:
 - Technology capabilities and skills inventory with proficiency assessments
 - Awards, publications, and certifications with full context and validation
 
-**Critical Standard**: Every claim must be defensible in interview settings with specific examples, metrics, and mechanisms documented.
+**Critical Standard**: Every claim must withstand interview interrogation with verified examples, metrics, and mechanisms documented.
 
-### 2. Find and Add Job Descriptions
+### 2. Acquire Target Coordinates
 
-**Option A: Search hiring.cafe**
+**Option A: Deploy target acquisition sweep**
 ```bash
 /searchjobs "your search query" "location" --save
 ```
-Searches hiring.cafe and automatically saves complete verbatim job descriptions to `Job_Postings/` folder.
+Conducts reconnaissance sweep of hiring.cafe and automatically extracts complete verbatim target intelligence to `Job_Postings/` folder.
 
-**Option B: Manual job posting**
+**Option B: Manual target upload**
 Create a markdown file in `Job_Postings/` directory (e.g., `Job_Postings/CompanyName_Role_Date.md`)
 
-### 3. Assess Job Opportunity First
+### 3. Conduct Target Reconnaissance
 
-Before investing time in resume creation, assess your fit:
+Before committing strike resources, conduct reconnaissance on target viability:
 
 ```bash
 /assessjob Job_Postings/AltoJobPost.md
 ```
 
-Generates comprehensive assessment report showing candidacy strength and identifies critical gaps. **Only proceed if assessment shows reasonable fit** (typically 60%+ match).
+Generates comprehensive reconnaissance report showing engagement probability and identifies critical capability gaps. **Only deploy full strike package if reconnaissance shows viable engagement** (typically 60%+ hit probability).
 
-### 4. Generate Optimized Resume (If Assessment is Positive)
+### 4. Assemble Strike Package (If Reconnaissance is Positive)
 
 ```bash
 /buildresume Job_Postings/AltoJobPost.md Canadian
 ```
 
-Executes the core 3-step resume development process: draft creation, provenance analysis, final hardened resume.
+Executes the core 3-step resume assembly: initial draft creation, provenance verification, final hardened resume.
 
-### 5. Compare Multiple Opportunities (If Applicable)
+### 5. Prioritize Multiple Targets (If Applicable)
 
 ```bash
 /comparejobs Assessment_Company1_Role1_Date.md Assessment_Company2_Role2_Date.md
 ```
 
-### 6. Prepare for Interview
+### 6. Conduct Interview Preparation
 
-**Create study guide to address gaps:**
+**Generate intelligence brief to address capability gaps:**
 ```bash
 /briefing OutputResumes/Assessment_[Company]_[Role]_[Date].md Job_Postings/AltoJobPost.md gaps-only
 ```
 
-**Generate customized interview questions:**
+**Deploy interview prep questions:**
 ```bash
 /interviewprep OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md Job_Postings/AltoJobPost.md
 ```
 
-### 7. Finalize Application (Optional)
+### 7. Execute Final Mission Sequence (Optional)
 
-**Generate strategic cover letter:**
+**Deploy strategic cover letter:**
 ```bash
 /coverletter OutputResumes/Step3_Final_Resume_[Role]_[Company]_[Date].md Job_Postings/AltoJobPost.md
 ```
 
-**Convert to professional Word format:**
+**Convert to deployment-ready format:**
 ```bash
 /install-pandoc    # Install pandoc if needed
 /convert all       # Convert all documents to Word format
 ```
 
-## Core Commands Reference
+## Command Arsenal
 
-### Opportunity Assessment
+### Target Reconnaissance
 ```bash
 /assessjob <job-description-file>
 ```
-**START HERE** - Creates dynamic scoring rubric and 100-point assessment with go/no-go recommendation.
+**START HERE** - Deploys dynamic reconnaissance rubric and 100-point viability assessment with engage/disengage recommendation.
 
-### Resume Development
+### Resume Assembly
 ```bash
 /buildresume <job-description-file> [cultural-profile]
 ```
-Runs full 3-step optimization (draft, provenance check, final resume). Cultural profiles: Canadian (default), US, European, UK, Australian.
+Executes full 3-step assembly protocol (draft creation, provenance verification, hardened final resume). Theater profiles: Canadian (default), US, European, UK, Australian.
 
-### Modular Assessment Workflow
+### Modular Reconnaissance Workflow
 ```bash
-/createrubric <job-posting-file>                              # Create reusable scoring rubric only
-/assesscandidate <rubric-file> <job-posting-file>            # Assess using pre-created rubric
-/comparejobs <assessment-1> <assessment-2> [assessment-3]    # Compare multiple assessments
+/createrubric <job-posting-file>                              # Establish reusable targeting criteria
+/assesscandidate <rubric-file> <job-posting-file>            # Execute standardized reconnaissance
+/comparejobs <assessment-1> <assessment-2> [assessment-3]    # Prioritize multiple targets
 ```
 
 ### Interview Preparation
 ```bash
-/briefing <assessment-report> <job-description> [gaps-only]  # Create study guide
-/interviewprep <resume-file> <job-description> [N]           # Generate interview questions
+/briefing <assessment-report> <job-description> [gaps-only]  # Generate intelligence brief
+/interviewprep <resume-file> <job-description> [N]           # Deploy interview prep questions
 ```
 
-### Job Search System
+### Target Acquisition System
 ```bash
 /searchjobs <query> [location] [--company=name] [--save] [--limit=N]
 ```
-Two-phase hybrid search: API search + Playwright scraping for complete verbatim job descriptions. Default 20 jobs, max 50 recommended.
+Two-phase hybrid reconnaissance: API sweep + Playwright deep-scan for complete verbatim target intelligence. Default 20 targets, max 50 recommended.
 
 **Examples:**
 ```bash
@@ -253,69 +253,69 @@ Two-phase hybrid search: API search + Playwright scraping for complete verbatim 
 /searchjobs "python developer" "Mississauga" --save --limit=30
 ```
 
-### Company Intelligence
+### Intelligence Operations
 ```bash
 /osint <company-name>
 ```
-Deploys 6 specialized OSINT agents in parallel for comprehensive intelligence: Corporate, Legal, Leadership, Compensation, Culture, Market.
+Deploys 6 specialized intelligence agents in parallel for comprehensive target analysis: Corporate, Legal, Leadership, Compensation, Culture, Market.
 
-### Document Management
+### Mission Support
 ```bash
-/provenance <draft-resume-file>                              # Standalone credibility check
-/coverletter <step3-resume> <job-description> [manager]      # Strategic cover letter
-/convert <file-path-or-pattern> [output-directory]          # Markdown to Word DOCX
-/install-pandoc [force]                                      # Install pandoc utility
+/provenance <draft-resume-file>                              # Provenance verification sweep
+/coverletter <step3-resume> <job-description> [manager]      # Deploy cover letter
+/convert <file-path-or-pattern> [output-directory]          # Convert to deployment format
+/install-pandoc [force]                                      # Install conversion utility
 ```
 
-## The 8-Step Application Process
+## The 8-Step Protocol
 
-### Phase 1: Opportunity Assessment (Step 1)
-**Job Assessment & Candidate Evaluation**
-- Dynamic rubric creation with 100-point scoring framework
-- Domain knowledge integration via web research
-- Comprehensive evaluation mapping candidate evidence to requirements
-- Go/no-go decision based on fit score and gap analysis
+### Phase 1: Target Reconnaissance (Step 1)
+**Target Assessment & Engagement Viability**
+- Dynamic targeting criteria with 100-point probability framework
+- Domain intelligence integration via web research
+- Comprehensive capability mapping against target requirements
+- Engage/disengage decision based on hit probability and capability gaps
 
 ### Phase 2: Resume Development (Steps 2-4)
 **Step 2: Initial Draft Creation**
-- Job analysis with cultural profiling
-- HAM-Z methodology application
-- ATS optimization
+- Target analysis with theater-specific profiling
+- HAM-Z methodology deployment
+- ATS penetration optimization
 
-**Step 3: Provenance Analysis**
-- Mandatory evidence verification against master documents
-- Line number validation with exact quotes
+**Step 3: Provenance Verification**
+- Mandatory credibility verification against arsenal inventory
+- Line-by-line validation with exact evidence citations
 - Critical risk detection for fabricated capabilities
 - Risk categorization (Critical/High/Medium/Low)
 
-**Step 4: Final Resume Production**
-- Systematic hardening incorporating all provenance recommendations
-- Evidence-based claims withstanding interview scrutiny
-- Interview-ready final version
+**Step 4: Hardened Resume Production**
+- Systematic hardening incorporating all verification recommendations
+- Evidence-based claims withstanding interview interrogation
+- Deployment-ready final resume
 
 ### Phase 3: Interview Preparation (Steps 5-6)
-**Step 5: Gap Analysis and Study Guide Creation**
-- Critical gap identification from assessment
-- Learning resource research with web search
-- Structured study plan with actionable timelines
-- Two modes: gaps-only or comprehensive preparation
+**Step 5: Gap Analysis and Intelligence Brief Creation**
+- Critical capability gap identification from reconnaissance
+- Learning resource research with web intelligence
+- Structured training protocol with actionable timelines
+- Two modes: gaps-only or comprehensive interview prep
 
-**Step 6: Customized Interview Question Generation**
+**Step 6: Interview Question Generation**
 - Resume-job alignment analysis
-- Technical, behavioral, and verification questions
-- STAR format coaching and answer frameworks
-- Follow-up preparation and risk mitigation
+- Technical, behavioral, and verification question deployment
+- STAR format tactical coaching and response frameworks
+- Follow-up preparation and defensive risk mitigation
 
-### Phase 4: Application Finalization (Steps 7-8)
-**Step 7: Cover Letter Generation (Optional)**
-- Strategic narrative from validated resume
+### Phase 4: Mission Execution (Steps 7-8)
+**Step 7: Cover Letter Deployment (Optional)**
+- Strategic communication from verified resume
 - Requirements-matching table for visual impact
-- Evidence chain to master documents
+- Complete evidence chain to arsenal inventory
 
-**Step 8: Document Conversion (Optional)**
+**Step 8: Format Conversion (Optional)**
 - Markdown to Word DOCX conversion
 - Pandoc integration for professional formatting
-- Batch processing support
+- Batch deployment support
 
 ## HAM-Z™ Methodology
 
@@ -328,8 +328,8 @@ Example:
 
 ## Provenance Risk Categories
 
-### Critical Risk (Cannot Proceed)
-- Fabricated capabilities, skills, or experience not documented in master materials
+### Critical Risk (Mission Abort)
+- Fabricated capabilities, skills, or experience not documented in arsenal inventory
 - Language skills without explicit documentation
 - Industry or geographic experience without supporting evidence
 
@@ -337,7 +337,7 @@ Example:
 - Unbounded metrics without timeframes
 - Unsupported superlatives ("market-leading", "transformational")
 - Cross-document inconsistencies
-- Benchmark claims without peer sets
+- Benchmark claims without defined peer sets
 
 ### Medium Risk (Should Fix)
 - Results without mechanism ("how")
@@ -349,17 +349,17 @@ Example:
 - Confidentiality concerns
 - Minor formatting inconsistencies
 
-## Example Workflows
+## Tactical Operations Examples
 
-### Multi-Job Comparison Workflow
+### Multi-Target Prioritization Workflow
 ```bash
-# Option 1: Complete assessment workflow
+# Option 1: Complete reconnaissance workflow
 /assessjob JLL_VP_Office_Leasing.md
 /assessjob Canerector_Vice_President_Real_Estate.md
 /assessjob CityOfToronto_SeniorDirector.md
 /comparejobs Assessment_JLL*.md Assessment_Canerector*.md Assessment_CityOfToronto*.md
 
-# Option 2: Modular assessment workflow
+# Option 2: Modular reconnaissance workflow
 /createrubric JLL_VP_Office_Leasing.md
 /createrubric Canerector_Vice_President_Real_Estate.md
 /assesscandidate Rubric_JLL*.md JLL_VP_Office_Leasing.md
@@ -367,9 +367,9 @@ Example:
 /comparejobs Assessment_JLL*.md Assessment_Canerector*.md
 ```
 
-### Job Search and Intelligence Workflow
+### Full Deployment Workflow
 ```bash
-# Complete workflow from job discovery to application
+# Complete operations from target acquisition to mission execution
 /searchjobs "real estate director" "Toronto" --save --limit=20
 /osint Deloitte
 /assessjob Job_Postings/SearchResults_Leasing_Toronto_2025-09-29.md
@@ -385,21 +385,21 @@ Example:
 - **Interview Prep**: `Briefing_[Company]_[Role]_[Mode]_[Date].md`, `Interview_Prep_[Company]_[Role]_[Date].md`
 - **Application**: `Step4_CoverLetter_[Role]_[Company]_[Date].md`, `[OriginalName].docx`
 
-## Requirements
+## Equipment & Readiness
 
 - Claude Code CLI installed and configured
-- Master resume documents in markdown format in `ResumeSourceFolder/`
-- Job descriptions in markdown format in `Job_Postings/`
+- Arsenal inventory documents in markdown format in `ResumeSourceFolder/`
+- Target coordinates in markdown format in `Job_Postings/`
 - `pandoc` installed for document conversion (optional, use `/install-pandoc`)
 
-## Support
+## Mission Support
 
-For issues or improvements:
-- `comprehensive_work_history_FAQ.md` - Master resume philosophy
+For tactical assistance:
+- `comprehensive_work_history_FAQ.md` - Arsenal inventory philosophy
 - `CLAUDE.md` - Technical implementation details
 - `SourceMaterial/` - Methodology documentation
-- `.claude/agents/` - Agent-specific logic
+- `.claude/agents/` - Agent-specific operational protocols
 
 ## License
 
-Private repository - All resume content is confidential
+Private repository - All tactical operations are confidential

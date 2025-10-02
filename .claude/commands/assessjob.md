@@ -47,6 +47,8 @@ Every markdown artifact you create (rubric and assessment report) must start wit
 Insert the appropriate block before any headings, updating timestamps and scores, and bump `version` if you rerun the analysis.
 
 ### 1. Load Required Documents
+✓ Acquiring target coordinates from `Job_Postings/{{ARG1}}`
+✓ Loading arsenal inventory from `ResumeSourceFolder/`
 - Read the job posting from `Job_Postings/{{ARG1}}` (add .md extension if needed)
 - Load ALL candidate work history files from `ResumeSourceFolder/` directory:
   - Use glob pattern to find all markdown files in ResumeSourceFolder/
@@ -54,6 +56,7 @@ Insert the appropriate block before any headings, updating timestamps and scores
   - Include all CV, resume, technology capability, and work history documents
 
 ### 2. Create Dynamic Job-Specific Rubric
+✓ Establishing targeting criteria and reconnaissance framework
 Analyze the job posting to extract and categorize requirements, then create a customized scoring rubric.
 
 **🚨 MANDATORY DETAILED SCORING REQUIREMENT 🚨**
@@ -461,6 +464,7 @@ Save the generated rubric to: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md
 Also save a reference copy with the assessment for audit trail
 
 ### 3. Acquire Domain Knowledge
+✓ Conducting intelligence gathering on target domain and industry
 Use web research to understand:
 - Industry standards and role expectations for the specific position
 - Required vs nice-to-have skills based on current market standards
@@ -533,6 +537,7 @@ Automatically verify when scoring shows:
 - Industry experience without explicit company/role evidence
 
 ### 4. Perform 100-Point Assessment Using Dynamic Rubric
+✓ Executing reconnaissance assessment against targeting criteria
 
 Apply the job-specific scoring rubric you created systematically:
 1. **Core Technical Skills (25 pts)** - Map each required/preferred skill from the custom rubric to specific evidence in candidate's history
@@ -543,6 +548,7 @@ Apply the job-specific scoring rubric you created systematically:
 6. **Cultural Fit (5 pts)** - Assess based on the company values and work environment extracted from the posting
 
 ### 5. Generate Comprehensive Report
+✓ Compiling reconnaissance report with engagement recommendation
 
 Create assessment report using the dynamic rubric scores:
 ```markdown

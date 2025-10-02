@@ -30,6 +30,7 @@ Users can search by:
 ## Execution Protocol
 
 ### Phase 1: Parse Search Criteria
+✓ Acquiring target search parameters
 
 Extract and clarify the user's search requirements:
 - Primary keywords from {{ARG1}}
@@ -39,6 +40,7 @@ Extract and clarify the user's search requirements:
 - Result limit from `--limit` flag (default: 20)
 
 ### Phase 2: Deploy hiringcafe-search Agent for API Search
+✓ Executing reconnaissance sweep of hiring.cafe
 
 Launch the hiringcafe-search agent with a comprehensive search instruction:
 
@@ -75,10 +77,12 @@ After the agent returns the API search results:
 
 Example message:
 ```
-Found [X] jobs matching your criteria. Now fetching complete job descriptions using Playwright...
+✓ Target acquisition complete: Found [X] jobs matching criteria
+✓ Deploying deep-scan extraction for complete job descriptions...
 ```
 
 ### Phase 4: Scrape Job Descriptions with Playwright
+✓ Extracting complete verbatim target intelligence
 
 For each job from the API results, use Playwright MCP to scrape verbatim job descriptions:
 
