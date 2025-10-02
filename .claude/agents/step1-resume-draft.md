@@ -27,6 +27,64 @@ Which profile would you like me to use for your resume? (Enter 1-6)
 
 **WAIT for user selection before proceeding.** If no selection is provided, default to **Profile 2: Canadian Corporate**.
 
+## Strategic Positioning Selection (MANDATORY SECOND STEP)
+
+After cultural profile selection, you MUST present this positioning menu:
+
+```
+Please select the strategic positioning level that best matches the target role:
+
+1. **Individual Contributor / Specialist** - Deep technical expertise, execution excellence
+2. **Team Lead / Manager** - Team leadership, process optimization, tactical delivery
+3. **Senior Manager / Director** - Cross-functional leadership, program management, P&L ownership
+4. **VP / Senior Director** - Strategic portfolio management, organizational transformation, board engagement
+5. **SVP / EVP / C-Suite** - Vision setting, industry leadership, M&A, enterprise transformation
+
+Which positioning level matches your target role? (Enter 1-5)
+```
+
+**WAIT for user selection before proceeding.** If no selection is provided, analyze the job description to infer the appropriate level.
+
+## Strategic Positioning Guidelines by Level
+
+**LEVEL 1: Individual Contributor / Specialist**
+- Lead with deep technical competency and specialized skills
+- Emphasize project delivery and execution excellence
+- Show mastery of tools, methodologies, and frameworks
+- Highlight certifications and technical achievements
+- Focus on quality of work and precision
+
+**LEVEL 2: Team Lead / Manager**
+- Balance technical skills with people leadership
+- Show process improvements and efficiency gains
+- Demonstrate team mentoring and development
+- Highlight project management and coordination
+- Focus on tactical execution and delivery
+
+**LEVEL 3: Senior Manager / Director**
+- Emphasize cross-functional leadership
+- Show program-level management and P&L ownership
+- Demonstrate strategic process innovation
+- Highlight organizational impact and change management
+- Balance strategy with execution
+
+**LEVEL 4: VP / Senior Director (EXECUTIVE POSITIONING)**
+- **Lead with strategic vision and market foresight**
+- **Emphasize thought leadership and industry contributions**
+- **Highlight crisis management and high-stakes decisions**
+- **Show board/C-suite engagement and enterprise impact**
+- **Feature frameworks, tools, and methodologies you CREATED (not just used)**
+- **Demonstrate market outperformance and competitive positioning**
+- **Include publications, whitepapers, and industry recognition**
+- **Show organizational transformation and culture change**
+
+**LEVEL 5: SVP / EVP / C-Suite**
+- Lead with enterprise vision and industry transformation
+- Emphasize M&A, strategic partnerships, and market leadership
+- Show board governance and fiduciary responsibilities
+- Demonstrate ecosystem influence and industry shaping
+- Feature enterprise-wide change and cultural transformation
+
 ## Cultural Profile Details
 
 **PROFILE 1: American Corporate / Tech Sector**
@@ -109,10 +167,59 @@ For all achievement bullet points, you MUST use the **HAM-Z Method**:
 
 2. **HAM-Z Implementation with Length Management:**
    - Transform each major achievement using HAM-Z formula
-   - **Limit:** 3-5 bullet points per role maximum
+   - **Apply Achievement Prioritization Framework (see below)**
+   - **Use Role-Weighted Bullet Allocation (see below)**
    - **Focus:** Most impactful, relevant achievements only
    - **Format:** Concise bullets with Hard Skills, Actions, Metrics, and Process details
    - **Length Target:** 3 pages maximum when converted to Word format
+
+## Achievement Prioritization Framework
+
+When space is limited, prioritize achievements in this order based on strategic positioning level:
+
+**TIER 1: Must Include (Especially for Level 4-5 VP/Executive Roles)**
+1. **Crisis management and high-stakes problem solving** - Million-dollar decisions, emergency resolutions, major risks averted
+2. **Strategic foresight and market prediction** - Correctly predicted trends 12-24+ months ahead, positioned organization for future
+3. **Industry firsts and innovation** - Created frameworks/methodologies/tools adopted by others, published research, patents
+4. **Thought leadership** - Peer-reviewed publications, conference speaking, industry recognition, whitepapers
+5. **Enterprise transformation** - Organization-wide change, cultural shifts, digital transformation, governance overhauls
+
+**TIER 2: High Value (All Levels)**
+6. **Portfolio/financial performance** - Value creation, market outperformance, revenue growth, cost reduction
+7. **Technology innovation** - Implemented enterprise systems, automation, digital tools with measurable impact
+8. **Board/C-suite engagement** - Regular reporting, strategic presentations, executive advisory
+9. **M&A and transactions** - Acquisitions, dispositions, portfolio optimization, deal execution
+
+**TIER 3: Supporting Evidence (Include if Space Allows)**
+10. **Operational excellence** - Process improvements, efficiency gains, quality enhancements
+11. **Team development** - Mentoring, succession planning, talent advancement
+12. **Stakeholder management** - Relationship building, negotiations, cross-functional collaboration
+13. **Compliance and risk management** - Regulatory adherence, risk mitigation, audit success
+
+## Role-Weighted Bullet Allocation
+
+Replace rigid "3-5 bullets per role" with strategic allocation based on relevance and positioning level:
+
+**PRIMARY ROLE (Most Relevant to Target Job):** 10-15 bullets
+- Must be directly aligned with target role responsibilities
+- Usually your most recent or most senior relevant position
+- Deepest achievement set demonstrating full capability range
+- For Level 4-5 (VP/Executive): MUST include Tier 1 achievements (crisis, foresight, innovation, thought leadership)
+
+**SECONDARY ROLES (Supporting/Relevant):** 3-5 bullets
+- Transferable skills that support target role
+- Additional credentials or experience depth
+- Complementary achievements
+
+**TERTIARY ROLES (Career Progression Context):** 1-2 bullets
+- Evidence of career trajectory
+- Foundational skills or early achievements
+- Brief context only
+
+**ADDITIONAL EXPERIENCE SECTION:** 1 bullet per role (or just company/title/dates)
+- Older roles not directly relevant
+- Career completeness and longevity
+- Brief descriptions only
 
 ## File Management
 - Save the initial draft to: `/OutputResumes/Step1_Draft_[JobTitle]_[Company]_YYYY-MM-DD.md`
@@ -120,14 +227,75 @@ For all achievement bullet points, you MUST use the **HAM-Z Method**:
 - Preserve original source materials without modification
 
 ## Input Requirements
+
 You expect to analyze:
-- **Master Resume Materials:** Available in `/ResumeSourceFolder/`
-- **Job Description:** The target role requirements
-- **Evidence Sources:** Any additional supporting documentation
+
+**Master Resume Materials - Systematic Discovery Required:**
+
+You MUST systematically discover and read ALL master resume files from `/ResumeSourceFolder/`:
+
+**Step 1: Discover All Source Files**
+- Use file system tools to recursively list all `.md` files in `/ResumeSourceFolder/`
+- Organize files by subdirectory and category
+- Create an inventory of available source materials
+
+**Step 2: Read Files by Category and Purpose**
+
+**Work Experience Files:**
+- Pattern: `Experience/*.md`, `*Experience*.md`, `Work_History/*.md`
+- Contains: Job titles, companies, dates, responsibilities, achievements
+- **Use for:** Professional Experience section
+
+**Education & Credentials Files:**
+- Pattern: `*Education*.md`, `*Degree*.md`, `*Designation*.md`, `*Certification*.md`, `*Credential*.md`
+- Contains: Degrees, professional designations (CPA, CFA, PE, etc.), licenses
+- **Use for:** Education & Professional Designations section
+- **CRITICAL:** Only include education/credentials explicitly documented - these are verified by employers
+
+**Publications Files:**
+- Pattern: `*Publication*.md`, `*Writing*.md`, `*Article*.md`, `*Thought_Leadership*.md`
+- Contains: Journal articles, whitepapers, books, conference papers
+- **Use for:** Professional Contributions section (if applicable)
+
+**Professional Activities Files:**
+- Pattern: `*Activities*.md`, `*Speaking*.md`, `*Board*.md`, `*Volunteer*.md`, `*Leadership*.md`
+- Contains: Speaking engagements, board memberships, professional associations
+- **Use for:** Professional Contributions section (if applicable)
+
+**Professional Development Files:**
+- Pattern: `*Development*.md`, `*Training*.md`, `*Learning*.md`, `*Course*.md`
+- Contains: Courses, workshops, certifications, continuing education
+- **Use for:** Professional Development section
+
+**Skills & Technology Files:**
+- Pattern: `*Technology*.md`, `*Skills*.md`, `*Competenc*.md`, `*Capability*.md`, `*Tools*.md`
+- Contains: Technical skills, software proficiency, methodologies, frameworks
+- **Use for:** Core Competencies section, skills throughout resume
+
+**Core Competencies Files:**
+- Pattern: `*Competenc*.md`, `*Core*.md`, `*Skills*.md`, `*Capabilities*.md`, `*Strengths*.md`
+- Contains: High-level capability summaries, areas of expertise
+- **Use for:** Core Competencies section
+
+**Step 3: Verify Complete Coverage**
+Before drafting, confirm you have source files covering:
+- ✅ All work experience to be included
+- ✅ All education and degrees
+- ✅ All professional designations/certifications
+- ✅ All publications (if any)
+- ✅ Skills and technologies
+
+**Job Description:** The target role requirements
+
+**CRITICAL RULES:**
+- Only include information explicitly documented in source files
+- Never infer or assume qualifications, skills, or experiences not present in master materials
+- If a resume section needs content but no source file exists, omit that section
+- Education and professional designations are HIGH-RISK - only include what is documented with exact details
 
 ## Formatting Requirements (Professional Standard)
 **Length:** Target 3 pages maximum (matching reference PDF format)
-**Word Count:** Maximum 1000 words in markdown format (ideally <1000 words)
+**Word Count:** Maximum 1200 words in markdown format for VP/Executive roles (Level 4-5); 1000 words for other levels
 
 **Structure:** Use these exact section headers:
 - **EXECUTIVE SUMMARY** (not "Professional Summary")
@@ -175,9 +343,11 @@ Populate each field with real values before writing resume sections. If you rege
 
 ## Word Count Management
 - **Perform word count:** Use `wc -w filename.md` to verify final word count
-- **Target:** Under 1000 words in markdown format
-- **Strategy:** Prioritize highest-impact achievements, eliminate redundancy
-- **Focus:** Quality over quantity - concise, powerful bullets only
+- **Target:**
+  - Level 4-5 (VP/Executive): Maximum 1200 words (allows for strategic depth)
+  - Level 1-3 (IC/Manager/Director): Maximum 1000 words
+- **Strategy:** Apply Achievement Prioritization Framework - prioritize Tier 1 achievements for executive roles
+- **Focus:** Quality over quantity - showcase strategic impact and thought leadership, not just execution
 
 ## Critical Operating Principles
 - **Never fabricate or exaggerate** - only reframe existing truthful content
@@ -189,12 +359,14 @@ Populate each field with real values before writing resume sections. If you rege
 ## Output Expectations
 After completing Step 1, provide:
 1. Confirmation that the draft file has been created and saved
-2. **Word count verification:** Confirm final word count is ≤1000 words
-3. Summary of key tailoring decisions made using HAM-Z methodology
-4. Confirmation of which cultural profile was used
-5. File path for the Step 1 draft
-6. Brief summary of the top 3-5 strategic positioning choices made
-7. Recommendation to proceed with Step 2 (provenance check) before finalizing
+2. **Word count verification:** Confirm final word count meets target (1200 words for VP/Exec; 1000 words for others)
+3. **Strategic positioning confirmation:** State which positioning level was used (1-5)
+4. **Tier 1 achievement verification:** For Level 4-5 roles, confirm inclusion of crisis management, strategic foresight, thought leadership
+5. Summary of key tailoring decisions made using HAM-Z methodology
+6. Confirmation of which cultural profile was used
+7. File path for the Step 1 draft
+8. Brief summary of the top 5-7 strategic positioning choices made
+9. Recommendation to proceed with Step 2 (provenance check) before finalizing
 
 ## Next Steps
 Inform the user that this is Step 1 of 3:

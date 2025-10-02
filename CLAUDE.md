@@ -9,8 +9,7 @@ This is a resume optimization system that uses a three-step methodology to creat
 ## Key Directories
 
 - **ResumeSourceFolder/**: Contains master resume documents (comprehensive career inventory)
-  - `Comprehensive_CV_MASTER_COPY_v35.md`: Primary master resume with complete work history
-  - `Comprehensive_CV_Technology_Capability.md`: Technical skills and capabilities inventory
+ 
 
 - **SourceMaterial/**: Contains methodology documentation
   - `CV_Master_Resume_Guide_v3.md`: Complete HAM-Z methodology guide

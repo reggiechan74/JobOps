@@ -45,10 +45,65 @@ You will apply the CV Provenance Hardening methodology with these detection heur
    - Read the complete Step 1 draft file from `/OutputResumes/Step1_Draft_*`
    - Understand the structure and all claims made
 
-2. **Load Master Resume Materials:**
-   - Read ALL files in `/ResumeSourceFolder/` directory
-   - Process each markdown file as source material for verification
-   - Build comprehensive understanding of candidate's complete work history
+2. **Load Master Resume Materials (COMPREHENSIVE - ALL FILES REQUIRED):**
+   You MUST systematically discover and read ALL files from `/ResumeSourceFolder/`:
+
+   **Step 2A-1: Discover All Source Files**
+   - Use file system tools to recursively list all `.md` files in `/ResumeSourceFolder/`
+   - Organize files by subdirectory (Experience/, CareerHighlights/, Technology/, etc.)
+   - Create an inventory of all available source materials
+
+   **Step 2A-2: Read Files by Category**
+
+   **Experience Files (typically in `Experience/` subdirectory):**
+   - Read ALL files matching pattern `Experience/Experience_*.md` or similar
+   - These contain detailed work history, achievements, and metrics
+   - **CRITICAL:** Every job mentioned in draft resume MUST have a corresponding Experience file
+
+   **Education & Credentials Files:**
+   - Look for files containing "Education", "Designation", "Certification", "Credential"
+   - Common patterns: `*Education*.md`, `*Designation*.md`, `*Certification*.md`
+   - **CRITICAL for verification:** Degrees, professional designations (CPA, CFA, PE, etc.), licenses
+   - Zero tolerance for discrepancies - these are easily verified by employers
+
+   **Publications Files:**
+   - Look for files containing "Publication", "Article", "Writing", "Thought Leadership"
+   - Common patterns: `*Publication*.md`, `*Writing*.md`, `*Articles*.md`
+   - **CRITICAL for verification:** Journal articles, whitepapers, books, conference papers
+
+   **Professional Activities Files:**
+   - Look for files containing "Activities", "Speaking", "Boards", "Volunteer"
+   - Common patterns: `*Activities*.md`, `*Professional*.md`, `*Leadership*.md`
+   - Contains speaking engagements, board memberships, professional associations
+
+   **Professional Development Files:**
+   - Look for files containing "Development", "Training", "Courses", "Learning"
+   - Common patterns: `*Development*.md`, `*Training*.md`, `*Learning*.md`
+   - Contains courses, workshops, certifications, continuing education
+
+   **Skills & Technology Files:**
+   - Look for files containing "Technology", "Skills", "Competenc", "Capability"
+   - Common patterns: `*Technology*.md`, `*Skills*.md`, `*Competenc*.md`
+   - **CRITICAL for verification:** Technical skills, software proficiency, methodologies
+
+   **Core Competencies Files:**
+   - Look for files containing "Competenc", "Skills", "Capabilities", "Strengths"
+   - Common patterns: `*Competenc*.md`, `*Core*.md`, `*Skills*.md`
+   - Contains high-level capability summaries
+
+   **Step 2A-3: File Coverage Verification**
+   - Confirm you have read files covering:
+     ✅ Work experience (all roles in draft resume)
+     ✅ Education and degrees
+     ✅ Professional designations/certifications
+     ✅ Publications (if any claimed)
+     ✅ Skills and technologies
+   - If any category is missing and claimed in draft, FLAG as HIGH RISK
+
+   **CRITICAL REQUIREMENT:**
+   - If source files exist but you cannot access them, STOP the analysis and report the issue
+   - If draft claims content not covered by any source file, FLAG as FABRICATION RISK
+   - Do NOT proceed with partial verification - you need complete source coverage
 
 3. **Load Job Description:**
    - Read the original job posting to understand targeting context
@@ -59,10 +114,68 @@ You will apply the CV Provenance Hardening methodology with these detection heur
    - Apply detection heuristics systematically
    - Flag problematic statements with specific categories
 
-2. **Cross-Reference Verification:**
+2. **MANDATORY Section-by-Section Verification (Pattern-Based Source Matching):**
+
+   For each section below, identify the relevant source file(s) from your inventory and verify claims:
+
+   - **Education Section:**
+     * Verify EVERY degree, institution, major, and graduation year
+     * Source files: Look for `*Education*.md`, `*Degree*.md`, `*Academic*.md`
+     * Zero tolerance for discrepancies - flag as CRITICAL RISK
+     * Common errors: Wrong degree type, wrong institution, wrong graduation year, fabricated degrees
+
+   - **Professional Designations (CFA, CFA, PE, FRICS, etc.):**
+     * Verify EVERY certification, license, and credential with exact dates and IDs
+     * Source files: Look for `*Education*.md`, `*Designation*.md`, `*Credential*.md`, `*Certification*.md`
+     * Zero tolerance for fabrication - these are easily verified by employers
+     * Common errors: Claiming "in progress" certs that were never completed, wrong dates, fabricated designations
+
+   - **Other Certifications (Six Sigma, PMP, AWS, etc.):**
+     * Verify against files containing "Certification", "Training", "Credential"
+     * Check dates, issuing organizations, and levels
+     * Flag any cert claims without source documentation
+
+   - **Professional Development (Courses, Training):**
+     * Verify against files containing "Development", "Training", "Learning", "Course"
+     * Confirm course names, institutions, and completion dates
+     * Be skeptical of MOOCs without completion certificates
+
+   - **Publications (Articles, Whitepapers, Books):**
+     * Verify EVERY publication title, journal name, volume, issue, date
+     * Source files: Look for `*Publication*.md`, `*Writing*.md`, `*Article*.md`
+     * Also cross-reference Experience files for context (e.g., publications during specific employment)
+     * Zero tolerance - publications are easily verified online
+
+   - **Professional Activities (Speaking, Boards, Associations):**
+     * Verify against files containing "Activities", "Speaking", "Board", "Professional"
+     * Check organization names, roles, and dates
+     * Flag any leadership claims without documentation
+
+   - **Professional Experience:**
+     * Verify all companies, titles, dates, and achievements
+     * Source files: Experience/*.md files or similar patterns
+     * Every employer in draft MUST have a corresponding source file
+     * Flag title inflation, date discrepancies, company name errors
+
+   - **Skills & Technologies:**
+     * Verify all claimed competencies have supporting evidence
+     * Source files: Look for `*Technology*.md`, `*Skills*.md`, `*Competenc*.md` + Experience files
+     * Flag any tech claims without documented usage in work history
+     * Be skeptical of buzzword-heavy skill lists
+
+   - **Core Competencies:**
+     * Verify against files containing "Competenc", "Core", "Skills", "Capabilities"
+     * Ensure all competency claims are supported by concrete experience evidence
+     * Flag vague claims without specific project/role backing
+
+   **CRITICAL:** Education, designations, and publications are HIGH-RISK fabrication areas - verify with zero tolerance
+   **PROCESS:** For each claimed item, find the exact source file and quote the supporting evidence with line numbers
+
+3. **Cross-Reference Verification:**
    - Compare all claims against master resume materials
    - Identify any inconsistencies in dates, titles, metrics, or scope
    - Verify all achievements are properly supported by source materials
+   - **Flag any education/credential discrepancies as CRITICAL RISK**
 
 **STEP 2C - Evidence Assessment:**
 1. **Mandatory Evidence Verification:**
