@@ -141,6 +141,17 @@ This is a tactical job application platform that uses an 8-step methodology to c
   - Verifies installation and conversion capabilities
   - Required dependency for document conversion functionality
 
+### Portfolio Management
+- `/github-portfolio [-create|-update] [repository-url-or-analysis]`: Create or update GitHub portfolio documentation
+  - **Default mode (-create)**: Creates initial GitHub_Repositories.md with comprehensive structure
+  - **Update mode (-update <repo-url>)**: Adds new repository to existing portfolio
+  - **Refresh mode (-update)**: Full portfolio reorganization and content refresh
+  - Provides repository analysis script for user to run in target repository's codespace
+  - Creates comprehensive repository entries with technical architecture, skills demonstrated, business impact
+  - Maintains 11 capability matrices tracking proficiency across all technical areas
+  - Updates Table of Contents, conclusion, and version tracking automatically
+  - Output: `ResumeSourceFolder/Technology/GitHub_Repositories.md`
+
 ## Custom Agents
 
 The repository includes specialized agents for each step:
