@@ -136,6 +136,15 @@ This is a tactical job application platform that uses an 8-step methodology to c
   - Generates Master Intelligence Report for strategic decision-making
 
 ### System Setup
+- `/create-career-history <resume-file-1> [resume-file-2] ...`: Intelligent career history parser
+  - Accepts one or more resume files (PDF, DOCX, TXT, MD) as input
+  - Parses existing resumes and extracts structured career information
+  - Creates complete ResumeSourceFolder structure with pre-populated files
+  - Transforms content to HAM-Z format (Hard Skill + Action + Metrics)
+  - Identifies content gaps and provides enhancement recommendations
+  - Marks estimated metrics and flags provenance concerns
+  - Essential first step for new users before building tailored resumes
+
 - `/install-pandoc [force]`: Installs pandoc for document conversion
   - Auto-detects operating system and package manager
   - Verifies installation and conversion capabilities
@@ -192,6 +201,8 @@ The repository includes specialized agents for each step:
 - `resume-tailoring-specialist`: Deprecated orchestrator (use 8-step process instead)
 
 ## Working with Resume Files
+
+**For new users**: If your `ResumeSourceFolder/` is empty or doesn't exist, run `/create-career-history <your-resume-file.pdf>` first to parse your existing resume and set up the complete folder structure with pre-populated, HAM-Z-enhanced content.
 
 When processing resumes:
 1. Always read from `ResumeSourceFolder/` for master data

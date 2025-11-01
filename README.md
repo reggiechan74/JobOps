@@ -11,9 +11,10 @@
 ## Rapid Deployment Protocol
 
 1. Install dependencies: `npm run install-all`
-2. Populate `ResumeSourceFolder/` with your master resume inventory and add target roles to `Job_Postings/`
-3. Start the Playwright MCP server (see "Run the Playwright MCP server" in `SETUP.md`) so Claude Code can reach browser automation
-4. Launch Claude Code in this repository and run slash commands such as `/assessjob Job_Postings/Example.md` followed by `/buildresume`
+2. **New users**: Run `/create-career-history <your-resume.pdf>` to parse your existing resume and auto-populate your master career inventory with HAM-Z-enhanced content
+3. Review and enhance the generated `ResumeSourceFolder/` files, then add target roles to `Job_Postings/`
+4. Start the Playwright MCP server (see "Run the Playwright MCP server" in `SETUP.md`) so Claude Code can reach browser automation
+5. Launch Claude Code in this repository and run slash commands such as `/assessjob Job_Postings/Example.md` followed by `/buildresume`
 
 ## Architecture Overview
 
@@ -81,7 +82,7 @@ resumeoptimizer/
 │   │   ├── step2-provenance-check.md # Credibility verification
 │   │   ├── step3-final-resume.md     # Hardened final resume
 │   │   └── step4-cover-letter.md     # Strategic cover letter
-│   ├── commands/                      # 14 slash command definitions
+│   ├── commands/                      # 15 slash command definitions
 │   │   ├── assesscandidate.md        # /assesscandidate - Use pre-created rubric
 │   │   ├── assessjob.md              # /assessjob - Complete assessment
 │   │   ├── briefing.md               # /briefing - Interview prep guide
@@ -89,6 +90,7 @@ resumeoptimizer/
 │   │   ├── comparejobs.md            # /comparejobs - Multi-job analysis
 │   │   ├── convert.md                # /convert - Markdown to DOCX
 │   │   ├── coverletter.md            # /coverletter - Generate letter
+│   │   ├── create-career-history.md  # /create-career-history - Setup wizard
 │   │   ├── createrubric.md           # /createrubric - Rubric only
 │   │   ├── install-pandoc.md         # /install-pandoc - Setup converter
 │   │   ├── interviewprep.md          # /interviewprep - Question generator
@@ -147,6 +149,14 @@ resumeoptimizer/
 **The Solution**: A comprehensive 20+ page arsenal inventory serves as your "full career database" - every achievement, metric, and skill is documented with complete context. This allows AI to **deploy** verified content rather than **fabricate** it.
 
 **📖 Essential Reading**: Start with [`Master_Resume_Comprehensive_Setup_Guide_v1.md`](Master_Resume_Comprehensive_Setup_Guide_v1.md) for complete methodology and [`comprehensive_work_history_FAQ.md`](comprehensive_work_history_FAQ.md) for quick conceptual explanation.
+
+**🚀 Quick Start for New Users**: If your `ResumeSourceFolder/` is empty, run the intelligent parser with your existing resume:
+```bash
+/create-career-history path/to/your/resume.pdf
+# Or with multiple files:
+/create-career-history resume.docx linkedin_export.pdf certifications.txt
+```
+This parses your resume(s), extracts structured career data, transforms content to HAM-Z format, and creates pre-populated master career inventory files with gap analysis and enhancement recommendations.
 
 Place your comprehensive career inventory in `ResumeSourceFolder/`:
 - Complete work history with all projects and achievements using HAMZ-Extended framework
