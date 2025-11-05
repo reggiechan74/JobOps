@@ -102,6 +102,13 @@ resumeoptimizer/
 ├── .playwright-mcp/                   # Playwright browser automation cache
 ├── Briefing_Notes/                    # Interview preparation materials
 │   └── Briefing_*_*_*_*.md           # Gap analysis and study guides
+├── Guides/                            # Templates and metadata standards
+│   ├── CareerHighlight_Template.md    # CareerHighlights file template
+│   ├── Experience_Template.md         # Experience file template
+│   ├── TechnologyMatrix_Template.md   # Technology capability template
+│   ├── Metadata_Standards.md          # YAML frontmatter standards
+│   ├── Maintenance_Checklist.md       # Master resume maintenance guide
+│   └── Migration_Tracker.md           # Migration status tracker
 ├── Intelligence_Reports/              # OSINT company intelligence reports
 │   ├── [Company]_*_Intelligence_*.md  # Specialized intelligence reports
 │   └── [Company]_Master_Intelligence_*.md # Consolidated reports
@@ -156,7 +163,7 @@ resumeoptimizer/
 # Or with multiple files:
 /create-career-history resume.docx linkedin_export.pdf certifications.txt
 ```
-This parses your resume(s), extracts structured career data, transforms content to HAM-Z format, and creates pre-populated master career inventory files with gap analysis and enhancement recommendations.
+This parses your resume(s), extracts structured career data, transforms content to HAM-Z format, and creates pre-populated master career inventory files using standardized templates from `Guides/` directory. Provides gap analysis and enhancement recommendations.
 
 Place your comprehensive career inventory in `ResumeSourceFolder/`:
 - Complete work history with all projects and achievements using HAMZ-Extended framework
