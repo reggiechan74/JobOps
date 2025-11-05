@@ -108,6 +108,13 @@ ResumeSourceFolder/
 
 ### Phase 4: File Creation & Population
 
+**IMPORTANT**: Before creating any files, read the standardized templates from `/workspaces/resumeoptimizer/Guides/`:
+- `Experience_Template.md` - Use for all Experience files
+- `CareerHighlight_Template.md` - Use for all CareerHighlights files
+- `TechnologyMatrix_Template.md` - Use for Technology files
+
+Follow the exact structure and metadata standards defined in these templates.
+
 Create and populate the following files:
 
 #### CareerHighlights Files (6 files)
@@ -295,168 +302,84 @@ If user provides multiple files:
 
 ## File Templates
 
+**IMPORTANT**: Use the standardized templates found in `/workspaces/resumeoptimizer/Guides/` directory:
+- `Experience_Template.md` - For all Experience files
+- `CareerHighlight_Template.md` - For all CareerHighlights files
+- `TechnologyMatrix_Template.md` - For Technology capability matrix
+
+These templates provide the canonical structure and metadata standards. When creating files, refer to these templates and follow their exact structure, only filling in the content placeholders with extracted resume data.
+
 ### Experience File Template
 
-```markdown
----
-title: [Company Name] – [Job Title]
-organization: [Company Name]
-person: [User's Full Name from Resume]
-tenure: YYYY-MM – YYYY-MM (or Present)
-roleLevel: [Extracted from title: Manager, Director, Analyst, Consultant, etc.]
-keywords: [Extract 3-5 relevant keywords from job description]
-sourceDoc: Created from [filename(s)] on [date]
-lastUpdated: [YYYY-MM-DD]
-techRefs:
-  - [Technology-1 mentioned in this role]
-  - [Technology-2 mentioned in this role]
-shareable: false
-location: [City, Province/State, Country from resume]
-mandate: [Extract or infer one-sentence summary of role purpose]
----
+**Reference**: `/workspaces/resumeoptimizer/Guides/Experience_Template.md`
 
-# [Company Name]
+Key sections to populate:
+- **YAML frontmatter**: title, organization, tenure, roleLevel, keywords, sourceDoc, lastUpdated, techRefs, location, mandate
+- **Role snapshot**: Role, tenure, location, mandate
+- **Organization context**: Industry, scale, company details
+- **Responsibilities & impact**: HAM-Z transformed achievements
+- **Systems & tooling**: Technologies used with links to technology anchors
+- **Thought leadership**: Publications, frameworks, presentations
+- **Evidence & artefacts**: Supporting documentation references
 
-## Role snapshot
-- Role: **[Full Job Title]**
-- Tenure: [Month Year] – [Month Year or Present]
-- Location: [City, Province/State]
-- Mandate: [2-3 sentence description extracted from resume or inferred]
+**Important**: Transform all bullet points to HAM-Z structure:
+- Original: "Managed team of developers"
+- Enhanced: "Improved team productivity by 30% over 6 months by implementing Agile methodology and daily stand-ups for a team of 5 developers"
 
-## Organization context
-<!-- NEEDS ENHANCEMENT: Add company details -->
-- [Company industry - research if needed]
-- [Company size/type - research if needed]
-- [Team structure if mentioned in resume]
-
-## Responsibilities & impact
-
-### [Inferred responsibility area based on bullet points]
-- [Transform resume bullet to HAM-Z format]
-- [Each achievement with metrics, hard skills, mechanisms]
-- [Include technology/methodology used]
-
-<!-- ORIGINAL CONTENT FROM RESUME:
-[Include original bullets here for reference]
--->
-
-### [Next responsibility area]
-- [Continue transforming content]
-
-## Systems & tooling
-- [Extract all tools/platforms/technologies mentioned for this role]
-- [Add proficiency context if available]
-
-## Thought leadership
-<!-- NEEDS ENHANCEMENT: Add if applicable -->
-- [Extract any leadership activities if mentioned]
-
-## Evidence & artefacts
-<!-- USER ACTION REQUIRED: Document available proof -->
-- [Note: User should document what evidence exists for these achievements]
+If metrics are missing but reasonable to estimate based on role level, add them with a comment:
+```
+<!-- ESTIMATED METRIC: Based on typical [Role Level] at [Company Size] -->
 ```
 
-### CareerHighlights Template (Core Competencies)
+### CareerHighlights Template
 
-```markdown
----
-title: Core Competencies – Technical & Domain Expertise
-organization: Personal
-person: [User's Full Name]
-tenure: [Earliest role date] – Present
-roleLevel: Competency Profile
-keywords: competencies,skills,expertise
-sourceDoc: Created from [filename(s)] on [date]
-lastUpdated: [YYYY-MM-DD]
-techRefs:
-  - [Primary-Skill-Area-1]
-  - [Primary-Skill-Area-2]
-shareable: false
-mandate: Capture canonical technical capabilities and domain expertise for resume assembly workflows.
----
+**Reference**: `/workspaces/resumeoptimizer/Guides/CareerHighlight_Template.md`
 
-# Core Competencies
+Key sections to populate:
+- **YAML frontmatter**: title, organization, tenure, roleLevel, keywords, sourceDoc, lastUpdated, techRefs, mandate
+- **Overview**: Achievement or recognition summary
+- **Key details**: Scope, collaborators, audience, outcomes, metrics
+- **Related experience**: Links to relevant experience files
+- **Evidence & artefacts**: Supporting documentation
 
-## TECHNICAL CAPABILITIES
-
-### [Category 1 - e.g., Software Development]
-- **[Specific Tool/Technology]**: [Proficiency level] - [Years based on resume dates] - [Context from resume]
-- **[Another tool]**: [Details]
-
-### [Category 2 - e.g., Data Analysis]
-- [Continue extracting and organizing skills]
-
-<!-- SKILLS EXTRACTED FROM RESUME:
-[List all skills mentioned]
-NEEDS VALIDATION: Proficiency levels estimated based on context
--->
-
-## DOMAIN EXPERTISE
-
-### [Industry Domain extracted from roles]
-- [Specific capability from resume]
-- [Another capability]
-
-### [Functional Domain]
-- [Extract from responsibilities]
-
-## METHODOLOGIES & FRAMEWORKS
-
-### [Category]
-- [Extract certifications and methodologies mentioned]
-```
+Use this template for:
+- Education and Designations
+- Professional Development
+- Other Certifications
+- Professional Activities
+- Publications
 
 ### Technology Capability Template
 
+**Reference**: `/workspaces/resumeoptimizer/Guides/TechnologyMatrix_Template.md`
+
+Key sections to populate:
+- **YAML frontmatter**: Standard metadata fields
+- **Executive overview**: Technology journey narrative
+- **Technology domains**: Categorized tool proficiency matrices
+- **Methodology highlights**: Business outcome applications
+- **Learning roadmap**: Current development goals
+
+**Table format**:
 ```markdown
----
-title: Technology Stack & Tool Proficiency Matrix
-organization: Personal
-person: [User's Full Name]
-tenure: [Career start] – Present
-roleLevel: Capability Matrix
-keywords: technology,tools,software,platforms
-sourceDoc: Created from [filename(s)] on [date]
-lastUpdated: [YYYY-MM-DD]
-techRefs: []
-shareable: false
-mandate: Canonical record of technology proficiency across entire career.
----
-
-# Technology Stack & Tool Proficiency Matrix
-
-## Executive Overview
-
-[Generate 2-3 paragraph narrative based on technology progression through roles. Focus on how technologies were applied to solve problems.]
-
-<!-- GENERATED: Based on technology mentions across all roles
-USER ACTION: Review and personalize this narrative -->
-
-## [Technology Category 1]
-
-| Platform/Tool | Proficiency | Years of Use | Key Applications |
-|---------------|-------------|--------------|------------------|
-| [Tool Name]   | [Level]     | YYYY-Present | [Context from roles] |
-| [Tool Name]   | [Level]     | YYYY-YYYY    | [Context from roles] |
-
-<!-- EXTRACTED FROM: [List which roles mentioned these tools] -->
-
-**Key Capabilities**:
-- [Synthesize capabilities based on how tools were used in resume]
-
-## [Technology Category 2]
-
-[Continue for all categories]
-
-## Proficiency Level Definitions
-
-- **Advanced**: Appears in multiple roles with evidence of complex applications
-- **Intermediate**: Mentioned in 1-2 roles with moderate complexity
-- **Basic**: Mentioned but without detailed context
-- **Learning**: Recently added to skills section
-
-<!-- NOTE: Proficiency levels inferred from resume context. User should validate. -->
+| Tool | Proficiency | Years of use | Notes |
+| --- | --- | --- | --- |
+| Example | Advanced | 2022-Present | Usage details |
 ```
+
+**Proficiency levels to use**:
+- **Advanced**: Multiple roles with complex applications
+- **Intermediate**: 1-2 roles with moderate complexity
+- **Basic**: Mentioned without detailed context
+- **Learning**: Recent additions
+
+### Template Usage Guidelines
+
+1. **Read template first**: Before creating any file, read the corresponding template from `/workspaces/resumeoptimizer/Guides/`
+2. **Preserve structure**: Maintain all sections from templates
+3. **Fill placeholders**: Replace template placeholders with extracted resume data
+4. **Add comments**: Use HTML comments to flag estimated, missing, or conflicting data
+5. **Link references**: Create cross-references between files using appropriate link syntax
 
 ## Output Report Example
 
