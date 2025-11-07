@@ -5,6 +5,16 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-11-07
+
+### Fixed
+- **Credential Completeness Verification**: Enhanced `/buildresume` command to prevent omission of relevant education and credentials
+  - Step 1 agent now reviews ALL credentials from master resume against job requirements
+  - Step 1 agent must explicitly justify any credential exclusions in output
+  - Step 2 provenance check now verifies all credentials are evaluated
+  - Step 2 flags any excluded credentials that map to job requirements
+  - Fixes issue where relevant qualifications (e.g., BCIT Financial Management diploma for financial analysis roles) were excluded without justification
+
 ## [1.0.0] - 2025-10-02
 
 ### Added - Initial Release
@@ -127,4 +137,5 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.0.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.0.1
 [1.0.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.0.0
