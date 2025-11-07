@@ -56,6 +56,8 @@ I'm launching the step1-resume-draft agent to create an initial tailored resume 
 - Analyze the job requirements from $1
 - Apply the $2 cultural profile preferences
 - Use the HAM-Z methodology for strategic positioning
+- **Review ALL education and credentials from master resume against job requirements**
+- **Explicitly justify any credential exclusions in agent output**
 - Create a targeted first draft optimized for the role
 
 ## Step 2: Provenance Analysis
@@ -68,6 +70,8 @@ Now I'll launch the step2-provenance-check agent to analyze the Step 1 draft for
 - Risk factors for each major claim
 - Defensibility of quantified achievements
 - Consistency across all experience sections
+- **Missing credentials: Verify ALL education/designations from master resume are evaluated**
+- **Credential-to-job mapping: Flag any excluded credentials that map to job requirements**
 - Recommendations for strengthening credibility
 
 ## Step 3: Final Hardened Resume
