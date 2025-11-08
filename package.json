@@ -1,0 +1,33 @@
+{
+  "name": "jobops",
+  "version": "1.0.1",
+  "description": "Intelligence-Driven Application Warfare System - Tactical job application platform with resume development, OSINT intelligence, and interview preparation",
+  "scripts": {
+    "install-browsers": "npx playwright install chrome",
+    "install-all": "npm install && npm run install-browsers"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server-playwright": "^0.6.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2"
+  },
+  "keywords": [
+    "resume",
+    "job-search",
+    "interview-prep",
+    "osint",
+    "intelligence",
+    "assessment",
+    "playwright",
+    "mcp",
+    "career",
+    "tactical"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reggiechan74/JobOps.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
