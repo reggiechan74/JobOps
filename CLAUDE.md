@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
 
-**Current Version:** 1.0.1 (see CHANGELOG.md for version history)
+**Current Version:** 1.1.0 (see CHANGELOG.md for version history)
 
 ## Key Directories
 
@@ -160,6 +160,20 @@ This is a tactical job application platform that uses an 8-step methodology to c
   - Maintains 11 capability matrices tracking proficiency across all technical areas
   - Updates Table of Contents, conclusion, and version tracking automatically
   - Output: `ResumeSourceFolder/Technology/GitHub_Repositories.md`
+
+### Career Strategy & Analysis
+- `/change-one-thing <resume-folder>`: Comprehensive career retrospective analysis
+  - 16-lens pattern recognition framework across 4 analytical phases
+  - **External Patterns**: Skill trajectory, network building, technical decisions, learning gaps, visibility, cross-pollination, geographic positioning
+  - **Internal Constraints**: Family dynamics, financial capacity, health/energy analysis
+  - **Temporal Mechanics**: Information asymmetry correction, butterfly effect mapping, irreversibility analysis
+  - **Probabilistic Outcomes**: Luck surface area, values evolution, skill vs. timing attribution
+  - Multi-candidate recommendation system optimized for different objectives (wealth, optionality, impact, balance, risk minimization)
+  - Counterfactual rigor with quantified opportunity costs and risk assessment
+  - Automatic file output: 3-4 comprehensive analysis parts + executive summary (≤6,000 tokens)
+  - Values-aligned recommendations based on user interview about priorities and constraints
+  - "What you can still do now" actionable recovery plans with immediate next steps
+  - Outputs: `Change_One_Thing_Analysis_Part[1-3]_YYYYMMDD.md` and `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
 
 ## Custom Agents
 

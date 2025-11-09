@@ -5,6 +5,22 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-11-09
+
+### Added
+- **Career Retrospective Analysis Tool**: New `/change-one-thing` command for rigorous career analysis
+  - 16-lens comprehensive pattern recognition framework across 4 analytical phases
+  - External patterns: Skill trajectory, network building, technical decisions, learning gaps, visibility, cross-pollination, geographic positioning
+  - Internal constraints: Family dynamics, financial capacity, health/energy analysis
+  - Temporal mechanics: Information asymmetry correction, butterfly effect mapping, irreversibility analysis
+  - Probabilistic outcomes: Luck surface area, values evolution, skill vs. timing attribution
+  - Multi-candidate recommendation system optimized for different objectives (wealth, optionality, impact, balance)
+  - Counterfactual rigor with quantified opportunity costs and risk assessment
+  - Automatic file output: 3-4 comprehensive analysis parts + executive summary (≤6,000 tokens)
+  - Values-aligned recommendations based on user interview about priorities and constraints
+  - "What you can still do now" actionable recovery plans with immediate next steps
+  - Outputs saved to `OutputResumes/Change_One_Thing_Analysis_Part[1-3]_YYYYMMDD.md` and `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
+
 ## [1.0.1] - 2025-11-07
 
 ### Fixed
@@ -137,5 +153,6 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.1.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.0
 [1.0.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.0.1
 [1.0.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.0.0

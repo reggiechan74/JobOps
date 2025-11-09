@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.0.1** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.1.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -84,11 +84,12 @@ resumeoptimizer/
 │   │   ├── step2-provenance-check.md # Credibility verification
 │   │   ├── step3-final-resume.md     # Hardened final resume
 │   │   └── step4-cover-letter.md     # Strategic cover letter
-│   ├── commands/                      # 15 slash command definitions
+│   ├── commands/                      # 16 slash command definitions
 │   │   ├── assesscandidate.md        # /assesscandidate - Use pre-created rubric
 │   │   ├── assessjob.md              # /assessjob - Complete assessment
 │   │   ├── briefing.md               # /briefing - Interview prep guide
 │   │   ├── buildresume.md            # /buildresume - 3-step resume process
+│   │   ├── change-one-thing.md       # /change-one-thing - Career retrospective
 │   │   ├── comparejobs.md            # /comparejobs - Multi-job analysis
 │   │   ├── convert.md                # /convert - Markdown to DOCX
 │   │   ├── coverletter.md            # /coverletter - Generate letter
@@ -119,6 +120,8 @@ resumeoptimizer/
 │   └── SearchResults_*_*_*.md        # Automated search results with full descriptions
 ├── OutputResumes/                     # Generated resumes and assessments
 │   ├── Assessment_*_*_*.md           # Job fit assessments with scores
+│   ├── Change_One_Thing_Analysis_Part*_*.md # Career retrospective analysis
+│   ├── Change_One_Thing_EXECUTIVE_SUMMARY_*.md # Analysis executive summary
 │   ├── Comparison_*_*_*.md           # Multi-job comparison reports
 │   ├── Interview_Prep_*_*_*.md       # Customized interview questions
 │   ├── Step1_Draft_*_*_*.md          # Initial tailored resumes
@@ -288,6 +291,19 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 /install-pandoc [force]                                      # Install conversion utility
 ```
 
+### Career Strategy & Analysis
+```bash
+/change-one-thing <resume-folder>
+```
+Conducts comprehensive 16-lens career retrospective analysis to identify the single highest-leverage, non-obvious change you could have made at a specific inflection point. Generates 3-4 detailed analysis parts plus executive summary with:
+- External patterns: Skills, network, technical decisions, visibility, cross-pollination, geographic positioning
+- Internal constraints: Family, financial capacity, health/energy analysis
+- Temporal mechanics: Hindsight bias correction, butterfly effects, irreversibility
+- Probabilistic outcomes: Luck vs. skill, values evolution, market timing
+- Multi-candidate recommendations optimized for wealth/optionality/impact/balance
+- Quantified opportunity costs and risk-adjusted returns
+- Actionable "what you can do now" recovery plans with immediate next steps
+
 ## The 8-Step Protocol
 
 ### Phase 1: Target Reconnaissance (Step 1)
@@ -405,6 +421,7 @@ Example:
 - **Resume Development**: `Step1_Draft_[Role]_[Company]_[Date].md`, `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`, `Step3_Final_Resume_[Role]_[Company]_[Date].md`
 - **Interview Prep**: `Briefing_[Company]_[Role]_[Mode]_[Date].md`, `Interview_Prep_[Company]_[Role]_[Date].md`
 - **Application**: `Step4_CoverLetter_[Role]_[Company]_[Date].md`, `[OriginalName].docx`
+- **Career Analysis**: `Change_One_Thing_Analysis_Part[1-3]_YYYYMMDD.md`, `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
 
 ## Equipment & Readiness
 
