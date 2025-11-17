@@ -175,9 +175,23 @@ Create a structured interview preparation guide:
 - Questions to ask the interviewer
 ```
 
-Save as:
-- Filename: `Interview_Prep_[Company]_[Role]_[Date].md`
+**Multi-Part Output Structure:**
+- If the complete guide exceeds 25,000 tokens, split it into multiple parts
+- Each part must not exceed 25,000 tokens
+- Save parts as:
+  - `Interview_Prep_[Company]_[Role]_Part1_[Date].md`
+  - `Interview_Prep_[Company]_[Role]_Part2_[Date].md`
+  - `Interview_Prep_[Company]_[Role]_Part3_[Date].md`
+  - etc.
 - Location: `Briefing_Notes/` directory
+
+**Logical Splitting Guidelines:**
+- Part 1: Executive Summary + Technical questions + first set of behavioral questions
+- Part 2: Additional behavioral questions + experience verification questions
+- Part 3: Remaining questions + Strategic Guidance + Quick Reference Sheet
+- Split at natural question boundaries, never mid-question
+- Each part should include a header referencing total parts (e.g., "Part 1 of 3")
+- Include navigation references at start/end of each part
 
 ### 8. Include Strategic Guidance
 
@@ -197,6 +211,8 @@ Ensure the interview questions:
 - ✅ Cover all critical competencies for the role
 - ✅ Progress from easier to more challenging
 - ✅ Include scenario-based questions relevant to actual job duties
+- ✅ **Each individual part does not exceed 25,000 tokens**
+- ✅ **Multi-part reports split logically at question boundaries**
 
 ## Output
 
@@ -206,5 +222,14 @@ The final interview preparation guide should:
 3. Provide strategic response frameworks
 4. Include recovery strategies for difficult questions
 5. Prepare candidate for various interview formats (phone, video, panel)
+
+**MULTI-PART OUTPUT REQUIREMENTS**:
+- Create as many parts as needed to cover all questions comprehensively
+- **Each individual part must not exceed 25,000 tokens**
+- Split content logically at question boundaries (never mid-question)
+- Each part should be self-contained enough to be useful independently
+- Include clear navigation between parts (e.g., "Continued in Part 2", "Continued from Part 1")
+- Part 1 should always include the Executive Summary and overview
+- Final part should always include Strategic Guidance and Quick Reference Sheet
 
 The candidate should be able to use this guide for focused interview practice and feel prepared for the actual interview conversation.

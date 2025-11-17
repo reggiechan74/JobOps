@@ -174,11 +174,24 @@ For each topic area:
 
 ### 6. Format and Save
 
-Save the briefing note as:
-- Filename: `Briefing_[Company]_[Role]_[Mode]_[Date].md`
+**Multi-Part Output Structure:**
+- If the complete briefing exceeds 25,000 tokens, split it into multiple parts
+- Each part must not exceed 25,000 tokens
+- Save parts as:
+  - `Briefing_[Company]_[Role]_[Mode]_Part1_[Date].md`
+  - `Briefing_[Company]_[Role]_[Mode]_Part2_[Date].md`
+  - `Briefing_[Company]_[Role]_[Mode]_Part3_[Date].md`
+  - etc.
 - Location: `Briefing_Notes/` directory
 - Format: Markdown with clear headings and sections
-- Include table of contents for easy navigation
+
+**Logical Splitting Guidelines:**
+- Part 1: Executive Summary + Skill Gap Analysis + first topic areas
+- Part 2: Additional topic areas (continue study guides)
+- Part 3: Remaining topics + Action Plan + Interview Strategy + Quick Reference
+- Split at natural section boundaries, never mid-topic
+- Each part should include a header referencing total parts (e.g., "Part 1 of 3")
+- Include navigation references at start/end of each part
 
 ## Quality Checks
 
@@ -190,6 +203,8 @@ Ensure the briefing note:
 - ✅ Prepares for likely interview scenarios
 - ✅ Balances depth with time constraints
 - ✅ Uses current, relevant industry information
+- ✅ **Each individual part does not exceed 25,000 tokens**
+- ✅ **Multi-part reports split logically at section boundaries**
 
 ## Output
 
@@ -199,5 +214,14 @@ The final briefing note should be a comprehensive, actionable study guide that:
 3. Includes practical exercises and examples
 4. Prepares for specific interview scenarios
 5. Offers quick-reference materials for last-minute review
+
+**MULTI-PART OUTPUT REQUIREMENTS**:
+- Create as many parts as needed to cover all content comprehensively
+- **Each individual part must not exceed 25,000 tokens**
+- Split content logically at section boundaries (never mid-topic)
+- Each part should be self-contained enough to be useful independently
+- Include clear navigation between parts (e.g., "Continued in Part 2", "Continued from Part 1")
+- Part 1 should always include the Executive Summary and overview
+- Final part should always include the Action Plan and Quick Reference Guide
 
 The candidate should be able to use this briefing note as their primary preparation resource for the interview.
