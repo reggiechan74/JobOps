@@ -40,16 +40,9 @@ SourceMaterial/*
 !SourceMaterial/.gitkeep
 !SourceMaterial/README.md
 
-# Job_Postings/ - Preserve templates, ignore personal job searches
-Job_Postings/*
-!Job_Postings/.gitkeep
-!Job_Postings/.template.md
-!Job_Postings/README.md
-!Job_Postings/.example/
+# Job_Postings/ - Track job postings, ignore automated search results
 # Ignore automated job search results
 Job_Postings/SearchResults_*
-# Keep curated example postings
-!Job_Postings/Example_*
 
 # Briefing_Notes/ - Preserve structure, ignore user-generated briefings
 Briefing_Notes/*
