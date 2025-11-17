@@ -116,10 +116,13 @@ resumeoptimizer/
 │   ├── [Company]_*_Intelligence_*.md  # Specialized intelligence reports
 │   └── [Company]_Master_Intelligence_*.md # Consolidated reports
 ├── Job_Postings/                      # Job descriptions and search results
-│   ├── [Company]_[Role].md           # Manual job postings
+│   ├── .template.md                   # Standard job posting template with YAML metadata
+│   ├── [Company]_[Role]_YYYY-MM-DD.md # Manual job postings (new naming convention)
 │   └── SearchResults_*_*_*.md        # Automated search results with full descriptions
-├── OutputResumes/                     # Generated resumes and assessments
-│   ├── Assessment_*_*_*.md           # Job fit assessments with scores
+├── OutputResumes/                     # Generated resumes and assessments (v1.1.1+ uses timestamped folders)
+│   ├── YYYY-MM-DD_HHMMSS_[Company]_[Role]/  # Timestamped assessment folder (new in v1.1.1)
+│   │   ├── Assessment_[Company]_[Role]_[Date].md # Job fit assessment with scores
+│   │   └── Rubric_[Company]_[Role]_[Date].md     # Scoring rubric (audit trail copy)
 │   ├── Change_One_Thing_Analysis_Part*_*.md # Career retrospective analysis
 │   ├── Change_One_Thing_EXECUTIVE_SUMMARY_*.md # Analysis executive summary
 │   ├── Comparison_*_*_*.md           # Multi-job comparison reports

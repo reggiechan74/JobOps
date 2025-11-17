@@ -15,9 +15,10 @@ This is a tactical job application platform that uses an 8-step methodology to c
 - **ResumeSourceFolder/**: Contains master resume documents (comprehensive career inventory)
  
 
-- **SourceMaterial/**: Contains methodology documentation
-  - `CV_Master_Resume_Guide_v3.md`: Complete HAM-Z methodology guide
-  - `CV_Provenance_Hardening_Pass_Check_Prompt.md`: Provenance analysis framework
+- **SourceMaterial/**: Contains methodology documentation and analysis
+  - `System_Dynamics_Analysis_Assessment_First_Hiring_v3.md`: Assessment-First Hiring theoretical framework
+  - `Recommendation_Plan_2025-11-16.md`: Repository improvement roadmap with architecture clarifications
+  - Various analysis documents and code reviews
 
 - **Scoring_Rubrics/**: Contains assessment rubrics and scoring frameworks
   - Dynamic rubrics: Job-specific rubrics created by `/assessjob` or `/createrubric` commands with embedded detailed scoring framework

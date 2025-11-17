@@ -1,19 +1,117 @@
-# Resume Output Files (except .gitkeep)
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# IDE and editor files
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# JobOps Output Directories - Refined Patterns (v1.1.1)
+# ============================================================
+
+# OutputResumes/ - Preserve structure, ignore user-generated outputs
 OutputResumes/*
 !OutputResumes/.gitkeep
+!OutputResumes/README.md
+!OutputResumes/.example/
+# Ignore all timestamp-based assessment folders (YYYY-MM-DD_HHMMSS_*)
+OutputResumes/20*
 
-# Source Resume Documents (except .gitkeep)
+# ResumeSourceFolder/ - User's personal career inventory (gitignored)
 ResumeSourceFolder/*
 !ResumeSourceFolder/.gitkeep
+!ResumeSourceFolder/README.md
+!ResumeSourceFolder/.example/
 
-# Source Material (except .gitkeep)
+# SourceMaterial/ - Ignore all files (analysis docs, personal artifacts)
 SourceMaterial/*
 !SourceMaterial/.gitkeep
+!SourceMaterial/README.md
 
-# Job Postings (except .gitkeep)
+# Job_Postings/ - Preserve templates, ignore personal job searches
 Job_Postings/*
 !Job_Postings/.gitkeep
+!Job_Postings/.template.md
+!Job_Postings/README.md
+!Job_Postings/.example/
+# Ignore automated job search results
+Job_Postings/SearchResults_*
+# Keep curated example postings
+!Job_Postings/Example_*
 
-# Briefing Notes (except .gitkeep)
+# Briefing_Notes/ - Preserve structure, ignore user-generated briefings
 Briefing_Notes/*
 !Briefing_Notes/.gitkeep
+!Briefing_Notes/README.md
+!Briefing_Notes/.example/
+# Ignore all timestamp-based briefing folders
+Briefing_Notes/20*
+
+# Intelligence_Reports/ - Preserve structure, ignore user OSINT reports
+Intelligence_Reports/*
+!Intelligence_Reports/.gitkeep
+!Intelligence_Reports/README.md
+!Intelligence_Reports/.example/
+# Ignore all timestamp-based intelligence folders
+Intelligence_Reports/20*
+
+# Scoring_Rubrics/ - KEEP rubrics (they're reusable across candidates)
+# Rubrics are valuable artifacts that should be committed
+!Scoring_Rubrics/
+!Scoring_Rubrics/*.md
+
+# ============================================================
+# Document Conversion Outputs
+# ============================================================
+
+# Ignore converted Word documents (keep markdown source only)
+*.docx
+
+# ============================================================
+# Logs and Temporary Files
+# ============================================================
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# ============================================================
+# Notes for Contributors
+# ============================================================
+#
+# What TO commit:
+# - Templates (.template.md files)
+# - Examples (files in .example/ directories)
+# - Curated example job postings (Example_*.md)
+# - Scoring rubrics (reusable assessment criteria)
+# - Documentation and guides
+# - System configuration files
+#
+# What NOT to commit:
+# - Personal resume source materials
+# - User-generated assessments (timestamp folders)
+# - Personal job postings and search results
+# - Generated briefing notes and intelligence reports
+# - Converted Word documents (.docx)
+#
+# See CONTRIBUTING.md for detailed guidelines
+#
