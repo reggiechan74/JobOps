@@ -1,3 +1,7 @@
+---
+description: Permanently delete entire git history both locally and remotely (DESTRUCTIVE OPERATION)
+---
+
 # Git History Delete Command
 
 ⚠️ **DESTRUCTIVE OPERATION WARNING** ⚠️

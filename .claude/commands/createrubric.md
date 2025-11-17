@@ -1,7 +1,6 @@
 ---
 description: Create a detailed scoring rubric from job posting without performing assessment
-signature: "<job-posting-file>"
-project: true
+argument-hint: <job-posting-file>
 ---
 
 You are acting as an expert HR recruiter and domain-knowledgeable hiring manager. Create a comprehensive, job-specific scoring rubric from the specified job posting that can be used for consistent candidate evaluation.

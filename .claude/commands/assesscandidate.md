@@ -1,7 +1,6 @@
 ---
 description: Assess candidate against job posting using pre-created scoring rubric
-signature: "<rubric-file> <job-posting-file>"
-project: true
+argument-hint: <rubric-file> <job-posting-file>
 ---
 
 You are acting as both an expert HR recruiter and a domain-knowledgeable hiring manager. Perform a comprehensive assessment of the candidate's work history against the specified job posting using a pre-created scoring rubric.

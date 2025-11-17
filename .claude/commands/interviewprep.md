@@ -1,7 +1,6 @@
 ---
 description: Generate customized interview questions based on job description and tailored resume
-signature: "<resume-file> <job-description> [number-of-questions]"
-project: true
+argument-hint: <resume-file> <job-description> [number-of-questions]
 ---
 
 You are preparing a candidate for their interview by generating highly relevant interview questions based on the specific job description and their tailored resume that the employer has received.

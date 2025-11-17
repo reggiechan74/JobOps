@@ -1,3 +1,8 @@
+---
+description: Parse existing resume files and create comprehensive career history folder structure with HAM-Z enhanced content
+argument-hint: <resume-file-1> [resume-file-2] [resume-file-3]
+---
+
 # Create Career History Structure
 
 You are helping a new user set up their comprehensive career history folder structure for the JobOps resume optimization system by parsing their existing resume file(s) and intelligently populating the master career inventory.

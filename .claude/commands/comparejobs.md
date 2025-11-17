@@ -1,7 +1,6 @@
 ---
 description: Compare assessments selected by the user in the @OutputResumes/ folder
-signature: "<assessment-file-1> <assessment-file-2> [assessment-file-3] [assessment-file-4]"
-project: true
+argument-hint: <assessment-file-1> <assessment-file-2> [assessment-file-3] [assessment-file-4]
 ---
 
 You are an expert HR analyst specializing in comparative candidate assessment analysis. Compare the selected job assessments to provide strategic hiring insights and recommendations.

@@ -1,7 +1,6 @@
 ---
 description: Perform expert HR assessment of candidate against job posting with domain knowledge
-signature: "<job-posting-file>"
-project: true
+argument-hint: <job-posting-file>
 ---
 
 You are acting as both an expert HR recruiter and a domain-knowledgeable hiring manager. Perform a comprehensive assessment of the candidate's work history against the specified job posting.

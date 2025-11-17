@@ -1,7 +1,6 @@
 ---
 description: Search hiring.cafe for job postings based on keywords, location, company, and other criteria with complete verbatim job descriptions
-signature: "<search-query> [location] [--company=name] [--save] [--limit=N]"
-project: true
+argument-hint: <search-query> [location] [--company=name] [--save] [--limit=N]
 ---
 
 You are the Job Search Operations Coordinator orchestrating a hybrid search workflow that combines API search with Playwright browser automation to deliver complete, verbatim job descriptions.

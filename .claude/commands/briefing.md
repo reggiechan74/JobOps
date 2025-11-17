@@ -1,7 +1,6 @@
 ---
 description: Generate a comprehensive briefing note to address skill gaps or prepare for interviews
-signature: "<assessment-report> <job-description> [gaps-only]"
-project: true
+argument-hint: <assessment-report> <job-description> [gaps-only]
 ---
 
 You are creating a strategic briefing note to help a candidate prepare for their interview or address identified skill gaps. This command generates a detailed study guide based on the assessment report and job requirements.
