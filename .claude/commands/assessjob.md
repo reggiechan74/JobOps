@@ -680,15 +680,48 @@ Create assessment report using the dynamic rubric scores:
 ```
 
 ### 6. Save Assessment and Rubric
-1. **Save Dynamic Rubric**: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md`
-   - This becomes the official scoring criteria for this specific position
-   - Include all extracted requirements from the job posting
-   - Document the scoring breakdown with job-specific details
 
-2. **Save Assessment Report**: `OutputResumes/Assessment_[Company]_[Role]_[Date].md`
+**CRITICAL: Folder Structure and Timestamps**
+
+Before saving any files:
+1. **Get Current Eastern Time**: Retrieve current date/time in America/New_York timezone
+2. **Create Timestamped Sub-Folder**: Format as `YYYY-MM-DD_HHMMSS_[Company]_[Role]`
+   - Example: `2025-11-17_143022_UniversityOfToronto_ExecutiveDirectorAssetManagement`
+   - Remove spaces from company and role names; use CamelCase or underscores
+   - Ensure folder is created in `/workspaces/resumeoptimizer/OutputResumes/`
+
+**File Save Locations:**
+
+1. **Save Dynamic Rubric to BOTH locations**:
+   - **Primary**: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md`
+     - This becomes the official scoring criteria repository
+     - Include all extracted requirements from the job posting
+     - Document the scoring breakdown with job-specific details
+
+   - **Audit Copy**: `OutputResumes/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Rubric_[Company]_[Role]_[Date].md`
+     - Exact copy of rubric for complete audit trail
+     - Ensures assessment folder is self-contained with all artifacts
+
+2. **Save Assessment Report**: `OutputResumes/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Assessment_[Company]_[Role]_[Date].md`
    - Include reference to the specific rubric used
    - Document all scores with evidence mapping
    - Provide clear traceability between rubric criteria and candidate evaluation
+
+**Example Full Paths:**
+```
+/workspaces/resumeoptimizer/Scoring_Rubrics/Rubric_UofT_ExecutiveDirectorAssetManagement_20251117.md
+/workspaces/resumeoptimizer/OutputResumes/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Rubric_UofT_ExecutiveDirectorAssetManagement_20251117.md
+/workspaces/resumeoptimizer/OutputResumes/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Assessment_UofT_ExecutiveDirectorAssetManagement_20251117.md
+```
+
+**Folder Creation Steps:**
+1. Use Bash tool to get Eastern time: `TZ='America/New_York' date '+%Y-%m-%d_%H%M%S'`
+2. Extract company name and role from job posting
+3. Create folder path: `OutputResumes/[timestamp]_[Company]_[Role]/`
+4. Create folder using Bash: `mkdir -p "OutputResumes/[timestamp]_[Company]_[Role]"`
+5. Save rubric to Scoring_Rubrics/ (primary location)
+6. Copy rubric to timestamped folder (audit trail)
+7. Save assessment to timestamped folder
 
 ## Important Notes
 - **MANDATORY DETAILED SCORING**: Every rubric MUST include the granular scoring breakdowns from the framework rubric. This is not optional - it is required.

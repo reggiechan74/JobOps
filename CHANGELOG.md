@@ -5,6 +5,19 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-11-17
+
+### Changed
+- **Assessment File Organization**: Enhanced `/assessjob` and `/assesscandidate` commands with timestamped sub-folder structure
+  - Assessment reports now saved to position-specific sub-folders in `OutputResumes/`
+  - Sub-folder naming convention: `YYYY-MM-DD_HHMMSS_[Company]_[Role]` using Eastern time
+  - Example: `OutputResumes/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/`
+  - Each assessment folder contains complete audit trail:
+    - Assessment report: `Assessment_[Company]_[Role]_[Date].md`
+    - Rubric copy: `Rubric_[Company]_[Role]_[Date].md` (self-contained for audit)
+  - Primary rubric repository unchanged: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md`
+  - Benefits: Chronological organization, complete audit trail per position, easy comparison across time periods
+
 ## [1.1.0] - 2025-11-09
 
 ### Added
@@ -153,6 +166,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.1.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.1
 [1.1.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.0
 [1.0.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.0.1
 [1.0.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.0.0

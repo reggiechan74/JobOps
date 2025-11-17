@@ -395,15 +395,46 @@ Create assessment report using the pre-created rubric scores:
 
 ### 6. Save Assessment Report
 
-Save the assessment report to: `OutputResumes/Assessment_[Company]_[Role]_[Date].md`
+**CRITICAL: Folder Structure and Timestamps**
 
-Include in the filename reference to using pre-created rubric for audit trail.
+Before saving any files:
+1. **Get Current Eastern Time**: Retrieve current date/time in America/New_York timezone
+2. **Create Timestamped Sub-Folder**: Format as `YYYY-MM-DD_HHMMSS_[Company]_[Role]`
+   - Example: `2025-11-17_143022_UniversityOfToronto_ExecutiveDirectorAssetManagement`
+   - Remove spaces from company and role names; use CamelCase or underscores
+   - Ensure folder is created in `/workspaces/resumeoptimizer/OutputResumes/`
 
-Provide a summary of:
+**File Save Locations:**
+
+1. **Copy Rubric to Assessment Folder**: `OutputResumes/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Rubric_[Company]_[Role]_[Date].md`
+   - Copy the pre-created rubric from Scoring_Rubrics/ to the timestamped folder
+   - Ensures assessment folder is self-contained with all artifacts for audit trail
+
+2. **Save Assessment Report**: `OutputResumes/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Assessment_[Company]_[Role]_[Date].md`
+   - Include reference to using pre-created rubric for audit trail
+   - Document all scores with evidence mapping
+   - Provide clear traceability between rubric criteria and candidate evaluation
+
+**Example Full Paths:**
+```
+/workspaces/resumeoptimizer/OutputResumes/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Rubric_UofT_ExecutiveDirectorAssetManagement_20251117.md
+/workspaces/resumeoptimizer/OutputResumes/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Assessment_UofT_ExecutiveDirectorAssetManagement_20251117.md
+```
+
+**Folder Creation Steps:**
+1. Use Bash tool to get Eastern time: `TZ='America/New_York' date '+%Y-%m-%d_%H%M%S'`
+2. Extract company name and role from job posting or rubric
+3. Create folder path: `OutputResumes/[timestamp]_[Company]_[Role]/`
+4. Create folder using Bash: `mkdir -p "OutputResumes/[timestamp]_[Company]_[Role]"`
+5. Copy rubric from Scoring_Rubrics/ to timestamped folder
+6. Save assessment to timestamped folder
+
+**Provide a summary of:**
 - Overall score and recommendation
 - Key strengths and gaps identified
 - Rubric application effectiveness
 - Recommended next steps
+- **File locations** for both rubric copy and assessment report
 
 ## Important Notes
 
