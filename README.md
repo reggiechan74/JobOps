@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.1.1** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.1.2** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -80,11 +80,12 @@ resumeoptimizer/
 │   │   ├── osint-leadership.md       # Executive background checks
 │   │   ├── osint-legal.md            # Litigation and compliance
 │   │   ├── osint-market.md           # Industry and competition
+│   │   ├── resume-summarizer.md      # Candidate profile optimization (v1.1.1+)
 │   │   ├── step1-resume-draft.md     # Initial tailored resume
 │   │   ├── step2-provenance-check.md # Credibility verification
 │   │   ├── step3-final-resume.md     # Hardened final resume
 │   │   └── step4-cover-letter.md     # Strategic cover letter
-│   ├── commands/                      # 16 slash command definitions
+│   ├── commands/                      # Slash command definitions
 │   │   ├── assesscandidate.md        # /assesscandidate - Use pre-created rubric
 │   │   ├── assessjob.md              # /assessjob - Complete assessment
 │   │   ├── briefing.md               # /briefing - Interview prep guide
@@ -95,12 +96,17 @@ resumeoptimizer/
 │   │   ├── coverletter.md            # /coverletter - Generate letter
 │   │   ├── create-career-history.md  # /create-career-history - Setup wizard
 │   │   ├── createrubric.md           # /createrubric - Rubric only
+│   │   ├── github-portfolio.md       # /github-portfolio - Portfolio documentation
 │   │   ├── install-pandoc.md         # /install-pandoc - Setup converter
 │   │   ├── interviewprep.md          # /interviewprep - Question generator
 │   │   ├── osint.md                  # /osint - Company intelligence
-│   │   ├── prime.md                  # /prime - System primer
-│   │   ├── provenance.md             # /provenance - Standalone check
+│   │   ├── provenance-check.md       # /provenance-check - Standalone verification
 │   │   └── searchjobs.md             # /searchjobs - hiring.cafe search
+│   ├── templates/                     # Assessment framework templates (v1.1.1+)
+│   │   ├── assessment_report_structure.md    # Report format template
+│   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
+│   │   ├── candidate_profile_schema.json     # Profile JSON schema
+│   │   └── evidence_verification_framework.md # Evidence protocols
 │   └── settings.local.json            # Local Claude Code settings
 ├── .playwright-mcp/                   # Playwright browser automation cache
 ├── Briefing_Notes/                    # Interview preparation materials
@@ -112,19 +118,20 @@ resumeoptimizer/
 │   ├── Metadata_Standards.md          # YAML frontmatter standards
 │   ├── Maintenance_Checklist.md       # Master resume maintenance guide
 │   └── Migration_Tracker.md           # Migration status tracker
+├── Images/                            # Branding assets
+│   └── JobOps_logo.png               # Repository logo
 ├── Intelligence_Reports/              # OSINT company intelligence reports
 │   ├── [Company]_*_Intelligence_*.md  # Specialized intelligence reports
 │   └── [Company]_Master_Intelligence_*.md # Consolidated reports
 ├── Job_Postings/                      # Job descriptions and search results
-│   ├── .template.md                   # Standard job posting template with YAML metadata
-│   ├── [Company]_[Role]_YYYY-MM-DD.md # Manual job postings (new naming convention)
+│   ├── [Company]_[Role]*.md          # Manual job postings
 │   └── SearchResults_*_*_*.md        # Automated search results with full descriptions
 ├── OutputResumes/                     # Generated resumes and assessments (v1.1.1+ uses timestamped folders)
-│   ├── YYYY-MM-DD_HHMMSS_[Company]_[Role]/  # Timestamped assessment folder (new in v1.1.1)
+│   ├── YYYY-MM-DD_HHMMSS_[Company]_[Role]/  # Timestamped assessment folder (v1.1.1+)
 │   │   ├── Assessment_[Company]_[Role]_[Date].md # Job fit assessment with scores
 │   │   └── Rubric_[Company]_[Role]_[Date].md     # Scoring rubric (audit trail copy)
-│   ├── Change_One_Thing_Analysis_Part*_*.md # Career retrospective analysis
-│   ├── Change_One_Thing_EXECUTIVE_SUMMARY_*.md # Analysis executive summary
+│   ├── Briefing_[Company]_[Role]_*_*.md # Interview preparation briefings
+│   ├── Change_One_Thing_*_*.md       # Career retrospective analysis parts
 │   ├── Comparison_*_*_*.md           # Multi-job comparison reports
 │   ├── Interview_Prep_*_*_*.md       # Customized interview questions
 │   ├── Step1_Draft_*_*_*.md          # Initial tailored resumes
@@ -132,8 +139,22 @@ resumeoptimizer/
 │   ├── Step3_Final_Resume_*_*_*.md   # Final hardened resumes
 │   └── Step4_CoverLetter_*_*_*.md    # Strategic cover letters
 ├── ResumeSourceFolder/                # Master career inventory (source of truth)
-│   ├── Comprehensive_CV_MASTER_COPY_v35.md    # Complete work history
-│   └── Comprehensive_CV_Technology_Capability.md # Technical skills inventory
+│   ├── .profile/                      # Optimized candidate profile cache (v1.1.1+)
+│   │   ├── candidate_profile.json     # Structured profile (85-90% token reduction)
+│   │   └── extraction_log.md          # Profile generation metadata
+│   ├── CareerHighlights/              # Certifications, skills, activities
+│   │   ├── CareerHighlights_Core_Competencies.md
+│   │   ├── CareerHighlights_Education_and_Designations.md
+│   │   ├── CareerHighlights_Other_Certifications.md
+│   │   ├── CareerHighlights_Professional_Activities.md
+│   │   ├── CareerHighlights_Professional_Development.md
+│   │   └── CareerHighlights_Publications.md
+│   ├── Experience/                    # Detailed work history by role
+│   │   ├── Experience_YYYY_[Company].md # One file per role
+│   │   └── ...
+│   └── Technology/                    # Technical capabilities portfolio
+│       ├── Comprehensive_CV_Technology_Capability.md
+│       └── GitHub_Repositories.md     # Portfolio documentation
 ├── Sample_Output/                     # Example outputs for reference
 │   ├── *_Fit_Assessment_*.md         # Sample assessments (Poor/Moderate/Great)
 │   ├── Briefing_*_*_*.md             # Sample briefing notes
@@ -141,18 +162,22 @@ resumeoptimizer/
 │   └── Rubric_*_*_*.md               # Sample scoring rubrics
 ├── Scoring_Rubrics/                   # Reusable assessment rubrics
 │   └── Rubric_[Company]_[Role]_[Date].md # Job-specific scoring frameworks
+├── scripts/                           # Utility scripts
+│   └── validate/                      # Validation tools
 ├── SourceMaterial/                    # Methodology and analysis documents
 │   ├── System_Dynamics_Analysis_Assessment_First_Hiring_v3.md # Theoretical foundation
-│   ├── Critical_Analysis_Model_Assumptions.md # System analysis
-│   └── [various development files]    # Internal development documentation
+│   └── [various analysis files]       # Development documentation
+├── AGENTS.md                          # Agent documentation
+├── CHANGELOG.md                       # Version history
 ├── CLAUDE.md                          # System instructions for Claude Code
 ├── JOB_SEARCH_GUIDE.md               # Job search workflow documentation
-├── LICENSE                            # License file
+├── LICENSE                            # MIT License
 ├── Master_Resume_Comprehensive_Setup_Guide_v1.md # Master resume methodology
 ├── README.md                          # This documentation
 ├── SETUP.md                          # Setup and installation instructions
+├── Why_I_Built_This.md               # Origin story and motivation
 ├── comprehensive_work_history_FAQ.md  # Master resume philosophy FAQ
-└── package.json                       # Node.js dependencies (for pandoc)
+└── package.json                       # Node.js dependencies
 ```
 
 ## Tactical Operations Workflow
@@ -219,7 +244,7 @@ Executes the core 3-step resume assembly: initial draft creation, provenance ver
 
 **Generate intelligence brief to address capability gaps:**
 ```bash
-/briefing OutputResumes/Assessment_[Company]_[Role]_[Date].md Job_Postings/AltoJobPost.md gaps-only
+/briefing OutputResumes/YYYY-MM-DD_HHMMSS_[Company]_[Role]/Assessment_[Company]_[Role]_[Date].md Job_Postings/AltoJobPost.md gaps-only
 ```
 
 **Deploy interview prep questions:**
@@ -414,13 +439,16 @@ Example:
 /osint Deloitte
 /assessjob Job_Postings/SearchResults_Leasing_Toronto_2025-09-29.md
 /buildresume Job_Postings/SearchResults_Leasing_Toronto_2025-09-29.md Canadian
-/briefing Assessment_Deloitte*.md Job_Postings/SearchResults*.md gaps-only
+/briefing OutputResumes/*/Assessment_Deloitte*.md Job_Postings/SearchResults*.md gaps-only
 /interviewprep OutputResumes/Step3_Final_Resume*.md Job_Postings/SearchResults*.md
 ```
 
 ## File Naming Conventions
 
-- **Assessment**: `Assessment_[Company]_[Role]_[Date].md` and `Rubric_[Company]_[Role]_[Date].md`
+- **Assessment** (v1.1.1+): Timestamped sub-folders in `OutputResumes/`
+  - Folder: `YYYY-MM-DD_HHMMSS_[Company]_[Role]/`
+  - Files: `Assessment_[Company]_[Role]_[Date].md` and `Rubric_[Company]_[Role]_[Date].md`
+  - Rubric also saved to: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md`
 - **Resume Development**: `Step1_Draft_[Role]_[Company]_[Date].md`, `Step2_Provenance_Analysis_[Role]_[Company]_[Date].md`, `Step3_Final_Resume_[Role]_[Company]_[Date].md`
 - **Interview Prep**: `Briefing_[Company]_[Role]_[Mode]_[Date].md`, `Interview_Prep_[Company]_[Role]_[Date].md`
 - **Application**: `Step4_CoverLetter_[Role]_[Company]_[Date].md`, `[OriginalName].docx`

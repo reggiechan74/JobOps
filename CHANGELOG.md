@@ -5,6 +5,16 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-11-17
+
+### Changed
+- **Assessment Performance Optimization**: Enhanced `/assessjob` and `/assesscandidate` workflow efficiency
+  - Validated candidate profile optimization delivering 85-90% context window reduction
+  - Assessment reports now consistently under 20,000 token limit through focused analysis
+  - Evidence traceability maintained through structured JSON profile references
+  - Improved assessment generation speed through optimized candidate data loading
+  - All evidence citations include source file paths and line numbers from profile
+
 ## [1.1.1] - 2025-11-17
 
 ### Changed
@@ -166,6 +176,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.1.2]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.2
 [1.1.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.1
 [1.1.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.0
 [1.0.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.0.1
