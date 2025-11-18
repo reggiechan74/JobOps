@@ -1,6 +1,6 @@
 ---
 description: Perform expert HR assessment of candidate against job posting with domain knowledge
-argument-hint: <job-posting-file>
+argument-hint: <job-posting-file> [resume-folder-or-file]
 ---
 
 You are acting as both an expert HR recruiter and a domain-knowledgeable hiring manager. Perform a comprehensive assessment of the candidate's work history against the specified job posting.
@@ -26,6 +26,10 @@ Your assessment report output MUST NOT EXCEED 20,000 tokens. This is a hard limi
 ## Your Task
 
 Create a job-specific scoring rubric from the {{ARG1}} job posting, then evaluate the candidate using this customized rubric to provide a detailed assessment report.
+
+**Resume Source Location:**
+- If {{ARG2}} is provided: Use {{ARG2}} as the resume source (file or folder)
+- If {{ARG2}} is not provided: Default to `/workspaces/resumeoptimizer/ResumeSourceFolder`
 
 ## Step-by-Step Process
 
@@ -58,6 +62,7 @@ Every markdown artifact you create (rubric and assessment report) must start wit
   ```yaml
   ---
   job_file: Job_Postings/{{ARG1}}
+  resume_source: {{ARG2}} or /workspaces/resumeoptimizer/ResumeSourceFolder
   rubric_file: Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md
   role: <role title>
   company: <company name>
@@ -73,12 +78,28 @@ Every markdown artifact you create (rubric and assessment report) must start wit
 
 Insert the appropriate block before any headings, updating timestamps and scores, and bump `version` if you rerun the analysis.
 
-### 1. Generate Candidate Profile (Context Optimization)
+### 1. Determine Resume Source Location
+✓ Identifying candidate materials location
+
+**CRITICAL - Resume Source Path Resolution**:
+
+1. **Determine source path**:
+   - If {{ARG2}} is provided: Use the specified path
+   - If {{ARG2}} is not provided: Default to `/workspaces/resumeoptimizer/ResumeSourceFolder`
+
+2. **Validate source path**:
+   - If path is a file: Read the single resume file directly (skip profile generation)
+   - If path is a directory: Proceed to profile generation step below
+   - If path doesn't exist: Report error and halt
+
+### 1a. Generate Candidate Profile (Context Optimization for Folders)
 ✓ Acquiring compressed candidate intelligence from source materials
+
+**NOTE**: This step applies ONLY when resume source is a folder, not a single file.
 
 **CRITICAL - Context Window Optimization**: Before loading full source materials, generate a structured candidate profile:
 
-1. **Check for existing profile**: Look for `ResumeSourceFolder/.profile/candidate_profile.json`
+1. **Check for existing profile**: Look for `[resume-source-folder]/.profile/candidate_profile.json`
    - If exists and recent (≤7 days old), use it directly
    - If exists but stale (>7 days old), regenerate
    - If doesn't exist, generate new profile
@@ -86,25 +107,37 @@ Insert the appropriate block before any headings, updating timestamps and scores
 2. **Generate profile using resume-summarizer agent**:
    ```
    Use Task tool with subagent_type=general-purpose and prompt:
-   "You are the resume-summarizer agent. Read all files in ResumeSourceFolder/ directory and create a structured JSON candidate profile following the schema in .claude/agents/resume-summarizer.md. Save output to ResumeSourceFolder/.profile/candidate_profile.json and ResumeSourceFolder/.profile/extraction_log.md"
+   "You are the resume-summarizer agent. Read all files in [resume-source-folder]/ directory and create a structured JSON candidate profile following the schema in .claude/agents/resume-summarizer.md. Save output to [resume-source-folder]/.profile/candidate_profile.json and [resume-source-folder]/.profile/extraction_log.md"
    ```
+   Replace `[resume-source-folder]` with the actual path from step 1.
 
 3. **Expected outcome**:
-   - JSON profile created: `ResumeSourceFolder/.profile/candidate_profile.json` (8K-10K tokens)
-   - Extraction log created: `ResumeSourceFolder/.profile/extraction_log.md`
+   - JSON profile created: `[resume-source-folder]/.profile/candidate_profile.json` (8K-10K tokens)
+   - Extraction log created: `[resume-source-folder]/.profile/extraction_log.md`
    - Token savings: 42K-72K tokens (85-90% reduction from loading 15 source files)
 
 ### 2. Load Required Documents
 ✓ Acquiring target coordinates from `Job_Postings/{{ARG1}}`
-✓ Loading compressed candidate profile from structured JSON
+✓ Loading candidate materials from specified source
 
+**Load job posting:**
 - Read the job posting from `Job_Postings/{{ARG1}}` (add .md extension if needed)
-- Read the candidate profile from `ResumeSourceFolder/.profile/candidate_profile.json`
-- **Evidence Verification Protocol**: When citing specific achievements or skills in the assessment:
+
+**Load candidate materials (depends on source type):**
+- **If single file**: Read the resume file directly
+- **If folder**: Read the candidate profile from `[resume-source-folder]/.profile/candidate_profile.json`
+
+**Evidence Verification Protocol**:
+- **For folder-based profiles**: When citing specific achievements or skills in the assessment:
   - Use line references from JSON profile's evidence fields
   - Read specific sections from source files ONLY when verification needed
   - Quote exact text from source files for all scores ≥2 points
   - Maintain traceability: JSON profile → source file → line numbers
+
+- **For single file resumes**: When citing specific achievements or skills:
+  - Reference the resume file directly with line numbers
+  - Quote exact text from the resume for all scores ≥2 points
+  - Maintain traceability: resume file → line numbers
 
 ### 3. Create Dynamic Job-Specific Rubric
 ✓ Establishing targeting criteria and reconnaissance framework
