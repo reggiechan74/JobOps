@@ -12,19 +12,32 @@
 
 ## Rapid Deployment Protocol
 
-1. Install dependencies: `npm run install-all`
-2. **New users**: Run `/create-career-history <your-resume.pdf>` to parse your existing resume and auto-populate your master career inventory with HAM-Z-enhanced content
-3. Review and enhance the generated `ResumeSourceFolder/` files, then add target roles to `Job_Postings/`
-4. Start the Playwright MCP server (see "Run the Playwright MCP server" in `SETUP.md`) so Claude Code can reach browser automation
-5. Launch Claude Code in this repository and run slash commands such as `/assessjob Job_Postings/Example.md` followed by `/buildresume`
+### Prerequisites
+
+**Required**: Claude Code CLI only
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+**Optional** (for `/searchjobs` command only - currently blocked):
+- Node.js dependencies: `npm run install-all`
+- Playwright MCP server (see `SETUP.md` for configuration details)
+
+### Quick Start
+
+1. **New users**: Run `/create-career-history <your-resume.pdf>` to parse your existing resume and auto-populate your master career inventory with HAM-Z-enhanced content
+2. Review and enhance the generated `ResumeSourceFolder/` files, then add target roles to `Job_Postings/`
+3. Launch Claude Code in this repository and start with `/assessjob Job_Postings/Example.md` followed by `/buildresume`
+
+**Note**: This is a Claude Code repository. All functionality works through Claude Code slash commands - no additional dependencies required except for the optional job search feature.
 
 ## Architecture Overview
 
 - **Claude Code CLI** orchestrates the workflow: users issue slash commands that call specialized agents under `.claude/`
-- **Playwright MCP server** provides headless browser automation for job sourcing and intelligence gathering
 - **Content directories** (`ResumeSourceFolder/`, `Job_Postings/`, `OutputResumes/`, `Briefing_Notes/`) hold source materials, generated analyses, and deliverables
 - **HAM-Z agents** execute each step: resume drafting, provenance hardening, and interview preparation
 - **Scoring and OSINT resources** in `Scoring_Rubrics/` and `Intelligence_Reports/` feed assessments and research deliverables
+- **Playwright MCP server** (optional) provides browser automation for `/searchjobs` command only (currently blocked)
 
 ## Tactical Capabilities
 
@@ -207,14 +220,14 @@ Place your comprehensive career inventory in `ResumeSourceFolder/`:
 
 ### 2. Acquire Target Coordinates
 
-**Option A: Deploy target acquisition sweep**
+**Option A: Manual target upload** (Recommended)
+Create a markdown file in `Job_Postings/` directory (e.g., `Job_Postings/CompanyName_Role_Date.md`)
+
+**Option B: Deploy target acquisition sweep** (Currently blocked)
 ```bash
 /searchjobs "your search query" "location" --save
 ```
-Conducts reconnaissance sweep of hiring.cafe and automatically extracts complete verbatim target intelligence to `Job_Postings/` folder.
-
-**Option B: Manual target upload**
-Create a markdown file in `Job_Postings/` directory (e.g., `Job_Postings/CompanyName_Role_Date.md`)
+Conducts reconnaissance sweep of hiring.cafe and automatically extracts complete verbatim target intelligence to `Job_Postings/` folder. **Note**: Requires Playwright MCP server setup and is currently non-functional.
 
 ### 3. Conduct Target Reconnaissance
 
@@ -296,6 +309,8 @@ Executes full 3-step assembly protocol (draft creation, provenance verification,
 ```bash
 /searchjobs <query> [location] [--company=name] [--save] [--limit=N]
 ```
+**Status**: Currently blocked/non-functional. Requires Playwright MCP server configuration (see SETUP.md).
+
 Two-phase hybrid reconnaissance: API sweep + Playwright deep-scan for complete verbatim target intelligence. Default 20 targets, max 50 recommended.
 
 **Examples:**
@@ -435,12 +450,12 @@ Example:
 ### Full Deployment Workflow
 ```bash
 # Complete operations from target acquisition to mission execution
-/searchjobs "real estate director" "Toronto" --save --limit=20
+# Note: /searchjobs currently blocked - manually add job postings to Job_Postings/ instead
 /osint Deloitte
-/assessjob Job_Postings/SearchResults_Leasing_Toronto_2025-09-29.md
-/buildresume Job_Postings/SearchResults_Leasing_Toronto_2025-09-29.md Canadian
-/briefing OutputResumes/*/Assessment_Deloitte*.md Job_Postings/SearchResults*.md gaps-only
-/interviewprep OutputResumes/Step3_Final_Resume*.md Job_Postings/SearchResults*.md
+/assessjob Job_Postings/Deloitte_Director_Real_Estate_2025-09-29.md
+/buildresume Job_Postings/Deloitte_Director_Real_Estate_2025-09-29.md Canadian
+/briefing OutputResumes/*/Assessment_Deloitte*.md Job_Postings/Deloitte*.md gaps-only
+/interviewprep OutputResumes/Step3_Final_Resume*.md Job_Postings/Deloitte*.md
 ```
 
 ## File Naming Conventions
@@ -456,10 +471,16 @@ Example:
 
 ## Equipment & Readiness
 
-- Claude Code CLI installed and configured
+### Required
+- **Claude Code CLI** installed and configured: `npm install -g @anthropic-ai/claude-code`
 - Arsenal inventory documents in markdown format in `ResumeSourceFolder/`
 - Target coordinates in markdown format in `Job_Postings/`
-- `pandoc` installed for document conversion (optional, use `/install-pandoc`)
+
+### Optional
+- **Pandoc** for document conversion (install with `/install-pandoc`)
+- **Playwright MCP** for `/searchjobs` command (see `SETUP.md` - currently blocked)
+
+**This is a Claude Code repository**: All core functionality operates through Claude Code slash commands without additional dependencies.
 
 ### Optional: Tactical Statusline Configuration
 

@@ -6,9 +6,7 @@
     "install-browsers": "npx playwright install chrome",
     "install-all": "npm install && npm run install-browsers"
   },
-  "dependencies": {
-    "@modelcontextprotocol/server-playwright": "^0.6.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@playwright/test": "^1.48.2"
   },

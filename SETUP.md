@@ -1,33 +1,74 @@
-# ResumeOptimizer Setup Instructions
+# JobOps Setup Instructions
 
-## Prerequisites
+## Overview
 
-- **Claude Code CLI**: Install via npm:
-  ```bash
-  npm install -g @anthropic-ai/claude-code
-  ```
-  More information at [claude.ai/code](https://claude.ai/code)
+**JobOps is a Claude Code repository**. This means it runs entirely through Claude Code's slash commands and agents. The vast majority of functionality requires **only Claude Code** to be installed.
+
+## Required Setup
+
+### Install Claude Code CLI
+
+This is the **only** required dependency for JobOps core functionality:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+More information at [claude.ai/code](https://claude.ai/code)
+
+### Verify Installation
+
+```bash
+claude --version
+```
+
+### Start Using JobOps
+
+Once Claude Code is installed, navigate to the repository and launch Claude:
+
+```bash
+cd /path/to/resumeoptimizer
+claude
+```
+
+All slash commands are now available:
+- `/create-career-history` - Parse existing resumes
+- `/assessjob` - Evaluate job fit
+- `/buildresume` - Create tailored resumes
+- `/briefing` - Generate interview prep materials
+- `/osint` - Company intelligence gathering
+- And many more (see README.md)
+
+## Optional Dependencies
+
+### Pandoc (Document Conversion)
+
+**Required for**: `/convert` command (markdown to Word DOCX)
+
+**Installation**: Use the built-in installer:
+```bash
+/install-pandoc
+```
+
+Or install manually:
+- **Ubuntu/Debian**: `sudo apt-get install pandoc`
+- **macOS**: `brew install pandoc`
+- **Windows**: Download from [pandoc.org](https://pandoc.org/installing.html)
+
+### Playwright MCP Server (Job Search)
+
+**Required for**: `/searchjobs` command only
+
+**Status**: Currently blocked/non-functional
+
+The `/searchjobs` command uses Playwright browser automation to scrape hiring.cafe. This requires additional setup:
+
+#### Prerequisites
+
 - Node.js (v18 or higher)
 - npm (comes with Node.js)
 
-## Installation
-
-### Install All Dependencies
-
-Run the following command to install both npm packages and Playwright browser:
-
-```bash
-npm run install-all
-```
-
-This will:
-1. Install the MCP Playwright server package
-2. Install Playwright test framework
-3. Download and install the Chrome browser for Playwright
-
-### Manual Installation Steps
-
-If you prefer to install components separately:
+#### Installation Steps
 
 1. **Install npm dependencies:**
    ```bash
@@ -44,99 +85,105 @@ If you prefer to install components separately:
    npx playwright install chrome
    ```
 
-## Run the Playwright MCP server
+#### Configure Playwright MCP Server
 
-### 1. Create a local configuration
+**Note**: The package name in the old configuration was incorrect. The correct package is `@playwright/mcp`.
 
-Create `mcp/playwright.config.json` in the repository root (run `mkdir -p mcp` first if the directory does not exist) and tailor it to the sites you want the server to automate. The example below keeps Chrome headless and opens the hiring.cafe search experience used by `/searchjobs`:
+1. **Create MCP configuration** (if needed):
 
-```json
-{
-  "browser": "chromium",
-  "launchOptions": {
-    "headless": true
-  },
-  "pages": [
-    {
-      "name": "hiring-cafe",
-      "url": "https://hiring.cafe"
-    }
-  ]
-}
-```
+   Create `mcp/playwright.config.json`:
+   ```json
+   {
+     "browser": "chromium",
+     "launchOptions": {
+       "headless": true
+     },
+     "pages": [
+       {
+         "name": "hiring-cafe",
+         "url": "https://hiring.cafe"
+       }
+     ]
+   }
+   ```
 
-Store the file in version control if you want a shared default, or add it to `.gitignore` and customize locally.
+2. **Register with Claude Code**:
 
-### 2. Launch the server
+   Add to your Claude Code configuration (usually `~/.claude/config.json`):
+   ```json
+   {
+     "mcpServers": {
+       "playwright": {
+         "command": "npx",
+         "args": ["@playwright/mcp"],
+         "cwd": "/path/to/resumeoptimizer"
+       }
+     }
+   }
+   ```
 
-From the project root run:
+3. **Restart Claude Code** to pick up the new MCP server.
 
-```bash
-npx @modelcontextprotocol/server-playwright --config mcp/playwright.config.json
-```
+4. **Verify connection**:
+   ```bash
+   claude mcp status
+   ```
 
-The server listens on STDIN/STDOUT. Leave it running while you use Claude Code.
+   You should see `playwright` listed as `connected`.
 
-### 3. Register the server with Claude Code
+#### Troubleshooting Playwright
 
-Add the server to your local Claude Code configuration (usually `~/.claude/config.json`):
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@modelcontextprotocol/server-playwright", "--config", "mcp/playwright.config.json"],
-      "cwd": "/path/to/resumeoptimizer"
-    }
-  }
-}
-```
-
-Restart Claude Code so it picks up the new MCP endpoint.
-
-### 4. Smoke-test the connection
-
-With the server running, open Claude Code in this repository and run:
-
-```bash
-claude mcp status
-```
-
-You should see `playwright` listed as `connected`. If not, verify the config path, working directory, and that the server process is still running.
-
-## Verification
-
-After installation, verify that all components are working:
-
-```bash
-# Verify Claude Code
-claude --version
-
-# Verify Playwright
-npx playwright --version
-
-# Verify Chrome browser
-google-chrome --version
-```
-
-## Troubleshooting
-
-### Browser Not Found Error
-
-If you encounter an error like "Chromium distribution 'chrome' is not found", run:
-
+**Browser Not Found Error:**
 ```bash
 npx playwright install --force chrome
 ```
 
-### Permission Issues
+**Verify Installation:**
+```bash
+npx playwright --version
+google-chrome --version  # Or chromium-browser --version
+```
 
-If you encounter permission issues during installation, you may need to run with elevated privileges (though this is rarely needed in development environments).
+## Architecture Summary
 
-## Dependencies
+```
+JobOps
+├── Claude Code CLI (REQUIRED)
+│   └── All core functionality
+│       - Resume development (/buildresume)
+│       - Assessment (/assessjob)
+│       - Interview prep (/briefing, /interviewprep)
+│       - OSINT (/osint)
+│       - Career analysis (/change-one-thing)
+│
+├── Pandoc (OPTIONAL)
+│   └── Document conversion (/convert)
+│
+└── Playwright MCP (OPTIONAL - Currently blocked)
+    └── Job search automation (/searchjobs)
+```
 
-- **@modelcontextprotocol/server-playwright**: MCP server for Playwright automation
-- **@playwright/test**: Playwright testing framework and browser automation library
+## What About the package.json?
 
-The Playwright browsers are installed separately from the npm packages to keep package sizes manageable.
+The `package.json` file exists solely for the optional `/searchjobs` functionality. The dependencies listed there are:
+
+- **No runtime dependencies** (removed incorrect package)
+- **@playwright/test** (dev dependency) - for browser installation only
+
+These packages are **not required** for core JobOps functionality.
+
+## Quick Start Checklist
+
+- [x] Install Claude Code CLI: `npm install -g @anthropic-ai/claude-code`
+- [x] Clone/download this repository
+- [x] Launch Claude Code in the repository: `claude`
+- [ ] (Optional) Install Pandoc for document conversion
+- [ ] (Optional) Configure Playwright MCP for job search (currently blocked)
+
+## Getting Help
+
+For tactical assistance:
+- **README.md** - Complete command reference and workflow guide
+- **CLAUDE.md** - Technical implementation details for Claude Code
+- **comprehensive_work_history_FAQ.md** - Master resume philosophy
+- **SourceMaterial/** - Methodology documentation
