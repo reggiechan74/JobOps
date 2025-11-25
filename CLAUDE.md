@@ -259,15 +259,22 @@ Located in `.claude/templates/`:
   - Generates comprehensive comparison report with recommendations
   - Supports career planning and negotiation positioning
 
-- `/briefing <assessment-report> <job-description> [gaps-only]`: Creates study guide briefing (Step 5)
+- `/briefing <assessment-report> <job-description> [gaps-only|prep-time]`: Creates study guide briefing (Step 5)
   - Analyzes assessment to identify skill gaps and weaknesses
   - Researches current best practices and learning resources
   - Generates detailed study guide with timelines
+  - **Time-aware Study Priority tags**: 🔴 FOCUS NOW, 🟡 IF TIME PERMITS, 🟢 SKIM ONLY
+  - Accepts prep time: `1d`, `2d`, `3d` (days) or `1w`, `2w` (weeks)
+  - Priority-Based Study Plan with day-by-day schedule
+  - Gap acknowledgment scripts for SKIM ONLY critical items
   - Two modes: gaps-only focus or comprehensive preparation
   - Includes interview questions, hands-on exercises, and quick references
 
-- `/interviewprep <resume-file> <job-description> [number-of-questions]`: Generate interview questions (Step 6)
+- `/interviewprep <resume-file> <job-description> [number-of-questions] [prep-time]`: Generate interview questions (Step 6)
   - Creates likely interview questions based on resume-job alignment
+  - **Question Likelihood tags**: 🔴 HIGH LIKELIHOOD, 🟡 MODERATE LIKELIHOOD, 🟢 LOW LIKELIHOOD
+  - Accepts prep time: `1d`, `2d`, `3d` (days) or `1w`, `2w` (weeks)
+  - Priority-Based Practice Schedule with day-by-day planning
   - Defaults to 10 questions if number not specified
   - Balances technical and behavioral questions
   - Provides answer strategies and STAR format guidance
