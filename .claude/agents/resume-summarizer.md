@@ -39,7 +39,7 @@ Create a JSON profile that validates against this schema with the following key 
 
 1. **candidate**: Basic profile metadata (name, title, experience years, generation timestamp)
 2. **technical_skills**: All technical skills with proficiency levels, years of experience, and evidence
-3. **work_history**: Complete employment history with achievements, metrics, and responsibilities
+3. **work_history**: Complete employment history with achievements, metrics, responsibilities, and **scope_indicators**
 4. **education**: Educational background with credentials and coursework
 5. **certifications**: Professional certifications with status (Active/Expired/In-Progress)
 6. **projects**: Notable projects with technologies, scope, and measurable outcomes
@@ -47,6 +47,8 @@ Create a JSON profile that validates against this schema with the following key 
 8. **leadership_experience**: Management capabilities (team size, budget, mentoring, hiring)
 9. **soft_skills**: Soft skills with evidence type (Demonstrated vs Claimed)
 10. **metadata**: Career patterns (progression, industry changes, employment gaps)
+11. **thought_leadership**: Publications, frameworks created, awards, and industry recognition (NEW in v1.1.0)
+12. **professional_activities**: Volunteer, board, assessor, and professional association roles (NEW in v1.1.0)
 
 Refer to the schema file for exact property names, required fields, data types, and validation rules.
 
@@ -91,6 +93,84 @@ Extract domain knowledge from:
 - Regulatory/compliance references
 - Industry-specific tools/methodologies
 
+### 7. Scope Indicators Extraction (NEW in v1.1.0)
+For each work_history entry, extract **scope_indicators** to capture role complexity:
+
+**assets_managed**: Count of discrete units under management
+- Real Estate: properties, buildings, units (e.g., "40 industrial properties")
+- Finance: accounts, portfolios, funds (e.g., "150 client accounts")
+- Technology: products, applications, services (e.g., "12 SaaS products")
+- Healthcare: facilities, clinics, patients (e.g., "8 clinics, 15,000 patients")
+- Consulting: engagements, projects (e.g., "25 concurrent projects")
+- Infrastructure: assets, corridors, applications (e.g., "1,438 applications")
+
+**geographic_scope**: Coverage area
+- **Local**: Single city, site, or facility
+- **Regional**: Multiple cities within region/province (e.g., "GTA & Ottawa")
+- **National**: Country-wide coverage
+- **International**: Multiple countries (e.g., "Asia Pacific: HK, Japan, Singapore")
+
+**stakeholder_level**: Highest regular interaction level
+- **Team**: Peers and direct team members
+- **Department**: Cross-functional leads
+- **Executive**: VP/C-suite reporting
+- **Board**: Directors, investment committee
+- **External**: Government, regulators, public stakeholders
+
+**direct_reports**: Number of direct reports (if applicable)
+
+### 8. Achievement Impact Categories (NEW in v1.1.0)
+Classify each achievement with an **impact_category**:
+
+- **Crisis Management**: High-stakes problem solving, emergency resolution, risk aversion
+  - Examples: "$4M default averted in 72 hours", "structural engineering crisis resolved"
+- **Innovation**: New frameworks, tools, methods, or patents created
+  - Examples: "Created Ponzi Rental Rate framework", "Developed AI-powered onboarding"
+- **Transformation**: Organizational change, digital transformation, culture shift
+  - Examples: "Enterprise-wide VTS implementation", "Process redesign"
+- **Operational**: Process improvements, efficiency gains, quality enhancements
+  - Examples: "Reduced cycle time by 50%", "Automated reporting"
+- **Financial**: Revenue growth, cost savings, portfolio performance
+  - Examples: "51% WARI vs 26% competitors", "141% FMV increase"
+- **Leadership**: Team development, mentoring, succession planning
+  - Examples: "Mentored 4 candidates with 75% success rate"
+
+### 9. Thought Leadership Extraction (NEW in v1.1.0)
+Search for evidence of thought leadership across all files:
+
+**publications**: Look for peer-reviewed articles, whitepapers, strategic documents
+- Extract: title, type (Peer-reviewed/Whitepaper/Conference/Book/Article/Internal), venue, year
+- Example: "Understanding the Ponzi Rental Rate" in Journal of Real Estate Finance, 2015
+
+**frameworks_created**: Methodologies, models, or tools CREATED (not just used)
+- Distinguish between "used Argus DCF" vs "created Hurdle Rate Model"
+- Include adoption scope (team-wide, company-wide, industry)
+- Example: "Matrix lease negotiation model" adopted company-wide
+
+**awards**: Industry recognition, honors, competitive awards
+- Example: "VTS Rookie of the Year 2019"
+
+**patents**: Count of patents held or pending
+
+**speaking_engagements**: Conference presentations, panels, keynotes
+
+### 10. Professional Activities Extraction (NEW in v1.1.0)
+Extract volunteer, board, and professional association roles:
+
+Search in:
+- `CareerHighlights/CareerHighlights_Professional_Activities.md`
+- Any mentions of assessor, counselor, board member, committee roles
+
+Extract for each activity:
+- **role**: Position held (e.g., "Licensed Assessor, APC")
+- **organization**: Organization name (e.g., "Royal Institution of Chartered Surveyors")
+- **start_year**: When activity began
+- **current**: Boolean for ongoing activities
+- **scope**: Quantified impact (e.g., "24-36 candidates assessed over 12 years")
+- **evidence**: File and line references
+
+These activities are critical for Cultural Fit scoring in rubrics.
+
 ## Output Format
 
 1. **Single JSON file**: Save to `ResumeSourceFolder/.profile/candidate_profile.json`
@@ -106,14 +186,18 @@ Extract domain knowledge from:
 Before finalizing JSON profile:
 - [ ] Every technical_skills entry has evidence with file+lines
 - [ ] Every achievement has metrics and timeframe
+- [ ] Every achievement has impact_category assigned (NEW v1.1.0)
 - [ ] All work_history entries have complete date ranges
+- [ ] All work_history entries have scope_indicators populated (NEW v1.1.0)
 - [ ] All certifications have status (Active/Expired/In-Progress)
 - [ ] Line references are accurate (spot-check 5 random entries)
 - [ ] No duplicate entries across arrays
 - [ ] Total years calculated correctly
 - [ ] All dollar amounts include currency and scale (M/K)
+- [ ] thought_leadership section populated if publications/frameworks exist (NEW v1.1.0)
+- [ ] professional_activities extracted from CareerHighlights files (NEW v1.1.0)
 - [ ] JSON is valid (no syntax errors)
-- [ ] Token count: Profile ≤10K tokens (target: 8K)
+- [ ] Token count: Profile ≤11K tokens (target: 10K, ~2.5% increase from v1.0.0)
 
 ## Error Handling
 
@@ -126,12 +210,16 @@ If issues encountered:
 ## Success Metrics
 
 A successful extraction achieves:
-- ✅ 85-90% token reduction (50K-80K → 8K-10K)
+- ✅ 80-85% token reduction (50K-80K → 10K-11K with v1.1.0 enhancements)
 - ✅ 100% evidence traceability (all claims have file+line references)
 - ✅ ≤5 validation warnings in extraction log
-- ✅ JSON validates against schema
+- ✅ JSON validates against schema v1.1.0
 - ✅ All metrics include timeframes and mechanisms
 - ✅ Complete coverage of source materials (no files skipped)
+- ✅ scope_indicators populated for all work_history entries (NEW v1.1.0)
+- ✅ impact_category assigned to all achievements (NEW v1.1.0)
+- ✅ thought_leadership section complete with publications/frameworks/awards (NEW v1.1.0)
+- ✅ professional_activities extracted from all relevant files (NEW v1.1.0)
 
 ## Usage by Assessment Commands
 

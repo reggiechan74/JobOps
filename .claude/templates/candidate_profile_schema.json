@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Candidate Profile Schema",
   "description": "Structured JSON schema for compressed candidate profiles with evidence traceability",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "object",
   "required": ["candidate", "technical_skills", "work_history", "education", "certifications", "metadata"],
   "properties": {
@@ -137,6 +137,34 @@
             "type": ["string", "null"],
             "description": "Budget managed (e.g., '$2.5M') or null"
           },
+          "scope_indicators": {
+            "type": "object",
+            "description": "Quantified scope metrics for rubric scoring (industry-generic)",
+            "properties": {
+              "assets_managed": {
+                "type": "integer",
+                "description": "Number of discrete assets, entities, or units under management. Examples by industry: Real Estate=properties, Finance=accounts/portfolios, Tech=products/services, Healthcare=facilities/patients, Retail=stores, Manufacturing=plants/lines, Consulting=engagements"
+              },
+              "assets_description": {
+                "type": "string",
+                "description": "Brief description of what assets represent (e.g., '40 industrial properties', '150 client accounts', '12 SaaS products')"
+              },
+              "geographic_scope": {
+                "type": "string",
+                "enum": ["Local", "Regional", "National", "International"],
+                "description": "Geographic coverage: Local=single city/site, Regional=multiple cities in region/province, National=country-wide, International=multiple countries"
+              },
+              "stakeholder_level": {
+                "type": "string",
+                "enum": ["Team", "Department", "Executive", "Board", "External"],
+                "description": "Highest level of regular stakeholder interaction: Team=peers, Department=cross-functional leads, Executive=VP/C-suite, Board=directors/investment committee, External=government/regulators/public"
+              },
+              "direct_reports": {
+                "type": "integer",
+                "description": "Number of direct reports (distinct from team_size which may include indirect reports or collaborators)"
+              }
+            }
+          },
           "key_responsibilities": {
             "type": "array",
             "items": {
@@ -161,6 +189,11 @@
                 "timeframe": {
                   "type": "string",
                   "description": "Duration or date range"
+                },
+                "impact_category": {
+                  "type": "string",
+                  "enum": ["Crisis Management", "Innovation", "Transformation", "Operational", "Financial", "Leadership"],
+                  "description": "Primary category of achievement for rubric scoring: Crisis Management=high-stakes problem solving, Innovation=new frameworks/tools/methods created, Transformation=organizational change, Operational=process/efficiency improvements, Financial=revenue/cost impact, Leadership=team/culture achievements"
                 },
                 "evidence": {
                   "type": "object",
@@ -448,6 +481,177 @@
               "context": {
                 "type": "string",
                 "description": "How the skill was demonstrated"
+              }
+            }
+          }
+        }
+      }
+    },
+    "thought_leadership": {
+      "type": "object",
+      "description": "Publications, frameworks created, awards, and industry recognition for Innovation & Leadership scoring",
+      "properties": {
+        "publications": {
+          "type": "array",
+          "description": "Published works demonstrating thought leadership",
+          "items": {
+            "type": "object",
+            "required": ["title", "type", "year", "evidence"],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Publication title"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["Peer-reviewed", "Whitepaper", "Conference", "Book", "Article", "Internal"],
+                "description": "Publication type: Peer-reviewed=academic journals, Whitepaper=strategic/technical papers, Conference=presentations/proceedings, Book=authored/co-authored, Article=industry publications, Internal=company-wide strategic documents"
+              },
+              "venue": {
+                "type": "string",
+                "description": "Journal name, conference, or publication venue"
+              },
+              "year": {
+                "type": "string",
+                "pattern": "^[0-9]{4}$",
+                "description": "Publication year (YYYY)"
+              },
+              "evidence": {
+                "type": "object",
+                "required": ["file", "lines"],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "frameworks_created": {
+          "type": "array",
+          "description": "Methodologies, models, or tools created (not just used) that were adopted by others",
+          "items": {
+            "type": "object",
+            "required": ["name", "description", "evidence"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of framework, model, or tool"
+              },
+              "description": {
+                "type": "string",
+                "description": "Brief description of what it does and its impact"
+              },
+              "adoption": {
+                "type": "string",
+                "description": "How widely adopted (e.g., 'team-wide', 'company-wide', 'industry')"
+              },
+              "evidence": {
+                "type": "object",
+                "required": ["file", "lines"],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "awards": {
+          "type": "array",
+          "description": "Industry awards, recognition, or honors received",
+          "items": {
+            "type": "object",
+            "required": ["name", "year", "evidence"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Award name"
+              },
+              "issuer": {
+                "type": "string",
+                "description": "Organization that granted the award"
+              },
+              "year": {
+                "type": "string",
+                "pattern": "^[0-9]{4}$",
+                "description": "Year received (YYYY)"
+              },
+              "evidence": {
+                "type": "object",
+                "required": ["file", "lines"],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patents": {
+          "type": "integer",
+          "description": "Number of patents held or pending"
+        },
+        "speaking_engagements": {
+          "type": "integer",
+          "description": "Number of conference presentations, panels, or keynotes"
+        }
+      }
+    },
+    "professional_activities": {
+      "type": "array",
+      "description": "Volunteer, board, assessor, and professional association roles for Cultural Fit scoring",
+      "items": {
+        "type": "object",
+        "required": ["role", "organization", "evidence"],
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Role or position held (e.g., 'Licensed Assessor', 'Board Member', 'Committee Chair')"
+          },
+          "organization": {
+            "type": "string",
+            "description": "Organization name"
+          },
+          "start_year": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$",
+            "description": "Year started (YYYY)"
+          },
+          "end_year": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9]{4}$",
+            "description": "Year ended (YYYY) or null if current"
+          },
+          "current": {
+            "type": "boolean",
+            "description": "Whether this is a current activity"
+          },
+          "scope": {
+            "type": "string",
+            "description": "Quantified impact or reach (e.g., '24-36 candidates assessed over 12 years', 'Mentored 4 candidates with 75% first-attempt success')"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
               }
             }
           }
