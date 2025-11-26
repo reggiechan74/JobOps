@@ -98,16 +98,9 @@ If the rubric lacks current context, supplement with web research:
 - Updated technology trends or skill requirements
 - Company developments or changes since rubric generation
 
-### 5. Apply Evidence Verification Framework
+### 5. Apply Evidence-Based Scoring Verification
 
-Apply the complete evidence verification framework from `.claude/templates/evidence_verification_framework.md` to all scoring decisions. This framework is mandatory for all scores ≥2 points.
-
-Key requirements include:
-- Specific CV citations with line numbers for all non-basic scores
-- Domain specificity verification (no assumption of equivalency)
-- Experience type classification (Direct/Adjacent/Transferable/Assumed)
-- Cross-reference protocol for all scored items
-- Quality control checklist validation before finalization
+**CRITICAL**: Apply the evidence verification framework from `.claude/templates/evidence_verification_framework.md` to all scoring decisions.
 
 ### 6. Perform 100-Point Assessment Using Pre-Created Rubric
 
