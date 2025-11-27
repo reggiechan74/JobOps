@@ -81,23 +81,28 @@ This theoretical foundation explains why JobOps begins with target reconnaissanc
 ```
 resumeoptimizer/
 ├── .claude/                           # Claude Code configuration
-│   ├── agents/                        # 15 specialized processing agents
-│   │   ├── candidate-assessment.md    # HR-level job fit assessment
-│   │   ├── hiringcafe-search.md      # Job search via hiring.cafe API
-│   │   ├── interview-briefing.md     # Study guide and gap analysis
-│   │   ├── interview-question-generator.md # Custom interview questions
-│   │   ├── osint-agent.md            # Master OSINT orchestrator
-│   │   ├── osint-compensation.md     # Salary and benefits intelligence
-│   │   ├── osint-corporate.md        # Company structure and financials
-│   │   ├── osint-culture.md          # Workplace culture analysis
-│   │   ├── osint-leadership.md       # Executive background checks
-│   │   ├── osint-legal.md            # Litigation and compliance
-│   │   ├── osint-market.md           # Industry and competition
-│   │   ├── resume-summarizer.md      # Candidate profile optimization (v1.1.1+)
-│   │   ├── step1-resume-draft.md     # Initial tailored resume
-│   │   ├── step2-provenance-check.md # Credibility verification
-│   │   ├── step3-final-resume.md     # Hardened final resume
-│   │   └── step4-cover-letter.md     # Strategic cover letter
+│   ├── agents/                        # 16 specialized processing agents (categorized)
+│   │   ├── resume-development/        # Core resume creation agents
+│   │   │   ├── step1-resume-draft.md     # Initial tailored resume
+│   │   │   ├── step2-provenance-check.md # Credibility verification
+│   │   │   ├── step3-final-resume.md     # Hardened final resume
+│   │   │   └── step4-cover-letter.md     # Strategic cover letter
+│   │   ├── interview-prep/            # Assessment & preparation agents
+│   │   │   ├── candidate-assessment.md    # HR-level job fit assessment
+│   │   │   ├── interview-briefing.md     # Study guide and gap analysis
+│   │   │   └── interview-question-generator.md # Custom interview questions
+│   │   ├── job-search/                # Job discovery agents
+│   │   │   └── hiringcafe-search.md      # Job search via hiring.cafe API
+│   │   ├── osint/                     # Intelligence gathering agents
+│   │   │   ├── osint-agent.md            # Master OSINT orchestrator
+│   │   │   ├── osint-compensation.md     # Salary and benefits intelligence
+│   │   │   ├── osint-corporate.md        # Company structure and financials
+│   │   │   ├── osint-culture.md          # Workplace culture analysis
+│   │   │   ├── osint-leadership.md       # Executive background checks
+│   │   │   ├── osint-legal.md            # Litigation and compliance
+│   │   │   └── osint-market.md           # Industry and competition
+│   │   └── performance/               # Optimization agents
+│   │       └── resume-summarizer.md      # Candidate profile optimization (v1.1.1+)
 │   ├── commands/                      # Slash command definitions (categorized)
 │   │   ├── resume-development/        # Core resume creation
 │   │   │   ├── buildresume.md        # /buildresume - 3-step resume process
