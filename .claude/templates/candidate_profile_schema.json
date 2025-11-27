@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Candidate Profile Schema",
   "description": "Structured JSON schema for compressed candidate profiles with evidence traceability",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "object",
   "required": ["candidate", "technical_skills", "work_history", "education", "certifications", "metadata"],
   "properties": {
@@ -703,6 +703,351 @@
               "explanation": {
                 "type": "string",
                 "description": "Explanation if provided in source materials"
+              }
+            }
+          }
+        }
+      }
+    },
+    "job_preferences": {
+      "type": "object",
+      "description": "Candidate's job search preferences and requirements for job fit assessment (NEW in v1.2.0)",
+      "properties": {
+        "target_roles": {
+          "type": "object",
+          "description": "Preferred role types and industries",
+          "properties": {
+            "ideal_role": {
+              "type": "string",
+              "description": "Most desired role type (e.g., 'AI Agentic engineering in commercial real estate')"
+            },
+            "acceptable_roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Other acceptable role types"
+            },
+            "target_industries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Preferred industries (e.g., ['Commercial Real Estate', 'Linear Infrastructure', 'Technology'])"
+            },
+            "avoid_industries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Industries to avoid"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "employment_type": {
+          "type": "object",
+          "description": "Preferred employment arrangement",
+          "properties": {
+            "preferred": {
+              "type": "string",
+              "enum": ["Full-time Employee", "Part-time Employee", "Contractor", "Consultant", "Entrepreneur", "Flexible"],
+              "description": "Primary employment type preference"
+            },
+            "acceptable": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Full-time Employee", "Part-time Employee", "Contractor", "Consultant", "Entrepreneur"]
+              },
+              "description": "All acceptable employment types"
+            },
+            "avoid": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Employment arrangements to avoid (e.g., 'Long-term salaried employee')"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "compensation": {
+          "type": "object",
+          "description": "Compensation expectations by employment type",
+          "properties": {
+            "salary": {
+              "type": "object",
+              "description": "Salary requirements if employee",
+              "properties": {
+                "minimum": {
+                  "type": "string",
+                  "description": "Minimum acceptable base salary (e.g., 'C$150,000')"
+                },
+                "target": {
+                  "type": "string",
+                  "description": "Target base salary (e.g., 'C$200,000')"
+                },
+                "ideal": {
+                  "type": "string",
+                  "description": "Ideal base salary (e.g., 'C$250,000+')"
+                },
+                "currency": {
+                  "type": "string",
+                  "description": "Currency (e.g., 'CAD', 'USD')"
+                }
+              }
+            },
+            "bonus_expectation": {
+              "type": "string",
+              "description": "Expected bonus as percentage of base (e.g., '30% of base salary')"
+            },
+            "hourly_rate": {
+              "type": "object",
+              "description": "Hourly rate requirements if consultant/contractor",
+              "properties": {
+                "minimum": {
+                  "type": "string",
+                  "description": "Minimum hourly rate (e.g., '$100/hr')"
+                },
+                "target": {
+                  "type": "string",
+                  "description": "Target hourly rate (e.g., '$175/hr')"
+                },
+                "ideal": {
+                  "type": "string",
+                  "description": "Ideal hourly rate (e.g., '$350/hr')"
+                }
+              }
+            },
+            "equity_preference": {
+              "type": "string",
+              "description": "Equity expectations (e.g., 'Restricted units or equity participation')"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "work_arrangement": {
+          "type": "object",
+          "description": "Work location and schedule preferences",
+          "properties": {
+            "location_preference": {
+              "type": "string",
+              "enum": ["Remote", "Hybrid", "On-site", "Flexible"],
+              "description": "Preferred work location arrangement"
+            },
+            "acceptable_locations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Remote", "Hybrid", "On-site"]
+              },
+              "description": "All acceptable location arrangements"
+            },
+            "geographic_preferences": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Preferred geographic locations/cities"
+            },
+            "relocation_willingness": {
+              "type": "boolean",
+              "description": "Willing to relocate for role"
+            },
+            "hours_per_week": {
+              "type": "object",
+              "description": "Weekly hours preference",
+              "properties": {
+                "minimum": {
+                  "type": "integer",
+                  "description": "Minimum hours per week (e.g., 20)"
+                },
+                "maximum": {
+                  "type": "integer",
+                  "description": "Maximum hours per week (e.g., 50)"
+                }
+              }
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "travel": {
+          "type": "object",
+          "description": "Travel tolerance and preferences",
+          "properties": {
+            "tolerance_percentage": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Maximum acceptable travel percentage (0-100)"
+            },
+            "tolerance_level": {
+              "type": "string",
+              "enum": ["None", "Minimal", "Moderate", "Significant", "Heavy"],
+              "description": "Travel tolerance: None (0%), Minimal (1-10%), Moderate (11-25%), Significant (26-50%), Heavy (51%+)"
+            },
+            "international_travel": {
+              "type": "boolean",
+              "description": "Willing to travel internationally"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Additional travel context or constraints"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "benefits": {
+          "type": "object",
+          "description": "Benefits requirements",
+          "properties": {
+            "vacation_weeks": {
+              "type": "integer",
+              "description": "Minimum vacation weeks required"
+            },
+            "health_benefits_required": {
+              "type": "boolean",
+              "description": "Whether health benefits are required"
+            },
+            "required_benefits": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of required benefits (e.g., ['Medical', 'Dental', 'Vision'])"
+            },
+            "nice_to_have_benefits": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Preferred but not required benefits"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "work_environment": {
+          "type": "object",
+          "description": "Preferred work culture and environment",
+          "properties": {
+            "preferred_characteristics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Desired workplace characteristics (e.g., ['Pro-technology', 'Encourages experimentation', 'Advancing new ideas'])"
+            },
+            "avoid_characteristics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Characteristics to avoid (e.g., ['Zero technology', 'Unionized environment resistant to change', 'Highly repetitive work'])"
+            },
+            "company_size_preference": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Startup", "SMB", "Mid-Market", "Enterprise", "Any"]
+              },
+              "description": "Preferred company sizes"
+            },
+            "autonomy_preference": {
+              "type": "string",
+              "enum": ["High", "Moderate", "Low", "Flexible"],
+              "description": "Preferred level of autonomy"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "intellectual_property": {
+          "type": "object",
+          "description": "IP and side work preferences",
+          "properties": {
+            "retain_ip_rights": {
+              "type": "boolean",
+              "description": "Wants to retain rights to own intellectual property"
+            },
+            "side_gig_allowed": {
+              "type": "boolean",
+              "description": "Needs ability to have side business/consulting"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Additional IP/side work context"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "deal_breakers": {
+          "type": "array",
+          "description": "Absolute deal-breakers that would disqualify an opportunity",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string",
+                "description": "Category of deal-breaker (e.g., 'Compensation', 'Culture', 'Work Arrangement')"
+              },
+              "description": {
+                "type": "string",
+                "description": "Specific deal-breaker description"
+              },
+              "evidence": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string" },
+                  "lines": { "type": "string" }
+                }
               }
             }
           }

@@ -103,6 +103,7 @@ Create the following directory structure in `/workspaces/resumeoptimizer/ResumeS
 ResumeSourceFolder/
 ├── CareerHighlights/
 ├── Experience/
+├── Preferences/
 └── Technology/
 ```
 
@@ -189,6 +190,114 @@ If metrics are missing but reasonable to estimate based on role level, add them 
 2. **GitHub_Repositories.md** (create template even if empty)
    - Add note: "To populate this section, run /github-portfolio command"
    - Include placeholder structure
+
+#### Preferences Files (1 file - NEW in v1.2.0)
+
+1. **Vision.md**
+   - Create from template if user hasn't provided preferences
+   - Contains Vision & Anti-Vision framework for career planning
+   - Used by assessment commands to evaluate job fit
+   - Covers: target roles, compensation requirements, work environment preferences, deal-breakers
+
+**Template Content for Vision.md**:
+```markdown
+# Vision & Anti-Vision
+
+A comprehensive framework for career and life planning, contrasting what I want to avoid (Anti-Vision) with what I'm striving toward (Vision).
+
+---
+
+### Career/Work
+
+**Anti-Vision:**
+<!-- List things to avoid in your career -->
+- [Example: Long hours for an employer for a thankless job]
+- [Example: Unable to make use of own intellectual property]
+- [Example: Highly repetitive work with low intellectual stimulus]
+- [Example: Zero technology or constrained technology due to corporate policies]
+
+**Vision:**
+<!-- List what you're striving toward in your career -->
+- [Example: Be a deep generalist with competencies in multiple areas]
+- [Example: Be my own boss (independent consultant or startup CEO)]
+- [Example: Pro-technology environment that encourages experimentation]
+
+**Target Role Types:**
+<!-- Describe your ideal role and acceptable alternatives -->
+- *Ideal:* [Example: AI Agentic engineering in commercial real estate]
+- *If Consulting:* [Example: Commercial real estate advisory]
+
+**Compensation Requirements:**
+<!-- Define your compensation expectations by employment type -->
+- *If Salaried Employee:*
+  - Base Salary: min $XXX,XXX | target $XXX,XXX | ideal $XXX,XXX+
+  - Bonus: XX% of base salary
+  - Vacation: X+ weeks
+  - Benefits: [Full medical, dental, vision]
+  - Equity: [Restricted units or equity participation]
+- *If Hourly Consultant:*
+  - Rate: min $XXX/hr | target $XXX/hr | ideal $XXX/hr
+  - Hours: min XX hrs/week | max XX hrs/week
+
+---
+
+### Lifestyle
+
+**Anti-Vision:**
+<!-- What lifestyle situations to avoid -->
+- [Example: Cannot go on any vacations]
+- [Example: Working excessive hours affecting family time]
+
+**Vision:**
+<!-- What lifestyle you're striving toward -->
+- [Example: 2 trips/year - one to see family, one real vacation]
+- [Example: Work-life balance allowing gym time every day]
+
+---
+
+### Work Environment Preferences
+
+**Preferred:**
+<!-- Characteristics you want in a workplace -->
+- [Example: Pro-technology environment]
+- [Example: Encourages experimentation and new ideas]
+- [Example: High autonomy]
+
+**Avoid:**
+<!-- Characteristics that are deal-breakers -->
+- [Example: Unionized environment resistant to change]
+- [Example: Zero technology or heavily constrained technology]
+- [Example: Highly repetitive work]
+
+---
+
+### IP & Side Work
+
+**Requirements:**
+- Retain IP rights: [Yes/No] - [Notes if applicable]
+- Side gig allowed: [Yes/No] - [Notes if applicable]
+
+---
+
+### Travel Tolerance
+
+**Preferences:**
+- Maximum travel percentage: [0-100]%
+- International travel: [Yes/No/Depends]
+- Notes: [Any specific constraints or preferences]
+
+---
+
+*Last updated: [Date]*
+*Review annually or when career priorities change*
+```
+
+**Important Notes for Preferences/Vision.md:**
+- If the user mentions career preferences during intake, incorporate them into the Vision.md file
+- If no preferences are provided, create the template with placeholder examples
+- Mark all placeholders with <!-- NEEDS INPUT: ... --> comments
+- Link compensation fields to country/currency based on user location
+- This file is critical for assessment commands to evaluate job fit
 
 ### Phase 5: Gap Analysis & Recommendations
 
@@ -397,6 +506,7 @@ After completion, provide a report like this:
    ResumeSourceFolder/
    ├── CareerHighlights/ (6 files)
    ├── Experience/ (5 files)
+   ├── Preferences/ (1 file)
    └── Technology/ (2 files)
 
 📊 Content Extracted:
@@ -453,10 +563,11 @@ After completion, provide a report like this:
 - [ ] Read all provided resume files
 - [ ] Extract and analyze content comprehensively
 - [ ] Check if ResumeSourceFolder exists (ask before overwriting)
-- [ ] Create folder structure
+- [ ] Create folder structure (including Preferences/)
 - [ ] Create and populate all CareerHighlights files
 - [ ] Create and populate all Experience files (one per role)
 - [ ] Create and populate Technology files
+- [ ] Create Preferences/Vision.md with template or extracted preferences
 - [ ] Generate gap analysis
 - [ ] Provide completion report with actionable next steps
 - [ ] Encourage user and explain the value of what they've built

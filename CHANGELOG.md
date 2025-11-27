@@ -5,6 +5,34 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-11-27
+
+### Added
+- **Job Preferences System**: New `Preferences/` folder in ResumeSourceFolder for job fit assessment
+  - `Vision.md` template captures career vision and anti-vision framework
+  - Comprehensive job preferences schema (v1.2.0) with 9 subsections:
+    - `target_roles`: Ideal role, acceptable alternatives, target/avoid industries
+    - `employment_type`: Preferred type (Employee/Consultant/Entrepreneur), acceptable types
+    - `compensation`: Salary (min/target/ideal), hourly rates, entrepreneur income, equity preferences
+    - `work_arrangement`: Remote/Hybrid/On-site preference, hours per week, geographic preferences
+    - `travel`: Tolerance percentage and level, international travel willingness
+    - `benefits`: Vacation weeks, required benefits (medical/dental/vision)
+    - `work_environment`: Preferred/avoid characteristics, company size, autonomy level
+    - `intellectual_property`: IP rights retention, side gig requirements
+    - `deal_breakers`: Categorized absolute deal-breakers with evidence references
+  - Assessment commands can now evaluate job fit against candidate preferences
+  - `/create-career-history` automatically creates Preferences folder with Vision.md template
+
+### Changed
+- **Candidate Profile Schema**: Updated to v1.2.0 with `job_preferences` section
+  - Schema now includes complete job preferences extraction
+  - Token budget increased from 11K to 12K to accommodate preferences data
+  - All preferences include evidence traceability (file + line numbers)
+- **Resume Summarizer Agent**: Enhanced to extract preferences from Preferences/ folder
+  - New Section 11 in extraction guidelines for job preferences
+  - Quality Control Checklist updated with 3 new preference-related items
+  - Success Metrics updated to verify preferences extraction
+
 ## [1.1.2] - 2025-11-17
 
 ### Changed
@@ -162,7 +190,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 - Resume comparison and version tracking
 - Expanded cultural profile options
 
-#### v1.2.0 (Planned)
+#### v1.3.0 (Planned)
 - AI-powered interview coaching with real-time feedback
 - Salary negotiation intelligence and strategy
 - Career trajectory analysis and planning
@@ -176,6 +204,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.2.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.2.0
 [1.1.2]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.2
 [1.1.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.1
 [1.1.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.0

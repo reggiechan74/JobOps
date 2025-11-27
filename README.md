@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.1.2** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.2.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -173,6 +173,8 @@ resumeoptimizer/
 │   ├── Experience/                    # Detailed work history by role
 │   │   ├── Experience_YYYY_[Company].md # One file per role
 │   │   └── ...
+│   ├── Preferences/                   # Job search preferences (v1.2.0+)
+│   │   └── Vision.md                  # Vision & Anti-Vision framework
 │   └── Technology/                    # Technical capabilities portfolio
 │       ├── Comprehensive_CV_Technology_Capability.md
 │       └── GitHub_Repositories.md     # Portfolio documentation

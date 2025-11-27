@@ -23,6 +23,7 @@ You will receive a list of files from `ResumeSourceFolder/` directory containing
 - Certifications and education records
 - Project portfolios
 - Career narrative documents
+- **Preferences folder** (NEW v1.2.0): Vision & Anti-Vision framework, job search preferences
 
 ## Task: Extract Structured Candidate Profile
 
@@ -49,6 +50,7 @@ Create a JSON profile that validates against this schema with the following key 
 10. **metadata**: Career patterns (progression, industry changes, employment gaps)
 11. **thought_leadership**: Publications, frameworks created, awards, and industry recognition (NEW in v1.1.0)
 12. **professional_activities**: Volunteer, board, assessor, and professional association roles (NEW in v1.1.0)
+13. **job_preferences**: Candidate's job search preferences for job fit assessment (NEW in v1.2.0)
 
 Refer to the schema file for exact property names, required fields, data types, and validation rules.
 
@@ -171,6 +173,101 @@ Extract for each activity:
 
 These activities are critical for Cultural Fit scoring in rubrics.
 
+### 11. Job Preferences Extraction (NEW in v1.2.0)
+Extract candidate's job search preferences from `ResumeSourceFolder/Preferences/` folder:
+
+**Source Files:**
+- `Preferences/Vision.md` - Vision & Anti-Vision framework
+- Any other files in Preferences/ folder
+
+**Extract the following subsections:**
+
+**target_roles**: Role and industry preferences
+- **ideal_role**: Most desired role type from Vision section
+- **acceptable_roles**: Other acceptable alternatives
+- **target_industries**: Industries mentioned positively
+- **avoid_industries**: Industries mentioned in Anti-Vision
+
+**employment_type**: Employment arrangement preferences
+- **preferred**: Primary preference (Entrepreneur, Consultant, Employee, etc.)
+- **acceptable**: All acceptable types
+- **avoid**: Types to avoid (e.g., "Long-term salaried employee")
+
+**compensation**: Salary and rate expectations
+- **salary**: Extract min/target/ideal base salary with currency
+- **bonus_expectation**: Bonus percentage if mentioned
+- **hourly_rate**: Extract min/target/ideal hourly rates for consulting
+- **equity_preference**: Equity expectations
+
+**work_arrangement**: Location and schedule preferences
+- **location_preference**: Remote/Hybrid/On-site
+- **hours_per_week**: Min and max hours if specified
+- **geographic_preferences**: Preferred locations/cities
+
+**travel**: Travel tolerance
+- **tolerance_percentage**: Maximum acceptable travel (0-100)
+- **tolerance_level**: None/Minimal/Moderate/Significant/Heavy
+- **international_travel**: Boolean for international willingness
+
+**benefits**: Benefits requirements
+- **vacation_weeks**: Minimum required vacation
+- **required_benefits**: List of must-have benefits
+- **health_benefits_required**: Boolean
+
+**work_environment**: Culture preferences
+- **preferred_characteristics**: From Vision section (e.g., "Pro-technology")
+- **avoid_characteristics**: From Anti-Vision (e.g., "Unionized environment resistant to change")
+- **autonomy_preference**: High/Moderate/Low based on context
+
+**intellectual_property**: IP and side work
+- **retain_ip_rights**: Based on "Unable to make use of own intellectual property" anti-vision
+- **side_gig_allowed**: Based on "Unable to have side gig" anti-vision
+
+**deal_breakers**: Extract absolute no-go items from Anti-Vision sections
+- Categorize by type (Compensation, Culture, Work Arrangement, etc.)
+- Include evidence references
+
+**Example extraction from Vision.md:**
+```json
+"job_preferences": {
+  "target_roles": {
+    "ideal_role": "AI Agentic engineering in commercial real estate or linear infrastructure",
+    "acceptable_roles": ["Commercial real estate advisory", "Linear infrastructure real estate advisory"],
+    "target_industries": ["Commercial Real Estate", "Linear Infrastructure", "Technology"],
+    "evidence": {"file": "ResumeSourceFolder/Preferences/Vision.md", "lines": "25-27"}
+  },
+  "compensation": {
+    "salary": {
+      "minimum": "C$150,000",
+      "target": "C$200,000",
+      "ideal": "C$250,000+",
+      "currency": "CAD"
+    },
+    "bonus_expectation": "30% of base salary",
+    "hourly_rate": {
+      "minimum": "$100/hr",
+      "target": "$175/hr",
+      "ideal": "$350/hr"
+    },
+    "equity_preference": "Restricted units or equity participation",
+    "evidence": {"file": "ResumeSourceFolder/Preferences/Vision.md", "lines": "29-40"}
+  },
+  "work_environment": {
+    "preferred_characteristics": ["Pro-technology", "Encourages experimentation", "Advancing new ideas"],
+    "avoid_characteristics": ["Zero technology", "Unionized environment resistant to change", "Highly repetitive work"],
+    "autonomy_preference": "High",
+    "evidence": {"file": "ResumeSourceFolder/Preferences/Vision.md", "lines": "14-23"}
+  },
+  "deal_breakers": [
+    {"category": "Culture", "description": "Zero technology or constrained technology due to corporate policies"},
+    {"category": "Culture", "description": "Unionized environment resistant to change"},
+    {"category": "Work", "description": "Highly repetitive work with low intellectual stimulus"},
+    {"category": "IP", "description": "Unable to make use of own intellectual property"},
+    {"category": "Employment", "description": "Unable to have side gig"}
+  ]
+}
+```
+
 ## Output Format
 
 1. **Single JSON file**: Save to `ResumeSourceFolder/.profile/candidate_profile.json`
@@ -196,8 +293,11 @@ Before finalizing JSON profile:
 - [ ] All dollar amounts include currency and scale (M/K)
 - [ ] thought_leadership section populated if publications/frameworks exist (NEW v1.1.0)
 - [ ] professional_activities extracted from CareerHighlights files (NEW v1.1.0)
+- [ ] job_preferences extracted from Preferences/ folder if exists (NEW v1.2.0)
+- [ ] Compensation expectations have min/target/ideal structure (NEW v1.2.0)
+- [ ] Deal-breakers extracted from Anti-Vision sections (NEW v1.2.0)
 - [ ] JSON is valid (no syntax errors)
-- [ ] Token count: Profile ≤11K tokens (target: 10K, ~2.5% increase from v1.0.0)
+- [ ] Token count: Profile ≤12K tokens (target: 11K, ~10% increase from v1.1.0 for preferences)
 
 ## Error Handling
 
@@ -210,16 +310,19 @@ If issues encountered:
 ## Success Metrics
 
 A successful extraction achieves:
-- ✅ 80-85% token reduction (50K-80K → 10K-11K with v1.1.0 enhancements)
+- ✅ 80-85% token reduction (50K-80K → 11K-12K with v1.2.0 enhancements)
 - ✅ 100% evidence traceability (all claims have file+line references)
 - ✅ ≤5 validation warnings in extraction log
-- ✅ JSON validates against schema v1.1.0
+- ✅ JSON validates against schema v1.2.0
 - ✅ All metrics include timeframes and mechanisms
 - ✅ Complete coverage of source materials (no files skipped)
 - ✅ scope_indicators populated for all work_history entries (NEW v1.1.0)
 - ✅ impact_category assigned to all achievements (NEW v1.1.0)
 - ✅ thought_leadership section complete with publications/frameworks/awards (NEW v1.1.0)
 - ✅ professional_activities extracted from all relevant files (NEW v1.1.0)
+- ✅ job_preferences section populated from Preferences/ folder (NEW v1.2.0)
+- ✅ Compensation structured as min/target/ideal for salary and hourly rates (NEW v1.2.0)
+- ✅ Deal-breakers categorized and documented (NEW v1.2.0)
 
 ## Usage by Assessment Commands
 

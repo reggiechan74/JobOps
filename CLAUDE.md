@@ -8,12 +8,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
 
-**Current Version:** 1.1.2 (see CHANGELOG.md for version history)
+**Current Version:** 1.2.0 (see CHANGELOG.md for version history)
 
 ## Key Directories
 
 - **ResumeSourceFolder/**: Contains master resume documents (comprehensive career inventory)
- 
+  - `CareerHighlights/`: Certifications, skills, professional activities, publications
+  - `Experience/`: Detailed work history with one file per role
+  - `Preferences/`: Job search preferences (v1.2.0+) - Vision & Anti-Vision framework
+  - `Technology/`: Technical capabilities portfolio and GitHub repositories
+  - `.profile/`: Optimized candidate profile cache (auto-generated)
 
 - **SourceMaterial/**: Contains methodology documentation and analysis
   - `System_Dynamics_Analysis_Assessment_First_Hiring_v3.md`: Assessment-First Hiring theoretical framework
@@ -109,19 +113,30 @@ Located in `.claude/templates/`:
 
 **Format**: Commands use detailed 3-level evidence attribution format for all scores
 
-#### 4. `candidate_profile_schema.json` (~11KB)
+#### 4. `candidate_profile_schema.json` (~15KB, v1.2.0)
 **Purpose**: JSON schema for structured candidate profiles with evidence traceability (context optimization)
 
 **Structure**:
-- 10 major sections: candidate metadata, technical_skills, work_history, education, certifications, projects, domain_expertise, leadership_experience, soft_skills, metadata
+- 13 major sections: candidate metadata, technical_skills, work_history, education, certifications, projects, domain_expertise, leadership_experience, soft_skills, thought_leadership, professional_activities, metadata, **job_preferences** (v1.2.0)
 - Required and optional field definitions with data types
 - Evidence object structure (file + lines + context)
 - Enum values for categorical fields (proficiency levels, career progression, etc.)
 - Validation rules and format patterns
 
+**Job Preferences Section (v1.2.0)**:
+- `target_roles`: Ideal role, acceptable alternatives, target/avoid industries
+- `employment_type`: Preferred type (Employee/Consultant/Entrepreneur), acceptable types
+- `compensation`: Salary (min/target/ideal), hourly rates, entrepreneur income, equity preferences
+- `work_arrangement`: Remote/Hybrid/On-site preference, hours per week, geographic preferences
+- `travel`: Tolerance percentage and level, international travel willingness
+- `benefits`: Vacation weeks, required benefits (medical/dental/vision)
+- `work_environment`: Preferred/avoid characteristics, company size, autonomy level
+- `intellectual_property`: IP rights retention, side gig requirements
+- `deal_breakers`: Categorized absolute deal-breakers with evidence references
+
 **Used By**: `resume-summarizer` agent (invoked automatically by `/assessjob`, `/assesscandidate`)
 
-**Benefits**: Enables 85-90% token reduction (50K-80K → 8K-10K) while maintaining 100% evidence traceability
+**Benefits**: Enables 85-90% token reduction (50K-80K → 11K-12K) while maintaining 100% evidence traceability
 
 ### Command Integration
 
