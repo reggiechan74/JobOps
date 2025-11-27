@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOBOPS // WOPR TERMINAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --phosphor-green: #33ff33;
+            --phosphor-dim: #1a8c1a;
+            --phosphor-bright: #66ff66;
+            --phosphor-glow: rgba(51, 255, 51, 0.4);
+            --amber: #ffaa00;
+            --amber-dim: #8c5c00;
+            --amber-glow: rgba(255, 170, 0, 0.3);
+            --red-alert: #ff3333;
+            --red-dim: #8c1a1a;
+            --red-glow: rgba(255, 51, 51, 0.4);
+            --cyan: #00ffff;
+            --cyan-dim: #008c8c;
+            --bg-terminal: #0a0f0a;
+            --bg-screen: #050805;
+            --bg-bezel: #1a1a1a;
+            --scanline-alpha: 0.08;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-terminal);
+            color: var(--phosphor-green);
+            line-height: 1.4;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* CRT Screen Effects */
+        .crt-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, var(--scanline-alpha)) 0px,
+                    rgba(0, 0, 0, var(--scanline-alpha)) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+        }
+
+        .crt-flicker {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+            animation: flicker 0.15s infinite;
+            background: transparent;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            50% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+
+        .screen-glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            box-shadow: inset 0 0 150px rgba(51, 255, 51, 0.03);
+            border-radius: 20px;
+        }
+
+        .vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9997;
+            background: radial-gradient(ellipse at center, transparent 0%, transparent 60%, rgba(0,0,0,0.6) 100%);
+        }
+
+        /* Top Status Bar - DEFCON Style */
+        .defcon-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 2rem;
+            background: var(--bg-screen);
+            border-bottom: 1px solid var(--phosphor-dim);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .defcon-left {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .defcon-level {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .defcon-indicator {
+            display: flex;
+            gap: 3px;
+        }
+
+        .defcon-dot {
+            width: 8px;
+            height: 16px;
+            background: var(--phosphor-dim);
+            opacity: 0.3;
+        }
+
+        .defcon-dot.active {
+            opacity: 1;
+            animation: defconPulse 1s ease-in-out infinite;
+        }
+
+        .defcon-dot:nth-child(1).active { background: var(--red-alert); }
+        .defcon-dot:nth-child(2).active { background: var(--red-alert); }
+        .defcon-dot:nth-child(3).active { background: var(--amber); }
+        .defcon-dot:nth-child(4).active { background: var(--amber); }
+        .defcon-dot:nth-child(5).active { background: var(--phosphor-green); }
+
+        @keyframes defconPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .system-time {
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .defcon-right {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            opacity: 0.7;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--phosphor-green);
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Main Terminal Container */
+        .terminal-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* WOPR Header */
+        .wopr-header {
+            text-align: center;
+            padding: 6rem 0 4rem;
+            position: relative;
+        }
+
+        .wopr-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            text-shadow:
+                0 0 10px var(--phosphor-glow),
+                0 0 20px var(--phosphor-glow),
+                0 0 40px var(--phosphor-glow),
+                0 0 80px var(--phosphor-glow);
+            margin-bottom: 0.5rem;
+            animation: textGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow:
+                    0 0 10px var(--phosphor-glow),
+                    0 0 20px var(--phosphor-glow),
+                    0 0 40px var(--phosphor-glow),
+                    0 0 80px var(--phosphor-glow);
+            }
+            50% {
+                text-shadow:
+                    0 0 5px var(--phosphor-glow),
+                    0 0 10px var(--phosphor-glow),
+                    0 0 20px var(--phosphor-glow),
+                    0 0 40px var(--phosphor-glow);
+            }
+        }
+
+        .wopr-subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.4em;
+            opacity: 0.6;
+            margin-bottom: 3rem;
+        }
+
+        .typing-container {
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .typing-prompt {
+            font-size: 1.8rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .typing-response {
+            font-size: 2.2rem;
+            color: var(--amber);
+            text-shadow: 0 0 20px var(--amber-glow);
+            min-height: 2.5rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.1em;
+            background: var(--phosphor-green);
+            margin-left: 2px;
+            animation: cursorBlink 0.8s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Navigation Grid */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 3rem 0;
+            padding: 1.5rem;
+            border: 1px solid var(--phosphor-dim);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-item {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--phosphor-green);
+            position: relative;
+        }
+
+        .nav-item::before {
+            content: '>';
+            position: absolute;
+            left: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-item:hover {
+            border-color: var(--phosphor-green);
+            background: rgba(51, 255, 51, 0.05);
+            text-shadow: 0 0 10px var(--phosphor-glow);
+        }
+
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+
+        .nav-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-label {
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
+        /* Section Styling */
+        .terminal-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            border: 1px solid var(--phosphor-dim);
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .terminal-section::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -0.7rem;
+            left: 1rem;
+            background: var(--bg-terminal);
+            padding: 0 0.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--phosphor-dim);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed var(--phosphor-dim);
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 10px var(--phosphor-glow);
+        }
+
+        /* Threat Assessment Display */
+        .threat-display {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .threat-card {
+            border: 1px solid var(--red-dim);
+            padding: 1.5rem;
+            background: rgba(255, 51, 51, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .threat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--red-alert);
+            animation: threatScan 2s linear infinite;
+        }
+
+        @keyframes threatScan {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+
+        .threat-level {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--red-alert);
+            text-shadow: 0 0 20px var(--red-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .threat-label {
+            font-size: 1.1rem;
+            color: var(--amber);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        .threat-desc {
+            font-size: 1rem;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+
+        /* Protocol Display - War Room Style */
+        .protocol-grid {
+            display: grid;
+            grid-template-columns: 50px 1fr;
+            gap: 0;
+            position: relative;
+        }
+
+        .protocol-timeline {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(
+                180deg,
+                var(--red-alert) 0%,
+                var(--red-alert) 33%,
+                var(--amber) 33%,
+                var(--amber) 66%,
+                var(--phosphor-green) 66%,
+                var(--phosphor-green) 100%
+            );
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .protocol-phases {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .protocol-phase {
+            display: grid;
+            grid-template-columns: 50px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .phase-marker {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--phosphor-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            background: var(--bg-terminal);
+            position: relative;
+            z-index: 2;
+        }
+
+        .phase-1 .phase-marker { border-color: var(--red-alert); color: var(--red-alert); }
+        .phase-2 .phase-marker { border-color: var(--amber); color: var(--amber); }
+        .phase-3 .phase-marker { border-color: var(--phosphor-green); color: var(--phosphor-green); }
+
+        .phase-content {
+            padding-bottom: 2rem;
+        }
+
+        .phase-header {
+            margin-bottom: 1rem;
+        }
+
+        .phase-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+        }
+
+        .phase-1 .phase-name { color: var(--red-alert); text-shadow: 0 0 10px var(--red-glow); }
+        .phase-2 .phase-name { color: var(--amber); text-shadow: 0 0 10px var(--amber-glow); }
+        .phase-3 .phase-name { color: var(--phosphor-green); text-shadow: 0 0 10px var(--phosphor-glow); }
+
+        .phase-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            letter-spacing: 0.15em;
+        }
+
+        .phase-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .step-item {
+            border: 1px solid var(--phosphor-dim);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .step-item:hover {
+            border-color: var(--phosphor-green);
+            background: rgba(51, 255, 51, 0.03);
+        }
+
+        .step-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-name {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            opacity: 0.7;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-cmd {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--cyan);
+            padding: 0.3rem 0.5rem;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid var(--cyan-dim);
+            display: inline-block;
+        }
+
+        /* Arsenal Grid - Weapons Console */
+        .arsenal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .arsenal-card {
+            border: 1px solid var(--phosphor-dim);
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .arsenal-card:hover {
+            border-color: var(--phosphor-green);
+            box-shadow: 0 0 30px rgba(51, 255, 51, 0.1);
+        }
+
+        .arsenal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(51, 255, 51, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .arsenal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px dashed var(--phosphor-dim);
+        }
+
+        .arsenal-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .arsenal-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .arsenal-desc {
+            font-size: 1rem;
+            opacity: 0.8;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .arsenal-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .spec-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--phosphor-dim);
+            opacity: 0.7;
+            letter-spacing: 0.05em;
+        }
+
+        /* Live Terminal Demo */
+        .demo-terminal {
+            background: var(--bg-screen);
+            border: 3px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 2px #222,
+                0 0 0 4px #1a1a1a,
+                inset 0 0 100px rgba(51, 255, 51, 0.03),
+                0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .demo-terminal::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .terminal-chrome {
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .chrome-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.3);
+        }
+
+        .chrome-dot.red { background: linear-gradient(135deg, #ff6b6b, #ee4444); }
+        .chrome-dot.yellow { background: linear-gradient(135deg, #ffd93d, #f0c000); }
+        .chrome-dot.green { background: linear-gradient(135deg, #6bff6b, #44ee44); }
+
+        .chrome-title {
+            margin-left: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: #666;
+            letter-spacing: 0.1em;
+        }
+
+        .terminal-screen {
+            padding: 1.5rem;
+            min-height: 350px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .term-line {
+            margin-bottom: 0.25rem;
+            opacity: 0;
+            animation: terminalType 0.05s ease forwards;
+        }
+
+        .term-line:nth-child(1) { animation-delay: 0.5s; }
+        .term-line:nth-child(2) { animation-delay: 0.8s; }
+        .term-line:nth-child(3) { animation-delay: 1.5s; }
+        .term-line:nth-child(4) { animation-delay: 1.8s; }
+        .term-line:nth-child(5) { animation-delay: 2.4s; }
+        .term-line:nth-child(6) { animation-delay: 2.7s; }
+        .term-line:nth-child(7) { animation-delay: 3.3s; }
+        .term-line:nth-child(8) { animation-delay: 3.6s; }
+        .term-line:nth-child(9) { animation-delay: 3.9s; }
+        .term-line:nth-child(10) { animation-delay: 4.2s; }
+        .term-line:nth-child(11) { animation-delay: 4.8s; }
+        .term-line:nth-child(12) { animation-delay: 5.1s; }
+
+        @keyframes terminalType {
+            to { opacity: 1; }
+        }
+
+        .term-prompt {
+            color: var(--phosphor-green);
+        }
+
+        .term-cmd {
+            color: var(--cyan);
+        }
+
+        .term-output {
+            color: var(--phosphor-dim);
+            padding-left: 1rem;
+        }
+
+        .term-success {
+            color: var(--phosphor-bright);
+        }
+
+        .term-warning {
+            color: var(--amber);
+        }
+
+        .term-highlight {
+            color: var(--phosphor-green);
+            text-shadow: 0 0 10px var(--phosphor-glow);
+        }
+
+        /* Quote Section - War Room Display */
+        .quote-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .quote-border {
+            border: 2px solid var(--amber-dim);
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .quote-border::before,
+        .quote-border::after {
+            content: '//';
+            position: absolute;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--amber);
+        }
+
+        .quote-border::before { top: -1rem; left: 2rem; }
+        .quote-border::after { bottom: -1rem; right: 2rem; }
+
+        .quote-text {
+            font-size: 1.8rem;
+            line-height: 1.5;
+            color: var(--amber);
+            text-shadow: 0 0 20px var(--amber-glow);
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-source {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--phosphor-dim);
+            letter-spacing: 0.2em;
+        }
+
+        /* CTA Section - Launch Console */
+        .launch-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            border: 2px solid var(--phosphor-dim);
+            margin: 2rem 0;
+            background: rgba(51, 255, 51, 0.02);
+            position: relative;
+        }
+
+        .launch-section::before {
+            content: 'MISSION CONTROL';
+            position: absolute;
+            top: -0.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-terminal);
+            padding: 0 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--phosphor-dim);
+        }
+
+        .launch-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px var(--phosphor-glow);
+        }
+
+        .launch-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.7;
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .install-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-screen);
+            border: 2px solid var(--phosphor-dim);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .install-display code {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            color: var(--cyan);
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--phosphor-dim);
+            color: var(--phosphor-green);
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'VT323', monospace;
+        }
+
+        .copy-btn:hover {
+            background: rgba(51, 255, 51, 0.1);
+            border-color: var(--phosphor-green);
+        }
+
+        .launch-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-launch {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            padding: 1rem 2.5rem;
+            background: var(--phosphor-green);
+            color: var(--bg-terminal);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-launch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-launch:hover {
+            box-shadow: 0 0 30px var(--phosphor-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-launch:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: var(--phosphor-green);
+            border: 2px solid var(--phosphor-dim);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--phosphor-green);
+            background: rgba(51, 255, 51, 0.05);
+        }
+
+        /* Footer - System Status */
+        .system-footer {
+            border-top: 1px solid var(--phosphor-dim);
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--phosphor-green);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            text-shadow: 0 0 10px var(--phosphor-glow);
+        }
+
+        /* World Map Background Element */
+        .world-map {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 60vh;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 500'%3E%3Cpath fill='%2333ff33' d='M170 120c5-10 15-20 30-25 20-8 45-5 60 10 10 10 15 25 10 40-5 20-25 35-45 35-25 0-50-20-55-45 0-5 0-10 0-15zm150 50c20-5 40 5 55 20 15 20 15 45 0 65-20 25-55 30-80 15-20-15-25-45-10-70 10-20 25-30 35-30zm-100 100c30 5 55 25 65 55 10 35-5 70-35 90-35 20-80 10-100-25-15-30-5-70 25-95 15-15 30-25 45-25zm400-150c25 10 40 35 35 60-5 30-35 55-65 50-25-5-45-30-45-55 0-30 25-55 55-60 10 0 15 0 20 5zm100 200c15 15 20 40 10 60-15 25-45 40-75 30-25-10-40-40-35-65 10-30 40-50 70-45 15 5 25 15 30 20z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Radar Ping Animation */
+        .radar-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 120px;
+            height: 120px;
+            z-index: 50;
+            opacity: 0.3;
+        }
+
+        .radar-circle {
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--phosphor-dim);
+            border-radius: 50%;
+        }
+
+        .radar-sweep {
+            position: absolute;
+            inset: 0;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                transparent 350deg,
+                var(--phosphor-green) 355deg,
+                transparent 360deg
+            );
+            border-radius: 50%;
+            animation: radarSweep 4s linear infinite;
+        }
+
+        @keyframes radarSweep {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .radar-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--phosphor-green);
+            border-radius: 50%;
+            animation: radarPing 4s ease-out infinite;
+        }
+
+        .radar-dot:nth-child(3) { top: 30%; left: 60%; animation-delay: 1s; }
+        .radar-dot:nth-child(4) { top: 70%; left: 40%; animation-delay: 2.5s; }
+        .radar-dot:nth-child(5) { top: 50%; left: 75%; animation-delay: 0.5s; }
+
+        @keyframes radarPing {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            10% { opacity: 1; transform: scale(1); }
+            30% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .threat-display {
+                grid-template-columns: 1fr;
+            }
+
+            .arsenal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .defcon-bar {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .defcon-right {
+                display: none;
+            }
+
+            .terminal-container {
+                padding: 3rem 1rem 1rem;
+            }
+
+            .wopr-header {
+                padding: 4rem 0 2rem;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .phase-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .launch-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .system-footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-left {
+                flex-direction: column;
+            }
+
+            .radar-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="crt-flicker"></div>
+    <div class="screen-glow"></div>
+    <div class="vignette"></div>
+    <div class="world-map"></div>
+
+    <!-- DEFCON Status Bar -->
+    <div class="defcon-bar">
+        <div class="defcon-left">
+            <div class="defcon-level">
+                <span>DEFCON</span>
+                <div class="defcon-indicator">
+                    <div class="defcon-dot"></div>
+                    <div class="defcon-dot"></div>
+                    <div class="defcon-dot active"></div>
+                    <div class="defcon-dot active"></div>
+                    <div class="defcon-dot active"></div>
+                </div>
+                <span>3</span>
+            </div>
+            <div class="system-time" id="systemTime">00:00:00 UTC</div>
+        </div>
+        <div class="defcon-right">
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>WOPR ONLINE</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>TACTICAL READY</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>AGENTS: 16</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Radar Widget -->
+    <div class="radar-container">
+        <div class="radar-circle"></div>
+        <div class="radar-sweep"></div>
+        <div class="radar-dot"></div>
+        <div class="radar-dot"></div>
+        <div class="radar-dot"></div>
+    </div>
+
+    <div class="terminal-container">
+        <!-- WOPR Header -->
+        <header class="wopr-header">
+            <h1 class="wopr-title">JOBOPS</h1>
+            <p class="wopr-subtitle">WAR OPERATION PLAN RESPONSE // EMPLOYMENT DIVISION</p>
+
+            <div class="typing-container">
+                <div class="typing-prompt">GREETINGS, PROFESSOR FALKEN.</div>
+                <div class="typing-response">
+                    <span id="typedText"></span><span class="cursor"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Grid -->
+        <nav class="nav-grid">
+            <a href="#threat" class="nav-item">
+                <span class="nav-num">01</span>
+                <span class="nav-label">THREAT ANALYSIS</span>
+            </a>
+            <a href="#protocol" class="nav-item">
+                <span class="nav-num">02</span>
+                <span class="nav-label">BATTLE PROTOCOL</span>
+            </a>
+            <a href="#arsenal" class="nav-item">
+                <span class="nav-num">03</span>
+                <span class="nav-label">WEAPONS ARSENAL</span>
+            </a>
+            <a href="#demo" class="nav-item">
+                <span class="nav-num">04</span>
+                <span class="nav-label">LIVE SIMULATION</span>
+            </a>
+        </nav>
+
+        <!-- Threat Analysis Section -->
+        <section class="terminal-section" id="threat" data-label="SECTOR ANALYSIS">
+            <div class="section-header">
+                <div class="section-icon">⚠</div>
+                <h2 class="section-title">EMPLOYMENT THREAT ASSESSMENT</h2>
+            </div>
+
+            <p style="font-size: 1.1rem; opacity: 0.8; margin-bottom: 2rem; line-height: 1.6;">
+                >> ANALYSIS COMPLETE. CURRENT HIRING LANDSCAPE COMPROMISED.<br>
+                >> AI-ASSISTED EMBELLISHMENT HAS CREATED SYSTEMIC DEGRADATION.<br>
+                >> TRADITIONAL APPLICATION METHODS: INEFFECTIVE.
+            </p>
+
+            <div class="threat-display">
+                <div class="threat-card">
+                    <div class="threat-level">73.4%</div>
+                    <div class="threat-label">EMBELLISHMENT RATE</div>
+                    <p class="threat-desc">Candidates utilizing AI enhancement tools. Signal authenticity compromised across all sectors.</p>
+                </div>
+                <div class="threat-card">
+                    <div class="threat-level">-2.5dB</div>
+                    <div class="threat-label">SIGNAL DEGRADATION</div>
+                    <p class="threat-desc">Noise exceeds signal. Information quality below minimum threshold for reliable assessment.</p>
+                </div>
+                <div class="threat-card">
+                    <div class="threat-level">CRITICAL</div>
+                    <div class="threat-label">VICIOUS CYCLE</div>
+                    <p class="threat-desc">Self-reinforcing loop detected. Additional screening triggers additional embellishment. No winners.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Protocol Section -->
+        <section class="terminal-section" id="protocol" data-label="TACTICAL OPERATIONS">
+            <div class="section-header">
+                <div class="section-icon">▶</div>
+                <h2 class="section-title">8-STEP BATTLE PROTOCOL</h2>
+            </div>
+
+            <div class="protocol-phases">
+                <div class="protocol-phase phase-1">
+                    <div class="phase-marker">I</div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-name">STRIKE PACKAGE ASSEMBLY</div>
+                            <div class="phase-subtitle">STEPS 01-03 // RESUME DEVELOPMENT</div>
+                        </div>
+                        <div class="phase-steps">
+                            <div class="step-item">
+                                <div class="step-num">STEP 01</div>
+                                <div class="step-name">INITIAL DRAFT CREATION</div>
+                                <p class="step-desc">HAM-Z methodology deployment. Cultural profile adaptation. ATS optimization protocols.</p>
+                                <code class="step-cmd">/buildresume</code>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-num">STEP 02</div>
+                                <div class="step-name">PROVENANCE VERIFICATION</div>
+                                <p class="step-desc">Line-by-line validation against master inventory. Evidence citation required.</p>
+                                <code class="step-cmd">/provenance</code>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-num">STEP 03</div>
+                                <div class="step-name">HARDENED RESUME OUTPUT</div>
+                                <p class="step-desc">Final deployment-ready resume. Interview-resistant. Zero fabrication tolerance.</p>
+                                <code class="step-cmd">AUTO-GENERATED</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="protocol-phase phase-2">
+                    <div class="phase-marker">II</div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-name">INTERVIEW PREPARATION</div>
+                            <div class="phase-subtitle">STEPS 04-06 // INTELLIGENCE BRIEFING</div>
+                        </div>
+                        <div class="phase-steps">
+                            <div class="step-item">
+                                <div class="step-num">STEP 04</div>
+                                <div class="step-name">TARGET ASSESSMENT</div>
+                                <p class="step-desc">100-point viability scoring. Dynamic rubric generation. Gap analysis protocols.</p>
+                                <code class="step-cmd">/assessjob</code>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-num">STEP 05</div>
+                                <div class="step-name">STUDY GUIDE CREATION</div>
+                                <p class="step-desc">Critical capability gap identification. Structured learning protocol deployment.</p>
+                                <code class="step-cmd">/briefing</code>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-num">STEP 06</div>
+                                <div class="step-name">INTERVIEW SIMULATION</div>
+                                <p class="step-desc">Tactical rehearsal. STAR format coaching. Defensive risk mitigation.</p>
+                                <code class="step-cmd">/interviewprep</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="protocol-phase phase-3">
+                    <div class="phase-marker">III</div>
+                    <div class="phase-content">
+                        <div class="phase-header">
+                            <div class="phase-name">MISSION EXECUTION</div>
+                            <div class="phase-subtitle">STEPS 07-08 // FINAL DEPLOYMENT</div>
+                        </div>
+                        <div class="phase-steps">
+                            <div class="step-item">
+                                <div class="step-num">STEP 07</div>
+                                <div class="step-name">COVER LETTER DEPLOYMENT</div>
+                                <p class="step-desc">Strategic communication. Requirements-matching matrix. Evidence chain maintained.</p>
+                                <code class="step-cmd">/coverletter</code>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-num">STEP 08</div>
+                                <div class="step-name">FORMAT CONVERSION</div>
+                                <p class="step-desc">Professional DOCX/PDF conversion. Submission-ready status achieved.</p>
+                                <code class="step-cmd">/convert</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arsenal Section -->
+        <section class="terminal-section" id="arsenal" data-label="WEAPONS SYSTEMS">
+            <div class="section-header">
+                <div class="section-icon">◆</div>
+                <h2 class="section-title">TACTICAL ARSENAL</h2>
+            </div>
+
+            <div class="arsenal-grid">
+                <div class="arsenal-card">
+                    <div class="arsenal-header">
+                        <div class="arsenal-icon">◎</div>
+                        <div class="arsenal-name">HAM-Z METHODOLOGY</div>
+                    </div>
+                    <p class="arsenal-desc">Hard Skills + Actions + Metrics + Structure combined with XYZ narrative format. Precision-targeted achievement formulation. Interview-defensible by design.</p>
+                    <div class="arsenal-specs">
+                        <span class="spec-tag">QUANTIFIED</span>
+                        <span class="spec-tag">MECHANISM-REQ</span>
+                        <span class="spec-tag">TIMEBOUND</span>
+                    </div>
+                </div>
+
+                <div class="arsenal-card">
+                    <div class="arsenal-header">
+                        <div class="arsenal-icon">◈</div>
+                        <div class="arsenal-name">PROVENANCE HARDENING</div>
+                    </div>
+                    <p class="arsenal-desc">Comprehensive credibility verification system. Identifies fabricated claims, unbounded metrics, and mechanism-free outcomes before interview exposure.</p>
+                    <div class="arsenal-specs">
+                        <span class="spec-tag">EVIDENCE-MAP</span>
+                        <span class="spec-tag">RISK-CLASSIFY</span>
+                        <span class="spec-tag">LINE-AUDIT</span>
+                    </div>
+                </div>
+
+                <div class="arsenal-card">
+                    <div class="arsenal-header">
+                        <div class="arsenal-icon">◉</div>
+                        <div class="arsenal-name">CULTURAL PROFILES</div>
+                    </div>
+                    <p class="arsenal-desc">Regional theater adaptation system. Canadian, US, European, UK, Australian profiles with distinct formatting and language conventions.</p>
+                    <div class="arsenal-specs">
+                        <span class="spec-tag">REGIONAL</span>
+                        <span class="spec-tag">LANG-TUNE</span>
+                        <span class="spec-tag">FORMAT-STD</span>
+                    </div>
+                </div>
+
+                <div class="arsenal-card">
+                    <div class="arsenal-header">
+                        <div class="arsenal-icon">◇</div>
+                        <div class="arsenal-name">OSINT INTELLIGENCE</div>
+                    </div>
+                    <p class="arsenal-desc">6 specialized agents deploy in parallel. Corporate, Legal, Leadership, Compensation, Culture, and Market intelligence gathering.</p>
+                    <div class="arsenal-specs">
+                        <span class="spec-tag">PARALLEL-OPS</span>
+                        <span class="spec-tag">DEEP-RECON</span>
+                        <span class="spec-tag">RISK-ASSESS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo Section -->
+        <section class="terminal-section" id="demo" data-label="LIVE SIMULATION">
+            <div class="section-header">
+                <div class="section-icon">▣</div>
+                <h2 class="section-title">TACTICAL SIMULATION</h2>
+            </div>
+
+            <div class="demo-terminal">
+                <div class="terminal-chrome">
+                    <div class="chrome-dot red"></div>
+                    <div class="chrome-dot yellow"></div>
+                    <div class="chrome-dot green"></div>
+                    <span class="chrome-title">WOPR TERMINAL // SESSION 4815162342</span>
+                </div>
+                <div class="terminal-screen">
+                    <div class="term-line"><span class="term-prompt">WOPR></span> <span class="term-cmd">/assessjob Job_Postings/TechCorp_SeniorDev.md</span></div>
+                    <div class="term-line term-output">>> INITIALIZING TARGET RECONNAISSANCE...</div>
+                    <div class="term-line term-output">>> DEPLOYING ASSESSMENT RUBRIC...</div>
+                    <div class="term-line"><span class="term-success">>> ASSESSMENT COMPLETE: 78/100 [ENGAGE]</span></div>
+                    <div class="term-line">&nbsp;</div>
+                    <div class="term-line"><span class="term-prompt">WOPR></span> <span class="term-cmd">/buildresume Job_Postings/TechCorp_SeniorDev.md Canadian</span></div>
+                    <div class="term-line term-output">>> EXECUTING 3-STEP ASSEMBLY PROTOCOL...</div>
+                    <div class="term-line"><span class="term-success">>> STEP 01: DRAFT CREATED</span></div>
+                    <div class="term-line"><span class="term-success">>> STEP 02: PROVENANCE VERIFIED [0 CRITICAL ISSUES]</span></div>
+                    <div class="term-line"><span class="term-success">>> STEP 03: HARDENED RESUME DEPLOYED</span></div>
+                    <div class="term-line">&nbsp;</div>
+                    <div class="term-line"><span class="term-warning">>> OUTPUT: OutputResumes/Step3_Final_Resume_SeniorDev_TechCorp_2025-11.md</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Section -->
+        <section class="quote-section">
+            <div class="quote-border">
+                <p class="quote-text">"A STRANGE GAME. THE ONLY WINNING MOVE IS TO PLAY WITH TRUTH."</p>
+                <p class="quote-source">— WOPR EMPLOYMENT DIVISION ANALYSIS</p>
+            </div>
+        </section>
+
+        <!-- Launch Section -->
+        <section class="launch-section">
+            <h2 class="launch-title">INITIATE SEQUENCE</h2>
+            <p class="launch-subtitle">START WITH TRUTH. END WITH SUCCESS. MAKE EVERY CLAIM DEFENSIBLE.</p>
+
+            <div class="install-display">
+                <code>npm install -g @anthropic-ai/claude-code</code>
+                <button class="copy-btn" onclick="copyInstall()">COPY</button>
+            </div>
+
+            <div class="launch-actions">
+                <a href="https://github.com" class="btn-launch">LAUNCH MISSION</a>
+                <a href="#protocol" class="btn-secondary">VIEW PROTOCOL</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="system-footer">
+            <div class="footer-left">
+                <span>JOBOPS v1.2.0 // WOPR EMPLOYMENT DIVISION</span>
+                <div class="footer-links">
+                    <a href="#">DOCUMENTATION</a>
+                    <a href="#">CHANGELOG</a>
+                    <a href="#">SOURCE CODE</a>
+                </div>
+            </div>
+            <div class="footer-right">
+                <span>BUILT FOR THOSE WHO BELIEVE HIRING SHOULD REWARD TRUTH</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // System Time
+        function updateTime() {
+            const now = new Date();
+            const utc = now.toUTCString().split(' ')[4];
+            document.getElementById('systemTime').textContent = utc + ' UTC';
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Typing Effect
+        const responses = [
+            "SHALL WE PLAY A GAME?",
+            "HOW ABOUT GLOBAL EMPLOYMENT WARFARE?",
+            "INITIATING JOBOPS PROTOCOL..."
+        ];
+
+        let responseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 80;
+
+        function typeText() {
+            const currentResponse = responses[responseIndex];
+            const typedTextEl = document.getElementById('typedText');
+
+            if (isDeleting) {
+                typedTextEl.textContent = currentResponse.substring(0, charIndex - 1);
+                charIndex--;
+                typingSpeed = 40;
+            } else {
+                typedTextEl.textContent = currentResponse.substring(0, charIndex + 1);
+                charIndex++;
+                typingSpeed = 80;
+            }
+
+            if (!isDeleting && charIndex === currentResponse.length) {
+                isDeleting = true;
+                typingSpeed = 2000; // Pause at end
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                responseIndex = (responseIndex + 1) % responses.length;
+                typingSpeed = 500; // Pause before next
+            }
+
+            setTimeout(typeText, typingSpeed);
+        }
+
+        setTimeout(typeText, 1500);
+
+        // Copy Install Command
+        function copyInstall() {
+            navigator.clipboard.writeText('npm install -g @anthropic-ai/claude-code');
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'COPIED';
+            btn.style.color = 'var(--phosphor-bright)';
+            setTimeout(() => {
+                btn.textContent = 'COPY';
+                btn.style.color = '';
+            }, 2000);
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Random flicker effect
+        function randomFlicker() {
+            const flicker = document.querySelector('.crt-flicker');
+            if (Math.random() > 0.97) {
+                flicker.style.opacity = '0.8';
+                setTimeout(() => {
+                    flicker.style.opacity = '1';
+                }, 50);
+            }
+            requestAnimationFrame(randomFlicker);
+        }
+        randomFlicker();
+    </script>
+</body>
+</html>
