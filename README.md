@@ -98,23 +98,31 @@ resumeoptimizer/
 │   │   ├── step2-provenance-check.md # Credibility verification
 │   │   ├── step3-final-resume.md     # Hardened final resume
 │   │   └── step4-cover-letter.md     # Strategic cover letter
-│   ├── commands/                      # Slash command definitions
-│   │   ├── assesscandidate.md        # /assesscandidate - Use pre-created rubric
-│   │   ├── assessjob.md              # /assessjob - Complete assessment
-│   │   ├── briefing.md               # /briefing - Interview prep guide
-│   │   ├── buildresume.md            # /buildresume - 3-step resume process
-│   │   ├── change-one-thing.md       # /change-one-thing - Career retrospective
-│   │   ├── comparejobs.md            # /comparejobs - Multi-job analysis
-│   │   ├── convert.md                # /convert - Markdown to DOCX
-│   │   ├── coverletter.md            # /coverletter - Generate letter
-│   │   ├── create-career-history.md  # /create-career-history - Setup wizard
-│   │   ├── createrubric.md           # /createrubric - Rubric only
-│   │   ├── github-portfolio.md       # /github-portfolio - Portfolio documentation
-│   │   ├── install-pandoc.md         # /install-pandoc - Setup converter
-│   │   ├── interviewprep.md          # /interviewprep - Question generator
-│   │   ├── osint.md                  # /osint - Company intelligence
-│   │   ├── provenance-check.md       # /provenance-check - Standalone verification
-│   │   └── searchjobs.md             # /searchjobs - hiring.cafe search
+│   ├── commands/                      # Slash command definitions (categorized)
+│   │   ├── resume-development/        # Core resume creation
+│   │   │   ├── buildresume.md        # /buildresume - 3-step resume process
+│   │   │   └── provenance-check.md   # /provenance-check - Standalone verification
+│   │   ├── interview-prep/            # Assessment & preparation
+│   │   │   ├── assesscandidate.md    # /assesscandidate - Use pre-created rubric
+│   │   │   ├── assessjob.md          # /assessjob - Complete assessment
+│   │   │   ├── briefing.md           # /briefing - Interview prep guide
+│   │   │   ├── comparejobs.md        # /comparejobs - Multi-job analysis
+│   │   │   ├── createrubric.md       # /createrubric - Rubric only
+│   │   │   └── interviewprep.md      # /interviewprep - Question generator
+│   │   ├── application-finalization/  # Final documents
+│   │   │   ├── convert.md            # /convert - Markdown to DOCX
+│   │   │   ├── coverletter.md        # /coverletter - Generate letter
+│   │   │   └── pdf.md                # /pdf - Markdown to PDF
+│   │   ├── job-search/                # Discovery & intelligence
+│   │   │   ├── osint.md              # /osint - Company intelligence
+│   │   │   └── searchjobs.md         # /searchjobs - hiring.cafe search
+│   │   ├── system-setup/              # Configuration & utilities
+│   │   │   ├── create-career-history.md  # /create-career-history - Setup wizard
+│   │   │   ├── git-delete.md         # /git-delete - Delete git history
+│   │   │   ├── github-portfolio.md   # /github-portfolio - Portfolio documentation
+│   │   │   └── install-pandoc.md     # /install-pandoc - Setup converter
+│   │   └── career-strategy/           # Long-term planning
+│   │       └── change-one-thing.md   # /change-one-thing - Career retrospective
 │   ├── templates/                     # Assessment framework templates (v1.1.1+)
 │   │   ├── assessment_report_structure.md    # Report format template
 │   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
