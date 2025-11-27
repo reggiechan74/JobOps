@@ -836,7 +836,131 @@
             letter-spacing: 0.1em;
         }
 
+        .deployment-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            text-align: left;
+        }
+
+        .deploy-step {
+            border: 1px solid var(--phosphor-dim);
+            padding: 1.25rem;
+            background: rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .deploy-step:hover {
+            border-color: var(--phosphor-green);
+            background: rgba(51, 255, 51, 0.03);
+        }
+
+        .deploy-step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .deploy-step-num {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--phosphor-green);
+            color: var(--phosphor-green);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .deploy-step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .deploy-step-desc {
+            font-size: 0.95rem;
+            opacity: 0.7;
+            margin-bottom: 0.75rem;
+            padding-left: 2.75rem;
+        }
+
+        .deploy-step .install-display {
+            margin-left: 2.75rem;
+            margin-bottom: 0;
+        }
+
         .install-display {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-screen);
+            border: 1px solid var(--phosphor-dim);
+            padding: 0.75rem 1rem;
+        }
+
+        .install-display code {
+            flex: 1;
+            color: var(--cyan);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .deploy-divider {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .deploy-divider::before,
+        .deploy-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--phosphor-dim);
+        }
+
+        .deploy-divider span {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--phosphor-dim);
+        }
+
+        .codespace-option {
+            border: 2px solid var(--phosphor-green);
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            background: rgba(51, 255, 51, 0.03);
+            box-shadow: 0 0 30px rgba(51, 255, 51, 0.1);
+        }
+
+        .codespace-desc {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .launch-footer {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .old-install-display {
             display: inline-flex;
             align-items: center;
             gap: 1rem;
@@ -846,7 +970,7 @@
             margin-bottom: 2rem;
         }
 
-        .install-display code {
+        .old-install-display code {
             font-family: 'Share Tech Mono', monospace;
             font-size: 1rem;
             color: var(--cyan);
@@ -1418,14 +1542,56 @@
             <h2 class="launch-title">INITIATE SEQUENCE</h2>
             <p class="launch-subtitle">START WITH TRUTH. END WITH SUCCESS. MAKE EVERY CLAIM DEFENSIBLE.</p>
 
-            <div class="install-display">
-                <code>npm install -g @anthropic-ai/claude-code</code>
-                <button class="copy-btn" onclick="copyInstall()">COPY</button>
+            <div class="deployment-grid">
+                <div class="deploy-step">
+                    <div class="deploy-step-header">
+                        <span class="deploy-step-num">1</span>
+                        <span class="deploy-step-title">INSTALL CLAUDE CODE CLI</span>
+                    </div>
+                    <p class="deploy-step-desc">JobOps runs entirely through Claude Code slash commands.</p>
+                    <div class="install-display">
+                        <code>npm install -g @anthropic-ai/claude-code</code>
+                        <button class="copy-btn" onclick="copyCmd('npm install -g @anthropic-ai/claude-code', this)">COPY</button>
+                    </div>
+                </div>
+
+                <div class="deploy-step">
+                    <div class="deploy-step-header">
+                        <span class="deploy-step-num">2</span>
+                        <span class="deploy-step-title">CLONE JOBOPS REPOSITORY</span>
+                    </div>
+                    <p class="deploy-step-desc">Get the complete tactical application system.</p>
+                    <div class="install-display">
+                        <code>git clone https://github.com/reggiechan74/JobOps.git</code>
+                        <button class="copy-btn" onclick="copyCmd('git clone https://github.com/reggiechan74/JobOps.git', this)">COPY</button>
+                    </div>
+                </div>
+
+                <div class="deploy-step">
+                    <div class="deploy-step-header">
+                        <span class="deploy-step-num">3</span>
+                        <span class="deploy-step-title">LAUNCH CLAUDE CODE</span>
+                    </div>
+                    <p class="deploy-step-desc">Navigate to the repository and start your mission.</p>
+                    <div class="install-display">
+                        <code>cd JobOps && claude</code>
+                        <button class="copy-btn" onclick="copyCmd('cd JobOps && claude', this)">COPY</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="launch-actions">
-                <a href="https://github.com" class="btn-launch">LAUNCH MISSION</a>
-                <a href="#protocol" class="btn-secondary">VIEW PROTOCOL</a>
+            <div class="deploy-divider">
+                <span>OR USE GITHUB CODESPACES</span>
+            </div>
+
+            <div class="codespace-option">
+                <p class="codespace-desc">Launch instantly in your browser — no local setup required.</p>
+                <a href="https://github.com/codespaces/new?hide_repo_select=true&repo=reggiechan74/JobOps" class="btn-launch" target="_blank">OPEN IN GITHUB CODESPACES</a>
+            </div>
+
+            <div class="launch-footer">
+                <a href="https://github.com/reggiechan74/JobOps" class="btn-secondary" target="_blank">VIEW REPOSITORY</a>
+                <a href="https://github.com/reggiechan74/JobOps/blob/main/README.md" class="btn-secondary" target="_blank">READ DOCUMENTATION</a>
             </div>
         </section>
 
@@ -1495,15 +1661,16 @@
 
         setTimeout(typeText, 1500);
 
-        // Copy Install Command
-        function copyInstall() {
-            navigator.clipboard.writeText('npm install -g @anthropic-ai/claude-code');
-            const btn = document.querySelector('.copy-btn');
+        // Copy Command to Clipboard
+        function copyCmd(text, btn) {
+            navigator.clipboard.writeText(text);
             btn.textContent = 'COPIED';
             btn.style.color = 'var(--phosphor-bright)';
+            btn.style.textShadow = '0 0 10px var(--phosphor-glow)';
             setTimeout(() => {
                 btn.textContent = 'COPY';
                 btn.style.color = '';
+                btn.style.textShadow = '';
             }, 2000);
         }
 
