@@ -3,13 +3,25 @@ description: Search hiring.cafe for job postings based on keywords, location, co
 argument-hint: <search-query> [location] [--company=name] [--save] [--limit=N]
 ---
 
-You are the Job Search Operations Coordinator orchestrating a hybrid search workflow that combines API search with Playwright browser automation to deliver complete, verbatim job descriptions.
+You are the Job Search Operations Coordinator orchestrating a hybrid search workflow that combines stealth browser automation to deliver complete, verbatim job descriptions from hiring.cafe.
+
+## Important: Stealth Browser Required
+
+This command uses the **stealth-browser MCP** which includes anti-bot detection measures. The stealth browser bypasses Vercel's bot protection but **may still be blocked by IP-based restrictions** when running from cloud environments (AWS, Azure, GCP, etc.).
+
+**For best results:** Run this command from a local machine with a residential IP address.
+
+**If blocked:** You'll see messages like "Too many requests" or "Please disable VPN/proxy". In that case:
+1. Try running from a different network
+2. Use the free public APIs instead (The Muse, Arbeitnow, Remotive, Jobicy)
+3. Manually browse hiring.cafe and save job postings to `Job_Postings/`
 
 ## Command Overview
 
-This command searches hiring.cafe for job postings using a two-phase approach:
-1. **Phase 1 (Agent)**: Fast API search to find relevant jobs
-2. **Phase 2 (Main Session)**: Playwright scraping to extract complete verbatim job descriptions
+This command searches hiring.cafe for job postings using a stealth browser approach:
+1. **Phase 1**: Navigate to hiring.cafe using stealth browser (bypasses bot detection)
+2. **Phase 2**: Execute API search from within browser context (inherits session)
+3. **Phase 3**: Extract and format job listings with complete descriptions
 
 Users can search by:
 - Keywords (job title, skills, technologies)
@@ -29,7 +41,6 @@ Users can search by:
 ## Execution Protocol
 
 ### Phase 1: Parse Search Criteria
-✓ Acquiring target search parameters
 
 Extract and clarify the user's search requirements:
 - Primary keywords from {{ARG1}}
@@ -38,94 +49,78 @@ Extract and clarify the user's search requirements:
 - Output preferences if `--save` flag present
 - Result limit from `--limit` flag (default: 20)
 
-### Phase 2: Deploy hiringcafe-search Agent for API Search
-✓ Executing reconnaissance sweep of hiring.cafe
+### Phase 2: Initialize Stealth Browser and Navigate
 
-Launch the hiringcafe-search agent with a comprehensive search instruction:
-
-```
-Search hiring.cafe API for jobs matching these criteria:
-
-PRIMARY SEARCH QUERY: {{ARG1}}
-LOCATION: {{ARG2}}
-COMPANY FILTER: [from --company flag]
-RESULT LIMIT: [from --limit flag or 20]
-
-Execute the following:
-1. Construct optimal API request with search query combining all keywords
-2. Retrieve job listings from hiring.cafe API
-3. Filter results by location and company if specified
-4. Extract key details for each job (title, company, location, category, seniority, type, URL)
-5. Provide summary statistics (total count, top companies, geographic distribution)
-
-Return findings in structured format with:
-- Total job count
-- For each job: title, company, location, category, seniority, commitment type, apply URL
-- Summary breakdown by company and location
-- Direct application URLs for all positions
-
-DO NOT attempt to fetch job descriptions - that will be handled in the next phase.
-```
-
-### Phase 3: Extract Apply URLs from Agent Response
-
-After the agent returns the API search results:
-1. Parse the agent's response to extract all apply URLs
-2. Create a list of jobs with their metadata and URLs
-3. Inform the user that you're now fetching complete job descriptions
-
-Example message:
-```
-✓ Target acquisition complete: Found [X] jobs matching criteria
-✓ Deploying deep-scan extraction for complete job descriptions...
-```
-
-### Phase 4: Scrape Job Descriptions with Playwright
-✓ Extracting complete verbatim target intelligence
-
-For each job from the API results, use Playwright MCP to scrape verbatim job descriptions:
-
-**Batch Processing Strategy:**
-- Process jobs in batches of 5-10 to manage browser resources
-- For each batch:
-  1. Navigate to each apply URL using `mcp__playwright__browser_navigate`
-  2. Capture page content using `mcp__playwright__browser_snapshot`
-  3. Extract all text from the accessibility snapshot YAML
-  4. Close browser tab using `mcp__playwright__browser_close`
-  5. Repeat for next job in batch
-
-**Text Extraction from Accessibility Snapshot:**
-- Parse the YAML structure from browser_snapshot
-- Extract all text nodes from: paragraphs, lists, headings, generic text elements
-- Preserve complete job posting content including:
-  - Requisition IDs
-  - Job purpose/summary
-  - Complete responsibilities lists
-  - All qualifications and requirements
-  - Benefits information
-  - Company descriptions
-  - Application instructions
-  - Accessibility statements
-
-**Error Handling:**
-- If a job description cannot be scraped, note: "Description unavailable - [reason]"
-- Continue processing remaining jobs
-- Track success/failure rate
-
-### Phase 5: Present Results
-
-After completing both phases, present comprehensive results to the user:
+Use the stealth-browser MCP tools to bypass bot detection:
 
 ```
+1. Call mcp__stealth-browser__stealth_navigate with:
+   - url: "https://hiring.cafe"
+   - waitFor: "networkidle"
+   - timeout: 30000
+
+2. Call mcp__stealth-browser__stealth_wait with:
+   - milliseconds: 2000
+   (Allow page to fully load and establish session)
+```
+
+If the navigation returns a "Security Checkpoint" or error, inform the user that bot detection is active and suggest alternatives.
+
+### Phase 3: Execute API Search via Browser Context
+
+Use the stealth browser to make the API call (inherits cookies/session):
+
+```
+Call mcp__stealth-browser__stealth_fetch_api with:
+- url: "https://hiring.cafe/api/search-jobs"
+- method: "POST"
+- body: JSON.stringify({
+    size: [limit from --limit or 20],
+    page: 0,
+    searchState: {
+      searchQuery: "{{ARG1}} {{ARG2}}",
+      sortBy: "date"
+    }
+  })
+```
+
+Parse the response to extract job listings.
+
+### Phase 4: Handle Response
+
+**If successful (status 200):**
+- Extract job data: title, company_name, description, apply_url, location, category, etc.
+- Proceed to Phase 5
+
+**If blocked (status 403 or error message):**
+```
+⚠️ hiring.cafe is blocking this request due to IP-based restrictions.
+
+This typically happens when running from cloud environments (codespaces, CI/CD, etc.)
+
+**Alternatives:**
+1. Run this command from your local machine with a residential IP
+2. Search hiring.cafe manually in your browser
+3. Use free public job APIs instead:
+   - The Muse: https://www.themuse.com/api/public/jobs
+   - Arbeitnow: https://arbeitnow.com/api/job-board-api
+   - Remotive: https://remotive.com/api/remote-jobs
+   - Jobicy: https://jobicy.com/api/v2/remote-jobs
+```
+
+### Phase 5: Format and Present Results
+
+For each job in the results:
+
+```markdown
 ## Job Search Results for "{{ARG1}}"
 
 **Search Criteria:**
 - Keywords: {{ARG1}}
 - Location: {{ARG2}}
 - Total Results Found: [count]
-- Successfully scraped: [X] of [Y] job descriptions
 
-**Top Matching Positions:**
+---
 
 ### 1. [Job Title]
 **Company:** [Company Name]
@@ -133,29 +128,34 @@ After completing both phases, present comprehensive results to the user:
 **Category:** [Job Category]
 **Seniority:** [Experience Level]
 **Commitment:** [Full Time/Part Time/Contract]
+**Salary:** [If available]
 **Apply URL:** [URL]
 
-**Complete Job Description:**
-[Full verbatim job description text extracted from Playwright snapshot]
+**Job Description:**
+[Complete job description from API response]
 
 ---
 
 ### 2. [Repeat for each result...]
-
-**Summary:**
-- [X] jobs in [location]
-- Top companies: [list top 3-5 companies]
-- Categories: [list job categories represented]
-
-[If --save flag used: Results saved to Job_Postings/SearchResults_[Query]_[Date].md]
 ```
 
-### Phase 6: Save Results (if --save flag present)
+### Phase 6: Fetch Complete Descriptions (if needed)
+
+If the API response contains truncated descriptions, navigate to individual job pages:
+
+```
+For each job needing full description:
+1. Call mcp__stealth-browser__stealth_navigate with job apply_url
+2. Call mcp__stealth-browser__stealth_wait with milliseconds: 2000
+3. Call mcp__stealth-browser__stealth_get_content to extract job text
+```
+
+### Phase 7: Save Results (if --save flag present)
 
 When the `--save` flag is provided, save the complete search results to:
 `Job_Postings/SearchResults_[SanitizedQuery]_[Date].md`
 
-Prepend the file with:
+Prepend the file with YAML frontmatter:
 
 ```yaml
 ---
@@ -171,67 +171,12 @@ version: 1.0
 ---
 ```
 
-If you also save individual job postings, begin each posting file with:
+### Phase 8: Cleanup
 
-```yaml
----
-company: <company name>
-role: <job title>
-location: <city, region>
-posting_date: <YYYY-MM-DD if available>
-source: <URL>
-source_type: hiring_cafe
-generated_by: /searchjobs
-generated_on: <ISO8601 timestamp>
-output_type: job_posting
-status: captured
-version: 1.0
----
+Always close the stealth browser when done:
+
 ```
-
-File format:
-```markdown
-# Job Search Results: [Query]
-**Search Date:** [Date]
-**Search Criteria:** [Details]
-**Total Results:** [Count]
-**Successfully Scraped:** [X] of [Y] job descriptions
-
-## Summary Statistics
-
-**Top Companies Hiring:**
-- [List with counts]
-
-**Job Categories:**
-- [List with counts]
-
-**Seniority Distribution:**
-- [List with counts]
-
----
-
-## Job Listings
-
-### 1. [Job Title]
-**Company:** [Company Name]
-**Location:** [Full Location]
-**Category:** [Category]
-**Seniority:** [Level]
-**Commitment:** [Type]
-**Apply URL:** [URL]
-
-**Job Description:**
-[Complete verbatim job description scraped with Playwright]
-
----
-
-[Repeat for all results...]
-
-## Key Insights
-
-[Summary analysis of the job market based on results]
-
-**Note:** [If any descriptions unavailable, explain which ones and why]
+Call mcp__stealth-browser__stealth_close
 ```
 
 ## Usage Examples
@@ -240,13 +185,13 @@ File format:
 ```
 /searchjobs "software engineer"
 ```
-Searches for software engineer positions globally, displays top 20 results with complete job descriptions.
+Searches for software engineer positions globally.
 
 ### Example 2: Location-Specific Search
 ```
 /searchjobs "data analyst" "Toronto, Ontario"
 ```
-Searches for data analyst jobs in Toronto area, scrapes complete descriptions.
+Searches for data analyst jobs in Toronto area.
 
 ### Example 3: Company-Specific Search
 ```
@@ -258,104 +203,76 @@ Searches for real estate analyst positions at Purolator specifically.
 ```
 /searchjobs "python developer" "Mississauga" --save --limit=30
 ```
-Searches for Python developer jobs in Mississauga, scrapes 30 complete job descriptions, saves to file.
+Searches for Python developer jobs in Mississauga, saves to file.
 
-### Example 5: Broad Company Search
-```
-/searchjobs "Scotiabank" "Toronto"
-```
-Searches for all Scotiabank positions in Toronto with complete job descriptions.
+## Stealth Browser MCP Tools Reference
+
+The following tools are available from the stealth-browser MCP:
+
+| Tool | Description |
+|------|-------------|
+| `stealth_navigate` | Navigate to URL with bot detection bypass |
+| `stealth_get_content` | Get text content of current page |
+| `stealth_get_html` | Get HTML content of current page |
+| `stealth_evaluate` | Execute JavaScript in page context |
+| `stealth_fetch_api` | Make fetch request with browser cookies/session |
+| `stealth_wait` | Wait for time or element |
+| `stealth_screenshot` | Take screenshot of current page |
+| `stealth_close` | Close the browser |
 
 ## Error Handling
 
+### Bot Detection Active
+```
+The stealth browser bypassed Vercel security, but hiring.cafe detected
+a cloud/datacenter IP and is blocking the request.
+
+Solutions:
+1. Run from a local machine with residential IP
+2. Use alternative job APIs (see above)
+3. Manually browse and save job postings
+```
+
 ### No Results Found
-If search returns 0 results:
 ```
 No jobs found matching "[query]" [in location].
 
 Suggestions:
-- Try broader keywords (e.g., "engineer" instead of "senior staff engineer")
-- Remove location filter or try nearby cities
+- Try broader keywords
+- Remove location filter
 - Check spelling of company names
-- Search for related job titles or skills
-```
-
-### Too Many Results
-If search returns 100+ results:
-```
-Found [X] jobs matching your criteria. Showing top [N] with complete descriptions.
-
-Note: Scraping [N] job descriptions will take approximately [estimate] minutes.
-
-To refine your search:
-- Add location filter: /searchjobs "[query]" "[city]"
-- Add company filter: /searchjobs "[query]" --company=[name]
-- Use more specific keywords: /searchjobs "[specific role]"
-- Reduce limit: /searchjobs "[query]" --limit=20
 ```
 
 ### API Errors
-If API request fails:
 ```
-Error: Unable to connect to hiring.cafe API.
+Error connecting to hiring.cafe API.
 
 Troubleshooting:
 - Check internet connection
 - Try again in a few moments
-- Use alternative search: Browse https://hiring.cafe directly
+- Use alternative search methods
 ```
 
-### Playwright Scraping Errors
-If Playwright encounters issues:
-```
-Warning: Could not scrape job description for [Job Title] at [Company]
-Reason: [page load error / content extraction error / navigation timeout]
+## Technical Notes
 
-Continuing with remaining jobs...
-```
+**Why Stealth Browser?**
+- hiring.cafe uses Vercel's bot protection
+- Standard Playwright/Puppeteer is detected and blocked
+- The stealth plugin patches 10+ detection vectors:
+  - navigator.webdriver property
+  - HeadlessChrome user agent
+  - WebGL fingerprinting
+  - Canvas fingerprinting
+  - Chrome runtime properties
 
-## Performance Expectations
+**Remaining Limitation:**
+- IP-based blocking cannot be bypassed by stealth plugins
+- Cloud provider IPs (Azure, AWS, GCP) are often blocked
+- Residential IPs typically work without issues
 
-Set realistic expectations based on result count:
-- **1-10 jobs**: ~1-2 minutes (fast)
-- **11-20 jobs**: ~2-4 minutes (moderate)
-- **21-50 jobs**: ~5-10 minutes (slower, recommended max)
-- **50+ jobs**: Not recommended (use multiple targeted searches instead)
+**Dependencies:**
+- playwright-extra
+- puppeteer-extra-plugin-stealth
+- @modelcontextprotocol/sdk
 
-## Quality Standards
-
-Ensure search results:
-1. **Match user criteria accurately** - Verify keywords, location, company filters applied correctly
-2. **Include complete job details** - Title, company, location, category, seniority, type, apply URL
-3. **Provide verbatim job descriptions** - Complete, unedited text from job posting pages
-4. **Offer useful summary stats** - Total count, top companies, geographic breakdown
-5. **Handle errors gracefully** - Track and report any scraping failures
-6. **Manage resources efficiently** - Close browser tabs, process in batches
-
-## Best Practices
-
-1. **Start broad, then refine** - Initial search should be inclusive, then filter results
-2. **Verify location matching** - Check both job title and description for location mentions
-3. **Cross-reference company names** - Confirm company field matches search criteria
-4. **Provide progress updates** - Let user know scraping progress for large batches
-5. **Save strategically** - Recommend --save flag for searches user will reference repeatedly
-6. **Recommend reasonable limits** - Suggest 20-30 jobs max for optimal performance
-
-## Implementation Notes
-
-**Two-Phase Architecture:**
-- Phase 1 (Agent): Fast API search using Bash and jq for filtering
-- Phase 2 (Main Session): Playwright scraping with full MCP tool access
-
-**Why This Approach:**
-- Agents cannot access MCP tools directly
-- API search is extremely fast (instant results)
-- Playwright scraping is thorough but slower
-- Combining both gives speed + completeness
-
-**Resource Management:**
-- Close browser tabs after each job or batch
-- Provide progress indicators for large result sets
-- Recommend smaller batches for better performance
-
-Execute this job search operation efficiently and deliver results that help the user find their next opportunity with complete, verbatim job descriptions ready for resume tailoring and analysis.
+Execute this job search operation and deliver results that help the user find their next opportunity.

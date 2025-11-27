@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "stealth-browser": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/workspaces/resumeoptimizer/scripts/mcp/stealth-browser.js"
+      ],
+      "env": {}
+    }
+  }
+}

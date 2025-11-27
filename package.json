@@ -6,7 +6,11 @@
     "install-browsers": "npx playwright install chrome",
     "install-all": "npm install && npm run install-browsers"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.23.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
   "devDependencies": {
     "@playwright/test": "^1.48.2"
   },
