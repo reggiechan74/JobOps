@@ -319,11 +319,19 @@ Executes the core 3-step resume assembly: initial draft creation, provenance ver
 ```
 Deploys dynamic reconnaissance rubric and 100-point viability assessment with engage/disengage recommendation. Run this *after* the posting passes `/auditjobposting`.
 
+<p align="center">
+  <img src="Images/assess-job.png" alt="AI-Powered HR Assessment Pipeline" width="800">
+</p>
+
 ### Resume Assembly
 ```bash
 /buildresume <job-description-file> [cultural-profile]
 ```
 Executes full 3-step assembly protocol (draft creation, provenance verification, hardened final resume). Theater profiles: Canadian (default), US, European, UK, Australian.
+
+<p align="center">
+  <img src="Images/buildresume.png" alt="3-Step Resume Building Process" width="800">
+</p>
 
 ### Modular Reconnaissance Workflow
 ```bash
@@ -337,6 +345,10 @@ Executes full 3-step assembly protocol (draft creation, provenance verification,
 /briefing <assessment-report> <job-description> [gaps-only]  # Generate intelligence brief
 /interviewprep <resume-file> <job-description> [N]           # Deploy interview prep questions
 ```
+
+<p align="center">
+  <img src="Images/briefingnote.png" alt="AI-Powered Candidate Briefing Note Generator" width="800">
+</p>
 
 ### Target Acquisition System
 ```bash
@@ -379,6 +391,10 @@ Conducts comprehensive 16-lens career retrospective analysis to identify the sin
 - Multi-candidate recommendations optimized for wealth/optionality/impact/balance
 - Quantified opportunity costs and risk-adjusted returns
 - Actionable "what you can do now" recovery plans with immediate next steps
+
+<p align="center">
+  <img src="Images/change-one-thing.png" alt="Change-One-Thing Reflective Career Analysis Framework" width="800">
+</p>
 
 ## The 8-Step Protocol
 
