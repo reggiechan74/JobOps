@@ -296,11 +296,28 @@ Executes the core 3-step resume assembly: initial draft creation, provenance ver
 
 ## Command Arsenal
 
+### Job Posting Quality Audit
+```bash
+/auditjobposting <job-posting-file>
+```
+**START HERE** - Comprehensive 100-point job posting quality assessment to identify red flags before applying. Audit the posting itself before assessing your fit.
+- **Internal Consistency (25 pts)**: Title-responsibility alignment, experience coherence, skills-duties match
+- **Market Realism (25 pts)**: Technology timeline validity (detects impossible experience requirements), skill breadth feasibility
+- **Compensation Assessment (20 pts)**: Salary-role/experience/location alignment with market research
+- **Role Scope & Definition (20 pts)**: Single role focus (unicorn detection), responsibility clarity, success metrics
+- **Red Flag Assessment (10 pts)**: Language quality, organizational health signals, work-life balance indicators
+
+**Grade Interpretation**: A (90-100) pursue aggressively, B (80-89) worth applying, C (70-79) proceed with caution, D (60-69) poor quality, F (<60) avoid
+
+<p align="center">
+  <img src="Images/auditjobposting.jpeg" alt="Job Posting Quality Audit Command" width="800">
+</p>
+
 ### Target Reconnaissance
 ```bash
 /assessjob <job-description-file>
 ```
-**START HERE** - Deploys dynamic reconnaissance rubric and 100-point viability assessment with engage/disengage recommendation.
+Deploys dynamic reconnaissance rubric and 100-point viability assessment with engage/disengage recommendation. Run this *after* the posting passes `/auditjobposting`.
 
 ### Resume Assembly
 ```bash
@@ -341,23 +358,6 @@ Two-phase hybrid reconnaissance: API sweep + Playwright deep-scan for complete v
 /osint <company-name>
 ```
 Deploys 6 specialized intelligence agents in parallel for comprehensive target analysis: Corporate, Legal, Leadership, Compensation, Culture, Market.
-
-### Job Posting Quality Audit
-```bash
-/auditjobposting <job-posting-file>
-```
-**NEW in v1.3.0** - Comprehensive 100-point job posting quality assessment to identify red flags before applying:
-- **Internal Consistency (25 pts)**: Title-responsibility alignment, experience coherence, skills-duties match
-- **Market Realism (25 pts)**: Technology timeline validity (detects impossible experience requirements), skill breadth feasibility
-- **Compensation Assessment (20 pts)**: Salary-role/experience/location alignment with market research
-- **Role Scope & Definition (20 pts)**: Single role focus (unicorn detection), responsibility clarity, success metrics
-- **Red Flag Assessment (10 pts)**: Language quality, organizational health signals, work-life balance indicators
-
-**Grade Interpretation**: A (90-100) pursue aggressively, B (80-89) worth applying, C (70-79) proceed with caution, D (60-69) poor quality, F (<60) avoid
-
-<p align="center">
-  <img src="Images/auditjobposting.jpeg" alt="Job Posting Quality Audit Command" width="800">
-</p>
 
 ### Mission Support
 ```bash
