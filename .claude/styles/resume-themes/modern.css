@@ -1,0 +1,250 @@
+/* Modern Theme - Clean, contemporary design with subtle accent colors */
+
+/* ============================================
+   OPTIMAL SPACING VALUES FOR 2-PAGE BALANCE
+   (Derived from iterative testing - v6)
+   ============================================
+   @page margin: 0.55in 0.6in
+   Base font size: 10pt
+   Section margin-bottom: 1.15rem
+   Experience item margin-bottom: 1rem
+   Achievement bullet margin-bottom: 0.3rem
+   Achievement line-height: 1.48
+   Summary line-height: 1.55
+   ============================================ */
+
+:root {
+  /* Typography */
+  --font-body: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Colors */
+  --color-primary: #0f172a;
+  --color-secondary: #475569;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-accent: #2563eb;
+  --color-bg: #ffffff;
+  --color-divider: #e2e8f0;
+  --color-link: #2563eb;
+
+  /* Tags */
+  --color-tag-bg: #f1f5f9;
+  --color-tag-text: #334155;
+  --tag-radius: 4px;
+  --tag-border: 1px solid #e2e8f0;
+
+  /* Bullets */
+  --bullet-char: "▸";
+  --color-bullet: #2563eb;
+
+  /* Section styling */
+  --section-border: 2px solid #2563eb;
+}
+
+/* Modern Header - Clean with accent underline */
+.resume-header {
+  text-align: left;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid var(--color-accent);
+  margin-bottom: 1.25rem;
+}
+
+.resume-name {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.3rem;
+}
+
+/* Fallback for print where gradients may not work */
+@media print {
+  .resume-name {
+    background: none;
+    -webkit-text-fill-color: #0f172a;
+    color: #0f172a;
+  }
+}
+
+.resume-title {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.contact-info {
+  margin-top: 0.6rem;
+  gap: 0.75rem 1.5rem;
+}
+
+.contact-item {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.contact-item a:hover {
+  color: var(--color-accent);
+}
+
+/* Modern Section Titles */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: 0.35rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-accent);
+  display: inline-block;
+  width: 100%;
+}
+
+/* Experience styling */
+.experience-item {
+  position: relative;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.item-header {
+  margin-bottom: 0.25rem;
+}
+
+.item-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.item-company {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.item-meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.item-date {
+  font-weight: 500;
+}
+
+/* Achievement bullets */
+.achievements li {
+  padding-left: 1.1rem;
+  margin-bottom: 0.3rem;
+  line-height: 1.48;
+}
+
+.achievements li::before {
+  content: "▸";
+  color: var(--color-accent);
+  font-size: 0.9em;
+}
+
+/* Skills - Modern pill style */
+.skill-tags {
+  gap: 0.4rem;
+}
+
+.skill-tag {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background-color: var(--color-tag-bg);
+  color: var(--color-tag-text);
+  border-radius: 4px;
+  border: 1px solid var(--color-divider);
+  transition: all 0.2s ease;
+}
+
+/* Skill categories inline */
+.skill-category {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.skill-category-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  min-width: fit-content;
+}
+
+.skill-category-name::after {
+  content: ":";
+}
+
+.skill-list {
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+/* Education */
+.education-item {
+  margin-bottom: 0.6rem;
+}
+
+.degree {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.institution {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* Summary */
+.summary {
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  padding: 0.25rem 0 0.5rem 0;
+}
+
+/* Modern two-column layout adjustments */
+.resume-columns {
+  grid-template-columns: 1fr 2.2fr;
+  gap: 1.25rem;
+}
+
+.resume-sidebar {
+  padding-right: 1rem;
+  border-right: 1px solid var(--color-divider);
+}
+
+.resume-sidebar .section-title {
+  font-size: 1rem;
+}
+
+/* Certifications */
+.certification-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  align-items: baseline;
+}
+
+.certification-name {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.certification-date {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}

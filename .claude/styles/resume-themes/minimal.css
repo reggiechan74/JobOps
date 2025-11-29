@@ -1,0 +1,235 @@
+/* Minimal Theme - Ultra-clean, whitespace-focused design */
+
+:root {
+  /* Typography - Clean sans-serif */
+  --font-body: "Helvetica Neue", "Arial", sans-serif;
+  --font-heading: "Helvetica Neue", "Arial", sans-serif;
+
+  /* Colors - Monochrome, high contrast */
+  --color-primary: #000000;
+  --color-secondary: #333333;
+  --color-text: #111111;
+  --color-text-muted: #666666;
+  --color-accent: #000000;
+  --color-bg: #ffffff;
+  --color-divider: #eeeeee;
+  --color-link: #000000;
+
+  /* Tags - No styling */
+  --color-tag-bg: transparent;
+  --color-tag-text: #333333;
+  --tag-radius: 0;
+  --tag-border: none;
+
+  /* Bullets - Simple dash */
+  --bullet-char: "–";
+  --color-bullet: #666666;
+
+  /* Section styling - Minimal border */
+  --section-border: none;
+}
+
+/* Minimal Header - Left aligned, no decoration */
+.resume-header {
+  text-align: left;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: none;
+}
+
+.resume-name {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.2rem;
+}
+
+.resume-title {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+
+.contact-info {
+  gap: 0.4rem 1rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.contact-item {
+  font-weight: 300;
+}
+
+/* Minimal Section Titles */
+.section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding-bottom: 0;
+  margin-bottom: 0.5rem;
+  margin-top: 0.75rem;
+  border-bottom: none;
+}
+
+/* First section no top margin */
+section:first-of-type .section-title {
+  margin-top: 0;
+}
+
+/* Experience styling */
+.experience-item {
+  margin-bottom: 0.6rem;
+}
+
+.item-header {
+  margin-bottom: 0.1rem;
+}
+
+.item-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.item-company {
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.item-date {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--color-text-muted);
+}
+
+.item-location {
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+/* Achievement bullets - Minimal dash */
+.achievements li {
+  padding-left: 0.8rem;
+  margin-bottom: 0.12rem;
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.achievements li::before {
+  content: "–";
+  color: var(--color-text-muted);
+  font-weight: 300;
+}
+
+/* Skills - Simple comma list */
+.skill-tags {
+  display: inline;
+}
+
+.skill-tag {
+  display: inline;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.skill-tag:not(:last-child)::after {
+  content: ", ";
+}
+
+/* Skill categories - Inline */
+.skill-category {
+  margin-bottom: 0.3rem;
+}
+
+.skill-category-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.skill-list {
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+/* Education */
+.education-item {
+  margin-bottom: 0.35rem;
+}
+
+.degree {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.institution {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.graduation-date {
+  font-weight: 300;
+  font-size: 0.85rem;
+}
+
+/* Summary - Light weight */
+.summary {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--color-text);
+  padding: 0.3rem 0;
+}
+
+/* Minimal prefers single column */
+.resume-columns {
+  display: block;
+}
+
+.resume-sidebar {
+  border: none;
+  padding: 0;
+}
+
+/* Certifications - Ultra minimal */
+.certification-item {
+  margin-bottom: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.certification-name {
+  font-weight: 500;
+}
+
+.certification-issuer {
+  font-weight: 300;
+  color: var(--color-text-muted);
+}
+
+/* Divider - Barely visible */
+.divider {
+  border-top: 1px solid #f0f0f0;
+  margin: 0.5rem 0;
+}
+
+/* Links - No decoration */
+a {
+  color: var(--color-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+/* Extra whitespace for minimal feel */
+section {
+  margin-bottom: 0.6rem;
+}
