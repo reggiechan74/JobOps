@@ -119,6 +119,7 @@ resumeoptimizer/
 │   │   │   ├── coverletter.md        # /coverletter - Generate letter
 │   │   │   └── pdf.md                # /pdf - Markdown to PDF
 │   │   ├── job-search/                # Discovery & intelligence
+│   │   │   ├── auditjobposting.md    # /auditjobposting - Job posting quality audit (v1.3.0)
 │   │   │   ├── osint.md              # /osint - Company intelligence
 │   │   │   └── searchjobs.md         # /searchjobs - hiring.cafe search
 │   │   ├── system-setup/              # Configuration & utilities
