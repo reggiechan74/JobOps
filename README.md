@@ -355,6 +355,10 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 
 **Grade Interpretation**: A (90-100) pursue aggressively, B (80-89) worth applying, C (70-79) proceed with caution, D (60-69) poor quality, F (<60) avoid
 
+<p align="center">
+  <img src="Images/auditjobposting.jpeg" alt="Job Posting Quality Audit Command" width="800">
+</p>
+
 ### Mission Support
 ```bash
 /provenance <draft-resume-file>                              # Provenance verification sweep
