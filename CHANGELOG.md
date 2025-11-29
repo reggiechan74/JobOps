@@ -5,6 +5,21 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-11-29
+
+### Added
+- **Job Posting Quality Audit**: New `/auditjobposting` command for comprehensive job posting evaluation
+  - **100-point scoring rubric** evaluating posting quality and realism before applying
+  - **Internal Consistency (25 pts)**: Title-responsibility alignment, experience coherence, skills-duties match
+  - **Market Realism (25 pts)**: Technology timeline validity (detects impossible experience requirements like "5 years React Native" in 2018), skill breadth feasibility, candidate pool reality assessment
+  - **Compensation Assessment (20 pts)**: Salary-role/experience/location alignment with real-time market research
+  - **Role Scope & Definition (20 pts)**: Single role focus (unicorn detection for unrealistic multi-role expectations), responsibility clarity, success metrics definition
+  - **Red Flag Assessment (10 pts)**: Language quality analysis, organizational health signals (Glassdoor sentiment), work-life balance indicators
+  - Conducts web research for technology release dates, salary benchmarks, and company reviews
+  - Generates actionable interview questions to address identified concerns
+  - Grade interpretation: A (90-100) pursue aggressively, B (80-89) worth applying, C (70-79) proceed with caution, D (60-69) poor quality, F (<60) avoid
+  - Output: `OutputResumes/JobAudit_[Company]_[Role]_[Date].md`
+
 ## [1.2.0] - 2025-11-27
 
 ### Added
@@ -204,6 +219,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.3.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.3.0
 [1.2.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.2.0
 [1.1.2]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.2
 [1.1.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.1

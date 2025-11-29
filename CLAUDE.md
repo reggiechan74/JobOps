@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
 
-**Current Version:** 1.2.0 (see CHANGELOG.md for version history)
+**Current Version:** 1.3.0 (see CHANGELOG.md for version history)
 
 ## Key Directories
 
@@ -319,6 +319,18 @@ Located in `.claude/templates/`:
   - Deploys 6 specialized OSINT agents in parallel
   - Analyzes corporate structure, legal, leadership, compensation, culture, market
   - Generates Master Intelligence Report for strategic decision-making
+
+- `/auditjobposting <job-posting-file>`: Comprehensive job posting quality audit
+  - **100-point scoring rubric** evaluating posting quality and realism
+  - **Internal Consistency (25 pts)**: Title-responsibility alignment, experience coherence, skills-duties match
+  - **Market Realism (25 pts)**: Technology timeline validity (detects impossible experience requirements), skill breadth feasibility, candidate pool reality
+  - **Compensation Assessment (20 pts)**: Salary-role/experience/location alignment with market research
+  - **Role Scope & Definition (20 pts)**: Single role focus (unicorn detection), responsibility clarity, success metrics
+  - **Red Flag Assessment (10 pts)**: Language quality, organizational health signals, work-life balance indicators
+  - Conducts web research for technology ages, salary benchmarks, and company reviews
+  - Generates actionable interview questions to address identified concerns
+  - Scoring interpretation: A (90-100) pursue, B (80-89) worth applying, C (70-79) caution, D (60-69) poor, F (<60) avoid
+  - Output: `OutputResumes/JobAudit_[Company]_[Role]_[Date].md`
 
 ### System Setup
 - `/create-career-history <resume-file-1> [resume-file-2] ...`: Intelligent career history parser

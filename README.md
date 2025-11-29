@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.2.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.3.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -340,6 +340,19 @@ Two-phase hybrid reconnaissance: API sweep + Playwright deep-scan for complete v
 /osint <company-name>
 ```
 Deploys 6 specialized intelligence agents in parallel for comprehensive target analysis: Corporate, Legal, Leadership, Compensation, Culture, Market.
+
+### Job Posting Quality Audit
+```bash
+/auditjobposting <job-posting-file>
+```
+**NEW in v1.3.0** - Comprehensive 100-point job posting quality assessment to identify red flags before applying:
+- **Internal Consistency (25 pts)**: Title-responsibility alignment, experience coherence, skills-duties match
+- **Market Realism (25 pts)**: Technology timeline validity (detects impossible experience requirements), skill breadth feasibility
+- **Compensation Assessment (20 pts)**: Salary-role/experience/location alignment with market research
+- **Role Scope & Definition (20 pts)**: Single role focus (unicorn detection), responsibility clarity, success metrics
+- **Red Flag Assessment (10 pts)**: Language quality, organizational health signals, work-life balance indicators
+
+**Grade Interpretation**: A (90-100) pursue aggressively, B (80-89) worth applying, C (70-79) proceed with caution, D (60-69) poor quality, F (<60) avoid
 
 ### Mission Support
 ```bash
