@@ -407,6 +407,10 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 - Creates realistic job description optimized for candidate strengths
 - Provides actionable search strategy with real job titles and target companies
 
+<p align="center">
+  <img src="Images/idealjob.jpeg" alt="The /idealjob Command: Synthetic Perfect-Fit Generator" width="800">
+</p>
+
 **`/change-one-thing`** - Conducts comprehensive 16-lens career retrospective analysis to identify the single highest-leverage, non-obvious change you could have made at a specific inflection point. Generates 3-4 detailed analysis parts plus executive summary with:
 - External patterns: Skills, network, technical decisions, visibility, cross-pollination, geographic positioning
 - Internal constraints: Family, financial capacity, health/energy analysis
