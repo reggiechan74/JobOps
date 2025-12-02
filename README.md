@@ -160,6 +160,7 @@ resumeoptimizer/
 │   └── [Company]_Master_Intelligence_*.md # Consolidated reports
 ├── Job_Postings/                      # Job descriptions and search results
 │   ├── [Company]_[Role]*.md          # Manual job postings
+│   ├── IdealJob_Synthetic_[Date].md  # Generated ideal job descriptions (v1.4.0)
 │   └── SearchResults_*_*_*.md        # Automated search results with full descriptions
 ├── OutputResumes/                     # Generated resumes and assessments (v1.1.1+ uses timestamped folders)
 │   ├── YYYY-MM-DD_HHMMSS_[Company]_[Role]/  # Timestamped assessment folder (v1.1.1+)
@@ -540,6 +541,7 @@ Example:
 - **Interview Prep**: `Briefing_[Company]_[Role]_[Mode]_[Date].md`, `Interview_Prep_[Company]_[Role]_[Date].md`
 - **Application**: `Step4_CoverLetter_[Role]_[Company]_[Date].md`, `[OriginalName].docx`
 - **Career Analysis**: `Change_One_Thing_Analysis_Part[1-3]_YYYYMMDD.md`, `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
+- **Ideal Job**: `Job_Postings/IdealJob_Synthetic_[Date].md`
 
 ## Equipment & Readiness
 

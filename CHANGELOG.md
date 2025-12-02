@@ -222,17 +222,17 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ### Planned Releases
 
-#### v1.1.0 (Planned)
+#### v1.5.0 (Planned)
 - Enhanced OSINT capabilities with additional intelligence sources
 - Advanced interview simulation and practice mode
 - Resume comparison and version tracking
 - Expanded cultural profile options
 
-#### v1.3.0 (Planned)
+#### v1.6.0 (Planned)
 - AI-powered interview coaching with real-time feedback
 - Salary negotiation intelligence and strategy
-- Career trajectory analysis and planning
 - Industry-specific resume templates
+- Networking strategy recommendations
 
 #### v2.0.0 (Planned)
 - Multi-language support for international job markets
