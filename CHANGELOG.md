@@ -5,6 +5,20 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-12-02
+
+### Added
+- **Professional PDF Resume Formatting**: New `/formatresume` command for converting markdown resumes to professionally designed PDFs
+  - Uses Playwright browser automation for pixel-perfect PDF generation
+  - Three theme options: `modern` (blue accents, contemporary), `classic` (serif, formal), `minimal` (clean, whitespace-focused)
+  - Configurable page count: `1` (entry-level), `2` (mid-career), `3` (executive), or `auto` (content-based)
+  - Iterative refinement with automatic spacing adjustments to match target page count
+  - ATS-friendly output with parseable text layer
+  - Visual review and quality validation with screenshots
+  - Self-contained HTML with embedded CSS (no external dependencies)
+  - Output: `{original_name}_formatted.pdf`
+  - CSS theme files in `.claude/styles/resume-themes/`
+
 ## [1.3.0] - 2025-11-29
 
 ### Added
@@ -219,6 +233,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.4.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.4.0
 [1.3.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.3.0
 [1.2.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.2.0
 [1.1.2]: https://github.com/reggiechan74/JobOps/releases/tag/v1.1.2

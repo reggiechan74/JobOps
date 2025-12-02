@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
 
-**Current Version:** 1.3.0 (see CHANGELOG.md for version history)
+**Current Version:** 1.4.0 (see CHANGELOG.md for version history)
 
 ## Key Directories
 
@@ -300,6 +300,15 @@ Located in `.claude/templates/`:
   - Generates from validated Step 3 resume
   - Includes strategic requirements-matching table
   - Maintains provenance chain
+
+- `/formatresume <markdown-resume-file> [theme] [pages]`: Converts markdown resume to professionally designed PDF (v1.4.0)
+  - Uses Playwright browser automation for pixel-perfect PDF generation
+  - Three theme options: `modern` (blue accents, contemporary), `classic` (serif, formal), `minimal` (clean, whitespace-focused)
+  - Configurable page count: `1` (entry-level), `2` (mid-career), `3` (executive), or `auto` (content-based, default)
+  - Iterative refinement with automatic spacing adjustments to match target page count
+  - ATS-friendly output with parseable text layer
+  - Visual review and quality validation with screenshots
+  - Output: `{original_name}_formatted.pdf`
 
 - `/convert <file-path-or-pattern> [output-directory]`: Converts to Word DOCX format (Step 8)
   - Uses pandoc for professional conversion

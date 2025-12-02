@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.3.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.4.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -115,9 +115,9 @@ resumeoptimizer/
 │   │   │   ├── createrubric.md       # /createrubric - Rubric only
 │   │   │   └── interviewprep.md      # /interviewprep - Question generator
 │   │   ├── application-finalization/  # Final documents
-│   │   │   ├── convert.md            # /convert - Markdown to DOCX
-│   │   │   ├── coverletter.md        # /coverletter - Generate letter
-│   │   │   └── pdf.md                # /pdf - Markdown to PDF
+│   │   │   ├── convert-to-word.md         # /convert - Markdown to DOCX
+│   │   │   ├── convert-to-pdf-playwright.md # /formatresume - Professional PDF with Playwright (v1.4.0)
+│   │   │   └── markdown-to-pdf.md         # /pdf - Markdown to PDF
 │   │   ├── job-search/                # Discovery & intelligence
 │   │   │   ├── auditjobposting.md    # /auditjobposting - Job posting quality audit (v1.3.0)
 │   │   │   ├── osint.md              # /osint - Company intelligence
@@ -134,6 +134,13 @@ resumeoptimizer/
 │   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
 │   │   ├── candidate_profile_schema.json     # Profile JSON schema
 │   │   └── evidence_verification_framework.md # Evidence protocols
+│   ├── styles/                        # CSS styling for PDF generation (v1.4.0)
+│   │   ├── resume-base.css            # Base print/PDF styles
+│   │   ├── obsidian.css               # Obsidian-style PDF formatting
+│   │   └── resume-themes/             # Theme-specific styles
+│   │       ├── modern.css             # Contemporary blue accent design
+│   │       ├── classic.css            # Traditional serif formal styling
+│   │       └── minimal.css            # Ultra-clean whitespace design
 │   └── settings.local.json            # Local Claude Code settings
 ├── .playwright-mcp/                   # Playwright browser automation cache
 ├── Briefing_Notes/                    # Interview preparation materials
@@ -375,9 +382,15 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 ```bash
 /provenance <draft-resume-file>                              # Provenance verification sweep
 /coverletter <step3-resume> <job-description> [manager]      # Deploy cover letter
-/convert <file-path-or-pattern> [output-directory]          # Convert to deployment format
+/formatresume <markdown-resume> [theme] [pages]              # Professional PDF with Playwright (v1.4.0)
+/convert <file-path-or-pattern> [output-directory]           # Convert to deployment format
 /install-pandoc [force]                                      # Install conversion utility
 ```
+
+**`/formatresume` Options** (v1.4.0):
+- **Themes**: `modern` (default, blue accents), `classic` (serif, formal), `minimal` (clean, whitespace)
+- **Pages**: `1` (entry-level), `2` (mid-career), `3` (executive), `auto` (default, content-based)
+- Uses Playwright for pixel-perfect PDF generation with iterative refinement
 
 ### Career Strategy & Analysis
 ```bash
