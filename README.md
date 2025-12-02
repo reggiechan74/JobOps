@@ -128,7 +128,8 @@ resumeoptimizer/
 │   │   │   ├── github-portfolio.md   # /github-portfolio - Portfolio documentation
 │   │   │   └── install-pandoc.md     # /install-pandoc - Setup converter
 │   │   └── career-strategy/           # Long-term planning
-│   │       └── change-one-thing.md   # /change-one-thing - Career retrospective
+│   │       ├── change-one-thing.md   # /change-one-thing - Career retrospective
+│   │       └── idealjob.md           # /idealjob - Synthetic ideal job generator (v1.4.0)
 │   ├── templates/                     # Assessment framework templates (v1.1.1+)
 │   │   ├── assessment_report_structure.md    # Report format template
 │   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
@@ -395,8 +396,17 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 ### Career Strategy & Analysis
 ```bash
 /change-one-thing <resume-folder>
+/idealjob [output-filename]                                  # Generate ideal job description (v1.4.0)
 ```
-Conducts comprehensive 16-lens career retrospective analysis to identify the single highest-leverage, non-obvious change you could have made at a specific inflection point. Generates 3-4 detailed analysis parts plus executive summary with:
+
+**`/idealjob`** - Generates a synthetic job description representing a near-perfect fit:
+- Analyzes complete career inventory and Vision/Anti-Vision preferences
+- Studies patterns from high-scoring (90+) assessment reports
+- Conducts market research to validate role viability
+- Creates realistic job description optimized for candidate strengths
+- Provides actionable search strategy with real job titles and target companies
+
+**`/change-one-thing`** - Conducts comprehensive 16-lens career retrospective analysis to identify the single highest-leverage, non-obvious change you could have made at a specific inflection point. Generates 3-4 detailed analysis parts plus executive summary with:
 - External patterns: Skills, network, technical decisions, visibility, cross-pollination, geographic positioning
 - Internal constraints: Family, financial capacity, health/energy analysis
 - Temporal mechanics: Hindsight bias correction, butterfly effects, irreversibility

@@ -368,6 +368,15 @@ Located in `.claude/templates/`:
   - Output: `ResumeSourceFolder/Technology/GitHub_Repositories.md`
 
 ### Career Strategy & Analysis
+- `/idealjob [output-filename]`: Generate synthetic ideal job description (v1.4.0)
+  - Analyzes complete career inventory from ResumeSourceFolder
+  - Reviews Vision/Anti-Vision preferences for role alignment
+  - Studies patterns from high-scoring (90+) assessment reports
+  - Conducts market research to validate role viability
+  - Generates realistic job description optimized for candidate fit
+  - Includes search strategy with real job titles, target companies, and keywords
+  - Output: `Job_Postings/IdealJob_Synthetic_[Date].md`
+
 - `/change-one-thing <resume-folder>`: Comprehensive career retrospective analysis
   - 16-lens pattern recognition framework across 4 analytical phases
   - **External Patterns**: Skill trajectory, network building, technical decisions, learning gaps, visibility, cross-pollination, geographic positioning

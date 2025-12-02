@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Output: `{original_name}_formatted.pdf`
   - CSS theme files in `.claude/styles/resume-themes/`
 
+- **Ideal Job Generator**: New `/idealjob` command for creating synthetic job descriptions
+  - Analyzes complete career inventory from ResumeSourceFolder
+  - Reviews Vision/Anti-Vision preferences for role alignment
+  - Studies patterns from high-scoring (90+) assessment reports
+  - Conducts market research to validate role viability
+  - Generates realistic job description optimized for candidate fit
+  - Includes search strategy with real job titles, target companies, and keywords
+  - Output: `Job_Postings/IdealJob_Synthetic_[Date].md`
+
 ## [1.3.0] - 2025-11-29
 
 ### Added
