@@ -1,0 +1,9 @@
+# Ignore all generated output files
+*
+
+# But keep this directory and these files
+!.gitignore
+!.gitkeep
+
+# Ignore cache directory contents
+.cache/
