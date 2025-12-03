@@ -45,11 +45,18 @@ This is a tactical job application platform that uses an 8-step methodology to c
   - Interview question sets: Customized questions with answer strategies
   - Format: `Briefing_[Company]_[Role]_[Mode]_[Date].md` and `Interview_Prep_[Company]_[Role]_[Date].md`
 
+- **Client_Prospects/**: Independent contractor service definitions and client discovery
+  - Service catalogs with pricing and positioning
+  - Engagement models and rate cards
+  - Competitive differentiation and proof points
+  - Format: `Service_Definition_[Date].md`
+
 - **.claude/templates/**: Framework templates for assessment system (NEW)
   - `assessment_rubric_framework.md` - Master 100-point scoring structure
   - `evidence_verification_framework.md` - Evidence-based scoring protocols
   - `assessment_report_structure.md` - Assessment report format
   - `candidate_profile_schema.json` - JSON schema for optimized candidate profiles
+  - `service_definition_schema.json` - JSON schema for independent contractor service offerings
 
 ## Template-Based Architecture
 
@@ -389,6 +396,67 @@ Located in `.claude/templates/`:
   - Values-aligned recommendations based on user interview about priorities and constraints
   - "What you can still do now" actionable recovery plans with immediate next steps
   - Outputs: `Change_One_Thing_Analysis_Part[1-3]_YYYYMMDD.md` and `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
+
+### Independent Contractor
+- `/defineservices [--guided|--from-profile|--update]`: Define independent contractor service offerings
+  - Three modes: guided interactive (default), automatic from profile, update existing
+  - Creates comprehensive service catalog with 3-5 service offerings
+  - Defines pricing strategy (hourly, daily, retainer) with consistency validation
+  - Establishes engagement models and working preferences
+  - Develops competitive differentiation with evidence-based proof points
+  - Optional target market analysis with ideal client profiles
+  - Validates pricing consistency (daily ≈ hourly × 8, ascending tiers)
+  - Extracts from candidate profile and Vision.md preferences when available
+  - Output: `Client_Prospects/Service_Definition_[Date].md` (+ JSON for --from-profile mode)
+
+- `/ratecard [--format=md|pdf|html] [--currency=CAD|USD] [--include-justification]`: Generate professional rate card from service definition
+  - **Prerequisite**: Requires service definition from `/defineservices` command
+  - Validates pricing consistency (daily ≈ hourly × 8, ascending tiers, premium multiplier 1.3x-2.0x)
+  - Generates professional rate card with service offerings, pricing tiers, engagement models, volume discounts
+  - Supports multiple output formats: markdown (default), HTML, or PDF via Playwright
+  - Currency selection: CAD (default) or USD with real-time conversion if needed
+  - Optional `--include-justification` flag adds credentials and ROI proof points section
+  - Auto-correction offered for minor pricing inconsistencies (daily/hourly alignment)
+  - Refuses generation for invalid rate structures (non-ascending tiers)
+  - Includes payment terms, expense policy, cancellation policy, and terms & conditions
+  - 6-month validity period with annual rate review guidance
+  - Output: `Client_Prospects/Rate_Card_[Date].[md|html|pdf]`
+
+- `/findclient [ideal-job-file] [--industry=X] [--size=startup|mid|enterprise] [--location=X] [--limit=N]`: Identify B2B client prospects
+  - **Prerequisite**: Requires service definition from `/defineservices` command
+  - Discovers 10-50 potential B2B clients matching service offerings and ideal client profiles
+  - 10-point B2B fit scoring with 5 weighted factors (contractor history 25%, domain alignment 25%, procurement accessibility 20%, budget fit 15%, geographic match 15%)
+  - Web research for contractor signals, procurement portals, pain point evidence, and budget capacity
+  - Entry point identification (vendor portals, warm introductions, decision-makers, intermediaries)
+  - Priority classification: HIGH (8-10, active outreach), MEDIUM (5-7.9, qualified pipeline), LOW (1-4.9, deprioritize)
+  - Filters: industry, company size (startup/mid/enterprise), location, result limit
+  - Comprehensive outreach strategy with step-by-step approach for each prospect
+  - Market intelligence summary with industry patterns and competitive insights
+  - Output: `Client_Prospects/Prospects_[Domain]_[Date].md` with full detail for HIGH priority, condensed for MEDIUM, brief for LOW
+
+- `/pitchdeck [--prospect=company-name] [--industry=X] [--service=service-name] [--format=md|pptx]`: Generate professional B2B service pitch deck
+  - **Prerequisites**: Requires service definition from `/defineservices` AND candidate profile from `/assessjob`
+  - Creates 10-12 slide presentations tailored to specific prospects, industries, or services
+  - Four modes: prospect-specific (requires `/findclient` output), industry-generic, service-focused, or general capabilities
+  - Conducts fresh research (5-10 minutes) for prospect pain points, industry trends, decision-makers, and cost of inaction
+  - Slide structure: Title, Problem, Cost of Inaction, Solution, How It Works, Results & Proof, Why Me/Us, Engagement Options, Relevant Experience, Next Steps, Q&A, Appendix
+  - Provenance hardening: Validates ALL claims against candidate profile with evidence citations (target: >90% validation rate)
+  - Automatically filters work history and proof points for relevance to target (prospect/industry/service)
+  - Generates comprehensive provenance trail mapping every quantified claim to source documents with file + line citations
+  - Optional PowerPoint conversion via pandoc (requires `/install-pandoc`)
+  - Output: `Client_Prospects/Pitch_[Target]_[Date].md` (+ optional .pptx)
+
+- `/proposaltemplate [--client=name] [--service=name] [--type=project|retainer|staff-aug|workshop] [--value=amount]`: Generate professional consulting proposal templates
+  - **Prerequisite**: Requires service definition from `/defineservices` command
+  - Creates McKinsey/BCG-style proposals tailored to clients, services, and engagement types
+  - Four engagement types: project (fixed-scope), retainer (ongoing advisory), staff-aug (embedded consulting), workshop (training/facilitation)
+  - Automated pricing calculation with transparency: project (hours × rate with volume discounts), retainer (monthly hours × discounted rate), staff-aug (daily rate × days/month), workshop (delivery + prep days × rates)
+  - Integrates prospect research from pitch deck if available for client-specific pain points and decision-makers
+  - 10-section structure: Cover Page, Executive Summary, Understanding Your Challenge, Proposed Approach, Deliverables & Timeline, Team & Qualifications, Investment, Terms & Conditions, Next Steps, Appendix
+  - Pricing validation against service definition ranges with warnings for below-minimum or above-maximum pricing
+  - Comprehensive YAML frontmatter with pricing calculation metadata for audit trail and transparency
+  - Smart defaults: Generic client if not specified, primary service if not specified, project type if not specified, calculated pricing from rate card if value not specified
+  - Output: `Client_Prospects/Proposal_[Client]_[Service]_[Date].md`
 
 ## Custom Agents
 
