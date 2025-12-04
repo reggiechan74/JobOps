@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 02: Acquire Target Coordinates - JobOps</title>
+    <title>Step 02: Find & Save Jobs Worth Pursuing - JobOps</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -32,8 +32,8 @@
             <span class="phase-label">Phase I: Arsenal Preparation</span>
         </div>
 
-        <h1 class="page-title">Acquire Target Coordinates</h1>
-        <p class="page-subtitle">Upload job descriptions to prepare for reconnaissance and analysis.</p>
+        <h1 class="page-title">Find & Save Jobs Worth Pursuing</h1>
+        <p class="page-subtitle">Stop scrolling job boards aimlessly. Structured search with complete job descriptions saved for analysis.</p>
 
         <div class="command-display manual">
             <code>Manual Upload</code>
@@ -43,7 +43,8 @@
 
         <section class="content-section">
             <h2>What It Does</h2>
-            <p>Before engaging any target, you need intelligence. This step involves acquiring job postings — either manually uploading them to the <code>Job_Postings/</code> directory or using the automated job search function to discover opportunities.</p>
+            <p>Job hunting without a system means applying to everything and hoping something sticks. That's exhausting and ineffective.</p>
+            <p>This step gives you a structured way to find and save job postings — either manually uploading them to the <code>Job_Postings/</code> directory or using automated search to discover opportunities worth pursuing. Complete job descriptions are saved locally so you can analyze them properly before deciding whether to apply.</p>
         </section>
 
         <section class="content-section">
@@ -51,14 +52,14 @@
             <div class="method-cards">
                 <div class="method-card">
                     <h3>Manual Upload</h3>
-                    <p>Copy job descriptions you find on LinkedIn, company websites, or job boards directly into markdown files.</p>
+                    <p>Save time on copy-pasting. Drop job descriptions you find into markdown files and keep them organized in one place.</p>
                     <div class="method-example">
                         <code>Job_Postings/TechCorp_SeniorDev_2025.md</code>
                     </div>
                 </div>
                 <div class="method-card">
                     <h3>Automated Search</h3>
-                    <p>Use the job search command to discover and save relevant opportunities automatically.</p>
+                    <p>Skip the manual work entirely. Search once and get complete job descriptions saved automatically.</p>
                     <div class="method-example">
                         <code>/searchjobs "senior developer" Toronto --save</code>
                     </div>
@@ -73,28 +74,28 @@
                     <span class="feature-icon">+</span>
                     <div>
                         <strong>Keyword Search</strong>
-                        <p>Search by job title, skills, or industry keywords.</p>
+                        <p>Find jobs by title, skills, or industry keywords without opening 20 browser tabs.</p>
                     </div>
                 </li>
                 <li>
                     <span class="feature-icon">+</span>
                     <div>
                         <strong>Location Filter</strong>
-                        <p>Narrow results to specific cities, regions, or remote positions.</p>
+                        <p>Focus on cities, regions, or remote positions you actually want—no wasted time on irrelevant listings.</p>
                     </div>
                 </li>
                 <li>
                     <span class="feature-icon">+</span>
                     <div>
                         <strong>Company Target</strong>
-                        <p>Filter by specific company with <code>--company=name</code> flag.</p>
+                        <p>Zero in on specific companies with <code>--company=name</code> instead of scrolling endlessly.</p>
                     </div>
                 </li>
                 <li>
                     <span class="feature-icon">+</span>
                     <div>
                         <strong>Auto-Save</strong>
-                        <p>Use <code>--save</code> to automatically store results with full job descriptions.</p>
+                        <p>Complete job descriptions saved to your local folder automatically—no more lost tabs or forgotten postings.</p>
                     </div>
                 </li>
             </ul>
