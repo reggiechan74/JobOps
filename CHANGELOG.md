@@ -5,6 +5,52 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2025-12-04
+
+### Added
+- **Independent Contractor Business Development**: New suite of 5 slash commands for B2B consulting business development
+  - `/defineservices` - Foundation command for defining B2B service offerings with pricing and positioning
+    - Three modes: `--guided` (interactive), `--from-profile` (auto-generate), `--update` (refresh existing)
+    - Pricing validation with consistency checks (daily = hourly × 8, ascending tiers)
+    - JSON schema compliance for structured data
+    - Output: `Client_Prospects/Service_Definition_[Date].md`
+
+  - `/findclient` - B2B client discovery with prospect scoring
+    - 10-point B2B fit scoring with 5 weighted factors (Contractor History 25%, Procurement 20%, Domain 25%, Budget 15%, Geographic 15%)
+    - Priority classification: HIGH (8-10), MEDIUM (5-7.9), LOW (1-4.9)
+    - Entry point identification (vendor portals, warm intros, intermediaries)
+    - Filters: `--industry`, `--size`, `--location`, `--limit`
+    - Output: `Client_Prospects/Prospects_[Domain]_[Date].md`
+
+  - `/ratecard` - Professional rate card document generation
+    - Pricing validation (daily = hourly × 8, ascending tiers, premium multipliers 1.3x-2.0x)
+    - Multiple formats: `--format=md|html|pdf` (PDF via Playwright)
+    - Currency support: `--currency=CAD|USD`
+    - Optional `--include-justification` for credentials section
+    - Output: `Client_Prospects/Rate_Card_[Date].[format]`
+
+  - `/pitchdeck` - B2B service pitch deck generation
+    - 12-slide structure following consulting best practices
+    - Provenance hardening with >90% validation target for all claims
+    - Three targeting modes: `--prospect`, `--industry`, `--service`
+    - Research protocol with 5-10 minute time budget
+    - Output: `Client_Prospects/Pitch_[Target]_[Date].md` (+ optional .pptx)
+
+  - `/proposaltemplate` - Professional consulting proposal generation
+    - Four engagement types: `--type=project|retainer|staff-aug|workshop`
+    - Pricing algorithms with volume discounts and transparency
+    - 10-section McKinsey/BCG-style structure
+    - Pricing calculation metadata in YAML frontmatter
+    - Output: `Client_Prospects/Proposal_[Client]_[Service]_[Date].md`
+
+- **Service Definition Schema**: New JSON schema for validating service definitions
+  - Located at `.claude/templates/service_definition_schema.json`
+  - Comprehensive structure for consultant identity, services, engagement models, rate card, differentiation, and target markets
+
+- **Client Prospects Directory**: New `Client_Prospects/` directory for independent contractor outputs
+  - Service definitions, prospect lists, rate cards, pitch decks, and proposals
+  - `.gitignore` configured to exclude generated files while preserving directory structure
+
 ## [1.4.0] - 2025-12-02
 
 ### Added
@@ -242,6 +288,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.5.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.0
 [1.4.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.4.0
 [1.3.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.3.0
 [1.2.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.2.0

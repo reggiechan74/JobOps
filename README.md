@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.4.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.5.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -127,14 +127,21 @@ resumeoptimizer/
 │   │   │   ├── git-delete.md         # /git-delete - Delete git history
 │   │   │   ├── github-portfolio.md   # /github-portfolio - Portfolio documentation
 │   │   │   └── install-pandoc.md     # /install-pandoc - Setup converter
-│   │   └── career-strategy/           # Long-term planning
-│   │       ├── change-one-thing.md   # /change-one-thing - Career retrospective
-│   │       └── idealjob.md           # /idealjob - Synthetic ideal job generator (v1.4.0)
+│   │   ├── career-strategy/           # Long-term planning
+│   │   │   ├── change-one-thing.md   # /change-one-thing - Career retrospective
+│   │   │   └── idealjob.md           # /idealjob - Synthetic ideal job generator (v1.4.0)
+│   │   └── independent-contractor/    # B2B business development (v1.5.0)
+│   │       ├── defineservices.md     # /defineservices - Service offerings
+│   │       ├── findclient.md         # /findclient - Client discovery
+│   │       ├── ratecard.md           # /ratecard - Rate card generation
+│   │       ├── pitchdeck.md          # /pitchdeck - Pitch deck creation
+│   │       └── proposaltemplate.md   # /proposaltemplate - Proposal generation
 │   ├── templates/                     # Assessment framework templates (v1.1.1+)
 │   │   ├── assessment_report_structure.md    # Report format template
 │   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
 │   │   ├── candidate_profile_schema.json     # Profile JSON schema
-│   │   └── evidence_verification_framework.md # Evidence protocols
+│   │   ├── evidence_verification_framework.md # Evidence protocols
+│   │   └── service_definition_schema.json    # B2B service definition schema (v1.5.0)
 │   ├── styles/                        # CSS styling for PDF generation (v1.4.0)
 │   │   ├── resume-base.css            # Base print/PDF styles
 │   │   ├── obsidian.css               # Obsidian-style PDF formatting
@@ -146,6 +153,12 @@ resumeoptimizer/
 ├── .playwright-mcp/                   # Playwright browser automation cache
 ├── Briefing_Notes/                    # Interview preparation materials
 │   └── Briefing_*_*_*_*.md           # Gap analysis and study guides
+├── Client_Prospects/                  # Independent contractor outputs (v1.5.0)
+│   ├── Service_Definition_*.md       # B2B service offerings
+│   ├── Prospects_*_*.md              # Client discovery results
+│   ├── Rate_Card_*.*                 # Professional rate cards
+│   ├── Pitch_*_*.md                  # B2B pitch decks
+│   └── Proposal_*_*_*.md             # Consulting proposals
 ├── Guides/                            # Templates and metadata standards
 │   ├── CareerHighlight_Template.md    # CareerHighlights file template
 │   ├── Experience_Template.md         # Experience file template
@@ -423,6 +436,44 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 <p align="center">
   <img src="Images/change-one-thing.png" alt="Change-One-Thing Reflective Career Analysis Framework" width="800">
 </p>
+
+### Independent Contractor Business Development (v1.5.0)
+```bash
+/defineservices [--guided|--from-profile|--update]   # Define B2B service offerings
+/findclient [--industry=X] [--size=Y] [--limit=N]    # Discover B2B client prospects
+/ratecard [--format=md|html|pdf] [--currency=CAD|USD] # Generate professional rate card
+/pitchdeck [--prospect=X|--industry=X|--service=X]   # Create B2B pitch deck
+/proposaltemplate [--type=project|retainer|staff-aug|workshop] # Generate proposal
+```
+
+**`/defineservices`** - Foundation command for defining B2B service offerings with pricing and positioning:
+- Three modes: `--guided` (interactive questions), `--from-profile` (auto-generate from candidate profile), `--update` (refresh existing)
+- Pricing validation: daily = hourly × 8 (±10%), ascending tiers, JSON schema compliance
+- Output: `Client_Prospects/Service_Definition_[Date].md`
+
+**`/findclient`** - B2B client discovery with 10-point prospect scoring:
+- 5 weighted factors: Contractor History (25%), Procurement Accessibility (20%), Domain Alignment (25%), Budget Fit (15%), Geographic Match (15%)
+- Priority classification: HIGH (8-10, active outreach), MEDIUM (5-7.9, qualified), LOW (1-4.9, deprioritize)
+- Entry point identification: vendor portals, warm introductions, decision-makers, intermediaries
+- Output: `Client_Prospects/Prospects_[Domain]_[Date].md`
+
+**`/ratecard`** - Professional rate card document generation:
+- Pricing validation: daily = hourly × 8, ascending tiers (min < target < premium), premium multiplier 1.3x-2.0x
+- Multiple formats: markdown (default), HTML, PDF (via Playwright)
+- Optional `--include-justification` for credentials and ROI proof points
+- Output: `Client_Prospects/Rate_Card_[Date].[format]`
+
+**`/pitchdeck`** - B2B service pitch deck generation with provenance hardening:
+- 12-slide structure: Title, Problem, Cost of Inaction, Solution, How It Works, Results, Why Me, Engagement Options, Experience, Next Steps, Q&A, Appendix
+- Provenance hardening: >90% of claims validated against candidate profile with evidence citations
+- Three modes: prospect-specific, industry-generic, service-focused
+- Output: `Client_Prospects/Pitch_[Target]_[Date].md` (+ optional .pptx via pandoc)
+
+**`/proposaltemplate`** - Professional consulting proposal generation:
+- Four engagement types with pricing algorithms: project (fixed-scope), retainer (ongoing), staff-aug (embedded), workshop (training)
+- 10-section McKinsey/BCG-style structure with transparent pricing calculation
+- Pricing metadata in YAML frontmatter for audit trail
+- Output: `Client_Prospects/Proposal_[Client]_[Service]_[Date].md`
 
 ## The 8-Step Protocol
 

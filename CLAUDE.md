@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
 
-**Current Version:** 1.4.0 (see CHANGELOG.md for version history)
+**Current Version:** 1.5.0 (see CHANGELOG.md for version history)
 
 ## Key Directories
 
