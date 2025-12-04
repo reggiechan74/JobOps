@@ -44,8 +44,9 @@
 
         <section class="content-section">
             <h2>The 6 Specialized Agents</h2>
+            <p class="section-hint">Click any agent to learn more about its capabilities and see sample output.</p>
             <div class="agent-grid">
-                <div class="agent-card">
+                <a href="osint/corporate.html" class="agent-card">
                     <div class="agent-icon">🏢</div>
                     <h3>Corporate Intelligence</h3>
                     <span class="agent-id">osint-corporate</span>
@@ -56,8 +57,8 @@
                         <li>Recent news and developments</li>
                         <li>Competitive landscape</li>
                     </ul>
-                </div>
-                <div class="agent-card">
+                </a>
+                <a href="osint/legal.html" class="agent-card">
                     <div class="agent-icon">⚖️</div>
                     <h3>Legal Intelligence</h3>
                     <span class="agent-id">osint-legal</span>
@@ -68,8 +69,8 @@
                         <li>Patent disputes</li>
                         <li>Legal risk assessment</li>
                     </ul>
-                </div>
-                <div class="agent-card">
+                </a>
+                <a href="osint/leadership.html" class="agent-card">
                     <div class="agent-icon">👤</div>
                     <h3>Leadership Intelligence</h3>
                     <span class="agent-id">osint-leadership</span>
@@ -80,8 +81,8 @@
                         <li>Public statements and values</li>
                         <li>Management style indicators</li>
                     </ul>
-                </div>
-                <div class="agent-card">
+                </a>
+                <a href="osint/compensation.html" class="agent-card">
                     <div class="agent-icon">💰</div>
                     <h3>Compensation Intelligence</h3>
                     <span class="agent-id">osint-compensation</span>
@@ -92,8 +93,8 @@
                         <li>Benefits comparison</li>
                         <li>Negotiation positioning</li>
                     </ul>
-                </div>
-                <div class="agent-card">
+                </a>
+                <a href="osint/culture.html" class="agent-card">
                     <div class="agent-icon">🎭</div>
                     <h3>Culture Intelligence</h3>
                     <span class="agent-id">osint-culture</span>
@@ -104,8 +105,8 @@
                         <li>DEI initiatives and outcomes</li>
                         <li>Turnover patterns</li>
                     </ul>
-                </div>
-                <div class="agent-card">
+                </a>
+                <a href="osint/market.html" class="agent-card">
                     <div class="agent-icon">📊</div>
                     <h3>Market Intelligence</h3>
                     <span class="agent-id">osint-market</span>
@@ -116,7 +117,7 @@
                         <li>Growth trajectory</li>
                         <li>Strategic threats and opportunities</li>
                     </ul>
-                </div>
+                </a>
             </div>
         </section>
 
@@ -316,6 +317,20 @@
             gap: 1.5rem;
         }
 
+        .section-hint {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+
+        a.agent-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         .agent-card {
             background: var(--bg-panel);
             border: 1px solid var(--border-dim);
@@ -323,8 +338,13 @@
             transition: all 0.3s ease;
         }
 
+        a.agent-card * {
+            pointer-events: none;
+        }
+
         .agent-card:hover {
             border-color: var(--border-active);
+            transform: translateY(-2px);
         }
 
         .agent-icon {
