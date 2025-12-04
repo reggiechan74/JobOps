@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 08: Interview Preparation - JobOps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../subpage-styles.css">
+</head>
+<body>
+    <div class="tactical-bg"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="../index.html" class="nav-logo">
+            <div class="logo-icon"></div>
+            <span class="logo-text">JOBOPS</span>
+        </a>
+        <a href="../index.html#process" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Protocol
+        </a>
+    </nav>
+
+    <main class="subpage-content">
+        <div class="step-badge phase-4">
+            <span class="step-num">08</span>
+            <span class="phase-label">Phase IV: Interview Operations</span>
+        </div>
+
+        <h1 class="page-title">Interview Preparation</h1>
+        <p class="page-subtitle">Upon interview invitation: generate likely questions, STAR format coaching, defensive strategies.</p>
+
+        <div class="command-display">
+            <code>/interviewprep</code>
+        </div>
+
+        <section class="content-section">
+            <h2>What It Does</h2>
+            <p>When you receive an interview callback, this command generates customized interview questions based on the alignment between your tailored resume and the job requirements. It provides strategic guidance for each question.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Question Likelihood Tagging</h2>
+            <p>Questions are prioritized by probability of being asked:</p>
+            <div class="priority-tags">
+                <div class="priority-tag high">
+                    <span class="tag-icon">HIGH LIKELIHOOD</span>
+                    <p>Core competency questions — prepare these thoroughly, expect them</p>
+                </div>
+                <div class="priority-tag moderate">
+                    <span class="tag-icon">MODERATE LIKELIHOOD</span>
+                    <p>Supplementary questions — prepare but don't over-invest</p>
+                </div>
+                <div class="priority-tag low">
+                    <span class="tag-icon">LOW LIKELIHOOD</span>
+                    <p>Edge case questions — skim, don't memorize</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Question Components</h2>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Technical Questions</strong>
+                        <p>Based on skills listed in job posting and your demonstrated expertise.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Behavioral Questions</strong>
+                        <p>STAR format coaching for leadership, conflict, and achievement scenarios.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Follow-up Questions</strong>
+                        <p>Anticipated drill-down questions and how to handle them.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Red Flags to Avoid</strong>
+                        <p>Common mistakes and weak answers for each question type.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>STAR Format Structure</h2>
+            <div class="star-format">
+                <div class="star-element">
+                    <span class="star-letter">S</span>
+                    <div>
+                        <strong>Situation</strong>
+                        <p>Set the context — when, where, what was the challenge?</p>
+                    </div>
+                </div>
+                <div class="star-element">
+                    <span class="star-letter">T</span>
+                    <div>
+                        <strong>Task</strong>
+                        <p>What was your specific responsibility or goal?</p>
+                    </div>
+                </div>
+                <div class="star-element">
+                    <span class="star-letter">A</span>
+                    <div>
+                        <strong>Action</strong>
+                        <p>What did YOU do? (Use "I", not "we")</p>
+                    </div>
+                </div>
+                <div class="star-element">
+                    <span class="star-letter">R</span>
+                    <div>
+                        <strong>Result</strong>
+                        <p>Quantified outcome — metrics, impact, learning</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Time-Aware Practice Schedule</h2>
+            <p>Like briefings, interview prep adapts to your available time:</p>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>1d — Rapid Prep</strong>
+                        <p>Focus on HIGH likelihood questions only. Quick answer bullets.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>3d — Standard Prep</strong>
+                        <p>HIGH + MODERATE questions. Full STAR responses drafted.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>1w+ — Deep Prep</strong>
+                        <p>All questions. Mock interview practice schedule included.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Usage Example</h2>
+            <div class="terminal-mini">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="cmd">/interviewprep Step3_Final_Resume_SeniorDev_TechCorp.md TechCorp_SeniorDev.md 15 3d</span>
+                </div>
+                <div class="terminal-line output">
+                    Analyzing resume-job alignment...
+                </div>
+                <div class="terminal-line output">
+                    Generating 15 likely questions...
+                </div>
+                <div class="terminal-line output">
+                    Creating 3-day practice schedule...
+                </div>
+                <div class="terminal-line success">
+                    Interview prep complete: Briefing_Notes/Interview_Prep_TechCorp_SeniorDev.md
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section mission-complete">
+            <h2>Mission Complete</h2>
+            <p>You've completed the full 8-step JobOps protocol. Your application package includes:</p>
+            <ul>
+                <li>Comprehensive career inventory (defensible source of truth)</li>
+                <li>Target assessment with viability score</li>
+                <li>Gap analysis with preparation plan</li>
+                <li>HAM-Z tailored resume (provenance-verified)</li>
+                <li>Strategic cover letter with requirements table</li>
+                <li>Professional submission documents</li>
+                <li>Interview preparation with question-specific strategies</li>
+            </ul>
+            <p class="mission-tag">Every claim traceable. Zero fabrication. Maximum credibility.</p>
+        </section>
+
+        <div class="nav-steps">
+            <a href="step-07-submit-application.html" class="nav-step prev">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+                <strong>Submit Application</strong>
+            </a>
+            <a href="../index.html#process" class="nav-step next final">
+                <span>Return to</span>
+                <strong>Protocol Overview</strong>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <span class="footer-logo">JOBOPS</span>
+            <span class="footer-tagline">Intelligence-Driven Application Warfare</span>
+        </div>
+    </footer>
+</body>
+</html>

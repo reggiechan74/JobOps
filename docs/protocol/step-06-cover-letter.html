@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 06: Cover Letter Deployment - JobOps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../subpage-styles.css">
+</head>
+<body>
+    <div class="tactical-bg"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="../index.html" class="nav-logo">
+            <div class="logo-icon"></div>
+            <span class="logo-text">JOBOPS</span>
+        </a>
+        <a href="../index.html#process" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Protocol
+        </a>
+    </nav>
+
+    <main class="subpage-content">
+        <div class="step-badge phase-3">
+            <span class="step-num">06</span>
+            <span class="phase-label">Phase III: Strike Package Assembly</span>
+        </div>
+
+        <h1 class="page-title">Cover Letter Deployment</h1>
+        <p class="page-subtitle">Strategic communication with requirements-matching table and evidence chain.</p>
+
+        <div class="command-display">
+            <code>/coverletter</code>
+        </div>
+
+        <section class="content-section">
+            <h2>What It Does</h2>
+            <p>Generates a targeted cover letter from your hardened Step 3 resume. Unlike generic AI cover letters, this maintains the provenance chain — every claim can be traced back to your career inventory.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Key Components</h2>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Requirements-Matching Table</strong>
+                        <p>A clear visual mapping between job requirements and your qualifications with evidence citations.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Provenance Chain</strong>
+                        <p>Every claim references specific achievements from your hardened resume, maintaining defensibility.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Strategic Narrative</strong>
+                        <p>Connects your experience to the company's specific needs and challenges.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Optional Personalization</strong>
+                        <p>Address to specific hiring manager when name is provided.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Requirements-Matching Table</h2>
+            <div class="table-preview">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>Your Evidence</th>
+                            <th>Match</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>5+ years Python</td>
+                            <td>7 years at TechCorp, DataFlow Inc.</td>
+                            <td class="match-strong">Strong</td>
+                        </tr>
+                        <tr>
+                            <td>Cloud experience</td>
+                            <td>AWS certified, led 3 migrations</td>
+                            <td class="match-strong">Strong</td>
+                        </tr>
+                        <tr>
+                            <td>Team leadership</td>
+                            <td>Managed 4-person team</td>
+                            <td class="match-moderate">Moderate</td>
+                        </tr>
+                        <tr>
+                            <td>Kubernetes</td>
+                            <td>Learning (see briefing plan)</td>
+                            <td class="match-developing">Developing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Input Requirements</h2>
+            <div class="requirements-box">
+                <div class="requirement">
+                    <span class="req-icon">1</span>
+                    <div>
+                        <strong>Step 3 Resume (Required)</strong>
+                        <p>Must use the final hardened resume — not Step 1 drafts.</p>
+                    </div>
+                </div>
+                <div class="requirement">
+                    <span class="req-icon">2</span>
+                    <div>
+                        <strong>Job Description (Required)</strong>
+                        <p>Original job posting for requirement extraction.</p>
+                    </div>
+                </div>
+                <div class="requirement">
+                    <span class="req-icon">3</span>
+                    <div>
+                        <strong>Hiring Manager Name (Optional)</strong>
+                        <p>For personalized addressing instead of generic greeting.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Usage Example</h2>
+            <div class="terminal-mini">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="cmd">/coverletter Step3_Final_Resume_SeniorDev_TechCorp.md TechCorp_SeniorDev.md "Sarah Chen"</span>
+                </div>
+                <div class="terminal-line output">
+                    Analyzing job requirements...
+                </div>
+                <div class="terminal-line output">
+                    Mapping 8 requirements to resume evidence...
+                </div>
+                <div class="terminal-line output">
+                    Generating strategic narrative...
+                </div>
+                <div class="terminal-line success">
+                    Cover letter created: OutputResumes/CoverLetter_TechCorp_SeniorDev.md
+                </div>
+            </div>
+        </section>
+
+        <div class="nav-steps">
+            <a href="step-05-tailored-resume.html" class="nav-step prev">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+                <strong>Build Tailored Resume</strong>
+            </a>
+            <a href="step-07-submit-application.html" class="nav-step next">
+                <span>Next Step</span>
+                <strong>Submit Application</strong>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <span class="footer-logo">JOBOPS</span>
+            <span class="footer-tagline">Intelligence-Driven Application Warfare</span>
+        </div>
+    </footer>
+</body>
+</html>

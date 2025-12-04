@@ -661,11 +661,15 @@
             display: flex;
             gap: 1rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
         }
 
         .step-card:hover {
             border-color: var(--border-active);
             background: var(--bg-surface);
+            transform: translateY(-2px);
         }
 
         .step-num {
@@ -734,6 +738,10 @@
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            display: block;
         }
 
         .feature-card::after {
@@ -1325,22 +1333,22 @@
                     </div>
                 </div>
                 <div class="phase-steps">
-                    <div class="step-card">
+                    <a href="protocol/step-01-career-inventory.html" class="step-card">
                         <span class="step-num">01</span>
                         <div class="step-content">
                             <h4>Build Career Inventory</h4>
                             <p>Create comprehensive master resume with all achievements, metrics, and evidence. Your single source of truth.</p>
                             <code class="step-command">/create-career-history</code>
                         </div>
-                    </div>
-                    <div class="step-card">
+                    </a>
+                    <a href="protocol/step-02-target-coordinates.html" class="step-card">
                         <span class="step-num">02</span>
                         <div class="step-content">
                             <h4>Acquire Target Coordinates</h4>
                             <p>Upload job descriptions to Job_Postings/ folder for reconnaissance and analysis.</p>
                             <code class="step-command">Manual Upload</code>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -1353,22 +1361,22 @@
                     </div>
                 </div>
                 <div class="phase-steps">
-                    <div class="step-card">
+                    <a href="protocol/step-03-target-assessment.html" class="step-card">
                         <span class="step-num">03</span>
                         <div class="step-content">
                             <h4>Target Assessment</h4>
                             <p>100-point viability scoring with dynamic rubric generation. Determine engagement probability.</p>
                             <code class="step-command">/assessjob</code>
                         </div>
-                    </div>
-                    <div class="step-card">
+                    </a>
+                    <a href="protocol/step-04-gap-analysis.html" class="step-card">
                         <span class="step-num">04</span>
                         <div class="step-content">
                             <h4>Gap Analysis Briefing</h4>
                             <p>Identify capability gaps and create study guide. Informed decision: engage or disengage?</p>
                             <code class="step-command">/briefing</code>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -1381,30 +1389,30 @@
                     </div>
                 </div>
                 <div class="phase-steps">
-                    <div class="step-card">
+                    <a href="protocol/step-05-tailored-resume.html" class="step-card">
                         <span class="step-num">05</span>
                         <div class="step-content">
                             <h4>Build Tailored Resume</h4>
                             <p>HAM-Z methodology with provenance verification. Draft → Verify → Harden pipeline.</p>
                             <code class="step-command">/buildresume</code>
                         </div>
-                    </div>
-                    <div class="step-card">
+                    </a>
+                    <a href="protocol/step-06-cover-letter.html" class="step-card">
                         <span class="step-num">06</span>
                         <div class="step-content">
                             <h4>Cover Letter Deployment</h4>
                             <p>Strategic communication with requirements-matching table and evidence chain.</p>
                             <code class="step-command">/coverletter</code>
                         </div>
-                    </div>
-                    <div class="step-card">
+                    </a>
+                    <a href="protocol/step-07-submit-application.html" class="step-card">
                         <span class="step-num">07</span>
                         <div class="step-content">
                             <h4>Submit Application</h4>
                             <p>Convert to professional format and deploy. Track submission status.</p>
                             <code class="step-command">/convert</code>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -1417,14 +1425,14 @@
                     </div>
                 </div>
                 <div class="phase-steps">
-                    <div class="step-card">
+                    <a href="protocol/step-08-interview-prep.html" class="step-card">
                         <span class="step-num">08</span>
                         <div class="step-content">
                             <h4>Interview Preparation</h4>
                             <p>Upon interview invitation: generate likely questions, STAR format coaching, defensive strategies.</p>
                             <code class="step-command">/interviewprep</code>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1437,7 +1445,7 @@
             <p class="section-subtitle">Purpose-built tools for intelligence-driven job applications.</p>
         </div>
         <div class="features-grid">
-            <div class="feature-card">
+            <a href="arsenal/hamz-methodology.html" class="feature-card">
                 <div class="feature-icon">🎯</div>
                 <h3 class="feature-title">HAM-Z Methodology</h3>
                 <p class="feature-desc">Hard Skills + Actions + Metrics + Structure combined with XYZ narrative format. Every achievement follows a precise formula that's both impressive and defensible.</p>
@@ -1446,8 +1454,8 @@
                     <span class="feature-tag">Mechanism Required</span>
                     <span class="feature-tag">Timeframe Bound</span>
                 </div>
-            </div>
-            <div class="feature-card">
+            </a>
+            <a href="arsenal/provenance-hardening.html" class="feature-card">
                 <div class="feature-icon">🛡️</div>
                 <h3 class="feature-title">Provenance Hardening</h3>
                 <p class="feature-desc">Comprehensive credibility verification that identifies fabricated claims, unbounded metrics, and mechanism-free outcomes before they reach an interviewer.</p>
@@ -1456,8 +1464,8 @@
                     <span class="feature-tag">Risk Categorization</span>
                     <span class="feature-tag">Line-by-Line Audit</span>
                 </div>
-            </div>
-            <div class="feature-card">
+            </a>
+            <a href="arsenal/cultural-profiles.html" class="feature-card">
                 <div class="feature-icon">🌍</div>
                 <h3 class="feature-title">Cultural Profiles</h3>
                 <p class="feature-desc">Adapt your resume style to regional expectations. Canadian, US, European, UK, and Australian profiles with distinct formatting and language conventions.</p>
@@ -1466,8 +1474,8 @@
                     <span class="feature-tag">Language Tuning</span>
                     <span class="feature-tag">Format Standards</span>
                 </div>
-            </div>
-            <div class="feature-card">
+            </a>
+            <a href="arsenal/osint-intelligence.html" class="feature-card">
                 <div class="feature-icon">🔍</div>
                 <h3 class="feature-title">OSINT Intelligence</h3>
                 <p class="feature-desc">6 specialized agents deploy in parallel for comprehensive target analysis: Corporate, Legal, Leadership, Compensation, Culture, and Market intelligence.</p>
@@ -1476,7 +1484,7 @@
                     <span class="feature-tag">Deep Research</span>
                     <span class="feature-tag">Risk Assessment</span>
                 </div>
-            </div>
+            </a>
         </div>
     </section>
 

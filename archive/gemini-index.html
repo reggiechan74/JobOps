@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobOps - Intelligence-Driven Application Warfare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0A0F19;
+            --color-surface: #121A2A;
+            --color-primary: #00E5FF; /* Cyan */
+            --color-accent: #FFB800;  /* Amber */
+            --color-text: #BFC9D9;
+            --color-heading: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            background-image: 
+                linear-gradient(rgba(18, 26, 42, 0.95), rgba(18, 26, 42, 0.95)),
+                radial-gradient(ellipse at center, rgba(0, 229, 255, 0.05) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+        
+        .main-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(var(--color-surface) 1px, transparent 1px),
+                linear-gradient(to right, var(--color-surface) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        h1, h2, h3 { font-family: 'Space Mono', monospace; color: var(--color-heading); }
+
+        .glass-card {
+            background: rgba(18, 26, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 229, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(0, 229, 255, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .btn-primary {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            border: 1px solid var(--color-primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--color-primary);
+        }
+        
+        .btn-accent {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--color-accent);
+            color: var(--color-bg);
+            border: 1px solid var(--color-accent);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 184, 0, 0.3);
+        }
+        
+        .btn-accent:hover {
+            background-color: transparent;
+            color: var(--color-accent);
+        }
+
+        .typed-cursor {
+            color: var(--color-primary);
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* --- Animation Fix --- */
+        [data-animate] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            /* Use the --delay custom property for staggered animations */
+            transition-delay: var(--delay, 0s);
+        }
+
+        [data-animate].visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* --- End Animation Fix --- */
+
+        .icon {
+            color: var(--color-primary);
+        }
+
+        /* Terminal Window */
+        .terminal {
+            background-color: #0c101c;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .terminal-header {
+            background-color: #1a2333;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+        .terminal-code {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .terminal-code .command { color: #F87171; } /* Red 400 */
+        .terminal-code .path { color: #60A5FA; } /* Blue 400 */
+        .terminal-code .comment { color: #9CA3AF; } /* Gray 400 */
+    </style>
+</head>
+<body class="main-bg">
+
+    <!-- Header & Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center text-center overflow-hidden py-24">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-var(--color-bg) z-10"></div>
+        <div class="container mx-auto px-6 z-20">
+            <img src="Images/JobOps_logo.png" alt="JobOps Logo" class="mx-auto mb-6 w-40 h-auto" data-animate style="--delay: 100ms;">
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-4" data-animate style="--delay: 200ms;">
+                <span id="hero-headline"></span>
+            </h1>
+            <p class="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl mx-auto opacity-90" data-animate style="--delay: 300ms;">
+                A tactical job application platform that transforms your career inventory into winning applications.
+            </p>
+            <a href="#protocol" class="btn-primary px-8 py-4 rounded-lg text-lg font-bold inline-block" data-animate style="--delay: 400ms;">
+                Initiate Protocol
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-24 space-y-32">
+        <!-- The Problem Section -->
+        <section data-animate class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-6">The Battlefield is Rigged.</h2>
+            <p class="text-xl leading-relaxed opacity-80">
+                The modern job market is a "Vicious Cycle of Embellishment." AI-inflated resumes degrade signal-to-noise ratio to <span class="font-mono text-accent">-2.5 dB</span>, forcing employers to add screening layers, which only incentivizes more embellishment. It's a war of attrition. JobOps gives you the advantage.
+            </p>
+        </section>
+
+        <!-- The Solution: 8-Step Protocol Section -->
+        <section id="protocol">
+            <div class="text-center mb-16">
+                <h2 data-animate class="text-3xl lg:text-4xl font-bold mb-4">The Solution: The 8-Step Protocol</h2>
+                <p data-animate class="text-xl max-w-3xl mx-auto opacity-80">Deploy an Assessment-First offensive that guarantees every claim is verified and every achievement is weaponized.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div data-animate class="glass-card p-6 text-center" style="--delay: 0ms;">
+                    <div class="icon text-5xl mb-4 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 16.663c.527-.527.923-1.18.923-1.923s-.396-1.396-.923-1.923c-.527-.527-1.18-.923-1.923-.923s-1.396.396-1.923.923c-.527.527-.923 1.18-.923 1.923s.396 1.396.923 1.923c.527.527 1.18.923 1.923.923zM14.337 16.663c.527-.527.923-1.18.923-1.923s-.396-1.396-.923-1.923c-.527-.527-1.18-.923-1.923-.923s-1.396.396-1.923.923c-.527.527-.923 1.18-.923 1.923s.396 1.396.923 1.923c.527.527 1.18.923 1.923.923zM12 21a9 9 0 110-18 9 9 0 010 18z" /></svg></div>
+                    <h3 class="text-xl font-bold mb-2">1. Target Reconnaissance</h3>
+                    <p class="opacity-70">Assess engagement probability before committing resources.</p>
+                </div>
+                 <div data-animate class="glass-card p-6 text-center" style="--delay: 100ms;">
+                    <div class="icon text-5xl mb-4 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.24l-2.83-2.83a1 1 0 00-1.414 0l-4.244 4.243" /></svg></div>
+                    <h3 class="text-xl font-bold mb-2">2. Resume Development</h3>
+                    <p class="opacity-70">Draft, verify provenance, and harden your strike package.</p>
+                </div>
+                 <div data-animate class="glass-card p-6 text-center" style="--delay: 200ms;">
+                    <div class="icon text-5xl mb-4 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-5.747h18" /></svg></div>
+                    <h3 class="text-xl font-bold mb-2">3. Interview Preparation</h3>
+                    <p class="opacity-70">Generate gap analysis intelligence & tactical questioning.</p>
+                </div>
+                 <div data-animate class="glass-card p-6 text-center" style="--delay: 300ms;">
+                    <div class="icon text-5xl mb-4 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></div>
+                    <h3 class="text-xl font-bold mb-2">4. Mission Execution</h3>
+                    <p class="opacity-70">Deploy strategic cover letters and mission-ready formats.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Showcase Section -->
+        <section data-animate class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold mb-4">Run Operations from Your Terminal</h2>
+                <p class="text-xl max-w-2xl mx-auto opacity-80">JobOps is a Claude Code repository. All functionality works through simple slash commands.</p>
+            </div>
+            <div class="terminal rounded-lg shadow-2xl">
+                <div class="terminal-header h-10 flex items-center px-4">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                </div>
+                <div class="terminal-code p-6 text-lg">
+                    <span class="command">/assessjob</span> <span class="path">Job_Postings/AcmeCorp_AIEngineer.md</span>
+                    <br>
+                    <span class="comment"># Running Target Reconnaissance...</span>
+                    <br>
+                    <span class="comment"># Generating dynamic rubric... 100%</span>
+                    <br>
+                    <span class="comment"># Assessing candidate fit... 84%</span>
+                    <br>
+                    <span class="comment">> Engagement Probability: </span><strong class="text-green-400">High</strong>
+                    <br>
+                    <span class="comment">> Recommendation: </span><strong class="text-green-400">Deploy Full Strike Package</strong>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                 <a href="#protocol" class="btn-accent px-8 py-3 rounded-lg text-lg font-bold inline-block">
+                    View The Command Arsenal
+                </a>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-transparent py-12 text-center" data-animate>
+        <div class="container mx-auto px-6 border-t border-gray-800 pt-12">
+            <p class="opacity-60">&copy; 2025 JobOps. All Rights Reserved. Tactical Operations are Confidential.</p>
+            <div class="mt-4 space-x-4">
+                <a href="https://github.com/reggiechan74/JobOps" target="_blank" class="text-cyan-400 hover:text-cyan-300 transition">GitHub Repository</a>
+                <a href="CHANGELOG.md" class="text-cyan-400 hover:text-cyan-300 transition">Changelog</a>
+                <a href="Why_I_Built_This.md" class="text-cyan-400 hover:text-cyan-300 transition">Origin Story</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Typed.js for hero headline
+            if (document.getElementById('hero-headline')) {
+                new Typed('#hero-headline', {
+                    strings: ['Wage War on Unemployment.', 'Build Your Arsenal.', 'Deploy with Intelligence.'],
+                    typeSpeed: 50,
+                    backSpeed: 25,
+                    backDelay: 2000,
+                    startDelay: 500,
+                    loop: true,
+                    smartBackspace: true
+                });
+            }
+
+            // --- Animation Fix ---
+            // Intersection Observer for scroll animations
+            const animatedElements = document.querySelectorAll('[data-animate]');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            // Observe each animated element
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+            // --- End Animation Fix ---
+        });
+    </script>
+
+</body>
+</html>

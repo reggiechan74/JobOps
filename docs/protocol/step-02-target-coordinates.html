@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 02: Acquire Target Coordinates - JobOps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../subpage-styles.css">
+</head>
+<body>
+    <div class="tactical-bg"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="../index.html" class="nav-logo">
+            <div class="logo-icon"></div>
+            <span class="logo-text">JOBOPS</span>
+        </a>
+        <a href="../index.html#process" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Protocol
+        </a>
+    </nav>
+
+    <main class="subpage-content">
+        <div class="step-badge phase-1">
+            <span class="step-num">02</span>
+            <span class="phase-label">Phase I: Arsenal Preparation</span>
+        </div>
+
+        <h1 class="page-title">Acquire Target Coordinates</h1>
+        <p class="page-subtitle">Upload job descriptions to prepare for reconnaissance and analysis.</p>
+
+        <div class="command-display manual">
+            <code>Manual Upload</code>
+            <span class="or">or</span>
+            <code>/searchjobs</code>
+        </div>
+
+        <section class="content-section">
+            <h2>What It Does</h2>
+            <p>Before engaging any target, you need intelligence. This step involves acquiring job postings — either manually uploading them to the <code>Job_Postings/</code> directory or using the automated job search function to discover opportunities.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Two Methods</h2>
+            <div class="method-cards">
+                <div class="method-card">
+                    <h3>Manual Upload</h3>
+                    <p>Copy job descriptions you find on LinkedIn, company websites, or job boards directly into markdown files.</p>
+                    <div class="method-example">
+                        <code>Job_Postings/TechCorp_SeniorDev_2025.md</code>
+                    </div>
+                </div>
+                <div class="method-card">
+                    <h3>Automated Search</h3>
+                    <p>Use the job search command to discover and save relevant opportunities automatically.</p>
+                    <div class="method-example">
+                        <code>/searchjobs "senior developer" Toronto --save</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Search Command Options</h2>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Keyword Search</strong>
+                        <p>Search by job title, skills, or industry keywords.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Location Filter</strong>
+                        <p>Narrow results to specific cities, regions, or remote positions.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Company Target</strong>
+                        <p>Filter by specific company with <code>--company=name</code> flag.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Auto-Save</strong>
+                        <p>Use <code>--save</code> to automatically store results with full job descriptions.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>File Naming Convention</h2>
+            <div class="output-structure">
+                <div class="folder-tree">
+                    <div class="tree-item"><span class="folder">Job_Postings/</span></div>
+                    <div class="tree-item indent-1"><span class="file">CompanyName_Role_Date.md</span></div>
+                    <div class="tree-item indent-1"><span class="file">SearchResults_Query_Date.md</span> <span class="desc">— Auto-saved search results</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Usage Example</h2>
+            <div class="terminal-mini">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="cmd">/searchjobs "product manager" "San Francisco" --limit=20 --save</span>
+                </div>
+                <div class="terminal-line output">
+                    Searching hiring.cafe for matches...
+                </div>
+                <div class="terminal-line output">
+                    Found 20 positions, scraping full descriptions...
+                </div>
+                <div class="terminal-line success">
+                    Saved: Job_Postings/SearchResults_ProductManager_2025-12-04.md
+                </div>
+            </div>
+        </section>
+
+        <div class="nav-steps">
+            <a href="step-01-career-inventory.html" class="nav-step prev">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+                <strong>Build Career Inventory</strong>
+            </a>
+            <a href="step-03-target-assessment.html" class="nav-step next">
+                <span>Next Step</span>
+                <strong>Target Assessment</strong>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <span class="footer-logo">JOBOPS</span>
+            <span class="footer-tagline">Intelligence-Driven Application Warfare</span>
+        </div>
+    </footer>
+</body>
+</html>

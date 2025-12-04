@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 03: Target Assessment - JobOps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../subpage-styles.css">
+</head>
+<body>
+    <div class="tactical-bg"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="../index.html" class="nav-logo">
+            <div class="logo-icon"></div>
+            <span class="logo-text">JOBOPS</span>
+        </a>
+        <a href="../index.html#process" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Protocol
+        </a>
+    </nav>
+
+    <main class="subpage-content">
+        <div class="step-badge phase-2">
+            <span class="step-num">03</span>
+            <span class="phase-label">Phase II: Target Reconnaissance</span>
+        </div>
+
+        <h1 class="page-title">Target Assessment</h1>
+        <p class="page-subtitle">100-point viability scoring with dynamic rubric generation. Know before you commit.</p>
+
+        <div class="command-display">
+            <code>/assessjob</code>
+        </div>
+
+        <section class="content-section">
+            <h2>What It Does</h2>
+            <p>Before investing time in a tailored resume, assess your fit. This command generates a job-specific scoring rubric and evaluates your career inventory against it — giving you a clear engagement probability score.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Scoring Categories</h2>
+            <div class="scoring-grid">
+                <div class="score-category">
+                    <span class="score-points">25</span>
+                    <h4>Technical Skills</h4>
+                    <p>Required and preferred technology match</p>
+                </div>
+                <div class="score-category">
+                    <span class="score-points">25</span>
+                    <h4>Experience</h4>
+                    <p>Years, seniority, and domain alignment</p>
+                </div>
+                <div class="score-category">
+                    <span class="score-points">20</span>
+                    <h4>Responsibilities</h4>
+                    <p>Role scope and duty alignment</p>
+                </div>
+                <div class="score-category">
+                    <span class="score-points">15</span>
+                    <h4>Achievements</h4>
+                    <p>Demonstrated outcomes and impact</p>
+                </div>
+                <div class="score-category">
+                    <span class="score-points">10</span>
+                    <h4>Education</h4>
+                    <p>Degrees, certifications, credentials</p>
+                </div>
+                <div class="score-category">
+                    <span class="score-points">5</span>
+                    <h4>Cultural Fit</h4>
+                    <p>Values and working style alignment</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Score Interpretation</h2>
+            <div class="score-ranges">
+                <div class="score-range engage">
+                    <span class="range">90-100</span>
+                    <span class="label">Strong Engage</span>
+                    <p>Excellent fit — prioritize this opportunity</p>
+                </div>
+                <div class="score-range engage">
+                    <span class="range">75-89</span>
+                    <span class="label">Engage</span>
+                    <p>Good fit with minor gaps — proceed with preparation</p>
+                </div>
+                <div class="score-range consider">
+                    <span class="range">60-74</span>
+                    <span class="label">Consider</span>
+                    <p>Moderate fit — evaluate if gaps are addressable</p>
+                </div>
+                <div class="score-range disengage">
+                    <span class="range">&lt;60</span>
+                    <span class="label">Disengage</span>
+                    <p>Poor fit — conserve resources for better targets</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Key Features</h2>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Dynamic Rubric Generation</strong>
+                        <p>Creates job-specific scoring criteria based on posting analysis and industry research.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Evidence Mapping</strong>
+                        <p>Links every score to specific items in your career inventory with line citations.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Gap Identification</strong>
+                        <p>Clearly identifies missing qualifications and their point impact.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">+</span>
+                    <div>
+                        <strong>Interview Strategy</strong>
+                        <p>Provides tailored recommendations for addressing identified weaknesses.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Usage Example</h2>
+            <div class="terminal-mini">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="cmd">/assessjob Job_Postings/TechCorp_SeniorDev.md</span>
+                </div>
+                <div class="terminal-line output">
+                    Generating dynamic rubric...
+                </div>
+                <div class="terminal-line output">
+                    Conducting domain research...
+                </div>
+                <div class="terminal-line output">
+                    Evaluating candidate against 47 criteria...
+                </div>
+                <div class="terminal-line success">
+                    Assessment complete: 78/100 — ENGAGE
+                </div>
+                <div class="terminal-line warning">
+                    Saved: Scoring_Rubrics/Rubric_TechCorp_SeniorDev_2025-12-04.md
+                </div>
+            </div>
+        </section>
+
+        <div class="nav-steps">
+            <a href="step-02-target-coordinates.html" class="nav-step prev">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Previous</span>
+                <strong>Acquire Target Coordinates</strong>
+            </a>
+            <a href="step-04-gap-analysis.html" class="nav-step next">
+                <span>Next Step</span>
+                <strong>Gap Analysis Briefing</strong>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <span class="footer-logo">JOBOPS</span>
+            <span class="footer-tagline">Intelligence-Driven Application Warfare</span>
+        </div>
+    </footer>
+</body>
+</html>
