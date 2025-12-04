@@ -1,0 +1,555 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Service Definition Schema",
+  "description": "Structured JSON schema for independent contractor service offerings with pricing and positioning",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["consultant", "services", "engagement_models", "rate_card", "differentiation", "metadata"],
+  "properties": {
+    "consultant": {
+      "type": "object",
+      "description": "Consultant identity and positioning",
+      "required": ["name", "tagline", "credentials"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name or business name"
+        },
+        "tagline": {
+          "type": "string",
+          "description": "One-sentence value proposition (e.g., 'AI-powered real estate intelligence for institutional investors')"
+        },
+        "credentials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key credentials and certifications that establish authority (e.g., ['P.Eng', 'MBA', 'CFA'])"
+        },
+        "years_experience": {
+          "type": "integer",
+          "description": "Total years of professional experience"
+        },
+        "website": {
+          "type": "string",
+          "format": "uri",
+          "description": "Professional website or portfolio URL"
+        },
+        "linkedin": {
+          "type": "string",
+          "format": "uri",
+          "description": "LinkedIn profile URL"
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "description": "Source file for consultant information"
+            },
+            "lines": {
+              "type": "string",
+              "description": "Line numbers in source file"
+            }
+          }
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "description": "Catalog of services offered with pricing and positioning",
+      "items": {
+        "type": "object",
+        "required": ["name", "category", "description", "deliverables", "ideal_client", "pricing"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Service name (e.g., 'AI Agent Development for Due Diligence')"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["Strategic Advisory", "Technical Implementation", "Training & Enablement", "Research & Analysis", "Project Management", "Interim Leadership", "Other"],
+            "description": "Primary service category"
+          },
+          "description": {
+            "type": "string",
+            "description": "2-3 sentence service description with value proposition"
+          },
+          "deliverables": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Specific deliverables included (e.g., ['Custom AI agents', 'Integration documentation', '3-month support'])"
+          },
+          "ideal_client": {
+            "type": "object",
+            "description": "Target client profile for this service",
+            "properties": {
+              "industries": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Target industries (e.g., ['Commercial Real Estate', 'Infrastructure', 'Private Equity'])"
+              },
+              "company_size": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["Startup", "SMB", "Mid-Market", "Enterprise"]
+                },
+                "description": "Target company sizes"
+              },
+              "pain_points": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Client problems this service solves"
+              },
+              "decision_makers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Typical decision-maker roles (e.g., ['CTO', 'VP Engineering', 'Head of Data'])"
+              }
+            }
+          },
+          "pricing": {
+            "type": "object",
+            "description": "Pricing structure for this service",
+            "properties": {
+              "model": {
+                "type": "string",
+                "enum": ["Hourly", "Daily", "Fixed-Price", "Retainer", "Value-Based", "Hybrid"],
+                "description": "Primary pricing model for this service"
+              },
+              "range": {
+                "type": "object",
+                "description": "Price range by pricing tier",
+                "properties": {
+                  "minimum": {
+                    "type": "string",
+                    "description": "Entry-level pricing (e.g., '$5,000', '$150/hr')"
+                  },
+                  "target": {
+                    "type": "string",
+                    "description": "Standard pricing (e.g., '$15,000', '$200/hr')"
+                  },
+                  "premium": {
+                    "type": "string",
+                    "description": "Premium pricing (e.g., '$50,000+', '$350/hr')"
+                  }
+                }
+              },
+              "typical_duration": {
+                "type": "string",
+                "description": "Typical project duration (e.g., '4-6 weeks', '3-month retainer')"
+              },
+              "value_justification": {
+                "type": "string",
+                "description": "ROI or value justification for pricing (e.g., '10x ROI through automated due diligence')"
+              }
+            }
+          },
+          "success_metrics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "How success is measured (e.g., ['50% time reduction', '95% accuracy improvement'])"
+          },
+          "case_studies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "client_type": {
+                  "type": "string",
+                  "description": "Anonymized client description (e.g., 'Global REIT with $2B AUM')"
+                },
+                "challenge": {
+                  "type": "string",
+                  "description": "Problem the client faced"
+                },
+                "solution": {
+                  "type": "string",
+                  "description": "What was delivered"
+                },
+                "results": {
+                  "type": "string",
+                  "description": "Quantified outcomes"
+                },
+                "evidence": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string"
+                    },
+                    "lines": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Real project examples (anonymized if needed)"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string",
+                "description": "Source file demonstrating capability for this service"
+              },
+              "lines": {
+                "type": "string",
+                "description": "Line numbers showing relevant experience"
+              }
+            }
+          }
+        }
+      }
+    },
+    "engagement_models": {
+      "type": "object",
+      "description": "Preferred engagement structures and working arrangements",
+      "required": ["preferred", "acceptable", "avoid"],
+      "properties": {
+        "preferred": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["Project-Based", "Retainer", "Fractional Executive", "Hourly Advisory", "Value-Based Partnership", "Equity + Cash"]
+          },
+          "description": "Most desirable engagement models"
+        },
+        "acceptable": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["Project-Based", "Retainer", "Fractional Executive", "Hourly Advisory", "Value-Based Partnership", "Equity + Cash", "Short-term W2"]
+          },
+          "description": "Acceptable engagement models"
+        },
+        "avoid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Engagement models to decline (e.g., ['Long-term full-time employment', 'Fixed-price with unlimited scope'])"
+        },
+        "minimum_engagement": {
+          "type": "string",
+          "description": "Minimum engagement size (e.g., '$10,000 project minimum', '20 hours minimum')"
+        },
+        "typical_duration": {
+          "type": "string",
+          "description": "Typical engagement length (e.g., '3-6 months', '10-40 hours per project')"
+        },
+        "concurrent_clients": {
+          "type": "integer",
+          "description": "Maximum number of concurrent client engagements"
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "lines": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "rate_card": {
+      "type": "object",
+      "description": "Standard rate structure across engagement types",
+      "properties": {
+        "hourly": {
+          "type": "object",
+          "description": "Hourly rate structure",
+          "properties": {
+            "minimum": {
+              "type": "string",
+              "description": "Minimum hourly rate (e.g., '$150/hr')"
+            },
+            "target": {
+              "type": "string",
+              "description": "Standard hourly rate (e.g., '$200/hr')"
+            },
+            "premium": {
+              "type": "string",
+              "description": "Premium hourly rate (e.g., '$350/hr')"
+            },
+            "rush_multiplier": {
+              "type": "number",
+              "description": "Rush fee multiplier (e.g., 1.5 for <2 week turnaround)"
+            }
+          }
+        },
+        "daily": {
+          "type": "object",
+          "description": "Day rate structure (typically hourly × 8 for consistency)",
+          "properties": {
+            "minimum": {
+              "type": "string",
+              "description": "Minimum day rate (e.g., '$1,200/day')"
+            },
+            "target": {
+              "type": "string",
+              "description": "Standard day rate (e.g., '$1,600/day')"
+            },
+            "premium": {
+              "type": "string",
+              "description": "Premium day rate (e.g., '$2,800/day')"
+            }
+          }
+        },
+        "retainer": {
+          "type": "object",
+          "description": "Monthly retainer options",
+          "properties": {
+            "part_time": {
+              "type": "string",
+              "description": "Part-time retainer (e.g., '$8,000/month for 40 hours')"
+            },
+            "half_time": {
+              "type": "string",
+              "description": "Half-time retainer (e.g., '$16,000/month for 80 hours')"
+            },
+            "full_time": {
+              "type": "string",
+              "description": "Full-time equivalent retainer (e.g., '$32,000/month for 160 hours')"
+            },
+            "overage_rate": {
+              "type": "string",
+              "description": "Rate for hours beyond retainer (e.g., '$250/hr')"
+            }
+          }
+        },
+        "payment_terms": {
+          "type": "object",
+          "description": "Standard payment terms",
+          "properties": {
+            "deposit_percentage": {
+              "type": "integer",
+              "description": "Upfront deposit percentage (e.g., 50)"
+            },
+            "invoice_frequency": {
+              "type": "string",
+              "enum": ["Weekly", "Bi-Weekly", "Monthly", "Milestone-Based", "Net-30"],
+              "description": "How frequently invoices are issued"
+            },
+            "payment_due": {
+              "type": "string",
+              "description": "Payment terms (e.g., 'Net 15', 'Upon receipt')"
+            },
+            "late_fee": {
+              "type": "string",
+              "description": "Late payment fee (e.g., '2% per month', 'None')"
+            }
+          }
+        },
+        "expenses": {
+          "type": "string",
+          "description": "Expense handling (e.g., 'Travel and materials billed separately', 'Included in rates')"
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "lines": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "differentiation": {
+      "type": "object",
+      "description": "Unique value proposition and competitive advantages",
+      "required": ["unique_value", "competitive_advantages", "proof_points"],
+      "properties": {
+        "unique_value": {
+          "type": "string",
+          "description": "Core unique value proposition (2-3 sentences explaining what makes you different)"
+        },
+        "competitive_advantages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["advantage", "evidence"],
+            "properties": {
+              "advantage": {
+                "type": "string",
+                "description": "Specific competitive advantage (e.g., 'Domain expertise: 15+ years in commercial real estate + AI engineering')"
+              },
+              "impact": {
+                "type": "string",
+                "description": "Why this matters to clients (e.g., 'Speak both real estate and technology languages fluently')"
+              },
+              "evidence": {
+                "type": "object",
+                "required": ["file", "lines"],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": "List of defensible competitive advantages with evidence"
+        },
+        "proof_points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric": {
+                "type": "string",
+                "description": "Quantified proof point (e.g., '$500M+ in assets analyzed', '12 AI agents deployed in production')"
+              },
+              "context": {
+                "type": "string",
+                "description": "Additional context explaining significance"
+              },
+              "evidence": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Quantified achievements that prove capabilities"
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Relevant certifications that differentiate (e.g., ['Professional Engineer (P.Eng)', 'AWS Certified'])"
+        },
+        "publications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Thought leadership publications that establish authority"
+        },
+        "speaking": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Speaking engagements and conference presentations"
+        }
+      }
+    },
+    "target_market": {
+      "type": "object",
+      "description": "Ideal client and market positioning (optional, for focused positioning)",
+      "properties": {
+        "primary_markets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "industry": {
+                "type": "string",
+                "description": "Target industry (e.g., 'Commercial Real Estate')"
+              },
+              "segment": {
+                "type": "string",
+                "description": "Specific segment (e.g., 'Institutional investors with $1B+ AUM')"
+              },
+              "decision_makers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Who to target (e.g., ['CIO', 'Head of Acquisitions', 'VP Portfolio Management'])"
+              },
+              "market_size": {
+                "type": "string",
+                "description": "Estimated addressable market size"
+              }
+            }
+          },
+          "description": "Primary target markets in priority order"
+        },
+        "secondary_markets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Secondary or adjacent markets to explore"
+        },
+        "avoid_markets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Markets or client types to avoid (e.g., ['Retail investors', 'Pre-seed startups'])"
+        },
+        "geographic_focus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Geographic regions targeted (e.g., ['North America', 'EMEA'])"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Generation and versioning metadata",
+      "required": ["generated_on", "generated_by", "version"],
+      "properties": {
+        "generated_on": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO8601 timestamp of service definition creation"
+        },
+        "generated_by": {
+          "type": "string",
+          "description": "Command that generated this file (e.g., '/defineservices')"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version number (e.g., '1.0')"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO8601 timestamp of last update"
+        },
+        "source_profile": {
+          "type": "string",
+          "description": "Path to candidate profile used (e.g., 'ResumeSourceFolder/.profile/candidate_profile.json')"
+        },
+        "source_vision": {
+          "type": "string",
+          "description": "Path to Vision.md used (e.g., 'ResumeSourceFolder/Preferences/Vision.md')"
+        }
+      }
+    }
+  }
+}
