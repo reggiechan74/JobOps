@@ -567,6 +567,57 @@
             line-height: 1.6;
         }
 
+        /* Why JobOps CTA */
+        .why-jobops {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            text-align: center;
+        }
+
+        .why-jobops-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-dim);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .why-jobops-link:hover {
+            border-color: var(--accent-primary);
+            background: var(--accent-glow);
+        }
+
+        .why-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-primary);
+        }
+
+        .why-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .why-jobops-link:hover .why-text {
+            color: var(--text-primary);
+        }
+
+        .why-arrow {
+            color: var(--text-dim);
+            transition: all 0.3s ease;
+        }
+
+        .why-jobops-link:hover .why-arrow {
+            color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+
         /* How It Works Section */
         .section-process {
             padding: 8rem 4rem;
@@ -1295,6 +1346,17 @@
             .footer-left {
                 flex-direction: column;
             }
+
+            .why-jobops-link {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+                padding: 1.5rem;
+            }
+
+            .why-arrow {
+                display: none;
+            }
         }
 
         /* Responsive - Mobile Portrait */
@@ -1649,6 +1711,15 @@
                 <h3 class="problem-title">Nobody wins the arms race</h3>
                 <p class="problem-desc">Candidates inflate more. Employers screen more. Signal drowns in noise.</p>
             </div>
+        </div>
+        <div class="why-jobops">
+            <a href="job-search-math.html" class="why-jobops-link">
+                <span class="why-label">Why JobOps?</span>
+                <span class="why-text">Understand the math behind job search success—why competition matters more than qualifications.</span>
+                <svg class="why-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
         </div>
     </section>
 
