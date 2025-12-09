@@ -141,7 +141,8 @@ resumeoptimizer/
 │   │   └── landing-page/              # Landing page development (v1.5.2)
 │   │       ├── create.md             # /landing-page:create - Build landing pages
 │   │       ├── css-template.md       # /landing-page:css-template - CSS management
-│   │       └── copywrite.md          # /landing-page:copywrite - Strategic copy
+│   │       ├── copywrite.md          # /landing-page:copywrite - Strategic copy
+│   │       └── copywriting-spec.md   # /landing-page:copywriting-spec - Brand spec generator
 │   ├── templates/                     # Assessment framework templates (v1.1.1+)
 │   │   ├── assessment_report_structure.md    # Report format template
 │   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
@@ -486,6 +487,7 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 /landing-page:create <page-name> [--template=tactical|minimal|corporate]   # Build landing pages
 /landing-page:css-template [--view|--analyze|--create] [template-name]     # CSS management
 /landing-page:copywrite <page-purpose> [--tone=X] [--framework=X]          # Strategic copy
+/landing-page:copywriting-spec [company-name]                               # Brand spec generator
 ```
 
 **`/landing-page:create`** - Main landing page builder:
@@ -507,6 +509,16 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 - Three tones: `professional` (default), `casual`, `bold`
 - Section-by-section copy with A/B test variations
 - Persuasion psychology: social proof, authority, scarcity, urgency
+
+**`/landing-page:copywriting-spec`** - Brand copywriting specification generator:
+- 8-phase interactive interview: Brand Identity, Target Audience, Voice & Tone, Language Guidelines, Messaging Hierarchy, Proof Points, Competitor Differentiation, Channel Requirements
+- Self-contained 20-section document template (no external file dependencies)
+- Generates value proposition variants at 10/30/50/75/150 word lengths
+- Problem articulation library with approved/avoid language patterns
+- Channel-specific guidelines for website, email, LinkedIn, proposals, case studies
+- Quality checklist with 20+ validation items for copy review
+- Quick-start mode for users with existing brand guidelines
+- Output: `Client_Prospects/[CompanyName]_Copywriting_Spec.md`
 
 ## The 8-Step Protocol
 

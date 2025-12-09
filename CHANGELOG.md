@@ -33,6 +33,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Persuasion psychology principles: social proof, authority, scarcity, urgency, reciprocity
     - Quality checklist: benefits over features, specificity, "you" language, active voice
 
+  - `/landing-page:copywriting-spec` - Brand copywriting specification generator
+    - 8-phase interactive interview process for brand discovery
+    - Complete 20-section document template embedded (self-contained, no external dependencies)
+    - Sections include: Brand Identity, Target Audience, Voice & Tone, Language Guidelines, Messaging Hierarchy, Proof Points, Competitor Differentiation, Channel Requirements
+    - Generates value proposition variants (10/30/50/75/150 words)
+    - Problem articulation library with approved/avoid language
+    - Channel-specific guidelines for website, email, LinkedIn, proposals, case studies
+    - Quality checklist with 20+ validation items
+    - Quick-start mode for users with existing brand guidelines
+    - Output: `Client_Prospects/[CompanyName]_Copywriting_Spec.md`
+
 - **Landing Page Copywriter Agent**: New specialized agent at `.claude/agents/landing-page/landing-page-copywriter.md`
   - Expertise in direct response marketing (Ogilvy, Hopkins, Halbert, Schwartz principles)
   - Cialdini's 6 persuasion principles integration
