@@ -1,6 +1,13 @@
 # Node modules
 node_modules/
 
+# ============================================================
+# Landing Pages - Local Development Only
+# ============================================================
+# docs/ folder contains landing pages for local preview
+# These should not be pushed to the repository
+docs/
+
 # Environment variables
 .env
 .env.local
