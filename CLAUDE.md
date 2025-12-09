@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
 
-**Current Version:** 1.5.0 (see CHANGELOG.md for version history)
+**Current Version:** 1.5.2 (see CHANGELOG.md for version history)
 
 ## Key Directories
 
@@ -458,6 +458,32 @@ Located in `.claude/templates/`:
   - Smart defaults: Generic client if not specified, primary service if not specified, project type if not specified, calculated pricing from rate card if value not specified
   - Output: `Client_Prospects/Proposal_[Client]_[Service]_[Date].md`
 
+### Landing Page Development
+- `/landing-page:create <page-name> [--template=tactical|minimal|corporate] [--output-dir=docs]`: Create professional landing pages
+  - Invokes frontend-design skill for production-grade HTML generation
+  - Invokes landing-page-copywriter agent for strategic copy development
+  - Three CSS template options: tactical (tech/B2B), minimal (creative), corporate (enterprise)
+  - Proven landing page structure: Hero, Problem, Solution, How It Works, Social Proof, CTA
+  - Mobile-first responsive design with accessibility compliance
+  - Playwright preview for visual validation at desktop/mobile breakpoints
+  - Output: `{output-dir}/{page-name}.html`
+
+- `/landing-page:css-template [--view|--analyze|--create] [template-name]`: Manage CSS design system templates
+  - **View mode**: List available templates and their component classes
+  - **Analyze mode**: Deep-dive analysis of design system variables, components, responsive behavior
+  - **Create mode**: Generate new CSS templates following established patterns
+  - Documents component usage patterns, extension guidelines, accessibility notes
+  - Available templates: tactical (`docs/subpage-styles.css`), minimal, corporate
+
+- `/landing-page:copywrite <page-purpose> [--tone=professional|casual|bold] [--framework=PAS|AIDA|StoryBrand]`: Generate strategic landing page copy
+  - Three copywriting frameworks: PAS (Problem-Agitate-Solution), AIDA (Attention-Interest-Desire-Action), StoryBrand
+  - Three tone options: professional (default), casual, bold
+  - Section-by-section copy: Meta tags, Hero, Problem, Solution, How It Works, Social Proof, CTA
+  - Includes A/B test variations for headlines and CTAs
+  - Persuasion psychology principles: social proof, authority, scarcity, urgency, reciprocity
+  - Quality checklist: benefits over features, specificity, "you" language, active voice
+  - Output: Structured copy document for use with `/landing-page:create`
+
 ## Custom Agents
 
 The repository includes specialized agents for each step:
@@ -503,6 +529,15 @@ The repository includes specialized agents for each step:
 - `osint-compensation`: Salary benchmarking and total rewards intelligence
 - `osint-culture`: Employee sentiment and workplace culture analysis
 - `osint-market`: Industry analysis and competitive landscape intelligence
+
+### Landing Page Agents
+- `landing-page-copywriter`: Specialized copywriting agent for landing pages
+  - Expertise in direct response marketing, conversion optimization, persuasion psychology
+  - Supports PAS, AIDA, and StoryBrand copywriting frameworks
+  - Generates section-by-section copy: headlines, hero, problem, solution, CTA
+  - Includes A/B test variations and conversion psychology principles
+  - Quality checklist: benefits over features, specificity, active voice
+  - Output: Structured markdown copy document
 
 ### Legacy Agents
 - `resume-tailoring-specialist`: Deprecated orchestrator (use 8-step process instead)

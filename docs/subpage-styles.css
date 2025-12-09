@@ -1061,7 +1061,7 @@ footer {
     color: var(--text-primary);
 }
 
-/* Responsive */
+/* Responsive - Tablet */
 @media (max-width: 768px) {
     nav {
         padding: 1rem;
@@ -1100,5 +1100,244 @@ footer {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
+    }
+
+    /* Score ranges - stack vertically */
+    .score-range {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .score-range .range {
+        min-width: auto;
+    }
+
+    .score-range .label {
+        min-width: auto;
+    }
+
+    /* Priority tags - stack vertically */
+    .priority-tag {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .priority-tag .tag-icon {
+        min-width: auto;
+    }
+
+    /* Method cards - single column */
+    .method-cards {
+        grid-template-columns: 1fr;
+    }
+
+    /* Related features - single column */
+    .related-features {
+        grid-template-columns: 1fr;
+    }
+
+    /* Command display - allow wrapping and scrolling */
+    .command-display {
+        padding: 1rem;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .command-display.multi {
+        white-space: normal;
+    }
+
+    .command-display code {
+        font-size: 0.9rem;
+    }
+
+    /* Terminal mini - prevent overflow */
+    .terminal-mini {
+        overflow-x: auto;
+    }
+
+    /* Pattern list - reduce min-width */
+    .pattern code {
+        min-width: 100px;
+        font-size: 0.75rem;
+    }
+
+    /* Pipeline steps - reduce gap */
+    .pipeline-step {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .pipeline-num {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .pipeline-connector {
+        margin-left: 39px;
+    }
+
+    /* Feature list - stack on mobile */
+    .feature-list li {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .feature-list .feature-icon {
+        width: auto;
+    }
+
+    /* STAR format - reduce size */
+    .star-letter {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    /* Requirements box */
+    .requirement {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .requirement .req-icon {
+        align-self: flex-start;
+    }
+}
+
+/* Responsive - Mobile Portrait */
+@media (max-width: 480px) {
+    .subpage-content {
+        padding: 5rem 1rem 2rem;
+    }
+
+    .page-title {
+        font-size: clamp(1.75rem, 8vw, 2.5rem);
+    }
+
+    .page-subtitle {
+        font-size: 1rem;
+    }
+
+    /* Scoring grid - single column on very small screens */
+    .scoring-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .score-category {
+        padding: 1rem;
+    }
+
+    .score-category .score-points {
+        font-size: 1.5rem;
+    }
+
+    /* Command display - smaller font */
+    .command-display {
+        padding: 0.75rem;
+    }
+
+    .command-display code {
+        font-size: 0.8rem;
+    }
+
+    /* Terminal mini - smaller font */
+    .terminal-mini {
+        padding: 0.75rem 1rem;
+        font-size: 0.75rem;
+    }
+
+    /* Pattern list - full width */
+    .pattern {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .pattern code {
+        min-width: auto;
+        width: 100%;
+    }
+
+    /* Table preview - smaller font */
+    .table-preview table {
+        font-size: 0.75rem;
+    }
+
+    .table-preview th,
+    .table-preview td {
+        padding: 0.5rem;
+    }
+
+    /* Formula display */
+    .formula {
+        font-size: 0.95rem;
+        line-height: 1.8;
+    }
+
+    /* Output structure / folder tree */
+    .output-structure {
+        padding: 1rem;
+    }
+
+    .folder-tree {
+        font-size: 0.75rem;
+    }
+
+    .tree-item.indent-1 {
+        padding-left: 1rem;
+    }
+
+    .tree-item.indent-2 {
+        padding-left: 2rem;
+    }
+
+    /* Section headers */
+    .content-section h2 {
+        font-size: 1.25rem;
+    }
+
+    /* Step badge */
+    .step-badge .step-num {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    /* Nav back link */
+    .nav-back {
+        font-size: 0.65rem;
+    }
+
+    /* Arsenal icon */
+    .arsenal-icon {
+        font-size: 3rem;
+    }
+
+    /* Decision point */
+    .decision-point {
+        padding: 1.5rem;
+    }
+
+    .decision {
+        padding: 1rem;
+    }
+
+    .decision strong {
+        font-size: 0.75rem;
+    }
+
+    /* Mission complete */
+    .mission-complete {
+        padding: 1.5rem;
+    }
+
+    /* Footer */
+    footer {
+        padding: 2rem 1rem;
     }
 }

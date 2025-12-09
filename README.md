@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.5.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.5.2** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -101,8 +101,10 @@ resumeoptimizer/
 │   │   │   ├── osint-leadership.md       # Executive background checks
 │   │   │   ├── osint-legal.md            # Litigation and compliance
 │   │   │   └── osint-market.md           # Industry and competition
-│   │   └── performance/               # Optimization agents
-│   │       └── resume-summarizer.md      # Candidate profile optimization (v1.1.1+)
+│   │   ├── performance/               # Optimization agents
+│   │   │   └── resume-summarizer.md      # Candidate profile optimization (v1.1.1+)
+│   │   └── landing-page/              # Landing page development (v1.5.2)
+│   │       └── landing-page-copywriter.md # Strategic copywriting agent
 │   ├── commands/                      # Slash command definitions (categorized)
 │   │   ├── resume-development/        # Core resume creation
 │   │   │   ├── buildresume.md        # /buildresume - 3-step resume process
@@ -130,12 +132,16 @@ resumeoptimizer/
 │   │   ├── career-strategy/           # Long-term planning
 │   │   │   ├── change-one-thing.md   # /change-one-thing - Career retrospective
 │   │   │   └── idealjob.md           # /idealjob - Synthetic ideal job generator (v1.4.0)
-│   │   └── independent-contractor/    # B2B business development (v1.5.0)
-│   │       ├── defineservices.md     # /defineservices - Service offerings
-│   │       ├── findclient.md         # /findclient - Client discovery
-│   │       ├── ratecard.md           # /ratecard - Rate card generation
-│   │       ├── pitchdeck.md          # /pitchdeck - Pitch deck creation
-│   │       └── proposaltemplate.md   # /proposaltemplate - Proposal generation
+│   │   ├── independent-contractor/    # B2B business development (v1.5.0)
+│   │   │   ├── defineservices.md     # /defineservices - Service offerings
+│   │   │   ├── findclient.md         # /findclient - Client discovery
+│   │   │   ├── ratecard.md           # /ratecard - Rate card generation
+│   │   │   ├── pitchdeck.md          # /pitchdeck - Pitch deck creation
+│   │   │   └── proposaltemplate.md   # /proposaltemplate - Proposal generation
+│   │   └── landing-page/              # Landing page development (v1.5.2)
+│   │       ├── create.md             # /landing-page:create - Build landing pages
+│   │       ├── css-template.md       # /landing-page:css-template - CSS management
+│   │       └── copywrite.md          # /landing-page:copywrite - Strategic copy
 │   ├── templates/                     # Assessment framework templates (v1.1.1+)
 │   │   ├── assessment_report_structure.md    # Report format template
 │   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
@@ -474,6 +480,33 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 - 10-section McKinsey/BCG-style structure with transparent pricing calculation
 - Pricing metadata in YAML frontmatter for audit trail
 - Output: `Client_Prospects/Proposal_[Client]_[Service]_[Date].md`
+
+### Landing Page Development (v1.5.2)
+```bash
+/landing-page:create <page-name> [--template=tactical|minimal|corporate]   # Build landing pages
+/landing-page:css-template [--view|--analyze|--create] [template-name]     # CSS management
+/landing-page:copywrite <page-purpose> [--tone=X] [--framework=X]          # Strategic copy
+```
+
+**`/landing-page:create`** - Main landing page builder:
+- Integrates with `frontend-design:frontend-design` skill for production-grade HTML
+- Invokes `landing-page-copywriter` agent for strategic copy development
+- Three CSS template options: `tactical` (tech/B2B), `minimal` (creative), `corporate` (enterprise)
+- Proven landing page structure: Hero, Problem, Solution, How It Works, Social Proof, CTA
+- Mobile-first responsive design with accessibility compliance
+- Output: `{output-dir}/{page-name}.html`
+
+**`/landing-page:css-template`** - CSS design system management:
+- **View mode**: List available templates and component classes
+- **Analyze mode**: Deep-dive into design system variables, components, responsive behavior
+- **Create mode**: Generate new CSS templates following established patterns
+- Available templates: `tactical` (`docs/subpage-styles.css`), `minimal`, `corporate`
+
+**`/landing-page:copywrite`** - Strategic landing page copywriting:
+- Three frameworks: `PAS` (Problem-Agitate-Solution), `AIDA`, `StoryBrand`
+- Three tones: `professional` (default), `casual`, `bold`
+- Section-by-section copy with A/B test variations
+- Persuasion psychology: social proof, authority, scarcity, urgency
 
 ## The 8-Step Protocol
 

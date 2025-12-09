@@ -5,6 +5,72 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2] - 2025-12-09
+
+### Added
+- **Landing Page Development Suite**: New set of slash commands for creating professional landing pages
+  - `/landing-page:create` - Main landing page builder command
+    - Integrates with `frontend-design:frontend-design` skill for production-grade HTML
+    - Invokes `landing-page-copywriter` agent for strategic copy development
+    - Three CSS template options: `tactical` (tech/B2B), `minimal` (creative), `corporate` (enterprise)
+    - Proven landing page structure: Hero, Problem, Solution, How It Works, Social Proof, CTA
+    - Mobile-first responsive design with accessibility compliance
+    - Playwright preview for visual validation at desktop/mobile breakpoints
+    - Output: `{output-dir}/{page-name}.html`
+
+  - `/landing-page:css-template` - CSS design system management
+    - **View mode**: List available templates and component classes
+    - **Analyze mode**: Deep-dive analysis of design system variables, components, responsive behavior
+    - **Create mode**: Generate new CSS templates following established patterns
+    - Documents component usage patterns, extension guidelines, accessibility notes
+    - Available templates: tactical (`docs/subpage-styles.css`), minimal, corporate
+
+  - `/landing-page:copywrite` - Strategic landing page copywriting
+    - Three copywriting frameworks: PAS (Problem-Agitate-Solution), AIDA (Attention-Interest-Desire-Action), StoryBrand
+    - Three tone options: `professional` (default), `casual`, `bold`
+    - Section-by-section copy: Meta tags, Hero, Problem, Solution, How It Works, Social Proof, CTA
+    - Includes A/B test variations for headlines and CTAs
+    - Persuasion psychology principles: social proof, authority, scarcity, urgency, reciprocity
+    - Quality checklist: benefits over features, specificity, "you" language, active voice
+
+- **Landing Page Copywriter Agent**: New specialized agent at `.claude/agents/landing-page/landing-page-copywriter.md`
+  - Expertise in direct response marketing (Ogilvy, Hopkins, Halbert, Schwartz principles)
+  - Cialdini's 6 persuasion principles integration
+  - Supports PAS, AIDA, and StoryBrand frameworks
+  - Section-by-section copy generation with A/B test variations
+  - Quality checklist for conversion optimization
+
+## [1.5.1] - 2025-12-05
+
+### Fixed
+- **Mobile Responsiveness for Landing Pages**: Comprehensive mobile CSS fixes across all JobOps documentation pages (GitHub Issue #39)
+  - **`docs/subpage-styles.css`**: Added tablet (768px) and mobile portrait (480px) breakpoints
+    - Score ranges and priority tags stack vertically on mobile
+    - Method cards and related features single-column on mobile
+    - Command display with overflow handling
+    - Scoring grid single-column on small screens
+    - Terminal and code blocks with horizontal scroll
+    - Pattern lists responsive layout
+    - Reduced font sizes and padding for mobile
+  - **`docs/index.html`**: Enhanced mobile responsiveness
+    - Nav CTA button compact sizing
+    - Hero actions full-width on mobile
+    - Stats bar 2-column grid with reduced gaps
+    - Phase headers and step cards compact layout
+    - Install commands with word-break handling
+    - Terminal body with overflow protection
+    - Quote and CTA sections responsive sizing
+  - **`docs/wargames.html`**: WarGames theme mobile optimization
+    - DEFCON bar compact layout
+    - WOPR header and typing effect responsive
+    - Nav grid single-column on mobile
+    - Protocol phases and steps compact sizing
+    - Arsenal cards responsive padding
+    - Demo terminal with overflow handling
+    - Launch section compact layout
+  - Tested viewports: Mobile Portrait (375px), Mobile Landscape (667px), Tablet Portrait (768px), Tablet Landscape (1024px)
+  - All pages now properly handle: navigation collapse, grid layouts, text overflow, code blocks, spacing, and tap targets
+
 ## [1.5.0] - 2025-12-04
 
 ### Added
@@ -288,6 +354,8 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.5.2]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.2
+[1.5.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.1
 [1.5.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.0
 [1.4.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.4.0
 [1.3.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.3.0

@@ -1,0 +1,22 @@
+# Generated landing pages (temporary/test builds)
+*.generated.html
+*-draft.html
+*-preview.html
+
+# Build artifacts
+*.min.css
+*.map
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
