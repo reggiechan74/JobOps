@@ -5,5 +5,9 @@
 !.gitignore
 !.gitkeep
 
+# Landing page prompts for external tools
+!Google_AI_Studio_Landing_Page_Prompt.md
+!Google_AI_Studio_Landing_Page_Prompt_v2.md
+
 # Ignore cache directory contents
 .cache/
