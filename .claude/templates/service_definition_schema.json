@@ -1,23 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Service Definition Schema",
-  "description": "Structured JSON schema for independent contractor service offerings with pricing and positioning",
-  "version": "1.0.0",
+  "description": "Structured JSON schema for independent contractor service offerings with pricing and positioning. Emphasizes agentic workflow engineering that augments human expertise rather than replacing it.",
+  "version": "1.1.0",
   "type": "object",
   "required": ["consultant", "services", "engagement_models", "rate_card", "differentiation", "metadata"],
   "properties": {
     "consultant": {
       "type": "object",
       "description": "Consultant identity and positioning",
-      "required": ["name", "tagline", "credentials"],
+      "required": ["name", "positioning", "tagline", "credentials"],
       "properties": {
         "name": {
           "type": "string",
           "description": "Full name or business name"
         },
+        "positioning": {
+          "type": "string",
+          "description": "Core positioning statement describing what you do (e.g., 'Agentic Workflow Engineering for Real Estate and Linear Infrastructure')"
+        },
         "tagline": {
           "type": "string",
-          "description": "One-sentence value proposition (e.g., 'AI-powered real estate intelligence for institutional investors')"
+          "description": "Brand tagline capturing philosophy (e.g., 'Augmenting Expertise. Not Replacing It.')"
         },
         "credentials": {
           "type": "array",
@@ -64,7 +68,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Service name (e.g., 'AI Agent Development for Due Diligence')"
+            "description": "Service name (e.g., 'Business Process Reengineering with Agentic Workflows')"
           },
           "category": {
             "type": "string",
@@ -80,7 +84,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Specific deliverables included (e.g., ['Custom AI agents', 'Integration documentation', '3-month support'])"
+            "description": "Specific deliverables included (e.g., ['Workflow automation system', 'Integration documentation', '3-month support'])"
           },
           "ideal_client": {
             "type": "object",
@@ -150,7 +154,7 @@
               },
               "value_justification": {
                 "type": "string",
-                "description": "ROI or value justification for pricing (e.g., '10x ROI through automated due diligence')"
+                "description": "ROI or value justification for pricing (e.g., '3-5x ROI through workflow efficiency gains')"
               }
             }
           },
@@ -390,11 +394,11 @@
             "properties": {
               "advantage": {
                 "type": "string",
-                "description": "Specific competitive advantage (e.g., 'Domain expertise: 15+ years in commercial real estate + AI engineering')"
+                "description": "Specific competitive advantage (e.g., 'Domain expertise: 24 years in commercial real estate + agentic workflow engineering')"
               },
               "impact": {
                 "type": "string",
-                "description": "Why this matters to clients (e.g., 'Speak both real estate and technology languages fluently')"
+                "description": "Why this matters to clients (e.g., 'Workflows designed by someone who understands the domain, not generic automation')"
               },
               "evidence": {
                 "type": "object",
@@ -419,7 +423,7 @@
             "properties": {
               "metric": {
                 "type": "string",
-                "description": "Quantified proof point (e.g., '$500M+ in assets analyzed', '12 AI agents deployed in production')"
+                "description": "Quantified proof point (e.g., '$750M+ in assets managed', '50% processing time reduction')"
               },
               "context": {
                 "type": "string",
