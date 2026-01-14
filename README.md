@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.5.2** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.6.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -138,6 +138,18 @@ resumeoptimizer/
 │   │   │   ├── ratecard.md           # /ratecard - Rate card generation
 │   │   │   ├── pitchdeck.md          # /pitchdeck - Pitch deck creation
 │   │   │   └── proposaltemplate.md   # /proposaltemplate - Proposal generation
+│   │   ├── career-crisis/             # Employment crisis management (v1.6.0)
+│   │   │   ├── code-red.md           # /code-red - Master crisis intervention
+│   │   │   ├── severance-review.md   # /severance-review - Package analysis
+│   │   │   ├── workplace-documentation.md # /workplace-documentation - Incident logging
+│   │   │   ├── non-compete-analysis.md    # /non-compete-analysis - Covenant review
+│   │   │   ├── reference-shield.md   # /reference-shield - Reference management
+│   │   │   ├── unemployment-prep.md  # /unemployment-prep - UI claim preparation
+│   │   │   ├── discrimination-assessment.md # /discrimination-assessment - Pattern analysis
+│   │   │   ├── investigation-prep.md # /investigation-prep - Investigation readiness
+│   │   │   ├── accommodation-request.md   # /accommodation-request - ADA/religious
+│   │   │   ├── layoff-intel.md       # /layoff-intel - Early warning system
+│   │   │   └── constructive-dismissal.md  # /constructive-dismissal - CD assessment
 │   │   └── landing-page/              # Landing page development (v1.5.2)
 │   │       ├── create.md             # /landing-page:create - Build landing pages
 │   │       ├── css-template.md       # /landing-page:css-template - CSS management
@@ -519,6 +531,120 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 - Quality checklist with 20+ validation items for copy review
 - Quick-start mode for users with existing brand guidelines
 - Output: `Client_Prospects/[CompanyName]_Copywriting_Spec.md`
+
+### Career Crisis Management (v1.6.0)
+
+**Employment Defense Toolkit** - Comprehensive support for navigating workplace crises, from early warning through exit strategy.
+
+```bash
+# Master crisis intervention
+/code-red [documents] [--mode=assess|respond|plan|exit]
+
+# Document analysis and preparation
+/severance-review <agreement-file> [--benchmark] [--counter-offer]
+/workplace-documentation [--new-incident|--review|--timeline]
+/non-compete-analysis <agreement-file> [--state=XX] [--target-opportunity]
+
+# Strategic support
+/reference-shield [--assess|--build|--rescue]
+/unemployment-prep [--state=XX] [--appeal]
+/layoff-intel [--company=name] [--assess|--prepare|--warn-signs]
+
+# Legal-adjacent assessment (not legal advice)
+/discrimination-assessment [incident-log] [--protected-class=X]
+/investigation-prep [--accused|--complainant|--witness]
+/accommodation-request [--disability|--religious|--medical|--pregnancy]
+/constructive-dismissal [incident-log] [--jurisdiction=X]
+```
+
+**`/code-red`** - Master crisis intervention command:
+- 6-phase workflow: Intake → Interview → Analysis → Strategic Options → Tactical Support → Job Transition
+- 15-question structured interview covering situation, relationships, documentation gaps, desired outcomes
+- Power dynamics and risk assessment matrix
+- 5 strategic paths: Fight to stay, negotiate exit, strategic resignation, legal consultation, parallel job search
+- Response drafting, PIP rebuttals, meeting preparation, exit negotiation scripts
+
+**`/severance-review`** - Severance package analysis and negotiation:
+- Parses agreement for key terms: compensation, benefits, equity, restrictive covenants, release of claims
+- Red flag detection: overly broad releases, ADEA compliance, one-sided provisions
+- Package valuation with total cash, benefits, and equity calculations
+- `--benchmark`: Industry standards by level and geography
+- `--counter-offer`: Negotiation strategy with specific counter-proposal language
+
+**`/workplace-documentation`** - Incident documentation and evidence building:
+- Guided incident recording with best practices for contemporaneous documentation
+- Evidence organization, categorization, and pattern analysis
+- Quality assessment with strength ratings
+- Timeline visualization across multiple incidents
+
+**`/non-compete-analysis`** - Restrictive covenant enforceability assessment:
+- State-specific analysis: ban states (CA, MN), limiting states (WA, OR, IL), enforcement states (FL, TX)
+- Enforceability factors: time, geography, scope, legitimate business interest
+- Risk matrix for specific activities and target opportunities
+- Carve-out identification and negotiation strategies
+
+**`/reference-shield`** - Reference risk management:
+- Reference categorization: Safe/Risky/Unknown with likely statements
+- Legal landscape by state: immunity laws, disclosure limits
+- Proactive strategy: reference letters, LinkedIn recommendations
+- `--rescue`: Damage control for known bad references
+
+**`/unemployment-prep`** - Unemployment insurance claim preparation:
+- State-specific guidance: eligibility, benefits calculation, deadlines
+- Employer contest anticipation and defense strategies
+- Phone interview preparation with likely questions
+- `--appeal`: Hearing preparation and common appeal arguments
+
+**`/layoff-intel`** - Layoff early warning and proactive preparation:
+- Company health indicators via web research
+- 25+ organizational warning signs across 5 categories
+- Personal vulnerability scoring (0-100 scale)
+- WARN Act considerations and severance intelligence
+- Proactive preparation checklist: resume, network, finances
+
+**`/discrimination-assessment`** - Protected class pattern analysis:
+- **CRITICAL: Not legal advice - always recommends attorney consultation**
+- Protected class identification (Title VII, ADEA, ADA, state-specific)
+- Comparator analysis framework for similarly situated employees
+- Evidence assessment with strength ratings
+- EEOC filing considerations and deadlines
+
+**`/investigation-prep`** - Workplace investigation readiness:
+- Role-specific guidance: accused, complainant, witness
+- Rights overview: Weingarten, representation, retaliation protection
+- Interview strategies and post-interview documentation
+- Responding to findings: appeals, rebuttals, escalation
+
+**`/accommodation-request`** - Workplace accommodation builder:
+- ADA disability, Title VII religious, medical, pregnancy (PWFA)
+- Interactive process guide with employer obligations
+- Request letter template generation
+- `--appeal`: Denial response strategies and EEOC filing
+
+**`/constructive-dismissal`** - Constructive dismissal viability assessment:
+- **CRITICAL: Resignation is irreversible - always consult attorney first**
+- Jurisdiction-specific standards: US federal, state, Canada, UK
+- Qualifying conditions and severity analysis
+- Pre-resignation checklist and alternative strategies
+- Risk/benefit analysis with decision matrix
+
+**Workflow Integration:**
+```
+/layoff-intel          → Early warning, proactive preparation
+        ↓
+/code-red              → Crisis intervention when issues arise
+        ↓
+├── /workplace-documentation  → Build evidence
+├── /discrimination-assessment → Assess legal angles
+├── /investigation-prep       → Handle investigations
+├── /accommodation-request    → Request accommodations
+        ↓
+/severance-review      → Analyze exit package
+/non-compete-analysis  → Understand restrictions
+/unemployment-prep     → Prepare for UI claim
+/reference-shield      → Manage reference risk
+/constructive-dismissal → Assess CD claim viability
+```
 
 ## The 8-Step Protocol
 

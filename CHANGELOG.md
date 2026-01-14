@@ -5,6 +5,90 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-01-14
+
+### Added
+- **Career Crisis Management Suite**: Comprehensive employment defense toolkit with 11 new slash commands for navigating workplace crises
+
+  - `/code-red` - Master crisis intervention command
+    - 6-phase workflow: Intake → Interview → Analysis → Strategic Options → Tactical Support → Job Transition
+    - 15-question structured interview covering situation, relationships, protected class screening, documentation gaps
+    - Power dynamics assessment and risk matrix
+    - 5 strategic paths: Fight to stay, negotiate exit, strategic resignation, legal consultation, parallel job search
+    - Response drafting, PIP rebuttals, meeting preparation, exit negotiation scripts
+    - Output: `OutputResumes/CodeRed_[Company]_[Date].md`
+
+  - `/severance-review` - Severance package analysis and negotiation
+    - Parses agreement for key terms: compensation, benefits, equity, restrictive covenants, release of claims
+    - Red flag detection: overly broad releases, ADEA compliance, one-sided provisions
+    - Package valuation with total cash, benefits, and equity calculations
+    - `--benchmark`: Industry standards by level and geography
+    - `--counter-offer`: Negotiation strategy with specific counter-proposal language
+    - ADEA/OWBPA compliance checks for employees 40+
+
+  - `/workplace-documentation` - Incident documentation and evidence building
+    - Three modes: `--new-incident`, `--review`, `--timeline`
+    - Guided incident recording with best practices for contemporaneous documentation
+    - Evidence organization, categorization, and pattern analysis
+    - Quality assessment with strength ratings (Strong/Medium/Weak)
+
+  - `/non-compete-analysis` - Restrictive covenant enforceability assessment
+    - State-specific analysis: ban states (CA, MN, ND, OK), limiting states (WA, OR, IL, MA), enforcement states (FL, TX, GA)
+    - Enforceability factors: time, geography, scope, legitimate business interest, consideration
+    - Risk matrix for specific activities and target opportunities
+    - `--target-opportunity`: Specific job opportunity risk evaluation
+
+  - `/reference-shield` - Reference risk management after difficult departure
+    - Three modes: `--assess`, `--build`, `--rescue`
+    - Reference categorization: Safe/Risky/Unknown with likely statements
+    - Legal landscape by state: immunity laws, disclosure limits, defamation considerations
+    - Reference rescue tactics for known bad references
+
+  - `/unemployment-prep` - Unemployment insurance claim preparation
+    - State-specific guidance: eligibility, benefits calculation, deadlines
+    - Employer contest anticipation and defense strategies
+    - Phone interview preparation with likely questions
+    - `--appeal`: Hearing preparation and common appeal arguments
+
+  - `/discrimination-assessment` - Protected class pattern analysis
+    - **CRITICAL: Not legal advice - always recommends attorney consultation**
+    - Protected class identification (Title VII, ADEA, ADA, GINA, PDA, state-specific)
+    - Comparator analysis framework for similarly situated employees
+    - Evidence assessment with strength ratings
+    - EEOC filing considerations and deadlines (180/300 days)
+
+  - `/investigation-prep` - Workplace investigation readiness
+    - Role-specific guidance: `--accused`, `--complainant`, `--witness`
+    - Rights overview: Weingarten, representation, retaliation protection
+    - Interview strategies and post-interview documentation
+    - Responding to findings: appeals, rebuttals, escalation
+
+  - `/accommodation-request` - Workplace accommodation builder
+    - Four types: `--disability` (ADA), `--religious` (Title VII), `--medical`, `--pregnancy` (PWFA)
+    - Interactive process guide with employer obligations
+    - Request letter template generation
+    - `--appeal`: Denial response strategies and EEOC filing
+
+  - `/layoff-intel` - Layoff early warning and proactive preparation
+    - Three modes: `--assess`, `--prepare`, `--warn-signs`
+    - Company health indicators via web research
+    - 25+ organizational warning signs across 5 categories
+    - Personal vulnerability scoring (0-100 scale)
+    - WARN Act considerations and severance intelligence
+
+  - `/constructive-dismissal` - Constructive dismissal viability assessment
+    - **CRITICAL: Resignation is irreversible - always consult attorney first**
+    - Jurisdiction-specific standards: US federal, state variations, Canada, UK
+    - Qualifying conditions and severity analysis
+    - Pre-resignation checklist and alternative strategies
+    - Risk/benefit analysis with decision matrix
+
+- **New command category**: `.claude/commands/career-crisis/` with 11 specialized employment defense commands
+
+### Changed
+- Updated CLAUDE.md with comprehensive documentation for all career crisis commands
+- README.md updated with Career Crisis Management section and workflow diagrams
+
 ## [1.5.2] - 2025-12-09
 
 ### Added
