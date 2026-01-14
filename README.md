@@ -564,6 +564,10 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 - 5 strategic paths: Fight to stay, negotiate exit, strategic resignation, legal consultation, parallel job search
 - Response drafting, PIP rebuttals, meeting preparation, exit negotiation scripts
 
+<p align="center">
+  <img src="Images/CodeRed.jpeg" alt="/code-red Employment Crisis Intervention Command" width="800">
+</p>
+
 **`/severance-review`** - Severance package analysis and negotiation:
 - Parses agreement for key terms: compensation, benefits, equity, restrictive covenants, release of claims
 - Red flag detection: overly broad releases, ADEA compliance, one-sided provisions
