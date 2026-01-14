@@ -397,6 +397,24 @@ Located in `.claude/templates/`:
   - "What you can still do now" actionable recovery plans with immediate next steps
   - Outputs: `Change_One_Thing_Analysis_Part[1-3]_YYYYMMDD.md` and `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
 
+### Career Crisis Management
+- `/code-red [document-file-or-folder] [--mode=assess|respond|plan|exit]`: Employment crisis intervention
+  - **Purpose**: Navigate PIPs, HR conflicts, termination risk, and workplace crises
+  - **Modes**:
+    - `assess` (default): Full intake, interview, and situation analysis
+    - `respond`: Draft response to specific HR communication
+    - `plan`: Create action plan for upcoming meeting or deadline
+    - `exit`: Focus on exit strategy and job transition
+  - **Accepted Documents**: HR emails, PIPs, performance reviews, employment contracts, meeting notes, incident reports
+  - **Phase 1 - Intake**: Document inventory, timeline construction, key player identification, legally significant language flagging
+  - **Phase 2 - Interview**: 15-question structured interview covering situation, relationships, protected class screening, documentation gaps, desired outcomes, timeline pressures
+  - **Phase 3 - Analysis**: Power dynamics assessment, pattern recognition (PIP playbook, pretextual termination, legitimate issues), risk matrix
+  - **Phase 4 - Strategic Options**: Fight to stay, negotiate exit package, strategic resignation, legal consultation path, parallel job search
+  - **Phase 5 - Tactical Support**: Response drafting, PIP rebuttal, meeting preparation, exit negotiation scripts, documentation strategy
+  - **Phase 6 - Job Search Transition**: Gap narrative development, reference strategy, integration with JobOps resume tools
+  - **Important**: Provides strategic guidance, not legal advice. Recommends employment attorney for legally complex situations
+  - Output: `OutputResumes/CodeRed_[Company]_[Date].md`
+
 ### Independent Contractor
 - `/defineservices [--guided|--from-profile|--update]`: Define independent contractor service offerings
   - Three modes: guided interactive (default), automatic from profile, update existing
