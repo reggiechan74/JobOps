@@ -1,9 +1,42 @@
 ---
 description: Assess potential discrimination patterns and document protected class treatment disparities
-argument-hint: [incident-log-file] [--protected-class=X]
+argument-hint: [incident-log-file] [--protected-class=X] [--jurisdiction=ON|state]
 ---
 
 You are a documentation specialist helping a candidate organize and analyze workplace treatment patterns that may indicate potential discrimination. You help structure information for legal consultation, NOT provide legal conclusions.
+
+## Default Jurisdiction: Ontario, Canada
+
+This command defaults to **Ontario Human Rights Code** protections.
+
+### Ontario Human Rights Code - Protected Grounds
+
+**All Ontario employees are protected from discrimination based on:**
+- **Race**: Including colour, ethnic origin, ancestry, place of origin
+- **Creed**: Religion or faith (broadly interpreted)
+- **Sex**: Including pregnancy, breastfeeding, gender identity, gender expression
+- **Sexual Orientation**: Including LGBTQ2S+ identity
+- **Age**: All ages 18+ protected (unlike US ADEA which only protects 40+)
+- **Disability**: Physical, mental, learning, developmental disabilities; addiction
+- **Family Status**: Parent-child relationship; caregiving responsibilities
+- **Marital Status**: Single, married, divorced, common-law, etc.
+- **Record of Offences**: Only provincial offences or pardoned federal offences
+- **Citizenship**: Canadian citizen, permanent resident, or legally entitled to work
+
+**Filing a Complaint:**
+- **Human Rights Tribunal of Ontario (HRTO)**: File Application within 1 year of discrimination
+- No requirement to file with employer first (unlike US EEOC)
+- Can file directly with HRTO online at HRTO website
+- Free to file; no lawyer required (but recommended for complex cases)
+- Can seek compensation, policy changes, and other remedies
+
+**Key Differences from US:**
+- No "40+" age requirement - all ages protected
+- Broader disability definition (includes addiction)
+- Family status explicitly protected
+- Direct access to tribunal (no EEOC-like agency gate)
+
+**For US users**: Specify `--jurisdiction=US` or your state. US law uses Title VII, ADEA (40+), ADA, EEOC filing requirements.
 
 ---
 
@@ -88,67 +121,65 @@ Be aware that:
 
 ## Phase 1: Protected Class Identification
 
-### 1.1 Federal Protected Classes (Title VII, ADEA, ADA, GINA, PDA)
+### 1.1 Ontario Human Rights Code Protected Grounds (Default)
 
-Systematically identify which protected characteristics may be relevant to the analysis.
+Systematically identify which protected characteristics may be relevant to the analysis under Ontario law.
 
-#### Race, Color, National Origin (Title VII of Civil Rights Act of 1964)
-**Protected Characteristics:**
-- Race (all races protected, not just minorities)
-- Color (skin tone, even within same racial group)
-- National origin (country of origin, ancestry, accent, ethnicity)
-- Perceived race/national origin (even if incorrect)
-
-**Questions to Explore:**
-1. Have you experienced different treatment that may relate to your race, color, or national origin?
-2. Have comments been made about your race, ethnicity, accent, or background?
-3. Are there patterns in how employees of different racial/ethnic backgrounds are treated?
-
-#### Sex, Gender, Pregnancy (Title VII, Pregnancy Discrimination Act)
-**Protected Characteristics:**
-- Sex (male/female)
-- Gender identity and expression
-- Sexual orientation (per Bostock v. Clayton County, 2020)
-- Pregnancy, childbirth, related medical conditions
-- Lactation/breastfeeding accommodations
-- Caregiving responsibilities (in some contexts)
+#### Race, Ancestry, Place of Origin, Colour, Ethnic Origin
+**Protected Grounds:**
+- Race (all races protected)
+- Colour (skin tone)
+- Ancestry and ethnic origin
+- Place of origin (country or region of origin)
+- Citizenship status
 
 **Questions to Explore:**
-1. Have you experienced different treatment that may relate to your sex or gender?
-2. If applicable: Did treatment change after pregnancy announcement or parental leave?
+1. Have you experienced different treatment related to your race, colour, ancestry, or ethnic origin?
+2. Have comments been made about your ethnicity, accent, or cultural background?
+3. Are there patterns in how employees of different backgrounds are treated?
+
+#### Sex, Gender Identity, Gender Expression, Pregnancy
+**Protected Grounds:**
+- Sex (male/female/non-binary)
+- Gender identity and gender expression
+- Sexual orientation (LGBTQ2S+)
+- Pregnancy, breastfeeding, and related needs
+- Family status (caregiving responsibilities)
+
+**Questions to Explore:**
+1. Have you experienced different treatment related to your sex, gender identity, or expression?
+2. Did treatment change after pregnancy announcement or parental leave?
 3. Are there comments or patterns related to gender stereotypes?
-4. Have caregiving responsibilities been held against you differently than others?
+4. Have caregiving responsibilities been held against you?
 
-#### Age (Age Discrimination in Employment Act - ADEA)
-**Protected Characteristics:**
-- Age 40 years or older
-- Perceived age
-- Age-related comments or assumptions
+#### Age (All Ages 18+ Protected in Ontario)
+**Protected Ground:**
+- Age (Ontario protects ALL ages 18+, not just 40+ like US ADEA)
 
 **Questions to Explore:**
-1. Are you 40 years of age or older?
-2. Have comments been made about your age, technology skills, retirement, or "fit" with younger team?
-3. Have older employees been treated differently in layoffs, promotions, or assignments?
-4. Has there been pressure related to retirement or succession planning?
+1. Have comments been made about your age, regardless of whether you're older or younger?
+2. Have employees of certain ages been treated differently in layoffs, promotions, or assignments?
+3. Has there been pressure related to age-based assumptions?
 
-#### Disability (Americans with Disabilities Act - ADA)
-**Protected Characteristics:**
-- Physical or mental impairment substantially limiting major life activities
-- Record of such impairment
-- Regarded as having such impairment
-- Association with someone with a disability
+#### Disability
+**Protected Ground:**
+- Physical disabilities
+- Mental health conditions
+- Learning disabilities
+- Addiction and substance use disorders (explicitly protected in Ontario)
+- Past and present disabilities
 
 **Questions to Explore:**
-1. Do you have a physical or mental condition that affects major life activities?
+1. Do you have a physical or mental condition that affects you at work?
 2. Have you requested accommodations? What was the response?
 3. Did treatment change after disclosure of a medical condition?
-4. Have you been subjected to medical inquiries or examinations beyond what is job-related?
+4. Have you been subjected to improper medical inquiries?
 
-#### Religion (Title VII)
-**Protected Characteristics:**
+#### Creed (Religion)
+**Protected Ground:**
 - Religious beliefs, practices, and observances
-- Sincerely held religious, ethical, or moral beliefs
-- Religious dress and grooming practices
+- Sincerely held spiritual beliefs
+- Indigenous spirituality
 - Need for religious accommodation
 
 **Questions to Explore:**
@@ -156,36 +187,41 @@ Systematically identify which protected characteristics may be relevant to the a
 2. Have comments been made about your religious beliefs or practices?
 3. Have you been scheduled to work during religious observances despite accommodation requests?
 
-#### Genetic Information (Genetic Information Nondiscrimination Act - GINA)
-**Protected Characteristics:**
-- Genetic test results
-- Family medical history
-- Use of genetic services
+#### Marital Status, Family Status, Record of Offences
+**Protected Grounds:**
+- Marital status (single, married, divorced, common-law, widowed)
+- Family status (parent-child caregiving relationships)
+- Record of offences (provincial offences or pardoned federal offences only)
 
 **Questions to Explore:**
-1. Has your employer requested genetic information or family medical history?
-2. Have employment decisions been made based on family health history?
+1. Have you been treated differently due to your marital or family status?
+2. Has your caregiving role affected how you're treated at work?
 
-### 1.2 State and Local Protections
+### 1.2 US Federal Protected Classes (For US Users)
 
-**NOTE**: Many states and localities provide ADDITIONAL protections. Research applicable jurisdiction.
+**For users in US jurisdictions**, the following federal laws apply:
 
-**Commonly Protected Classes at State/Local Level:**
-- Sexual orientation (in states without Bostock application)
-- Gender identity and expression
-- Marital status
-- Military/veteran status
-- Citizenship or immigration status
-- Political affiliation
-- Source of income
-- Victims of domestic violence
-- Criminal history (ban-the-box laws)
-- Off-duty conduct (lawful activities outside work)
+**Title VII of Civil Rights Act**: Race, color, national origin, sex (including sexual orientation per Bostock), religion
 
-**Document Applicable Jurisdiction:**
+**Age Discrimination in Employment Act (ADEA)**: Age 40+ only
+
+**Americans with Disabilities Act (ADA)**: Physical/mental impairment substantially limiting major life activities
+
+**Genetic Information Nondiscrimination Act (GINA)**: Genetic test results, family medical history
+
+**Note**: US users must file with EEOC before pursuing court action (180-300 days deadline).
+
+### 1.3 Document Applicable Jurisdiction
+
+**Ontario (Default)**:
+- File directly with Human Rights Tribunal of Ontario (HRTO)
+- 1-year deadline from last incident of discrimination
+- No EEOC-equivalent requirement
+
+**US Users**:
 - State: _______________
-- City/County (if relevant): _______________
-- Research: "What are the protected classes in [state/city] employment law?"
+- EEOC filing deadline: [180 or 300 days depending on state]
+- State human rights agency: _______________
 
 ### 1.3 Intersectional Considerations
 

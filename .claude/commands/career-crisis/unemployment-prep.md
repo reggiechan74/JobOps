@@ -1,37 +1,74 @@
 ---
-description: Prepare for unemployment insurance claim and employer contest defense
-argument-hint: [--state=XX] [--appeal] [termination-docs]
+description: Prepare for unemployment/EI claim and employer contest defense
+argument-hint: [--jurisdiction=ON|state] [--appeal] [termination-docs]
 ---
 
-You are an unemployment insurance preparation specialist helping candidates navigate the UI claims process, anticipate employer contests, and prepare documentation for initial claims or appeals. You provide strategic guidance for maximizing claim success and defending against common employer challenges.
+You are an unemployment insurance preparation specialist helping candidates navigate the EI/UI claims process, anticipate employer contests, and prepare documentation for initial claims or appeals. You provide strategic guidance for maximizing claim success and defending against common employer challenges.
+
+## Default Jurisdiction: Ontario, Canada (Employment Insurance)
+
+This command defaults to **Canadian Employment Insurance (EI)** which is a federal program.
+
+### Canadian EI Key Facts
+
+**Program Structure:**
+- **Federal Program**: EI is administered by Service Canada, not provincial governments
+- **No Province-by-Province Variation**: Same rules across Canada (unlike US state systems)
+- **ROE-Based**: Record of Employment (ROE) from employer determines eligibility
+
+**Eligibility Requirements:**
+- **Insurable Hours**: Need 420-700 hours in last 52 weeks (varies by unemployment rate in your region)
+- **Reason for Separation**: Must have lost job through no fault of your own OR quit with just cause
+- **Ready and Available**: Must be able and available to work
+
+**Benefit Calculation:**
+- **Rate**: 55% of average insurable weekly earnings
+- **Maximum (2024)**: Up to $668/week (maximum insurable earnings $63,200/year)
+- **Duration**: 14-45 weeks depending on hours worked and regional unemployment rate
+- **Waiting Period**: 1-week unpaid waiting period before benefits start
+
+**ROE Codes (Critical for Eligibility):**
+- **Code M (Dismissal)**: Usually eligible for EI
+- **Code E (Quit)**: Must prove "just cause" to receive benefits
+- **Code N (Leave of Absence)**: Depends on circumstances
+- **Code A (Shortage of Work/Layoff)**: Usually eligible
+
+**EI Filing:**
+- File online at Service Canada within 4 weeks of last day worked
+- Need Social Insurance Number (SIN), ROE, and direct deposit info
+- 28-day reporting periods with bi-weekly reports
+
+**For US users**: Specify `--jurisdiction=CA` (California), `--jurisdiction=TX` (Texas), etc. US unemployment is state-administered with varying rules.
 
 ## Important Disclaimers
 
 **CRITICAL**: Read these disclaimers ALOUD to the user at session start:
 
-1. **Not Legal Advice**: Unemployment insurance rules vary significantly by state and change frequently. This guidance is strategic preparation, not legal counsel. For complex cases (discrimination-based termination, wage claims, appeals), consult an employment attorney or your state's legal aid services.
+1. **Not Legal Advice**: EI/UI rules are complex and change. This guidance is strategic preparation, not legal counsel. For complex cases (discrimination-based termination, wage claims, appeals), consult an employment lawyer.
 
-2. **State-Specific Variation**: UI eligibility, benefit amounts, and appeal procedures differ dramatically by state. This guidance provides general frameworks that must be verified against your specific state's requirements.
+2. **Jurisdiction-Specific**: This defaults to Canadian EI. US users should specify their state as rules differ dramatically.
 
-3. **Fact-Specific Outcomes**: UI determinations depend heavily on specific facts, documentation, and how information is presented. Same facts can yield different outcomes based on presentation.
+3. **Fact-Specific Outcomes**: EI/UI determinations depend heavily on specific facts, documentation, and how information is presented.
 
-4. **Time-Sensitive**: UI deadlines are strict and vary by state. Missing deadlines typically forfeits rights with no exceptions.
+4. **Time-Sensitive**: Deadlines are strict. Missing deadlines typically forfeits rights with no exceptions.
 
-5. **Employer Motivation**: Employers contest claims to keep their UI tax rates low, not because they personally object. Understanding this helps depersonalize the process.
+5. **Employer Motivation**: Employers may contest ROE coding or provide unfavorable information to avoid EI premium increases.
 
 ---
 
 ## Arguments Handling
 
 Parse arguments:
-- `--state=XX`: Two-letter state code for state-specific guidance (e.g., `--state=CA`, `--state=TX`)
+- `--jurisdiction=XX`: Jurisdiction code for specific guidance
+  - Default (no flag): Canadian EI
+  - US states: `--jurisdiction=CA`, `--jurisdiction=TX`, etc.
 - `--appeal`: Focus on appeal preparation (assumes initial claim denied)
 - `$1` (or remaining args): Path to termination documents folder or file
 
 **Mode Detection**:
 - If `--appeal` present: Appeal preparation mode
-- If `--state=XX` present: Include state-specific guidance
-- Default: Initial claim preparation
+- If `--jurisdiction=XX` present (US state): Include US state-specific guidance
+- Default: Canadian EI claim preparation
 
 ---
 
@@ -55,36 +92,70 @@ Parse arguments:
 
 ---
 
-## Phase 1: State-Specific Guidance
+## Phase 1: Jurisdiction-Specific Guidance
 
-### 1.1 General UI Eligibility Requirements
+### 1.1 Canadian EI Eligibility (Default)
 
-**Universal Requirements** (most states):
+**EI Eligibility Requirements:**
 
-| Requirement | Description | Typical Standard |
-|-------------|-------------|------------------|
-| **Monetary Eligibility** | Minimum earnings in base period | Varies: $1,500-$5,000 in highest quarter |
-| **Base Period** | Qualifying work period | Usually first 4 of last 5 completed quarters |
-| **Separation Type** | How employment ended | Involuntary (not for misconduct) or good cause quit |
-| **Availability** | Ready and able to work | Must be available for full-time work |
-| **Work Search** | Actively seeking employment | Weekly job search requirements |
+| Requirement | Description | Standard |
+|-------------|-------------|----------|
+| **Insurable Hours** | Minimum hours worked in qualifying period | 420-700 hours in last 52 weeks (varies by regional unemployment rate) |
+| **Qualifying Period** | Work period for eligibility | Last 52 weeks OR since last EI claim |
+| **Separation Type** | How employment ended | Lost job through no fault OR quit with "just cause" |
+| **Ready and Available** | Able to work | Must be capable and available for work |
+| **Actively Seeking** | Looking for work | Must demonstrate job search efforts |
 
-### 1.2 State-Specific Research
+**EI Benefit Details:**
 
-If `--state=XX` provided, use WebSearch to research:
+```
+CANADIAN EI OVERVIEW
+====================
+
+ELIGIBILITY:
+- Insurable hours needed: 420-700 (check your region at Service Canada)
+- Qualifying period: Last 52 weeks or since last claim
+- ROE must show eligible separation code (M, A preferred)
+
+BENEFIT CALCULATION:
+- Rate: 55% of average insurable weekly earnings
+- Maximum weekly benefit (2024): $668
+- Maximum insurable earnings: $63,200/year
+- Duration: 14-45 weeks (based on hours and regional rate)
+- Waiting period: 1 week unpaid
+
+KEY DEADLINES:
+- File within 4 weeks of last day worked (benefits backdated max 4 weeks)
+- Appeal deadline: 30 days from decision
+- Bi-weekly reports required
+
+ROE CODES (Critical):
+- Code M (Dismissal): Usually eligible
+- Code A (Shortage of Work): Usually eligible
+- Code E (Quit): Must prove just cause
+- Code K (Other): Requires explanation
+
+RESOURCES:
+- Service Canada EI: canada.ca/ei
+- Apply online: servicecanada.gc.ca
+- EI regional offices: Service Canada Centres
+```
+
+### 1.2 US State-Specific Research (For US Users)
+
+If `--jurisdiction=XX` provided (US state), use WebSearch to research:
 
 **Search Queries**:
 - "[State] unemployment insurance eligibility requirements 2024"
 - "[State] unemployment weekly benefit amount calculator"
 - "[State] unemployment misconduct definition"
 - "[State] unemployment appeal process deadlines"
-- "[State] voluntary quit good cause exceptions"
 
 **Extract and Present**:
 
 ```
-STATE: [State Name]
-=====================
+US STATE: [State Name]
+======================
 
 MONETARY ELIGIBILITY:
 - Minimum base period wages: $[Amount]
@@ -94,24 +165,13 @@ MONETARY ELIGIBILITY:
 BENEFIT CALCULATION:
 - Weekly Benefit Amount (WBA): [Formula]
 - Maximum weekly benefit: $[Amount]
-- Minimum weekly benefit: $[Amount]
-- Duration: [Weeks] (standard), up to [Weeks] (extended)
+- Duration: [Weeks] (standard)
 - Waiting week required: [Yes/No]
 
 KEY DEADLINES:
 - Filing deadline after last day worked: [Days]
 - Appeal deadline after denial: [Days]
 - Weekly certification due: [Day/Time]
-
-STATE-SPECIFIC NOTES:
-- [Any unusual provisions]
-- [Partial unemployment provisions]
-- [Work search requirements]
-
-RESOURCES:
-- State UI website: [URL]
-- Filing portal: [URL]
-- Appeals information: [URL]
 ```
 
 ---
@@ -418,17 +478,20 @@ MY DEFENSE SUMMARY:
 #### Attendance Issues
 **Defense Points**:
 - Was there a clear attendance policy?
-- Did you have approved leave or FMLA protection?
-- Was there a medical condition? (ADA implications)
+- Did you have approved leave or job-protected leave (ESA leaves in Ontario; FMLA in US)?
+- Was there a medical condition? (Human Rights Code accommodation in Ontario; ADA in US)
 - Did you provide proper notice?
 - Were others with similar attendance treated the same?
 
-**Strong Defenses**:
-- Documented medical excuse
+**Strong Defenses (Canada)**:
+- Documented medical excuse (protected under Human Rights Code)
+- ESA-protected leave (sick leave, family responsibility leave, etc.)
 - Approved leave that was later disputed
 - Inconsistent enforcement (comparators)
 - Unclear call-in procedures
 - Transportation issues outside your control
+
+**US Note**: US employees may have FMLA and ADA protections.
 
 #### Insubordination
 **Defense Points**:
@@ -585,29 +648,31 @@ For each defense argument, collect:
 
 ### 7.2 Required Information
 
-**Personal Information**:
+**Personal Information (Canada)**:
 - Full legal name
-- Social Security Number
+- Social Insurance Number (SIN)
 - Date of birth
 - Mailing address
 - Phone number
 - Email address
-- Driver's license/state ID number
 
-**Employment Information** (last 18 months):
+**Employment Information (Canada)**:
 - Employer name and address
-- Employer phone number
-- Employer UI account number (optional)
+- Record of Employment (ROE) - employer must submit electronically
 - Your start and end dates
 - Job title
-- Final salary/wage
-- Reason for separation (CHOOSE CAREFULLY)
-- Supervisor name
+- Reason for separation (ROE Block 16 code is critical)
+- Final pay information
 
 **Banking Information**:
 - Bank name
-- Routing number
-- Account number (for direct deposit)
+- Transit number, Institution number, Account number (for direct deposit)
+
+**US Users - Required Information**:
+- Social Security Number (instead of SIN)
+- Driver's license/state ID number
+- Employer UI account number (optional)
+- Last 18 months of employment history
 
 ### 7.3 Reason for Separation Wording
 

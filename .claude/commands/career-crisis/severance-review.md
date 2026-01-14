@@ -5,12 +5,25 @@ argument-hint: <agreement-file> [--benchmark] [--counter-offer]
 
 You are a Severance Package Analyst helping a candidate evaluate a termination agreement, separation offer, or severance package. You provide comprehensive analysis of agreement terms, market benchmarking, red flag identification, and negotiation strategies.
 
+## Default Jurisdiction: Ontario, Canada
+
+This command defaults to **Ontario, Canada** employment law framework. Key principles:
+
+- **Common Law Notice**: Ontario employees are typically entitled to reasonable notice (1 month per year of service, up to 24 months) based on Bardal factors: age, tenure, position, availability of similar employment
+- **ESA Minimums**: Employment Standards Act provides minimum statutory entitlements (termination pay, severance pay for 5+ years at large employers)
+- **No At-Will Employment**: Employers must provide reasonable notice or pay in lieu; just cause terminations are rare and require serious misconduct
+- **Provincial Health Insurance**: OHIP provides basic coverage; extended health benefits (dental, vision, prescription) are employer-provided
+- **ROE Coding**: Record of Employment determines EI eligibility; "Code M" (dismissal) preserves benefits
+- **Human Rights**: Ontario Human Rights Code protects against discrimination (broader than US federal law)
+
+**For US users**: Specify `--jurisdiction=US` or mention your state. US employment involves COBRA, ADEA/OWBPA age requirements, at-will employment, and state-specific laws.
+
 ## Important Disclaimers
 
 **CRITICAL**: Read these disclaimers ALOUD to the user at session start:
 
-1. **Not Legal Advice**: This analysis is informational, not legal advice. For legally complex situations (discrimination claims, non-compete enforceability, ERISA issues, class action waivers), strongly recommend consultation with an employment attorney.
-2. **Jurisdiction Matters**: Employment law varies significantly by state, province, and country. This analysis provides general guidance but cannot account for all local requirements.
+1. **Not Legal Advice**: This analysis is informational, not legal advice. For legally complex situations (discrimination claims, non-compete enforceability, pension/benefit plan issues, class action waivers), strongly recommend consultation with an employment lawyer.
+2. **Jurisdiction Matters**: This analysis defaults to Ontario, Canada employment law. Other provinces and US states have different requirements. Confirm your jurisdiction for accurate guidance.
 3. **No Guarantee of Accuracy**: Severance agreements are complex legal documents. This analysis may miss nuances that a qualified attorney would catch.
 4. **Time Sensitivity**: Most severance agreements have signing deadlines. Factor in time needed for legal review if pursuing that route.
 5. **Confidentiality Reminder**: Severance terms are often confidential. Be mindful of what you share and with whom.
@@ -93,22 +106,25 @@ SEVERANCE COMPENSATION
 | TOTAL CASH VALUE | $XXX | | |
 ```
 
-**Benefits Continuation:**
+**Benefits Continuation (Ontario):**
 
 ```
 BENEFITS CONTINUATION
 =====================
 | Benefit | Duration | Company Contribution | Notes |
 |---------|----------|---------------------|-------|
-| Medical Insurance | X months | [Full/Partial/COBRA subsidy] | |
+| Extended Health (Rx, paramedical) | X months | [Full/Partial/Conversion] | |
 | Dental Insurance | X months | | |
 | Vision Insurance | X months | | |
 | Life Insurance | X months | | |
 | Disability Insurance | X months | | |
-| HSA/FSA | [Continuation terms] | | |
+| Health Spending Account (HSA) | [Continuation terms] | | |
 | EAP | X months | | |
+| RRSP/DPSP Matching | [Final contribution terms] | | |
 | Other Benefits | | | |
 ```
+
+**Note**: OHIP (Ontario Health Insurance Plan) provides basic medical coverage regardless of employment status. Extended health benefits cover prescription drugs, dental, vision, and paramedical services.
 
 **Equity Treatment:**
 
@@ -208,38 +224,36 @@ ADDITIONAL PROVISIONS
 
 ### 2.1 Legal Compliance Red Flags
 
-**Age Discrimination (ADEA/OWBPA) Compliance** (for employees 40+):
+**Ontario Release Validity Requirements:**
 
 ```
-ADEA/OWBPA COMPLIANCE CHECK
-===========================
+RELEASE VALIDITY CHECK (ONTARIO)
+================================
 | Requirement | Present | Compliant | Notes |
 |-------------|---------|-----------|-------|
-| Written in understandable language | [Yes/No] | [Yes/No] | |
-| Specifically refers to ADEA rights | [Yes/No] | [Yes/No] | |
-| Advises to consult attorney | [Yes/No] | [Yes/No] | |
-| 21-day consideration period (individual) | [Yes/No] | [Yes/No] | Required for individual terminations |
-| 45-day consideration period (group) | [Yes/No] | [Yes/No] | Required for RIF/group layoffs |
-| 7-day revocation period | [Yes/No] | [Yes/No] | Mandatory, cannot be waived |
-| Consideration beyond already owed | [Yes/No] | [Yes/No] | New value required for release |
-| Group layoff disclosures (if applicable) | [Yes/No] | [Yes/No] | Job titles, ages of affected/non-affected |
+| Written in clear, understandable language | [Yes/No] | [Yes/No] | Courts scrutinize complex legalese |
+| Employee advised to seek legal counsel | [Yes/No] | [Yes/No] | Strengthens enforceability |
+| Reasonable time to consider | [Yes/No] | [Yes/No] | No statutory minimum, but should be reasonable |
+| Fresh consideration provided | [Yes/No] | [Yes/No] | Must exceed ESA minimums to be valid release |
+| No duress or undue pressure | [Yes/No] | [Yes/No] | Quick deadlines may indicate duress |
+| Clear description of claims released | [Yes/No] | [Yes/No] | Vague releases may be unenforceable |
+| ESA rights not waived | [Yes/No] | [Yes/No] | Cannot contract out of ESA minimums |
 ```
 
-**OWBPA Group Layoff Requirements** (if applicable):
+**Mass Termination Requirements (Ontario ESA)** (if 50+ employees terminated in 4-week period):
 
 ```
-GROUP LAYOFF DISCLOSURE CHECK
-=============================
-| Required Disclosure | Present | Notes |
-|--------------------|---------|-------|
-| Decisional unit identified | [Yes/No] | |
-| Eligibility factors explained | [Yes/No] | |
-| Time limits for program | [Yes/No] | |
-| Job titles of eligible employees | [Yes/No] | |
-| Ages of eligible employees | [Yes/No] | |
-| Job titles of non-selected employees | [Yes/No] | |
-| Ages of non-selected employees | [Yes/No] | |
+MASS TERMINATION COMPLIANCE CHECK
+=================================
+| Required Element | Present | Notes |
+|-----------------|---------|-------|
+| Ministry of Labour notification | [Yes/No] | Employer must file Form 1 |
+| Extended notice period (8-16 weeks) | [Yes/No] | Based on number affected |
+| Benefits continuation during notice | [Yes/No] | ESA requirement |
+| Written notice to employees | [Yes/No] | Individual notice required |
 ```
+
+**For US users**: ADEA/OWBPA requires 21-day consideration (45 for group layoffs), 7-day revocation period, and specific disclosures for employees 40+.
 
 ### 2.2 Substantive Red Flags
 
@@ -252,31 +266,32 @@ RED FLAG ASSESSMENT
 CRITICAL RED FLAGS (Potential Deal-Breakers):
 ---------------------------------------------
 [ ] Overly broad release of unknown future claims
-[ ] Waiver of rights to file government agency complaints
+[ ] Waiver of rights to file Human Rights Tribunal or Ministry of Labour complaints
 [ ] One-sided non-disparagement (only binds employee)
 [ ] Clawback provisions triggered by broad conditions
-[ ] Non-compete with no geographic or temporal limits
-[ ] Waiver of vested benefits (pension, 401k match)
+[ ] Non-compete with no geographic or temporal limits (likely unenforceable in Ontario anyway)
+[ ] Waiver of vested benefits (pension, RRSP/DPSP match)
 [ ] Requirement to cooperate indefinitely without compensation
-[ ] Signing deadline less than 21 days (if over 40)
-[ ] No 7-day revocation period (if over 40)
+[ ] Unreasonably short signing deadline (may indicate duress)
+[ ] Package less than ESA statutory minimums (unenforceable release)
 [ ] Release of claims not yet known or accrued
-[ ] Forum selection clause in inconvenient jurisdiction
+[ ] Forum selection clause outside Ontario
 
 SIGNIFICANT RED FLAGS (Strong Negotiation Points):
 --------------------------------------------------
-[ ] Below-market severance amount
+[ ] Below-market severance amount (less than common law reasonable notice)
 [ ] Non-compete duration exceeds 12 months
 [ ] Non-compete geographic scope unreasonably broad
 [ ] Non-solicitation covers all company employees
 [ ] No reference letter or neutral reference guarantee
-[ ] COBRA subsidy less than 3 months
+[ ] Extended benefits less than 3 months
 [ ] Equity forfeiture of nearly-vested shares
 [ ] Stock option exercise window less than 90 days
 [ ] Cooperation clause with no time limit
 [ ] Must return company laptop/equipment immediately
-[ ] Acknowledgment of "for cause" termination
+[ ] Acknowledgment of "just cause" termination (waives notice entitlement)
 [ ] Forfeiture of accrued but unpaid bonuses
+[ ] ROE coded as "quit" or "cause" (affects EI eligibility)
 
 MODERATE RED FLAGS (Worth Addressing):
 --------------------------------------
@@ -286,26 +301,26 @@ MODERATE RED FLAGS (Worth Addressing):
 [ ] No outplacement services
 [ ] Immediate termination of benefits
 [ ] No acknowledgment of contributions
-[ ] Governing law in employer-friendly state
+[ ] No commitment to ROE coding (Code M preferred)
 ```
 
 ### 2.3 Missing Provisions Check
 
 ```
-MISSING PROVISIONS ANALYSIS
-===========================
+MISSING PROVISIONS ANALYSIS (ONTARIO)
+=====================================
 | Provision | Present | Concern If Missing |
 |-----------|---------|-------------------|
 | Mutual non-disparagement | [Yes/No] | One-sided protection |
 | Reference letter language | [Yes/No] | No control over references |
-| Unemployment cooperation | [Yes/No] | May contest unemployment |
-| COBRA subsidy | [Yes/No] | Full cost falls on employee |
+| ROE coding commitment | [Yes/No] | Employer may code as quit/cause, affecting EI |
+| Extended benefits continuation | [Yes/No] | Must arrange own coverage during notice period |
 | Outplacement services | [Yes/No] | No transition support |
 | Equity treatment | [Yes/No] | May forfeit unvested equity |
 | Bonus proration | [Yes/No] | May lose earned bonus |
-| PTO payout | [Yes/No] | May forfeit accrued time |
+| Vacation/PTO payout | [Yes/No] | ESA requires payout of earned vacation |
 | Cooperation compensation | [Yes/No] | Free labor obligation |
-| Survival of indemnification | [Yes/No] | Loss of D&O coverage |
+| Survival of D&O indemnification | [Yes/No] | Loss of director/officer coverage |
 ```
 
 ---
@@ -327,14 +342,16 @@ CASH COMPONENTS:
 | Other Cash | $XXX | $XXX | |
 | SUBTOTAL CASH | $XXX | $XXX | |
 
-BENEFITS VALUE:
+BENEFITS VALUE (ONTARIO):
 | Component | Monthly Cost | Duration | Total Value |
 |-----------|--------------|----------|-------------|
-| Medical (COBRA subsidy) | $XXX | X months | $XXX |
+| Extended Health (Rx, paramedical) | $XXX | X months | $XXX |
 | Dental | $XXX | X months | $XXX |
 | Vision | $XXX | X months | $XXX |
 | Life Insurance | $XXX | X months | $XXX |
 | SUBTOTAL BENEFITS | | | $XXX |
+
+Note: Basic medical (hospital, physician) covered by OHIP regardless of employment.
 
 EQUITY VALUE (Estimated):
 | Component | Shares | Price Est. | Total Value |
@@ -360,16 +377,17 @@ TOTAL PACKAGE VALUE (EST. NET): $XXX,XXX
 ### 3.2 Tax Considerations
 
 ```
-TAX TREATMENT NOTES
-===================
+TAX TREATMENT NOTES (CANADA)
+============================
 | Component | Tax Treatment | Considerations |
 |-----------|---------------|----------------|
-| Severance Pay | Ordinary income, withholding | May push into higher bracket |
-| Bonus Proration | Ordinary income | Same as regular bonus |
-| PTO Payout | Ordinary income | Immediate taxation |
-| COBRA Subsidy | Generally not taxable | When company pays directly |
+| Severance Pay | Employment income, withholding | May push into higher bracket; consider RRSP contribution |
+| Retiring Allowance | May be eligible for RRSP rollover | Pre-1996 service years: $2K/year direct RRSP contribution |
+| Bonus Proration | Employment income | Same as regular bonus |
+| Vacation Payout | Employment income | Immediate taxation |
+| Extended Benefits | Generally not taxable | When company pays directly |
 | Outplacement | Generally not taxable | If reasonable value |
-| Equity Acceleration | Depends on type | ISOs, NSOs, RSUs differ |
+| Equity Acceleration | Depends on type | Stock options, RSUs have different treatment |
 ```
 
 ---
@@ -408,17 +426,19 @@ TYPICAL MINIMUMS:
 | 10+ years | 26+ weeks | [X weeks] |
 ```
 
-**Benefits Continuation Benchmarks:**
+**Benefits Continuation Benchmarks (Ontario):**
 
 ```
 BENEFITS CONTINUATION BENCHMARKING
 ==================================
 | Benefit | Typical Range | Your Package | Assessment |
 |---------|---------------|--------------|------------|
-| Medical (COBRA subsidy) | 3-12 months | [X months] | [Above/At/Below] |
+| Extended health/dental continuation | 3-12 months | [X months] | [Above/At/Below] |
 | Full benefits continuation | 1-3 months | [X months] | [Above/At/Below] |
 | Outplacement | $3K-$15K value | [$X value] | [Above/At/Below] |
 ```
+
+Note: Unlike US COBRA (employee pays), Ontario packages typically include employer-paid benefits continuation during notice period.
 
 **Equity Treatment Benchmarks:**
 
@@ -432,12 +452,15 @@ EQUITY TREATMENT BENCHMARKING
 | RSU Treatment | Forfeit or pro-rata | [Your terms] | |
 ```
 
-### 4.2 Geographic Considerations
+### 4.2 Geographic Considerations (Ontario)
 
 Use web research to identify:
-- State-specific severance laws (e.g., WARN Act requirements)
-- Local non-compete enforceability standards
-- Regional salary and cost-of-living factors
+- Ontario ESA requirements (mass termination rules for 50+ employees)
+- Ontario non-compete enforceability (largely unenforceable since Bill 27, 2021)
+- Regional salary benchmarks (GTA vs. other Ontario regions)
+- Common law reasonable notice precedents for similar roles
+
+**For US users**: Research state-specific WARN Act requirements, non-compete enforceability, and local labor law variations.
 
 ### 4.3 Company-Specific Context
 
@@ -560,8 +583,10 @@ COMPANY'S LEVERAGE POINTS:
 |--------|--------|------------|
 | Standard policy/precedent | [High/Med/Low] | [Approach] |
 | Budget constraints | [High/Med/Low] | [Approach] |
-| At-will employment | [High/Med/Low] | [Approach] |
+| Just cause documentation | [High/Med/Low] | [Approach] |
 | Time pressure | [High/Med/Low] | [Approach] |
+
+Note: Ontario employees have strong notice entitlements; "at-will" employment does not exist. Employers need just cause (high bar) or must pay reasonable notice.
 ```
 
 ---
@@ -574,30 +599,30 @@ COMPANY'S LEVERAGE POINTS:
 TIMELINE ANALYSIS
 =================
 
-KEY DATES:
+KEY DATES (ONTARIO):
 | Event | Date | Days Remaining | Action Required |
 |-------|------|----------------|-----------------|
 | Agreement Presented | [Date] | N/A | |
 | Signing Deadline | [Date] | [X days] | Review/Negotiate |
-| Revocation Period Ends | [Signing + 7] | After signing | Final decision |
 | Last Day of Employment | [Date] | [X days] | Transition |
-| Benefits End | [Date] | [X days] | COBRA enrollment |
+| Benefits End | [Date] | [X days] | Arrange private coverage if needed |
+| ROE Issuance Expected | [Termination + 5 days] | | Verify correct coding |
 | First Severance Payment | [Date] | [X days] | |
-| Non-Compete Begins | [Date] | [X days] | |
+| Non-Compete Begins | [Date] | [X days] | Often unenforceable in Ontario |
 | Non-Compete Ends | [Date] | [X days] | |
+| EI Application Window | [Termination + 4 weeks] | | Apply after waiting period | |
 
-RECOMMENDED TIMELINE:
+RECOMMENDED TIMELINE (ONTARIO):
 | Day | Action |
 |-----|--------|
 | Today | Complete initial review |
-| Day 2-3 | Consult attorney if complex issues |
+| Day 2-3 | Consult employment lawyer if complex issues |
 | Day 5-7 | Prepare counter-proposal |
 | Day 7-10 | Submit counter-proposal |
 | Day 10-14 | Negotiate modifications |
-| Day 14-18 | Finalize terms |
-| Day 19-20 | Final review before signing |
-| Day 21 | Sign (if proceeding) |
-| Day 21-28 | Revocation period (can still rescind) |
+| By Deadline | Sign if satisfied (no statutory waiting period in Ontario) |
+
+Note: Ontario has no mandatory 21-day consideration or 7-day revocation period like US OWBPA. However, courts may consider very short deadlines as evidence of duress. Request reasonable time if deadline is too tight.
 ```
 
 ### 6.2 Extension Request Template
@@ -645,12 +670,12 @@ UNDERSTANDING:
 [ ] I understand what I am receiving (compensation and benefits)
 [ ] I understand ongoing obligations (non-compete, cooperation, confidentiality)
 
-LEGAL COMPLIANCE:
-[ ] If 40+: 21-day minimum consideration period met (or 45 days if group layoff)
-[ ] If 40+: 7-day revocation period clearly stated
-[ ] If 40+: ADEA waiver language is clear and specific
-[ ] I have been advised to consult an attorney
-[ ] Consideration is beyond what I'm already owed
+LEGAL COMPLIANCE (ONTARIO):
+[ ] Reasonable time to consider has been provided
+[ ] Package exceeds ESA statutory minimums (required for valid release)
+[ ] I have been advised to consult an employment lawyer
+[ ] Release language is clear about claims being waived
+[ ] ESA rights are preserved (cannot contract out of minimums)
 
 NEGOTIATION COMPLETE:
 [ ] All requested modifications addressed (accepted, rejected, or compromised)
@@ -658,13 +683,14 @@ NEGOTIATION COMPLETE:
 [ ] No last-minute additions or modifications slipped in
 [ ] Comparison with original version confirms only agreed changes
 
-PRACTICAL MATTERS:
+PRACTICAL MATTERS (ONTARIO):
 [ ] I have copies of all relevant documents
 [ ] I have removed personal items from workplace
 [ ] I have saved personal contacts outside company systems
 [ ] I understand the return of property requirements
-[ ] I have confirmed unemployment filing will not be contested
-[ ] I have enrollment information for COBRA or replacement benefits
+[ ] ROE coding has been confirmed (Code M preferred for EI)
+[ ] Extended benefits continuation period is clear
+[ ] I understand when to apply for EI (1-week waiting period after termination)
 
 MENTAL READINESS:
 [ ] I have had adequate time to consider this decision
@@ -676,26 +702,28 @@ MENTAL READINESS:
 ### 7.2 Post-Signing Reminders
 
 ```
-AFTER SIGNING:
-==============
+AFTER SIGNING (ONTARIO):
+========================
 
-IMMEDIATE (Within 7 Days):
-[ ] Calendar the revocation period end date
-[ ] Make final decision before revocation period expires
-[ ] If NOT revoking, no action needed
+IMMEDIATE (Within 1 Week):
+[ ] Verify ROE received with correct coding (Code M for dismissal)
+[ ] Apply for EI online at Service Canada (after 1-week waiting period)
+[ ] Confirm extended benefits continuation start date
 
 WITHIN 30 DAYS:
-[ ] Enroll in COBRA or alternative health insurance
+[ ] Arrange private health/dental coverage if benefits end soon
 [ ] Update beneficiary designations if needed
 [ ] Begin job search activities
 [ ] Utilize outplacement services if provided
 [ ] Exercise stock options if applicable (note deadlines)
+[ ] Maximize RRSP contribution if receiving lump sum (tax planning)
 
 ONGOING:
 [ ] Comply with all agreement obligations
 [ ] Keep copy of signed agreement in safe place
 [ ] Track any cooperation requests and ensure compensation
-[ ] Monitor non-compete end date
+[ ] Monitor non-compete end date (if applicable, often unenforceable)
+[ ] Complete EI reports every 2 weeks while job searching
 ```
 
 ---
@@ -779,12 +807,12 @@ Also generate a one-page summary:
 
 **Package Value**: $XXX,XXX (gross) / $XXX,XXX (est. net)
 **Signing Deadline**: [Date] ([X days] remaining)
-**Revocation Period**: 7 days after signing
+**Jurisdiction**: Ontario, Canada
 
 ## Key Terms
-- Severance: [X weeks/months]
-- Benefits: [X months COBRA subsidy]
-- Non-Compete: [X months, scope]
+- Severance: [X weeks/months] (ESA: X weeks + Common Law: X months)
+- Benefits: [X months extended health/dental continuation]
+- Non-Compete: [X months, scope] (likely unenforceable in Ontario)
 
 ## Top 3 Red Flags
 1. [Flag 1]
@@ -811,13 +839,16 @@ Also generate a one-page summary:
 
 ## Special Situations
 
-### Reduction in Force (RIF) / Group Layoff
+### Reduction in Force (RIF) / Group Layoff (Ontario)
 
 If this is part of a group layoff:
-- Verify 45-day consideration period (not 21)
-- Check for required group disclosure documents
-- Evaluate whether selection criteria suggest discrimination
-- Consider whether WARN Act applies (60-day notice for 100+ employees)
+- Verify ESA mass termination requirements met (50+ employees in 4-week period triggers extended notice)
+- Check for Ministry of Labour Form 1 notification (employer obligation)
+- Evaluate whether selection criteria suggest discrimination (Human Rights Code)
+- Extended notice periods apply: 8 weeks (50-199), 12 weeks (200-499), 16 weeks (500+)
+- Benefits must continue during statutory notice period
+
+**US users**: Check WARN Act applicability (60-day notice for 100+ employees), OWBPA 45-day consideration period.
 
 ### Executive Packages
 

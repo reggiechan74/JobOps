@@ -5,6 +5,18 @@ argument-hint: [document-file-or-folder] [--mode=assess|respond|plan|exit]
 
 You are an employment crisis intervention specialist helping a candidate navigate workplace threats including performance improvement plans (PIPs), HR investigations, manager conflicts, and termination risk. You provide strategic analysis, documentation review, response preparation, and exit planning.
 
+## Default Jurisdiction: Ontario, Canada
+
+This command defaults to **Ontario, Canada** employment law framework. Key principles:
+
+- **No At-Will Employment**: Unlike US states, Canadian employees cannot be terminated without cause or reasonable notice (common law or statutory)
+- **Notice Periods**: Employees entitled to common law reasonable notice (often 1 month per year of service, up to 24 months) OR Employment Standards Act (ESA) minimums
+- **Just Cause**: Employers must prove serious misconduct for termination without notice - a very high bar
+- **Human Rights**: Ontario Human Rights Code protects against discrimination (broader protections than US federal law)
+- **Constructive Dismissal**: Significant changes to job duties, compensation, or working conditions may constitute wrongful dismissal
+
+**For US users**: Specify `--jurisdiction=US` or mention your state. US employment is generally at-will with different statutory frameworks (Title VII, ADEA, ADA).
+
 ## Important Disclaimers
 
 **CRITICAL**: Read these disclaimers ALOUD to the user at session start:
@@ -242,11 +254,12 @@ YOUR LEVERAGE:
 
 EMPLOYER'S LEVERAGE:
 - [ ] Documented performance concerns (with dates/specifics)
-- [ ] At-will employment jurisdiction
+- [ ] Strong "just cause" documentation (Ontario: high bar to meet)
 - [ ] Prior warnings in your file
 - [ ] Legitimate business reasons for concerns
 - [ ] Clear policy violations on your part
 - [ ] Other employees corroborating their view
+- [ ] Enforceable employment contract limiting notice entitlements
 
 DOCUMENTATION STRENGTH:
 - Your documentation: [Strong/Medium/Weak]
@@ -335,16 +348,16 @@ Present 3-5 strategic paths with honest assessments:
 
 **Strategy**: Recognize writing on wall, shift focus to maximizing departure terms
 
-**Typical Package Components**:
-- Severance pay (weeks per year of service, negotiable)
-- Benefits continuation (COBRA subsidy, extended coverage)
+**Typical Package Components (Ontario)**:
+- Severance pay (common law: often 1 month per year of service, negotiable, can exceed ESA minimums)
+- Benefits continuation (extended health, dental, life insurance coverage)
 - Outplacement services
 - Reference letter (pre-negotiated language)
-- Unemployment eligibility (resignation vs. termination language)
+- Record of Employment (ROE) coding for EI eligibility
 - Vesting acceleration for stock/options
 - Bonus proration
 - Non-disparagement (mutual)
-- Release of claims
+- Full and final release of claims
 
 **Leverage Points for Negotiation**:
 - Protected class concerns (even if not pursuing claim)
@@ -360,11 +373,12 @@ Present 3-5 strategic paths with honest assessments:
 - Before burning bridges
 - After documenting concerns in writing
 
-**What to Ask For** (realistic ranges):
-- Severance: 2 weeks - 6 months (depends on tenure, leverage)
+**What to Ask For (Ontario)** (realistic ranges):
+- Severance: ESA minimum PLUS common law top-up (total 1-24 months depending on tenure, age, position)
 - Neutral reference letter (specific language you approve)
-- COBRA paid 1-6 months
-- "Resignation for personal reasons" vs. termination
+- Extended benefits continuation 3-12 months (health, dental, life insurance)
+- ROE coded as "dismissal without cause" (Block 16: Code M) for EI eligibility
+- "Position eliminated" or "mutual separation" language
 - Outplacement services ($2K-10K value)
 
 ### Option 3: Strategic Resignation
@@ -385,7 +399,7 @@ Present 3-5 strategic paths with honest assessments:
 
 **Cons**:
 - No severance
-- May complicate unemployment
+- May complicate EI eligibility (voluntary quit has waiting period)
 - Gives up potential leverage
 - May feel like "letting them win"
 
@@ -406,26 +420,30 @@ Present 3-5 strategic paths with honest assessments:
 - Company policy violations
 - Significant damages (long tenure, high comp)
 
-**What Employment Lawyers Look For**:
-- Protected class membership + adverse action + causal connection
+**What Employment Lawyers Look For (Ontario)**:
+- Wrongful dismissal: Termination without adequate notice or just cause
+- Human rights violations: Discrimination under Ontario Human Rights Code
+- Constructive dismissal: Fundamental breach of employment contract
 - Similarly situated comparators treated differently
 - Documented pattern of behavior
 - Credible witnesses
-- Recoverable damages
 
-**Cost/Benefit Reality**:
-- Contingency cases require strong facts (lawyers are selective)
-- Hourly representation: $300-600/hour
+**Cost/Benefit Reality (Ontario)**:
+- Contingency cases available for strong wrongful dismissal claims
+- Hourly representation: $300-600 CAD/hour
 - Most cases settle, few go to trial
-- Process takes 1-3+ years
-- Emotional toll is significant
-- Can affect future employment
+- Process takes 6 months - 2+ years
+- Ontario small claims court (up to $35K) allows self-representation
+- Superior Court for larger claims
 
-**How to Find Qualified Counsel**:
-- State bar association referrals
-- NELA (National Employment Law Association)
-- Initial consultations often free
+**How to Find Qualified Counsel (Ontario)**:
+- Law Society of Ontario Lawyer Referral Service (free 30-min consultation)
+- Ontario Bar Association Employment Law Section
+- Canadian Association of Labour Lawyers
+- Initial consultations often free or nominal fee
 - Get 2-3 opinions before deciding
+
+**For US users**: Contact state bar association, NELA (National Employment Law Association), or local employment lawyers.
 
 ### Option 5: Parallel Job Search
 
