@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operational Excellence for Commercial Real Estate & Infrastructure | Tenebrus Capital</title>
+    <meta name="description" content="Process optimization and technology strategy for REITs, pension funds, and infrastructure owners. 24 years institutional experience. FRICS, CFA credentials.">
+    <link rel="stylesheet" href="tenebrus-styles.css">
+    <style>
+        /* Page-specific enhancements */
+
+        /* Staggered reveal animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Hero animations */
+        .hero-badge {
+            animation: fadeIn 0.6s ease-out 0.2s both;
+        }
+
+        .hero-title {
+            animation: fadeInUp 0.7s ease-out 0.3s both;
+        }
+
+        .hero-subtitle {
+            animation: fadeInUp 0.7s ease-out 0.5s both;
+        }
+
+        .hero-actions {
+            animation: fadeInUp 0.7s ease-out 0.7s both;
+        }
+
+        /* Scroll-triggered animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered children */
+        .stagger-children > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        /* Print styles - ensure all content visible */
+        @media print {
+            .animate-on-scroll,
+            .stagger-children > * {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            nav {
+                position: static;
+            }
+            .hero::before {
+                display: none;
+            }
+            .cta-section::before {
+                display: none;
+            }
+        }
+
+        /* No-JS fallback - show content if JS disabled */
+        @media (scripting: none) {
+            .animate-on-scroll,
+            .stagger-children > * {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .stagger-children.visible > *:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-children.visible > *:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-children.visible > *:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-children.visible > *:nth-child(4) { transition-delay: 0.4s; }
+
+        .stagger-children.visible > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Enhanced hero with diagonal accent */
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 70%;
+            height: 200%;
+            background: linear-gradient(135deg, transparent 45%, var(--brand-blue-pale) 45%, var(--brand-blue-pale) 55%, transparent 55%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Credential pills with subtle glow */
+        .credential-pills {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            animation: fadeInUp 0.7s ease-out 0.9s both;
+        }
+
+        .credential-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: var(--font-semibold);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .credential-pill:hover {
+            border-color: var(--brand-blue);
+            box-shadow: 0 4px 12px rgba(20, 124, 204, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .credential-pill .pill-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--brand-blue-pale);
+            color: var(--brand-navy);
+            border-radius: 50%;
+            font-size: 0.65rem;
+            font-weight: var(--font-bold);
+        }
+
+        /* Problem section with warning accent */
+        .problem-section {
+            background: var(--bg-secondary);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .problem-card {
+            padding: 2rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-left: 4px solid var(--danger);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        .problem-card h3 {
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            font-weight: var(--font-semibold);
+            color: var(--brand-gray);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .problem-card h3::before {
+            content: '!';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--danger-light);
+            color: var(--danger);
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: var(--font-bold);
+            flex-shrink: 0;
+        }
+
+        .problem-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .stakes-banner {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-dark) 100%);
+            border-radius: var(--radius-lg);
+            color: white;
+        }
+
+        .stakes-banner p {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .stakes-banner strong {
+            color: var(--brand-blue-pale);
+        }
+
+        /* Service cards with icons */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            padding: 2.5rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--brand-blue);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-4px);
+        }
+
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--brand-blue-pale);
+            color: var(--brand-navy);
+            font-size: 1.75rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-family: var(--font-primary);
+            font-size: 1.25rem;
+            font-weight: var(--font-semibold);
+            color: var(--brand-gray);
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .service-price {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--brand-navy);
+            padding: 0.5rem 1rem;
+            background: var(--accent-light);
+            border-radius: var(--radius-sm);
+            display: inline-block;
+        }
+
+        /* Protocol steps with connecting line */
+        .protocol-steps {
+            position: relative;
+        }
+
+        .protocol-steps::before {
+            content: '';
+            position: absolute;
+            left: 31px;
+            top: 60px;
+            bottom: 60px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--brand-blue), var(--brand-navy));
+            border-radius: 1px;
+        }
+
+        .protocol-step {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .protocol-step:first-child {
+            padding-top: 0;
+        }
+
+        .protocol-step:last-child {
+            padding-bottom: 0;
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--brand-navy);
+            color: white;
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            font-weight: var(--font-bold);
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 0 6px var(--bg-primary), var(--shadow-lg);
+        }
+
+        .step-content h3 {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            font-weight: var(--font-semibold);
+            color: var(--brand-gray);
+            margin-bottom: 0.75rem;
+        }
+
+        .step-content p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Stats section with large numbers */
+        .proof-section {
+            background: var(--brand-navy);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proof-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(20, 124, 204, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(20, 124, 204, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .proof-section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .proof-section .section-eyebrow {
+            color: var(--brand-blue-pale);
+        }
+
+        .proof-section .section-title {
+            color: white;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .proof-item {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+        }
+
+        .proof-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .proof-value {
+            font-family: var(--font-primary);
+            font-size: 3.5rem;
+            font-weight: var(--font-extrabold);
+            color: white;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .proof-value span {
+            color: var(--brand-blue-pale);
+        }
+
+        .proof-label {
+            font-family: var(--font-primary);
+            font-size: 0.85rem;
+            font-weight: var(--font-medium);
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .proof-description {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+
+        /* Credentials bar */
+        .credentials-bar {
+            background: var(--bg-tertiary);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin-top: 3rem;
+        }
+
+        .credentials-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .credential-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .credential-item strong {
+            color: var(--brand-navy);
+            font-weight: var(--font-semibold);
+        }
+
+        /* CTA section enhancements */
+        .cta-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(20, 124, 204, 0.2) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-risk-reversal {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .cta-risk-reversal span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 0.75rem;
+        }
+
+        .cta-risk-reversal span::before {
+            content: '✓';
+            color: var(--brand-blue-pale);
+        }
+
+        /* Mobile menu button (hidden by default on desktop) */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--brand-gray);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .service-grid,
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .proof-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero::before {
+                display: none;
+            }
+
+            .protocol-steps::before {
+                left: 23px;
+            }
+
+            .step-number {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
+            }
+
+            .protocol-step {
+                gap: 1.5rem;
+            }
+
+            .proof-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .proof-value {
+                font-size: 2.5rem;
+            }
+
+            .credentials-content {
+                gap: 1.5rem;
+            }
+
+            .credential-item {
+                font-size: 0.8rem;
+            }
+
+            .cta-risk-reversal span {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .credential-pills {
+                gap: 0.5rem;
+            }
+
+            .credential-pill {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .problem-card {
+                padding: 1.5rem;
+            }
+
+            .service-card {
+                padding: 1.5rem;
+            }
+
+            .service-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.25rem;
+            }
+
+            .proof-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .proof-item {
+                padding: 1.5rem;
+            }
+
+            .stakes-banner {
+                padding: 1.25rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="nav-logo">
+            <img src="Tenebrus_Capital_Main_Logo.svg" alt="Tenebrus Capital" class="logo-image" style="height: 56px; width: auto;">
+        </a>
+        <div class="nav-links">
+            <a href="#services" class="nav-link">Services</a>
+            <a href="#approach" class="nav-link">Our Approach</a>
+            <a href="#results" class="nav-link">Results</a>
+            <a href="#contact" class="nav-cta">Schedule Consultation</a>
+        </div>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>FRICS</span> • <span>CFA</span> • <span>24 Years Institutional Experience</span>
+                </div>
+                <h1 class="hero-title">
+                    Your Portfolio Has Scaled.<br>
+                    Your <span class="highlight">Operations</span> Haven't.
+                </h1>
+                <p class="hero-subtitle">
+                    Process engineering and technology implementation for commercial real estate and infrastructure portfolios—delivered by someone who has managed $750M+ in institutional assets.
+                </p>
+                <div class="hero-actions">
+                    <a href="#contact" class="btn-primary">Schedule a Consultation</a>
+                    <a href="#approach" class="btn-secondary">Our Approach</a>
+                </div>
+                <div class="credential-pills">
+                    <div class="credential-pill">
+                        <span class="pill-icon">24</span>
+                        Years Institutional Experience
+                    </div>
+                    <div class="credential-pill">
+                        <span class="pill-icon">&lt;100</span>
+                        Global FRICS+CFA Holders
+                    </div>
+                    <div class="credential-pill">
+                        <span class="pill-icon">4×</span>
+                        Market Benchmark Returns
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="content-section problem-section" style="max-width: none; padding-left: 2rem; padding-right: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="section-header animate-on-scroll">
+                <div class="section-eyebrow">THE OPERATING CONSTRAINT</div>
+                <h2 class="section-title">Portfolio Growth Is Outpacing Operational Capacity</h2>
+            </div>
+
+            <div class="problem-grid stagger-children">
+                <div class="problem-card">
+                    <h3>Manual Processes Consuming Strategic Resources</h3>
+                    <p>Your investment professionals spend 60% of their time on data reconciliation, administrative workflows, and reporting tasks that should be systematized. Deal velocity has accelerated, stakeholder reporting requirements have intensified, yet operational infrastructure remains largely unchanged.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Technology Investments Delivering Minimal ROI</h3>
+                    <p>You've committed significant capital to "enterprise solutions" that remain underutilized because they don't align with your actual workflows. Implementation teams lack real estate domain expertise, and vendors struggle to translate operational requirements into functional systems.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Competitive Disadvantage from Process Inefficiency</h3>
+                    <p>While your team manually aggregates market intelligence and portfolio analytics, institutional peers with optimized workflows are identifying opportunities 3–4 weeks earlier. This timing gap directly impacts deal flow, investment performance, and stakeholder confidence.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Unclear Path to Process Modernization</h3>
+                    <p>Technology consultants promise transformation without understanding lease economics, portfolio rebalancing mechanics, or infrastructure asset management fundamentals. You need expertise that bridges institutional real estate operations and technical implementation.</p>
+                </div>
+            </div>
+
+            <div class="stakes-banner animate-on-scroll">
+                <p>Without operational optimization, you face a fundamental constraint: <strong>accept margin compression</strong> as processing costs rise relative to AUM, or <strong>risk failed implementations</strong> that consume capital without delivering efficiency gains. Meanwhile, competitors with modern operations continue to expand their performance advantage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="content-section" id="services">
+        <div class="section-header centered animate-on-scroll">
+            <div class="section-eyebrow">PROVEN CAPABILITIES</div>
+            <h2 class="section-title">Institutional Experience. Technical Execution.</h2>
+            <p class="section-subtitle">Tenebrus Capital brings 24 years of commercial real estate and infrastructure portfolio management, combined with enterprise systems implementation. This skillset—FRICS and CFA designations alongside technical credentials—is held by fewer than 100 professionals globally.</p>
+        </div>
+
+        <div class="service-grid stagger-children">
+            <div class="service-card">
+                <div class="service-icon">⚙️</div>
+                <h3>Business Process Optimization</h3>
+                <p>Systematic workflow redesign that eliminates repetitive tasks while maintaining compliance and audit trail requirements. Clients typically achieve 40–50% reduction in processing time with measurable improvements in data accuracy and regulatory adherence.</p>
+                <span class="service-price">$10K–$150K+</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Technology Strategy & Implementation</h3>
+                <p>Strategic roadmaps that align system investments with portfolio objectives—not generic IT recommendations. We translate operational requirements into technical specifications that vendors can execute, preventing costly misalignment between purchased capabilities and actual needs.</p>
+                <span class="service-price">$15K–$100K</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎓</div>
+                <h3>Institutional Training Programs</h3>
+                <p>Practical capability building delivered through 1–2 day workshops tailored to real estate operations. Focused on immediately applicable tools for lease analysis, market research, and portfolio monitoring—no computer science background required.</p>
+                <span class="service-price">$3.5K–$18K</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔍</div>
+                <h3>Market Intelligence & Feasibility Analysis</h3>
+                <p>Advanced analytical capabilities that would require weeks of analyst time to compile manually. We combine quantitative methods with deep sector knowledge to deliver actionable insights for acquisitions, development decisions, and portfolio optimization.</p>
+                <span class="service-price">$10K–$100K</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Protocol Section -->
+    <section class="content-section alt-bg" id="approach" style="max-width: none;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div class="section-header animate-on-scroll">
+                <div class="section-eyebrow">ENGAGEMENT PROCESS</div>
+                <h2 class="section-title">From Assessment to Implementation—A Structured Approach</h2>
+            </div>
+
+            <div class="protocol-steps stagger-children">
+                <div class="protocol-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Operational Assessment</h3>
+                        <p>45-minute consultation to understand your portfolio composition, current workflows, and efficiency constraints. We identify immediate opportunities and strategic optimization pathways. No fee, no commitment required.</p>
+                    </div>
+                </div>
+                <div class="protocol-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Strategic Planning</h3>
+                        <p>We document existing processes, evaluate optimization opportunities, and develop an implementation roadmap with quantified ROI projections. You have complete clarity on scope, timeline, and expected outcomes before any capital commitment.</p>
+                    </div>
+                </div>
+                <div class="protocol-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Execution & Integration</h3>
+                        <p>Our team designs and deploys optimized workflows that integrate with your existing systems—no wholesale platform replacement required. Typical engagements range from 6 weeks (focused training) to 6 months (enterprise-wide process reengineering).</p>
+                    </div>
+                </div>
+                <div class="protocol-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Knowledge Transfer & Sustainment</h3>
+                        <p>We don't simply deliver systems and disengage. We train your team, monitor performance metrics, and refine workflows until target efficiency levels are achieved. You retain full ownership of the systems and the expertise to operate them.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="content-section proof-section" id="results" style="max-width: none; padding: var(--space-3xl) 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="section-header centered animate-on-scroll">
+                <div class="section-eyebrow">TRACK RECORD</div>
+                <h2 class="section-title">Institutional Results Across Public and Private Portfolios</h2>
+            </div>
+
+            <div class="proof-grid stagger-children">
+                <div class="proof-item">
+                    <div class="proof-value">141<span>%</span></div>
+                    <div class="proof-label">Portfolio Returns</div>
+                    <div class="proof-description">4× market benchmark (141% vs. 35%) through disciplined asset management and systematic rebalancing</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-value">50<span>%</span></div>
+                    <div class="proof-label">Processing Efficiency</div>
+                    <div class="proof-description">Reduced operational workflow time by half while improving compliance adherence across 900+ properties</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-value">$5<span>M+</span></div>
+                    <div class="proof-label">Cost Recovery</div>
+                    <div class="proof-description">Identified and captured millions in operational inefficiencies through systematic analysis</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-value">$750<span>M+</span></div>
+                    <div class="proof-label">AUM Experience</div>
+                    <div class="proof-description">Institutional-scale portfolio management across 204,000 acres of commercial and infrastructure assets</div>
+                </div>
+            </div>
+
+            <div class="credentials-bar animate-on-scroll">
+                <div class="credentials-content">
+                    <div class="credential-item">
+                        <strong>FRICS</strong> Fellow, Royal Institution of Chartered Surveyors
+                    </div>
+                    <div class="credential-item">
+                        <strong>CFA</strong> Chartered Financial Analyst
+                    </div>
+                    <div class="credential-item">
+                        <strong>Columbia</strong> AI & Machine Learning Certificate
+                    </div>
+                    <div class="credential-item">
+                        <strong>Stanford</strong> Machine Learning Specialization
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="cta-content">
+            <h2>Explore Operational Optimization for Your Portfolio</h2>
+            <p>Schedule a 45-minute consultation to assess how process optimization can reduce operating costs, accelerate decision cycles, and create sustainable competitive advantage.</p>
+            <div class="cta-actions">
+                <a href="mailto:reggie@tenebruscapital.com?subject=Consultation%20Request" class="btn-primary">Schedule Consultation</a>
+                <a href="#services" class="btn-outline">Review Capabilities</a>
+            </div>
+            <div class="cta-risk-reversal">
+                <span>No-fee initial consultation</span>
+                <span>Zero commitment</span>
+                <span>Actionable recommendations</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="Tenebrus_Capital_Main_Logo.svg" alt="Tenebrus Capital" style="height: 72px; width: auto;">
+                    </div>
+                    <p class="footer-description">Operational optimization and technology implementation services for commercial real estate and infrastructure portfolios. Led by Reggie Chan (FRICS, CFA), we combine 24 years of institutional investment experience with technical execution capabilities to deliver measurable efficiency improvements.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <div class="footer-links">
+                        <a href="#services">Process Optimization</a>
+                        <a href="#services">Technology Strategy</a>
+                        <a href="#services">Training Programs</a>
+                        <a href="#services">Market Intelligence</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Industries</h4>
+                    <div class="footer-links">
+                        <a href="#">Commercial Real Estate</a>
+                        <a href="#">Linear Infrastructure</a>
+                        <a href="#">Private Equity</a>
+                        <a href="#">Public Sector</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <div class="footer-links">
+                        <a href="#contact">Schedule Consultation</a>
+                        <a href="#">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    &copy; 2025 Tenebrus Capital. All rights reserved.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.animate-on-scroll, .stagger-children').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileMenuBtn && navLinks) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileMenuBtn.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

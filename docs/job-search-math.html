@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobOps - The Math Behind Your Job Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="subpage-styles.css">
+    <style>
+        /* Custom callout styles for this page */
+        .callout {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+            background: var(--bg-panel);
+        }
+
+        .callout-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .callout-icon {
+            font-size: 1.25rem;
+        }
+
+        .callout-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+        }
+
+        .callout p, .callout li {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .callout ul {
+            list-style: none;
+            margin-top: 0.75rem;
+        }
+
+        .callout li {
+            padding: 0.35rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .callout li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.7rem;
+            width: 5px;
+            height: 5px;
+            background: var(--text-dim);
+        }
+
+        /* Key Insight - Cyan */
+        .callout.insight {
+            border-color: var(--accent-cyan);
+        }
+        .callout.insight .callout-title {
+            color: var(--accent-cyan);
+        }
+        .callout.insight li::before {
+            background: var(--accent-cyan);
+        }
+
+        /* Real World Example - Amber */
+        .callout.example {
+            border-color: var(--accent-amber);
+        }
+        .callout.example .callout-title {
+            color: var(--accent-amber);
+        }
+        .callout.example li::before {
+            background: var(--accent-amber);
+        }
+
+        /* Common Misconception - Red */
+        .callout.myth {
+            border-color: var(--accent-primary);
+        }
+        .callout.myth .callout-title {
+            color: var(--accent-primary);
+        }
+        .callout.myth li::before {
+            background: var(--accent-primary);
+        }
+
+        /* Definition - Green */
+        .callout.definition {
+            border-color: var(--accent-green);
+        }
+        .callout.definition .callout-title {
+            color: var(--accent-green);
+        }
+        .callout.definition li::before {
+            background: var(--accent-green);
+        }
+
+        /* Action Step - Primary Red with glow */
+        .callout.action {
+            border-color: var(--accent-primary);
+            background: var(--accent-glow);
+        }
+        .callout.action .callout-title {
+            color: var(--accent-primary);
+        }
+        .callout.action li::before {
+            background: var(--accent-primary);
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-dim);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .summary-box h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .summary-column h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .summary-column.old h4 {
+            color: var(--accent-primary);
+        }
+
+        .summary-column.new h4 {
+            color: var(--accent-green);
+        }
+
+        .summary-column ul {
+            list-style: none;
+        }
+
+        .summary-column li {
+            padding: 0.35rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border-dim);
+        }
+
+        .data-table th {
+            background: var(--bg-surface);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .data-table td {
+            background: var(--bg-panel);
+            color: var(--text-secondary);
+        }
+
+        .data-table tr:hover td {
+            background: var(--bg-surface);
+        }
+
+        .highlight-green {
+            color: var(--accent-green) !important;
+            font-weight: 600;
+        }
+
+        .highlight-amber {
+            color: var(--accent-amber) !important;
+            font-weight: 600;
+        }
+
+        .highlight-red {
+            color: var(--accent-primary) !important;
+            font-weight: 600;
+        }
+
+        .highlight-cyan {
+            color: var(--accent-cyan) !important;
+            font-weight: 600;
+        }
+
+        /* Door Visualization */
+        .door-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-dim);
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .door {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-dim);
+            min-width: 120px;
+        }
+
+        .door-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .door-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .door-rate {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        .door-arrow {
+            color: var(--text-dim);
+            font-size: 1.5rem;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-dim);
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .checklist h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .checklist ul {
+            list-style: none;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .check-box {
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--border-active);
+            background: var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Principle Cards */
+        .principles {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .principle {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-dim);
+        }
+
+        .principle-num {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-primary);
+            color: var(--bg-void);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .principle p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .principle strong {
+            color: var(--text-primary);
+        }
+
+        /* Table of contents */
+        .toc {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-dim);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .toc h3 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .toc ol {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+
+        .toc li {
+            counter-increment: toc-counter;
+            padding: 0.5rem 0;
+        }
+
+        .toc a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: color 0.3s ease;
+        }
+
+        .toc a::before {
+            content: counter(toc-counter);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            min-width: 1.5rem;
+        }
+
+        .toc a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Glossary */
+        .glossary-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .glossary-item:last-child {
+            border-bottom: none;
+        }
+
+        .glossary-term {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 0.25rem;
+        }
+
+        .glossary-def {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .door-flow {
+                flex-direction: column;
+            }
+
+            .door-arrow {
+                transform: rotate(90deg);
+            }
+
+            .door {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tactical-bg"></div>
+    <div class="scanlines"></div>
+
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <div class="logo-icon"></div>
+            <span class="logo-text">JOBOPS</span>
+        </a>
+        <a href="index.html" class="nav-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Command
+        </a>
+    </nav>
+
+    <main class="subpage-content">
+        <div class="arsenal-badge">Intelligence Brief</div>
+
+        <h1 class="page-title">Why Your Job Search Strategy Matters More Than Your Resume</h1>
+        <p class="page-subtitle">A plain-language guide to understanding job search odds. No math degree required.</p>
+
+        <!-- One Page Summary -->
+        <div class="summary-box" style="border-left: 4px solid var(--accent-primary);">
+            <h3>The One-Page Summary</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Here's what most job seekers get wrong: they think being qualified for a job means they'll get an interview. <strong style="color: var(--accent-primary);">This is false.</strong></p>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Your chances of getting a job offer depend on four things happening in sequence:</p>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem; margin-bottom: 1rem;">
+                <li style="padding: 0.25rem 0;">Someone actually looks at your application (not guaranteed)</li>
+                <li style="padding: 0.25rem 0;">They decide you're qualified (your fit score matters here)</li>
+                <li style="padding: 0.25rem 0;">You beat out other qualified candidates for an interview slot (competition matters here)</li>
+                <li style="padding: 0.25rem 0;">You perform well enough in the interview to get an offer (preparation matters here)</li>
+            </ol>
+            <div class="callout insight" style="margin-top: 1.5rem; margin-bottom: 0;">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">The Key Insight</span>
+                </div>
+                <p>Even if you're perfectly qualified, you might not get an interview because 200 other qualified people also applied. Your qualifications get you in the door—but competition determines if you get a seat at the table.</p>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3>In This Guide</h3>
+            <ol>
+                <li><a href="#funnel">The Job Search Funnel</a></li>
+                <li><a href="#competition">Competition Matters More Than You Think</a></li>
+                <li><a href="#economy">How the Economy Affects Your Odds</a></li>
+                <li><a href="#preparation">Preparation Is a Multiplier</a></li>
+                <li><a href="#assessment">Why Assessing Before Applying Changes Everything</a></li>
+                <li><a href="#everyone">When Everyone Does This, Everyone Wins</a></li>
+                <li><a href="#tools">Practical Decision Tools</a></li>
+                <li><a href="#glossary">Glossary</a></li>
+            </ol>
+        </div>
+
+        <!-- Part 1: The Funnel -->
+        <section class="content-section" id="funnel">
+            <h2>Part 1: The Job Search Funnel</h2>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">Think of Job Searching Like a Series of Doors</h3>
+
+            <p>Imagine getting a job offer requires passing through four doors. At each door, only some people get through:</p>
+
+            <div class="door-flow">
+                <div class="door">
+                    <div class="door-num">DOOR 1</div>
+                    <div class="door-name">Review</div>
+                    <div class="door-rate">~60-70%</div>
+                </div>
+                <div class="door-arrow">&#8594;</div>
+                <div class="door">
+                    <div class="door-num">DOOR 2</div>
+                    <div class="door-name">Qualified</div>
+                    <div class="door-rate">Your Score %</div>
+                </div>
+                <div class="door-arrow">&#8594;</div>
+                <div class="door">
+                    <div class="door-num">DOOR 3</div>
+                    <div class="door-name">Interview</div>
+                    <div class="door-rate">Competition</div>
+                </div>
+                <div class="door-arrow">&#8594;</div>
+                <div class="door">
+                    <div class="door-num">DOOR 4</div>
+                    <div class="door-name">Offer</div>
+                    <div class="door-rate">~25-35%</div>
+                </div>
+            </div>
+
+            <div class="callout insight">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Key Insight</span>
+                </div>
+                <p>Your overall odds are found by multiplying the chances at each door. If you have 70% x 80% x 20% x 30% odds at each door, your overall chance is about <strong>3.4%</strong>. That's why even strong candidates often need to apply to many jobs.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">Why Door 3 Is the Bottleneck</h3>
+
+            <p>Doors 1, 2, and 4 depend mostly on YOU—your resume quality, qualifications, and interview skills.</p>
+
+            <p><strong>Door 3 is different.</strong> It depends on WHO ELSE APPLIED.</p>
+
+            <div class="callout example">
+                <div class="callout-header">
+                    <span class="callout-icon">&#127919;</span>
+                    <span class="callout-title">Real World Example</span>
+                </div>
+                <p>Imagine you score 85 out of 100 on a job's requirements—an excellent fit. Here's how your interview chances change based on competition:</p>
+
+                <table class="data-table" style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Other Applicants</th>
+                            <th>Interview Slots</th>
+                            <th>Your Interview Odds</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>50 people</td>
+                            <td>10</td>
+                            <td class="highlight-green">85%</td>
+                        </tr>
+                        <tr>
+                            <td>200 people</td>
+                            <td>10</td>
+                            <td class="highlight-amber">45%</td>
+                        </tr>
+                        <tr>
+                            <td>500 people</td>
+                            <td>10</td>
+                            <td class="highlight-amber">18%</td>
+                        </tr>
+                        <tr>
+                            <td>1,000 people</td>
+                            <td>10</td>
+                            <td class="highlight-red">8%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 1rem;"><em>Same qualifications. Dramatically different outcomes.</em></p>
+            </div>
+
+            <div class="callout action">
+                <div class="callout-header">
+                    <span class="callout-icon">&#9989;</span>
+                    <span class="callout-title">Action Step</span>
+                </div>
+                <p>Before applying, ask yourself: "How many other people are probably applying to this?" Highly visible postings at famous companies attract thousands of applicants. Niche roles at lesser-known companies might attract fifty.</p>
+            </div>
+        </section>
+
+        <!-- Part 2: Competition -->
+        <section class="content-section" id="competition">
+            <h2>Part 2: Competition Matters More Than You Think</h2>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The "Bar" Moves Based on Competition</h3>
+
+            <p>When employers have 10 interview slots and 50 applicants, they interview the top 20%. When they have 10 slots and 500 applicants, they interview the top 2%.</p>
+
+            <div class="callout definition">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128273;</span>
+                    <span class="callout-title">Definition: Critical Score</span>
+                </div>
+                <p>The "critical score" is the minimum qualification level needed to realistically get an interview. It rises as competition increases.</p>
+                <ul>
+                    <li><strong>50 applicants</strong> competing for 10 slots: Need to be in top 20% (score ~78)</li>
+                    <li><strong>200 applicants</strong> competing for 10 slots: Need to be in top 5% (score ~86)</li>
+                    <li><strong>500 applicants</strong> competing for 10 slots: Need to be in top 2% (score ~91)</li>
+                </ul>
+                <p style="margin-top: 0.75rem;"><em>These numbers assume most applicants score around 70 on average.</em></p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The "Effective Fit" Concept</h3>
+
+            <p>Your qualifications alone don't predict success. What matters is your qualifications COMBINED with your odds of beating the competition.</p>
+
+            <div class="callout definition">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128273;</span>
+                    <span class="callout-title">Definition: Effective Fit</span>
+                </div>
+                <p><strong>Effective Fit = Your Score x Your Interview Probability</strong></p>
+                <p>This tells you the "real value" of applying to a particular job.</p>
+            </div>
+
+            <p>Here's why this matters:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Your Score</th>
+                        <th>Applicants</th>
+                        <th>Interview Odds</th>
+                        <th>Effective Fit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Dream job at Google</td>
+                        <td>90</td>
+                        <td>2,000</td>
+                        <td class="highlight-red">4%</td>
+                        <td class="highlight-red">3.6</td>
+                    </tr>
+                    <tr>
+                        <td>Good job at regional firm</td>
+                        <td>80</td>
+                        <td>100</td>
+                        <td class="highlight-amber">35%</td>
+                        <td class="highlight-amber">28</td>
+                    </tr>
+                    <tr>
+                        <td>Decent job at startup</td>
+                        <td>75</td>
+                        <td>40</td>
+                        <td class="highlight-green">50%</td>
+                        <td class="highlight-green">37.5</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout insight">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Key Insight</span>
+                </div>
+                <p>The startup job where you're slightly less qualified but face much less competition is actually your best opportunity. Effective Fit reveals this; raw qualifications hide it.</p>
+            </div>
+
+            <div class="callout myth">
+                <div class="callout-header">
+                    <span class="callout-icon">&#9888;&#65039;</span>
+                    <span class="callout-title">Common Misconception</span>
+                </div>
+                <p><strong>Myth:</strong> "I should apply to my dream companies even if it's a long shot—you never know!"</p>
+                <p style="margin-top: 0.75rem;"><strong>Reality:</strong> You DO know. If 2,000 people apply and they interview 10, your odds are 0.5% even if you're perfectly qualified. Spending 10 hours preparing for that application could be spent on 5 applications where you have 30% odds each.</p>
+            </div>
+        </section>
+
+        <!-- Part 3: Economy -->
+        <section class="content-section" id="economy">
+            <h2>Part 3: How the Economy Affects Your Odds</h2>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">Why the Same Resume Gets Different Results</h3>
+
+            <p>Ever notice that job searching feels easier in some years than others? That's not your imagination—it's math.</p>
+
+            <p>The number of people applying to any given job depends on:</p>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">1</span>
+                    <div>
+                        <strong>Unemployment Rate</strong>
+                        <p>More people out of work = more applicants</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">2</span>
+                    <div>
+                        <strong>Job Availability</strong>
+                        <p>More openings = applicants spread thinner</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">3</span>
+                    <div>
+                        <strong>Job Attractiveness</strong>
+                        <p>Famous companies and remote roles attract more applicants</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">4</span>
+                    <div>
+                        <strong>Desperation Level</strong>
+                        <p>In bad markets, people apply to more jobs each</p>
+                    </div>
+                </li>
+            </ul>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Same Job, Different Markets</h3>
+
+            <p>Here's how the same role attracts different applicant volumes:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Market Condition</th>
+                        <th>Expected Applicants</th>
+                        <th>Your Interview Odds*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tech boom</td>
+                        <td>~25</td>
+                        <td class="highlight-green">38%</td>
+                    </tr>
+                    <tr>
+                        <td>Normal market</td>
+                        <td>~320</td>
+                        <td class="highlight-amber">3%</td>
+                    </tr>
+                    <tr>
+                        <td>Mild downturn</td>
+                        <td>~1,150</td>
+                        <td class="highlight-red">0.9%</td>
+                    </tr>
+                    <tr>
+                        <td>Recession</td>
+                        <td>~6,400</td>
+                        <td class="highlight-red">0.15%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">*Assuming 10 interview slots and you're solidly qualified</p>
+
+            <div class="callout insight">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Key Insight</span>
+                </div>
+                <p>The same qualifications that get you an interview 38% of the time in a good market might only work 0.15% of the time in a recession. Your resume didn't get worse—the market did.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">What Makes a Job "Attractive" (And Why That's Bad for You)</h3>
+
+            <p>Some jobs attract way more applicants than average:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Factor</th>
+                        <th>Low Attraction</th>
+                        <th>High Attraction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Compensation</td>
+                        <td>Below market: 0.6x</td>
+                        <td class="highlight-red">Above market: 1.5x</td>
+                    </tr>
+                    <tr>
+                        <td>Company brand</td>
+                        <td>Unknown: 0.7x</td>
+                        <td class="highlight-red">Famous: 1.8x</td>
+                    </tr>
+                    <tr>
+                        <td>Location</td>
+                        <td>Undesirable: 0.5x</td>
+                        <td class="highlight-amber">Major city: 1.4x</td>
+                    </tr>
+                    <tr>
+                        <td>Remote option</td>
+                        <td>Office only: 0.8x</td>
+                        <td class="highlight-red">Fully remote: 1.6x</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 1rem;">These multiply together. A fully-remote role at a famous company paying above market might attract <strong>8 times</strong> as many applicants as an equivalent on-site role at an unknown company.</p>
+
+            <div class="callout action">
+                <div class="callout-header">
+                    <span class="callout-icon">&#9989;</span>
+                    <span class="callout-title">Action Step</span>
+                </div>
+                <p>Consider targeting "hidden gem" jobs: good roles at lesser-known companies, or in less glamorous locations. Your odds improve dramatically when you're not competing with thousands.</p>
+            </div>
+        </section>
+
+        <!-- Part 4: Preparation -->
+        <section class="content-section" id="preparation">
+            <h2>Part 4: Preparation Is a Multiplier</h2>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Interview Conversion Problem</h3>
+
+            <p>Getting an interview is only half the battle. Converting that interview into an offer depends on:</p>
+
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon">P</span>
+                    <div>
+                        <strong>Preparation</strong>
+                        <p>Did you practice answers, study the role, run mock interviews?</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">R</span>
+                    <div>
+                        <strong>Research</strong>
+                        <p>Do you understand the company, industry, and interviewers?</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon">A</span>
+                    <div>
+                        <strong>Articulation</strong>
+                        <p>Can you clearly explain how your experience fits?</p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="callout definition">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128273;</span>
+                    <span class="callout-title">Definition: Baseline Conversion Rate</span>
+                </div>
+                <p>Without any special preparation, the average interview-to-offer rate is about <strong>15-20%</strong>. With thorough preparation, this can rise to <strong>35-40%</strong>.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Preparation Effect Is Huge</h3>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Preparation Level</th>
+                        <th>Description</th>
+                        <th>Odds Improvement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>None</td>
+                        <td>Showed up cold</td>
+                        <td>0% (baseline)</td>
+                    </tr>
+                    <tr>
+                        <td>Minimal</td>
+                        <td>Skimmed job description</td>
+                        <td class="highlight-amber">+10%</td>
+                    </tr>
+                    <tr>
+                        <td>Basic</td>
+                        <td>Reviewed common questions</td>
+                        <td class="highlight-amber">+20%</td>
+                    </tr>
+                    <tr>
+                        <td>Moderate</td>
+                        <td>Practiced answers, reviewed skills</td>
+                        <td class="highlight-green">+35%</td>
+                    </tr>
+                    <tr>
+                        <td>Thorough</td>
+                        <td>Mock interviews, gap analysis</td>
+                        <td class="highlight-green">+50%</td>
+                    </tr>
+                    <tr>
+                        <td>Intensive</td>
+                        <td>Full briefing, coaching</td>
+                        <td class="highlight-cyan">+70%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout insight">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Key Insight</span>
+                </div>
+                <p>A well-prepared candidate with 70/100 qualifications outperforms an unprepared candidate with 85/100 qualifications by nearly <strong>2x</strong>.</p>
+                <ul>
+                    <li>Unprepared 85-scorer: ~16% chance of offer</li>
+                    <li>Well-prepared 70-scorer: ~27% chance of offer</li>
+                </ul>
+                <p style="margin-top: 0.75rem;">Preparation partially compensates for weaker qualifications.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Best Use of Your Preparation Time</h3>
+
+            <p>If you have 8 hours to prepare for an interview, here's the optimal allocation:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Time</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mock interview with feedback</td>
+                        <td>2 hours</td>
+                        <td class="highlight-green">Highest ROI</td>
+                    </tr>
+                    <tr>
+                        <td>Company/industry research</td>
+                        <td>2 hours</td>
+                        <td class="highlight-green">High ROI</td>
+                    </tr>
+                    <tr>
+                        <td>Practice common questions</td>
+                        <td>2 hours</td>
+                        <td class="highlight-green">High ROI</td>
+                    </tr>
+                    <tr>
+                        <td>Research your interviewers</td>
+                        <td>1 hour</td>
+                        <td class="highlight-green">High ROI</td>
+                    </tr>
+                    <tr>
+                        <td>Review job description deeply</td>
+                        <td>0.5 hours</td>
+                        <td class="highlight-amber">High ROI</td>
+                    </tr>
+                    <tr>
+                        <td>Technical skill cramming</td>
+                        <td>0.5 hours</td>
+                        <td class="highlight-red">Low ROI</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout myth">
+                <div class="callout-header">
+                    <span class="callout-icon">&#9888;&#65039;</span>
+                    <span class="callout-title">Common Misconception</span>
+                </div>
+                <p><strong>Myth:</strong> "I should spend most of my prep time brushing up on technical skills I'm rusty on."</p>
+                <p style="margin-top: 0.75rem;"><strong>Reality:</strong> Last-minute skill cramming has the lowest return on investment. Mock interviews and company research give you 5-10x more improvement per hour spent.</p>
+            </div>
+        </section>
+
+        <!-- Part 5: Assessment -->
+        <section class="content-section" id="assessment">
+            <h2>Part 5: Why Assessing Before Applying Changes Everything</h2>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Problem With "Blind" Applications</h3>
+
+            <p>Most people apply to jobs without really knowing how well they match. They guess. Studies suggest people typically <strong>overestimate their fit by 15-25 points</strong> on a 100-point scale.</p>
+
+            <p>This creates several problems:</p>
+
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">!</span>
+                    <div>
+                        <strong>Wasted applications</strong>
+                        <p>Applying to jobs where you have near-zero chance</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">!</span>
+                    <div>
+                        <strong>Generic preparation</strong>
+                        <p>Studying everything instead of your specific gaps</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">!</span>
+                    <div>
+                        <strong>Missed opportunities</strong>
+                        <p>Not realizing you're a great fit for some roles</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">!</span>
+                    <div>
+                        <strong>Interview anxiety</strong>
+                        <p>Uncertainty about your actual qualifications</p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="callout definition">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128273;</span>
+                    <span class="callout-title">Definition: Application Efficiency</span>
+                </div>
+                <p>Application efficiency measures how many of your applications go to jobs where you actually have a realistic chance:</p>
+                <ul>
+                    <li><strong>Blind applicants:</strong> 30-50% of applications are to viable jobs</li>
+                    <li><strong>Assessed applicants:</strong> 85-95% of applications are to viable jobs</li>
+                </ul>
+                <p style="margin-top: 0.75rem;">This means assessed applicants effectively double their productive applications.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Combined Effect</h3>
+
+            <p>When you assess before applying, your outcomes improve through multiple channels:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Channel</th>
+                        <th>Improvement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Apply to better-fit jobs</td>
+                        <td class="highlight-green">2.25x</td>
+                    </tr>
+                    <tr>
+                        <td>More targeted preparation</td>
+                        <td class="highlight-green">1.5x</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Combined effect</strong></td>
+                        <td class="highlight-cyan"><strong>~3.4x</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout insight">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Key Insight</span>
+                </div>
+                <p>Pre-application assessment improves your overall job search success by approximately <strong>3.4 times</strong>. This comes from both applying smarter AND preparing better.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">What This Looks Like in Practice</h3>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-column old">
+                        <h4>Before (Blind Application)</h4>
+                        <ul>
+                            <li>Apply to 50 jobs</li>
+                            <li>&#8594; 2-5 interviews</li>
+                            <li>&#8594; 0-1 offers</li>
+                            <li>&#8594; 4-6 month search</li>
+                        </ul>
+                    </div>
+                    <div class="summary-column new">
+                        <h4>After (Assessed Application)</h4>
+                        <ul>
+                            <li>Assess 20 jobs</li>
+                            <li>&#8594; Apply to best 10</li>
+                            <li>&#8594; 4-6 interviews</li>
+                            <li>&#8594; 1-2 offers</li>
+                            <li>&#8594; 6-10 week search</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout action">
+                <div class="callout-header">
+                    <span class="callout-icon">&#9989;</span>
+                    <span class="callout-title">Action Step</span>
+                </div>
+                <p>Before each application, honestly evaluate: "On a scale of 0-100, how well do I actually match this job's requirements?"</p>
+                <ul>
+                    <li>If below 60, your time is probably better spent elsewhere</li>
+                    <li>If 60-75, identify specific gaps before applying</li>
+                    <li>If 75+, you're a strong candidate—prepare thoroughly</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Part 6: Everyone Wins -->
+        <section class="content-section" id="everyone">
+            <h2>Part 6: When Everyone Does This, Everyone Wins</h2>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Problem With "Spray and Pray"</h3>
+
+            <p>Here's a dirty secret about the job market: everyone's strategy of applying to everything is making things worse for everyone.</p>
+
+            <p>When each person sends 50+ applications:</p>
+            <ul class="feature-list">
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">&#8595;</span>
+                    <div>
+                        <strong>Employers get flooded</strong>
+                        <p>Hundreds of low-fit applications per posting</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">&#8595;</span>
+                    <div>
+                        <strong>Recruiters rush</strong>
+                        <p>Seconds per resume instead of minutes</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">&#8595;</span>
+                    <div>
+                        <strong>Good candidates get lost</strong>
+                        <p>Signal drowns in noise</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="feature-icon" style="color: var(--accent-primary);">&#8595;</span>
+                    <div>
+                        <strong>Interview slots become lottery tickets</strong>
+                        <p>Pure chance determines who gets through</p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="callout definition">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128273;</span>
+                    <span class="callout-title">Definition: Tragedy of the Commons</span>
+                </div>
+                <p>When everyone acts in their individual interest (send more applications!), the shared resource (employer attention) gets depleted. Everyone ends up worse off than if they'd cooperated.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">What Happens When People Stop Spray-and-Praying</h3>
+
+            <p>If everyone used an assessment-first approach:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Current State</th>
+                        <th>Assessment-First</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Applications per person</td>
+                        <td>50-100</td>
+                        <td>8-15</td>
+                        <td class="highlight-green">-80%</td>
+                    </tr>
+                    <tr>
+                        <td>Applicants per job</td>
+                        <td>200-500</td>
+                        <td>50-100</td>
+                        <td class="highlight-green">-75%</td>
+                    </tr>
+                    <tr>
+                        <td>Interview rate</td>
+                        <td>1-3%</td>
+                        <td>8-15%</td>
+                        <td class="highlight-green">+5x</td>
+                    </tr>
+                    <tr>
+                        <td>Time to offer</td>
+                        <td>4-6 months</td>
+                        <td>1.5-3 months</td>
+                        <td class="highlight-green">-50%</td>
+                    </tr>
+                    <tr>
+                        <td>Employer screening time</td>
+                        <td>40-80 hours</td>
+                        <td>10-20 hours</td>
+                        <td class="highlight-green">-75%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout insight">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Key Insight</span>
+                </div>
+                <p>When people apply to fewer, better-matched jobs:</p>
+                <ul>
+                    <li>Applicant pools shrink by 75-80%</li>
+                    <li>Everyone's interview odds improve 4-5x</li>
+                    <li>Employers get better candidates with less screening</li>
+                    <li>Junior candidates face appropriate competition</li>
+                </ul>
+                <p style="margin-top: 0.75rem;"><strong>Everyone wins.</strong></p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">"But What If I'm the Only One Who Does This?"</h3>
+
+            <p>You might worry: "If I send fewer applications while everyone else sprays, won't I lose out?"</p>
+
+            <p>Let's do the math:</p>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-column old">
+                        <h4>Spray-and-Pray Strategy</h4>
+                        <ul>
+                            <li>60 applications</li>
+                            <li>Average 55 fit score</li>
+                            <li>Poor preparation (spread thin)</li>
+                            <li>Interview odds: 8%</li>
+                            <li>Offer rate: 18%</li>
+                            <li><strong style="color: var(--accent-primary);">Expected offers: 0.33</strong></li>
+                        </ul>
+                    </div>
+                    <div class="summary-column new">
+                        <h4>Assessment-First Strategy</h4>
+                        <ul>
+                            <li>12 applications</li>
+                            <li>Average 80 fit score</li>
+                            <li>Thorough preparation</li>
+                            <li>Interview odds: 35%</li>
+                            <li>Offer rate: 30%</li>
+                            <li><strong style="color: var(--accent-green);">Expected offers: 0.71</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout insight">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Key Insight</span>
+                </div>
+                <p>Even if you're the ONLY person using assessment-first, you still get <strong>2x more offers</strong> than spray-and-prayers. You're not sacrificing for the greater good—you're choosing a strategy that's better for you AND better for everyone else.</p>
+            </div>
+        </section>
+
+        <!-- Part 7: Practical Tools -->
+        <section class="content-section" id="tools">
+            <h2>Part 7: Practical Decision Tools</h2>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Pre-Application Checklist</h3>
+
+            <p>Before submitting any application, answer these questions:</p>
+
+            <div class="checklist">
+                <h4>Fit Assessment</h4>
+                <ul>
+                    <li><span class="check-box"></span> I honestly score 65+ on this job's requirements</li>
+                    <li><span class="check-box"></span> I've identified my specific gaps (not just "I'm qualified")</li>
+                    <li><span class="check-box"></span> I have evidence for my key qualifications</li>
+                </ul>
+            </div>
+
+            <div class="checklist">
+                <h4>Competition Reality Check</h4>
+                <ul>
+                    <li><span class="check-box"></span> I've considered how many others are likely applying</li>
+                    <li><span class="check-box"></span> This isn't just a "famous company" long shot</li>
+                    <li><span class="check-box"></span> The posting has been up less than 2 weeks (early advantage)</li>
+                </ul>
+            </div>
+
+            <div class="checklist">
+                <h4>Resource Allocation</h4>
+                <ul>
+                    <li><span class="check-box"></span> I have time to prepare properly for this application</li>
+                    <li><span class="check-box"></span> This isn't my 30th application this week</li>
+                    <li><span class="check-box"></span> I'm not applying just to "have applied to something"</li>
+                </ul>
+            </div>
+
+            <div class="callout insight" style="margin-top: 1.5rem;">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128161;</span>
+                    <span class="callout-title">Rule of Thumb</span>
+                </div>
+                <p>If you can't answer "yes" to most of these, your time is better spent finding a better-fit opportunity.</p>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">When to Walk Away</h3>
+
+            <p>Some applications aren't worth pursuing:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Signal</th>
+                        <th>What It Means</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Score &lt; 55</td>
+                        <td>Poor fit</td>
+                        <td class="highlight-red">Don't apply</td>
+                    </tr>
+                    <tr>
+                        <td>1,000+ applicants expected</td>
+                        <td>Lottery odds</td>
+                        <td class="highlight-red">Skip unless dream job</td>
+                    </tr>
+                    <tr>
+                        <td>Posted 30+ days ago</td>
+                        <td>Likely already interviewing</td>
+                        <td class="highlight-amber">Skip</td>
+                    </tr>
+                    <tr>
+                        <td>Significantly overqualified</td>
+                        <td>Crowding out others</td>
+                        <td class="highlight-amber">Skip</td>
+                    </tr>
+                    <tr>
+                        <td>Can't prepare properly</td>
+                        <td>Will underperform</td>
+                        <td class="highlight-amber">Delay or skip</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem;">The Core Principles</h3>
+
+            <div class="principles">
+                <div class="principle">
+                    <div class="principle-num">1</div>
+                    <p><strong>Your qualifications are necessary but not sufficient.</strong> Competition determines who gets interviews.</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-num">2</div>
+                    <p><strong>Fewer, better applications beat many weak ones.</strong> Preparation quality matters more than application quantity.</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-num">3</div>
+                    <p><strong>Know your gaps before you apply.</strong> This lets you prepare strategically and acknowledge limitations honestly.</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-num">4</div>
+                    <p><strong>Avoid "lottery ticket" applications.</strong> Famous companies with 2,000 applicants are usually not worth your time.</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-num">5</div>
+                    <p><strong>This strategy helps everyone.</strong> You get better outcomes, and by not flooding the market, you help other job seekers too.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Glossary -->
+        <section class="content-section" id="glossary">
+            <h2>Glossary</h2>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Applicant Pool (A)</div>
+                <div class="glossary-def">The total number of people applying for a particular job. Bigger pools = harder competition.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Articulation</div>
+                <div class="glossary-def">Your ability to clearly explain how your experience fits the role. Can be improved through practice.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Blind Application</div>
+                <div class="glossary-def">Applying without knowing how well you actually fit, or what your specific gaps are.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Critical Score</div>
+                <div class="glossary-def">The minimum qualification level needed to realistically get an interview. Rises as competition increases.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Effective Fit</div>
+                <div class="glossary-def">Your qualifications multiplied by your interview probability. Measures your "real" chance of success.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Fit Score</div>
+                <div class="glossary-def">How well you match a job's requirements, typically on a 0-100 scale. 85+ is excellent, 70-84 is good, 55-69 is marginal, below 55 is poor fit.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Interview Slots (K)</div>
+                <div class="glossary-def">The number of candidates a company will interview. Usually 5-15.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Market Condition Index (MCI)</div>
+                <div class="glossary-def">A measure of how competitive the job market is. Higher = harder for candidates.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Spray and Pray</div>
+                <div class="glossary-def">The strategy of sending as many applications as possible, hoping something sticks. Generally ineffective.</div>
+            </div>
+
+            <div class="glossary-item">
+                <div class="glossary-term">Tragedy of the Commons</div>
+                <div class="glossary-def">When everyone's individual "rational" behavior (apply more!) makes everyone worse off collectively.</div>
+            </div>
+        </section>
+
+        <!-- Further Reading -->
+        <section class="content-section">
+            <h2>Further Reading</h2>
+
+            <p>For the full mathematical treatment with formulas and proofs, see:</p>
+
+            <div class="callout definition">
+                <div class="callout-header">
+                    <span class="callout-icon">&#128214;</span>
+                    <span class="callout-title">Technical Paper</span>
+                </div>
+                <p><strong>"A Probabilistic Model for Job Offer Success: Formalizing the Application-to-Offer Pipeline"</strong></p>
+                <p style="margin-top: 0.5rem;"><em>Working Paper v1.7, JobOps Research</em></p>
+                <p style="margin-top: 0.75rem;">That document includes complete probability derivations, labor market modeling, interview performance equations, Nash equilibrium analysis, and empirical calibration data.</p>
+            </div>
+
+            <p style="margin-top: 1rem; color: var(--text-dim); font-size: 0.85rem;">This plain-language guide is intended as an accessible companion for readers who want the insights without the mathematics.</p>
+        </section>
+
+        <!-- Navigation -->
+        <div class="nav-steps">
+            <a href="index.html" class="nav-step prev">
+                <span>Return to</span>
+                <strong>Command Center</strong>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <a href="index.html#process" class="nav-step next">
+                <span>Explore</span>
+                <strong>The 8-Step Protocol</strong>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <span class="footer-logo">JOBOPS</span>
+            <span class="footer-tagline">Intelligence-driven job applications.</span>
+        </div>
+    </footer>
+</body>
+</html>

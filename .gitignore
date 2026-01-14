@@ -2,11 +2,10 @@
 node_modules/
 
 # ============================================================
-# Landing Pages - Local Development Only
+# Landing Pages - GitHub Pages Deployment
 # ============================================================
-# docs/ folder contains landing pages for local preview
-# These should not be pushed to the repository
-docs/
+# docs/ folder contains landing pages for GitHub Pages
+# Note: docs/ is NOT gitignored - it's deployed to GitHub Pages
 
 # Environment variables
 .env
