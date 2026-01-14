@@ -415,6 +415,108 @@ Located in `.claude/templates/`:
   - **Important**: Provides strategic guidance, not legal advice. Recommends employment attorney for legally complex situations
   - Output: `OutputResumes/CodeRed_[Company]_[Date].md`
 
+- `/severance-review <agreement-file> [--benchmark] [--counter-offer]`: Analyze severance packages and termination agreements
+  - Parses agreement for key terms: severance amount, benefits continuation, equity treatment, restrictive covenants, release of claims
+  - **Red Flag Detection**: Overly broad releases, one-sided non-disparagement, unlimited cooperation obligations, ADEA compliance issues
+  - **Package Valuation**: Total cash value, benefits value, equity value, tax considerations
+  - **Benchmarking** (--benchmark): Industry standards by level, benefits continuation norms, geographic considerations
+  - **Negotiation Strategy** (--counter-offer): What's negotiable vs. boilerplate, counter-proposal language, leverage assessment
+  - **ADEA/OWBPA Compliance**: 21/45-day consideration periods, 7-day revocation, group layoff disclosures
+  - Output: `OutputResumes/SeveranceReview_[Company]_[Date].md`
+
+- `/workplace-documentation [--new-incident|--review|--timeline] [existing-log-file]`: Build organized incident documentation
+  - **Modes**: `--new-incident` (guided documentation), `--review` (quality assessment), `--timeline` (visual timeline)
+  - Guided incident recording: date, time, location, participants, witnesses, exact quotes, evidence
+  - Documentation best practices: contemporaneous entries, specific language, facts over opinions
+  - Evidence organization with categorization and tagging
+  - Pattern analysis across multiple incidents
+  - Quality assessment with strength ratings (Strong/Medium/Weak)
+  - Output: `OutputResumes/IncidentLog_[Company]_[Date].md`
+
+- `/non-compete-analysis <agreement-file> [--state=XX] [--target-opportunity]`: Analyze restrictive covenant enforceability
+  - Parses non-compete, non-solicitation, NDA, and invention assignment provisions
+  - **State-Specific Analysis**: States that ban (CA, MN, ND, OK), limit (WA, OR, IL, MA), or enforce (FL, TX, GA)
+  - **Enforceability Factors**: Time, geography, scope, legitimate business interest, consideration, hardship
+  - **Risk Assessment Matrix**: High/Medium/Low risk activities, safe activities, carve-outs
+  - **Target Opportunity Analysis** (--target-opportunity): Specific job opportunity risk evaluation
+  - **Enforcement Reality Check**: Likelihood of enforcement, litigation costs, defense options
+  - Output: `OutputResumes/NonCompeteAnalysis_[Company]_[Date].md`
+
+- `/reference-shield [--assess|--build|--rescue] [reference-list-file]`: Manage reference risk after difficult departure
+  - **Modes**: `--assess` (risk evaluation), `--build` (proactive strategy), `--rescue` (damage control)
+  - Reference risk categorization: Safe/Risky/Unknown with likely statements
+  - Legal landscape by state: reference immunity, disclosure limits, defamation considerations
+  - Reference strategy development: primary, backup, character, skill-specific, peer, client references
+  - Proactive reference letter collection and LinkedIn recommendation strategy
+  - **Reference Rescue**: Reference checking services, cease and desist, offsetting references
+  - Departure narrative development with consistency guidance
+  - Output: `OutputResumes/ReferenceStrategy_[Date].md`
+
+- `/unemployment-prep [--state=XX] [--appeal] [termination-docs]`: Prepare for unemployment insurance claims
+  - **State-Specific Guidance**: Eligibility, benefit calculation, maximum amounts, waiting periods, deadlines
+  - Eligibility assessment: voluntary vs. involuntary, misconduct definitions, good cause exceptions
+  - Documentation preparation for claim filing
+  - **Anticipating Employer Contest**: Common arguments, "misconduct" defenses, counter-evidence
+  - Phone interview preparation: likely questions, how to answer, documentation to have ready
+  - **Appeal Process** (--appeal): Deadlines, hearing preparation, evidence presentation, common arguments
+  - Benefit optimization: partial unemployment, severance impact, job search requirements
+  - Output: `OutputResumes/UnemploymentPrep_[State]_[Date].md`
+
+- `/discrimination-assessment [incident-log-file] [--protected-class=X]`: Assess potential discrimination patterns
+  - **CRITICAL**: Not legal advice - always recommends employment attorney consultation
+  - Protected class identification: Title VII, ADEA, ADA, GINA, PDA, state-specific protections
+  - Adverse action documentation: termination, demotion, harassment, retaliation, hostile work environment
+  - **Comparator Analysis**: Similarly situated employees, different treatment patterns, comparison matrix
+  - Pattern recognition: frequency, escalation, direct evidence (statements), statistical patterns
+  - Causation timeline: protected activity to adverse action, temporal proximity, pretext indicators
+  - Evidence assessment with strength ratings
+  - EEOC/state agency filing considerations and deadlines (180/300 days)
+  - Output: `OutputResumes/DiscriminationAssessment_[Date].md`
+
+- `/investigation-prep [--accused|--complainant|--witness] [relevant-docs]`: Prepare for workplace investigations
+  - **Modes**: Role-specific guidance for accused, complainant, or witness
+  - Understanding investigation process: types, timeline, documentation, confidentiality
+  - Your rights: Weingarten (union), representation, know allegations, respond, retaliation protection
+  - Pre-interview preparation: document review, timeline creation, key talking points, anticipated questions
+  - Interview strategies: answer only what's asked, don't speculate, stay calm, take notes
+  - What NOT to do: lie, destroy evidence, contact other party, discuss with witnesses, retaliate
+  - Post-interview actions: same-day documentation, follow-up email, retaliation monitoring
+  - Responding to findings: appeal rights, rebuttal preparation, escalation to legal counsel
+  - Output: `OutputResumes/InvestigationPrep_[Date].md`
+
+- `/accommodation-request [--disability|--religious|--medical|--pregnancy] [--appeal]`: Build workplace accommodation requests
+  - **Types**: ADA disability, Title VII religious, medical condition, pregnancy (PDA/PWFA)
+  - ADA framework: qualified individual, essential functions, reasonable accommodation, undue hardship
+  - Common accommodations: modified schedule, remote work, assistive technology, policy modifications
+  - Interactive process guide: initiating request, employer obligations, documentation requirements
+  - **Request Letter Builder**: Template generation with customization guidance
+  - **Denial Response** (--appeal): Challenge strategies, EEOC filing, appeal letter template
+  - Retaliation protection and common employer violations
+  - Output: `OutputResumes/AccommodationRequest_[Type]_[Date].md`
+
+- `/layoff-intel [--company=name] [--assess|--prepare|--warn-signs]`: Assess layoff risk and prepare proactively
+  - **Modes**: `--assess` (vulnerability analysis), `--prepare` (proactive plan), `--warn-signs` (organizational signals)
+  - Company health indicators via web research: earnings, stock, hiring freezes, leadership changes
+  - Organizational warning signs: budget cuts, project cancellations, consultants, unusual silence
+  - Personal vulnerability assessment: role criticality, performance, tenure, skills alignment, visibility
+  - WARN Act considerations: 60-day notice, thresholds, state mini-WARN laws
+  - Severance intelligence: research company patterns, industry benchmarks, negotiable components
+  - Proactive preparation checklist: resume, network, references, finances, benefits, legal review
+  - Jump vs. stay analysis with decision framework
+  - Output: `OutputResumes/LayoffIntel_[Company]_[Date].md`
+
+- `/constructive-dismissal [incident-log-file] [--jurisdiction=state-or-country]`: Assess constructive dismissal viability
+  - **CRITICAL**: Not legal advice - resignation is irreversible, always consult attorney first
+  - Legal standards by jurisdiction: US federal, state variations, Canada, UK
+  - Common qualifying conditions: demotion, pay reduction, forced relocation, hostile environment, retaliation
+  - Condition severity analysis and exhaustion of remedies assessment
+  - Evidence requirements: written complaints, employer response, documentation, witnesses
+  - **Critical Mistakes to Avoid**: Resigning too quickly, not complaining in writing, not giving employer remedy chance
+  - Pre-resignation checklist with verification items
+  - Alternative strategies: stay and document, internal complaint, EEOC filing, negotiate exit
+  - Risk/benefit analysis with decision matrix
+  - Output: `OutputResumes/ConstructiveDismissalAssessment_[Date].md`
+
 ### Independent Contractor
 - `/defineservices [--guided|--from-profile|--update]`: Define independent contractor service offerings
   - Three modes: guided interactive (default), automatic from profile, update existing
