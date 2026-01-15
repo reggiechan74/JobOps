@@ -5,6 +5,29 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-01-15
+
+### Added
+- **Job Offer Analysis Command**: New `/assess-job-offer` command for comprehensive employment offer evaluation
+  - Multi-jurisdiction support for all Canadian provinces and US states
+  - **Canadian Provinces**: ON, BC, AB, QC, MB, SK, NS, NB, NL, PE, NT, NU, YT with detailed employment standards
+  - **US States**: Federal baseline plus state-specific non-compete enforceability tracking
+  - **Compensation Analysis**: Market research benchmarking against Glassdoor, Levels.fyi, LinkedIn, Payscale
+  - **Contract Review**: Termination clause validity, restrictive covenants, IP assignment, NDAs
+  - **Legal Analysis**: Jurisdiction-specific employment law (ESA, common law, at-will doctrine)
+  - **Non-Compete Assessment**: Automatic enforceability determination (e.g., void in Ontario per Bill 27)
+  - **Personal Alignment**: Comparison against Vision.md goals and Anti-Vision.md deal-breakers
+  - **Counter-Offer Generation**: `--counter-offer` flag for negotiation scripts and priority matrix
+  - Defaults to Ontario, Canada; override with `--jurisdiction=XX`
+  - Output: `OutputResumes/JobOfferAnalysis_[Company]_[Role]_[Date].md`
+
+### Changed
+- **CLAUDE.md Refactored**: Reduced from 812 to 129 lines (84% reduction)
+  - Added maintainer note to keep file under 150 lines
+  - Detailed command documentation moved to `.claude/commands/` files
+  - Retained essential quick-reference information only
+  - Improved context window efficiency for every prompt
+
 ## [1.6.0] - 2026-01-14
 
 ### Added
@@ -449,6 +472,8 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.6.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.6.1
+[1.6.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.6.0
 [1.5.2]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.2
 [1.5.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.1
 [1.5.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.0

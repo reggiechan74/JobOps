@@ -1,6 +1,6 @@
 {
   "name": "jobops",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Intelligence-Driven Application Warfare System - Tactical job application platform with resume development, OSINT intelligence, interview preparation, and career retrospective analysis",
   "scripts": {
     "install-browsers": "npx playwright install chrome",

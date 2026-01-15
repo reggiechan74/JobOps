@@ -4,7 +4,7 @@
 
 ## Repository Purpose
 
-**JobOps v1.5.2** - Intelligence-driven job application system using 8-step methodology to create tailored, credible resumes from master career inventory. Uses HAM-Z methodology (Hard Skill, Action, Metrics, Structure) with provenance hardening.
+**JobOps v1.6.1** - Intelligence-driven job application system using 8-step methodology to create tailored, credible resumes from master career inventory. Uses HAM-Z methodology (Hard Skill, Action, Metrics, Structure) with provenance hardening.
 
 ## Key Directories
 
