@@ -1,812 +1,129 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+> **MAINTAINER NOTE:** This file is loaded into context with every prompt. Keep it under 150 lines. Detailed command/agent docs belong in `.claude/commands/` and `.claude/agents/`. Only add quick-reference information here.
 
 ## Repository Purpose
 
-**JobOps - Intelligence-Driven Application Warfare System**
-
-This is a tactical job application platform that uses an 8-step methodology to create tailored, credible resumes from master career inventory documents. The system employs the HAM-Z methodology (Hard Skill, Action, Metrics, Structure combined with XYZ narrative structure) and includes provenance hardening to ensure all claims are defensible.
-
-**Current Version:** 1.5.2 (see CHANGELOG.md for version history)
+**JobOps v1.5.2** - Intelligence-driven job application system using 8-step methodology to create tailored, credible resumes from master career inventory. Uses HAM-Z methodology (Hard Skill, Action, Metrics, Structure) with provenance hardening.
 
 ## Key Directories
 
-- **ResumeSourceFolder/**: Contains master resume documents (comprehensive career inventory)
-  - `CareerHighlights/`: Certifications, skills, professional activities, publications
-  - `Experience/`: Detailed work history with one file per role
-  - `Preferences/`: Job search preferences (v1.2.0+) - Vision & Anti-Vision framework
-  - `Technology/`: Technical capabilities portfolio and GitHub repositories
-  - `.profile/`: Optimized candidate profile cache (auto-generated)
-
-- **SourceMaterial/**: Contains methodology documentation and analysis
-  - `System_Dynamics_Analysis_Assessment_First_Hiring_v3.md`: Assessment-First Hiring theoretical framework
-  - `Recommendation_Plan_2025-11-16.md`: Repository improvement roadmap with architecture clarifications
-  - Various analysis documents and code reviews
-
-- **Scoring_Rubrics/**: Contains assessment rubrics and scoring frameworks
-  - Dynamic rubrics: Job-specific rubrics created by `/assessjob` or `/createrubric` commands with embedded detailed scoring framework
-  - Reusable rubrics: Created by `/createrubric` for consistent evaluation across multiple candidates
-  - Format: `Rubric_[Company]_[Role]_[Date].md` for each assessment
-
-- **OutputResumes/**: Generated resume drafts and analysis outputs
-  - Step 1 drafts: Initial targeted resumes
-  - Step 2 analyses: Provenance check reports
-  - Step 3 finals: Hardened, interview-ready resumes
-
-- **Job_Postings/**: Target job descriptions in markdown format
-  - Store job postings as `.md` files for processing
-  - Use descriptive filenames (e.g., `CompanyName_Role_Date.md`)
-  - Search results automatically saved as `SearchResults_[Query]_[Date].md` with complete job descriptions
-
-- **Briefing_Notes/**: Interview preparation and skill gap study guides
-  - Gap analysis briefings: Focus on addressing identified weaknesses
-  - Full preparation briefings: Comprehensive interview readiness guides
-  - Interview question sets: Customized questions with answer strategies
-  - Format: `Briefing_[Company]_[Role]_[Mode]_[Date].md` and `Interview_Prep_[Company]_[Role]_[Date].md`
-
-- **Client_Prospects/**: Independent contractor service definitions and client discovery
-  - Service catalogs with pricing and positioning
-  - Engagement models and rate cards
-  - Competitive differentiation and proof points
-  - Format: `Service_Definition_[Date].md`
-
-- **.claude/templates/**: Framework templates for assessment system (NEW)
-  - `assessment_rubric_framework.md` - Master 100-point scoring structure
-  - `evidence_verification_framework.md` - Evidence-based scoring protocols
-  - `assessment_report_structure.md` - Assessment report format
-  - `candidate_profile_schema.json` - JSON schema for optimized candidate profiles
-  - `service_definition_schema.json` - JSON schema for independent contractor service offerings
-
-## Template-Based Architecture
-
-**Version 1.1.1+** - JobOps uses a template-based architecture for the assessment system to ensure consistency, maintainability, and quality across all candidate evaluations.
-
-### Design Principles
-
-- **Single Source of Truth**: One canonical template defines structure and standards
-- **DRY (Don't Repeat Yourself)**: Eliminate duplication across command files
-- **Consistency**: All assessments follow the same framework
-- **Maintainability**: Updates to templates propagate to all commands
-- **Traceability**: Clear separation between framework and command-specific logic
-
-### Template Files
-
-Located in `.claude/templates/`:
-
-#### 1. `assessment_rubric_framework.md` (~18KB)
-**Purpose**: Defines the canonical 100-point scoring structure for all candidate rubrics
-
-**Structure**:
-- 6 main categories (Technical Skills 25pts, Experience 25pts, Responsibilities 20pts, Achievements 15pts, Education 10pts, Cultural Fit 5pts)
-- Detailed scoring levels (Expert/Proficient/Basic/None for required skills, Strong/Basic/None for preferred)
-- 5-level scoring breakdowns for experience and achievements
-- Comprehensive evaluation frameworks with quantitative thresholds
-
-**Used By**: `/createrubric`, `/assessjob`
-
-**Customization**: Commands replace `[bracketed placeholders]` with job-specific content while maintaining exact structure
-
-#### 2. `evidence_verification_framework.md` (~6KB)
-**Purpose**: Defines rigorous evidence requirements and verification protocols for objective scoring
-
-**Key Requirements**:
-- CV citations with line numbers for all scores ≥2 points
-- Domain specificity verification (no assumption of equivalency)
-- Experience type classification (Direct/Adjacent/Transferable/Assumed)
-- Cross-reference protocol and quality control checklist
-- Scoring revision protocol for insufficient evidence
-- Red flag verification for high scores
-
-**Used By**: `/createrubric` (embedded in rubrics), `/assessjob`, `/assesscandidate`
-
-**Application**: All assessment commands must apply this framework when scoring candidates
-
-#### 3. `assessment_report_structure.md` (~12KB)
-**Purpose**: Defines standard format for assessment reports with proper evidence mapping and traceability
-
-**Structure**:
-- Executive summary and overall score
-- Detailed scoring breakdown with 3-level format:
-  - Rubric Criteria Applied
-  - Candidate Evidence (with CV citations)
-  - Score Justification
-- Evidence mapping tables
-- Interview strategy recommendations
-- Rubric application analysis
-- Audit trail
-
-**Used By**: `/assessjob`, `/assesscandidate`
-
-**Format**: Commands use detailed 3-level evidence attribution format for all scores
-
-#### 4. `candidate_profile_schema.json` (~15KB, v1.2.0)
-**Purpose**: JSON schema for structured candidate profiles with evidence traceability (context optimization)
-
-**Structure**:
-- 13 major sections: candidate metadata, technical_skills, work_history, education, certifications, projects, domain_expertise, leadership_experience, soft_skills, thought_leadership, professional_activities, metadata, **job_preferences** (v1.2.0)
-- Required and optional field definitions with data types
-- Evidence object structure (file + lines + context)
-- Enum values for categorical fields (proficiency levels, career progression, etc.)
-- Validation rules and format patterns
-
-**Job Preferences Section (v1.2.0)**:
-- `target_roles`: Ideal role, acceptable alternatives, target/avoid industries
-- `employment_type`: Preferred type (Employee/Consultant/Entrepreneur), acceptable types
-- `compensation`: Salary (min/target/ideal), hourly rates, entrepreneur income, equity preferences
-- `work_arrangement`: Remote/Hybrid/On-site preference, hours per week, geographic preferences
-- `travel`: Tolerance percentage and level, international travel willingness
-- `benefits`: Vacation weeks, required benefits (medical/dental/vision)
-- `work_environment`: Preferred/avoid characteristics, company size, autonomy level
-- `intellectual_property`: IP rights retention, side gig requirements
-- `deal_breakers`: Categorized absolute deal-breakers with evidence references
-
-**Used By**: `resume-summarizer` agent (invoked automatically by `/assessjob`, `/assesscandidate`)
-
-**Benefits**: Enables 85-90% token reduction (50K-80K → 11K-12K) while maintaining 100% evidence traceability
-
-### Command Integration
-
-#### `/createrubric` - Rubric Generation
-**Templates Referenced**: `assessment_rubric_framework.md`, `evidence_verification_framework.md`
-
-**Process**:
-1. Load both framework templates
-2. Parse job posting to extract requirements
-3. Conduct domain research for industry standards
-4. Generate job-specific rubric following framework template exactly
-5. Embed evidence verification protocols from framework
-6. Save to Scoring_Rubrics/ for reuse
-
-**Output**: Detailed, reusable scoring rubric (~400-500 lines)
-
-#### `/assessjob` - Dynamic Rubric + Assessment
-**Templates Referenced**: All three templates
-
-**Process**:
-1. Load all framework templates
-2. Create job-specific rubric using rubric framework
-3. Apply evidence verification during scoring
-4. Generate assessment report using report structure template
-5. Save rubric (Scoring_Rubrics/) and assessment (OutputResumes/)
-
-**Output**: Rubric + comprehensive assessment report
-
-#### `/assesscandidate` - Assessment with Pre-Created Rubric
-**Templates Referenced**: `evidence_verification_framework.md`, `assessment_report_structure.md`
-
-**Process**:
-1. Load framework templates
-2. Read pre-created rubric from Scoring_Rubrics/
-3. Validate rubric-job alignment
-4. Apply evidence verification framework during scoring
-5. Generate assessment report using report structure template
-6. Save to OutputResumes/ with audit trail
-
-**Output**: Assessment report with rubric application analysis
-
-### Benefits
-
-**Eliminated ~780 Lines of Duplication**:
-- Before: 1,805 total lines across 3 command files
-- After: 632 lines + 3 reusable templates
-- Reduction: 65% overall (improved maintainability)
-
-**Consistency Improvements**:
-- Impossible for rubric structures to drift across commands
-- Single update to template affects all assessments
-- Standardized evidence requirements across all evaluations
-- Unified report format ensures comparable outputs
-
-**Quality Assurance**:
-- Template compliance verification built into all commands
-- Mandatory detailed scoring breakdowns enforced
-- Evidence-based scoring protocols consistently applied
-- Clear audit trails for all assessments
-
-### Maintenance
-
-**Updating Templates**:
-1. Modify template file in `.claude/templates/`
-2. Test with sample job posting
-3. Verify all commands (createrubric, assessjob, assesscandidate) produce expected output
-4. Update version number if breaking changes
-
-**Adding New Scoring Criteria**:
-1. Update `assessment_rubric_framework.md` with new section
-2. Update `assessment_report_structure.md` to include reporting for new section
-3. Adjust point allocations if needed (maintaining 100-point total)
-4. Test rubric generation and assessment workflows
-
-**Template Versioning**:
-- Templates should include version metadata for tracking changes
-- Breaking changes to structure should trigger command file updates
-- Non-breaking enhancements (clarifications, examples) can be made directly to templates
-
-## Complete Application Process
-
-### Core Resume Development (Steps 1-3)
-1. **Step 1 - Initial Draft**: Creates tailored resume using HAM-Z methodology and cultural profile preferences
-2. **Step 2 - Provenance Check**: Analyzes credibility, evidence gaps, and risk factors
-3. **Step 3 - Final Resume**: Produces hardened version addressing all credibility concerns
-
-### Interview Preparation (Steps 4-6)
-4. **Step 4 - Assessment & Gap Analysis**: Evaluates candidate against job requirements with scoring rubric
-5. **Step 5 - Study Guide Creation**: Generates briefing notes to address skill gaps or comprehensive prep
-6. **Step 6 - Interview Question Prep**: Creates customized questions with strategic answer guidance
-
-### Application Finalization (Steps 7-8)
-7. **Step 7 - Cover Letter** (Optional): Generates strategic cover letter with requirements-matching table
-8. **Step 8 - Document Conversion** (Optional): Converts markdown to professional Word DOCX format
-
-## Available Slash Commands
-
-### Core Resume Development
-- `/buildresume <job-description-file> [cultural-profile]`: Runs complete 3-step resume process
-  - Default cultural profile: Canadian
-  - Creates draft, performs provenance check, produces final resume
-
-- `/provenance <draft-resume-file>`: Performs standalone provenance analysis
-  - Checks draft against master resume documents
-  - Identifies credibility issues and evidence gaps
-
-### Interview Preparation Workflow
-
-#### Modular Assessment Commands
-- `/createrubric <job-posting-file>`: Create reusable scoring rubric only
-  - Generates detailed job-specific 100-point scoring framework
-  - Performs web research for domain expertise and industry standards
-  - Saves to Scoring_Rubrics/ folder for consistent evaluation
-  - Enables standardized assessment across multiple candidates
-
-- `/assesscandidate <rubric-file> <job-posting-file>`: Assess using pre-created rubric
-  - **Automatically generates optimized candidate profile** (85-90% context reduction)
-  - Uses existing scoring rubric for consistent candidate evaluation
-  - Applies rubric criteria without modification for fairness
-  - Maps candidate evidence to specific rubric requirements
-  - Maintains complete audit trail and traceability
-
-- `/assessjob <job-posting-file>`: Complete assessment in one step (Step 4)
-  - **Automatically generates optimized candidate profile** (85-90% context reduction)
-  - Creates dynamic job-specific scoring rubric from job posting
-  - Saves custom rubric to Scoring_Rubrics/ folder for reuse
-  - Performs web research for domain expertise
-  - Generates 100-point assessment with evidence
-  - Provides hiring recommendations and interview strategy
-
-- `/comparejobs <assessment-file-1> <assessment-file-2> [assessment-file-3] [assessment-file-4]`: Compare multiple job assessments
-  - Analyzes 2-4 assessments from OutputResumes/ folder
-  - Provides strategic hiring insights and role prioritization
-  - Identifies consistent patterns and transferable skills
-  - Generates comprehensive comparison report with recommendations
-  - Supports career planning and negotiation positioning
-
-- `/briefing <assessment-report> <job-description> [gaps-only|prep-time]`: Creates study guide briefing (Step 5)
-  - Analyzes assessment to identify skill gaps and weaknesses
-  - Researches current best practices and learning resources
-  - Generates detailed study guide with timelines
-  - **Time-aware Study Priority tags**: 🔴 FOCUS NOW, 🟡 IF TIME PERMITS, 🟢 SKIM ONLY
-  - Accepts prep time: `1d`, `2d`, `3d` (days) or `1w`, `2w` (weeks)
-  - Priority-Based Study Plan with day-by-day schedule
-  - Gap acknowledgment scripts for SKIM ONLY critical items
-  - Two modes: gaps-only focus or comprehensive preparation
-  - Includes interview questions, hands-on exercises, and quick references
-
-- `/interviewprep <resume-file> <job-description> [number-of-questions] [prep-time]`: Generate interview questions (Step 6)
-  - Creates likely interview questions based on resume-job alignment
-  - **Question Likelihood tags**: 🔴 HIGH LIKELIHOOD, 🟡 MODERATE LIKELIHOOD, 🟢 LOW LIKELIHOOD
-  - Accepts prep time: `1d`, `2d`, `3d` (days) or `1w`, `2w` (weeks)
-  - Priority-Based Practice Schedule with day-by-day planning
-  - Defaults to 10 questions if number not specified
-  - Balances technical and behavioral questions
-  - Provides answer strategies and STAR format guidance
-  - Includes follow-up questions and red flags to avoid
-
-### Application Finalization
-- `/coverletter <step3-resume-file> <job-description-file> [hiring-manager-name]`: Creates cover letter (Step 7)
-  - Generates from validated Step 3 resume
-  - Includes strategic requirements-matching table
-  - Maintains provenance chain
-
-- `/formatresume <markdown-resume-file> [theme] [pages]`: Converts markdown resume to professionally designed PDF (v1.4.0)
-  - Uses Playwright browser automation for pixel-perfect PDF generation
-  - Three theme options: `modern` (blue accents, contemporary), `classic` (serif, formal), `minimal` (clean, whitespace-focused)
-  - Configurable page count: `1` (entry-level), `2` (mid-career), `3` (executive), or `auto` (content-based, default)
-  - Iterative refinement with automatic spacing adjustments to match target page count
-  - ATS-friendly output with parseable text layer
-  - Visual review and quality validation with screenshots
-  - Output: `{original_name}_formatted.pdf`
-
-- `/convert <file-path-or-pattern> [output-directory]`: Converts to Word DOCX format (Step 8)
-  - Uses pandoc for professional conversion
-  - Supports patterns: `resume`, `coverletter`, `all`, file paths
-  - Preserves formatting and creates submission-ready documents
-
-### Job Search & Intelligence
-- `/searchjobs <search-query> [location] [--company=name] [--save] [--limit=N]`: Search hiring.cafe for job postings
-  - Two-phase hybrid search: Fast API search + Playwright scraping for complete job descriptions
-  - Search by keywords, location, company name
-  - Optional flags: --company=name, --save, --limit=N (default: 20, max recommended: 50)
-  - Returns structured job listings with complete verbatim job descriptions
-  - Automatically saves results to Job_Postings/ folder when --save flag provided
-  - Format: `SearchResults_[Query]_[Date].md` with full market analysis
-
-- `/osint <company-name>`: Comprehensive company intelligence gathering
-  - Deploys 6 specialized OSINT agents in parallel
-  - Analyzes corporate structure, legal, leadership, compensation, culture, market
-  - Generates Master Intelligence Report for strategic decision-making
-
-- `/auditjobposting <job-posting-file>`: Comprehensive job posting quality audit
-  - **100-point scoring rubric** evaluating posting quality and realism
-  - **Internal Consistency (25 pts)**: Title-responsibility alignment, experience coherence, skills-duties match
-  - **Market Realism (25 pts)**: Technology timeline validity (detects impossible experience requirements), skill breadth feasibility, candidate pool reality
-  - **Compensation Assessment (20 pts)**: Salary-role/experience/location alignment with market research
-  - **Role Scope & Definition (20 pts)**: Single role focus (unicorn detection), responsibility clarity, success metrics
-  - **Red Flag Assessment (10 pts)**: Language quality, organizational health signals, work-life balance indicators
-  - Conducts web research for technology ages, salary benchmarks, and company reviews
-  - Generates actionable interview questions to address identified concerns
-  - Scoring interpretation: A (90-100) pursue, B (80-89) worth applying, C (70-79) caution, D (60-69) poor, F (<60) avoid
-  - Output: `OutputResumes/JobAudit_[Company]_[Role]_[Date].md`
-
-### System Setup
-- `/create-career-history <resume-file-1> [resume-file-2] ...`: Intelligent career history parser
-  - Accepts one or more resume files (PDF, DOCX, TXT, MD) as input
-  - Parses existing resumes and extracts structured career information
-  - Creates complete ResumeSourceFolder structure with pre-populated files
-  - Transforms content to HAM-Z format (Hard Skill + Action + Metrics)
-  - Identifies content gaps and provides enhancement recommendations
-  - Marks estimated metrics and flags provenance concerns
-  - Essential first step for new users before building tailored resumes
-
-- `/install-pandoc [force]`: Installs pandoc for document conversion
-  - Auto-detects operating system and package manager
-  - Verifies installation and conversion capabilities
-  - Required dependency for document conversion functionality
-
-### Portfolio Management
-- `/github-portfolio [-create|-update] [repository-url-or-analysis]`: Create or update GitHub portfolio documentation
-  - **Default mode (-create)**: Creates initial GitHub_Repositories.md with comprehensive structure
-  - **Update mode (-update <repo-url>)**: Adds new repository to existing portfolio
-  - **Refresh mode (-update)**: Full portfolio reorganization and content refresh
-  - Provides repository analysis script for user to run in target repository's codespace
-  - Creates comprehensive repository entries with technical architecture, skills demonstrated, business impact
-  - Maintains 11 capability matrices tracking proficiency across all technical areas
-  - Updates Table of Contents, conclusion, and version tracking automatically
-  - Output: `ResumeSourceFolder/Technology/GitHub_Repositories.md`
-
-### Career Strategy & Analysis
-- `/idealjob [output-filename]`: Generate synthetic ideal job description (v1.4.0)
-  - Analyzes complete career inventory from ResumeSourceFolder
-  - Reviews Vision/Anti-Vision preferences for role alignment
-  - Studies patterns from high-scoring (90+) assessment reports
-  - Conducts market research to validate role viability
-  - Generates realistic job description optimized for candidate fit
-  - Includes search strategy with real job titles, target companies, and keywords
-  - Output: `Job_Postings/IdealJob_Synthetic_[Date].md`
-
-- `/change-one-thing <resume-folder>`: Comprehensive career retrospective analysis
-  - 16-lens pattern recognition framework across 4 analytical phases
-  - **External Patterns**: Skill trajectory, network building, technical decisions, learning gaps, visibility, cross-pollination, geographic positioning
-  - **Internal Constraints**: Family dynamics, financial capacity, health/energy analysis
-  - **Temporal Mechanics**: Information asymmetry correction, butterfly effect mapping, irreversibility analysis
-  - **Probabilistic Outcomes**: Luck surface area, values evolution, skill vs. timing attribution
-  - Multi-candidate recommendation system optimized for different objectives (wealth, optionality, impact, balance, risk minimization)
-  - Counterfactual rigor with quantified opportunity costs and risk assessment
-  - Automatic file output: 3-4 comprehensive analysis parts + executive summary (≤6,000 tokens)
-  - Values-aligned recommendations based on user interview about priorities and constraints
-  - "What you can still do now" actionable recovery plans with immediate next steps
-  - Outputs: `Change_One_Thing_Analysis_Part[1-3]_YYYYMMDD.md` and `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
+| Directory | Purpose |
+|-----------|---------|
+| `ResumeSourceFolder/` | Master resume data (Experience/, CareerHighlights/, Technology/, Preferences/, .profile/) |
+| `Job_Postings/` | Target job descriptions as `.md` files |
+| `OutputResumes/` | Generated drafts, analyses, finals |
+| `Scoring_Rubrics/` | Assessment rubrics (`Rubric_[Company]_[Role]_[Date].md`) |
+| `Briefing_Notes/` | Interview prep and study guides |
+| `Client_Prospects/` | Independent contractor service definitions and prospects |
+| `.claude/templates/` | Assessment framework templates (rubric, evidence, report schemas) |
+| `.claude/commands/` | Slash command definitions |
+| `.claude/agents/` | Specialized agent definitions |
+
+## 8-Step Application Process
+
+**Resume Development (Steps 1-3):** Draft → Provenance Check → Final Resume
+**Interview Prep (Steps 4-6):** Assessment → Study Guide → Interview Questions
+**Finalization (Steps 7-8):** Cover Letter → Document Conversion
+
+## Slash Commands Quick Reference
+
+### Core Resume (`/buildresume`, `/provenance`)
+- `/buildresume <job-file> [profile]` - Complete 3-step resume process (default: Canadian profile)
+- `/provenance <draft-file>` - Standalone credibility analysis
+
+### Assessment (`/createrubric`, `/assessjob`, `/assesscandidate`, `/comparejobs`)
+- `/createrubric <job-file>` - Create reusable 100-point scoring rubric
+- `/assessjob <job-file>` - Dynamic rubric + full assessment
+- `/assesscandidate <rubric-file> <job-file>` - Assess using pre-created rubric
+- `/comparejobs <assessment-1> <assessment-2> [3] [4]` - Compare 2-4 assessments
+
+### Interview Prep (`/briefing`, `/interviewprep`)
+- `/briefing <assessment> <job-file> [gaps-only|1d|2d|1w]` - Study guide with priority tags
+- `/interviewprep <resume> <job-file> [count] [prep-time]` - Interview questions with likelihood tags
+
+### Finalization (`/coverletter`, `/formatresume`, `/convert`)
+- `/coverletter <step3-resume> <job-file> [manager-name]` - Strategic cover letter
+- `/formatresume <md-file> [modern|classic|minimal] [1|2|3|auto]` - PDF via Playwright
+- `/convert <file-or-pattern> [output-dir]` - Word DOCX via pandoc
+
+### Job Search (`/searchjobs`, `/osint`, `/auditjobposting`)
+- `/searchjobs <query> [location] [--company=X] [--save] [--limit=N]` - hiring.cafe search
+- `/osint <company>` - 6-agent parallel company intelligence
+- `/auditjobposting <job-file>` - 100-point job posting quality audit
+
+### Career Strategy (`/idealjob`, `/change-one-thing`, `/assess-job-offer`)
+- `/idealjob [filename]` - Generate synthetic ideal job description
+- `/change-one-thing <folder>` - Career retrospective with counterfactual analysis
+- `/assess-job-offer <offer-file> [job-posting] [--counter-offer]` - Comprehensive offer analysis (compensation, legal, alignment)
 
 ### Career Crisis Management
-- `/code-red [document-file-or-folder] [--mode=assess|respond|plan|exit]`: Employment crisis intervention
-  - **Purpose**: Navigate PIPs, HR conflicts, termination risk, and workplace crises
-  - **Modes**:
-    - `assess` (default): Full intake, interview, and situation analysis
-    - `respond`: Draft response to specific HR communication
-    - `plan`: Create action plan for upcoming meeting or deadline
-    - `exit`: Focus on exit strategy and job transition
-  - **Accepted Documents**: HR emails, PIPs, performance reviews, employment contracts, meeting notes, incident reports
-  - **Phase 1 - Intake**: Document inventory, timeline construction, key player identification, legally significant language flagging
-  - **Phase 2 - Interview**: 15-question structured interview covering situation, relationships, protected class screening, documentation gaps, desired outcomes, timeline pressures
-  - **Phase 3 - Analysis**: Power dynamics assessment, pattern recognition (PIP playbook, pretextual termination, legitimate issues), risk matrix
-  - **Phase 4 - Strategic Options**: Fight to stay, negotiate exit package, strategic resignation, legal consultation path, parallel job search
-  - **Phase 5 - Tactical Support**: Response drafting, PIP rebuttal, meeting preparation, exit negotiation scripts, documentation strategy
-  - **Phase 6 - Job Search Transition**: Gap narrative development, reference strategy, integration with JobOps resume tools
-  - **Important**: Provides strategic guidance, not legal advice. Recommends employment attorney for legally complex situations
-  - Output: `OutputResumes/CodeRed_[Company]_[Date].md`
-
-- `/severance-review <agreement-file> [--benchmark] [--counter-offer]`: Analyze severance packages and termination agreements
-  - Parses agreement for key terms: severance amount, benefits continuation, equity treatment, restrictive covenants, release of claims
-  - **Red Flag Detection**: Overly broad releases, one-sided non-disparagement, unlimited cooperation obligations, ADEA compliance issues
-  - **Package Valuation**: Total cash value, benefits value, equity value, tax considerations
-  - **Benchmarking** (--benchmark): Industry standards by level, benefits continuation norms, geographic considerations
-  - **Negotiation Strategy** (--counter-offer): What's negotiable vs. boilerplate, counter-proposal language, leverage assessment
-  - **ADEA/OWBPA Compliance**: 21/45-day consideration periods, 7-day revocation, group layoff disclosures
-  - Output: `OutputResumes/SeveranceReview_[Company]_[Date].md`
-
-- `/workplace-documentation [--new-incident|--review|--timeline] [existing-log-file]`: Build organized incident documentation
-  - **Modes**: `--new-incident` (guided documentation), `--review` (quality assessment), `--timeline` (visual timeline)
-  - Guided incident recording: date, time, location, participants, witnesses, exact quotes, evidence
-  - Documentation best practices: contemporaneous entries, specific language, facts over opinions
-  - Evidence organization with categorization and tagging
-  - Pattern analysis across multiple incidents
-  - Quality assessment with strength ratings (Strong/Medium/Weak)
-  - Output: `OutputResumes/IncidentLog_[Company]_[Date].md`
-
-- `/non-compete-analysis <agreement-file> [--state=XX] [--target-opportunity]`: Analyze restrictive covenant enforceability
-  - Parses non-compete, non-solicitation, NDA, and invention assignment provisions
-  - **State-Specific Analysis**: States that ban (CA, MN, ND, OK), limit (WA, OR, IL, MA), or enforce (FL, TX, GA)
-  - **Enforceability Factors**: Time, geography, scope, legitimate business interest, consideration, hardship
-  - **Risk Assessment Matrix**: High/Medium/Low risk activities, safe activities, carve-outs
-  - **Target Opportunity Analysis** (--target-opportunity): Specific job opportunity risk evaluation
-  - **Enforcement Reality Check**: Likelihood of enforcement, litigation costs, defense options
-  - Output: `OutputResumes/NonCompeteAnalysis_[Company]_[Date].md`
-
-- `/reference-shield [--assess|--build|--rescue] [reference-list-file]`: Manage reference risk after difficult departure
-  - **Modes**: `--assess` (risk evaluation), `--build` (proactive strategy), `--rescue` (damage control)
-  - Reference risk categorization: Safe/Risky/Unknown with likely statements
-  - Legal landscape by state: reference immunity, disclosure limits, defamation considerations
-  - Reference strategy development: primary, backup, character, skill-specific, peer, client references
-  - Proactive reference letter collection and LinkedIn recommendation strategy
-  - **Reference Rescue**: Reference checking services, cease and desist, offsetting references
-  - Departure narrative development with consistency guidance
-  - Output: `OutputResumes/ReferenceStrategy_[Date].md`
-
-- `/unemployment-prep [--state=XX] [--appeal] [termination-docs]`: Prepare for unemployment insurance claims
-  - **State-Specific Guidance**: Eligibility, benefit calculation, maximum amounts, waiting periods, deadlines
-  - Eligibility assessment: voluntary vs. involuntary, misconduct definitions, good cause exceptions
-  - Documentation preparation for claim filing
-  - **Anticipating Employer Contest**: Common arguments, "misconduct" defenses, counter-evidence
-  - Phone interview preparation: likely questions, how to answer, documentation to have ready
-  - **Appeal Process** (--appeal): Deadlines, hearing preparation, evidence presentation, common arguments
-  - Benefit optimization: partial unemployment, severance impact, job search requirements
-  - Output: `OutputResumes/UnemploymentPrep_[State]_[Date].md`
-
-- `/discrimination-assessment [incident-log-file] [--protected-class=X]`: Assess potential discrimination patterns
-  - **CRITICAL**: Not legal advice - always recommends employment attorney consultation
-  - Protected class identification: Title VII, ADEA, ADA, GINA, PDA, state-specific protections
-  - Adverse action documentation: termination, demotion, harassment, retaliation, hostile work environment
-  - **Comparator Analysis**: Similarly situated employees, different treatment patterns, comparison matrix
-  - Pattern recognition: frequency, escalation, direct evidence (statements), statistical patterns
-  - Causation timeline: protected activity to adverse action, temporal proximity, pretext indicators
-  - Evidence assessment with strength ratings
-  - EEOC/state agency filing considerations and deadlines (180/300 days)
-  - Output: `OutputResumes/DiscriminationAssessment_[Date].md`
-
-- `/investigation-prep [--accused|--complainant|--witness] [relevant-docs]`: Prepare for workplace investigations
-  - **Modes**: Role-specific guidance for accused, complainant, or witness
-  - Understanding investigation process: types, timeline, documentation, confidentiality
-  - Your rights: Weingarten (union), representation, know allegations, respond, retaliation protection
-  - Pre-interview preparation: document review, timeline creation, key talking points, anticipated questions
-  - Interview strategies: answer only what's asked, don't speculate, stay calm, take notes
-  - What NOT to do: lie, destroy evidence, contact other party, discuss with witnesses, retaliate
-  - Post-interview actions: same-day documentation, follow-up email, retaliation monitoring
-  - Responding to findings: appeal rights, rebuttal preparation, escalation to legal counsel
-  - Output: `OutputResumes/InvestigationPrep_[Date].md`
-
-- `/accommodation-request [--disability|--religious|--medical|--pregnancy] [--appeal]`: Build workplace accommodation requests
-  - **Types**: ADA disability, Title VII religious, medical condition, pregnancy (PDA/PWFA)
-  - ADA framework: qualified individual, essential functions, reasonable accommodation, undue hardship
-  - Common accommodations: modified schedule, remote work, assistive technology, policy modifications
-  - Interactive process guide: initiating request, employer obligations, documentation requirements
-  - **Request Letter Builder**: Template generation with customization guidance
-  - **Denial Response** (--appeal): Challenge strategies, EEOC filing, appeal letter template
-  - Retaliation protection and common employer violations
-  - Output: `OutputResumes/AccommodationRequest_[Type]_[Date].md`
-
-- `/layoff-intel [--company=name] [--assess|--prepare|--warn-signs]`: Assess layoff risk and prepare proactively
-  - **Modes**: `--assess` (vulnerability analysis), `--prepare` (proactive plan), `--warn-signs` (organizational signals)
-  - Company health indicators via web research: earnings, stock, hiring freezes, leadership changes
-  - Organizational warning signs: budget cuts, project cancellations, consultants, unusual silence
-  - Personal vulnerability assessment: role criticality, performance, tenure, skills alignment, visibility
-  - WARN Act considerations: 60-day notice, thresholds, state mini-WARN laws
-  - Severance intelligence: research company patterns, industry benchmarks, negotiable components
-  - Proactive preparation checklist: resume, network, references, finances, benefits, legal review
-  - Jump vs. stay analysis with decision framework
-  - Output: `OutputResumes/LayoffIntel_[Company]_[Date].md`
-
-- `/constructive-dismissal [incident-log-file] [--jurisdiction=state-or-country]`: Assess constructive dismissal viability
-  - **CRITICAL**: Not legal advice - resignation is irreversible, always consult attorney first
-  - Legal standards by jurisdiction: US federal, state variations, Canada, UK
-  - Common qualifying conditions: demotion, pay reduction, forced relocation, hostile environment, retaliation
-  - Condition severity analysis and exhaustion of remedies assessment
-  - Evidence requirements: written complaints, employer response, documentation, witnesses
-  - **Critical Mistakes to Avoid**: Resigning too quickly, not complaining in writing, not giving employer remedy chance
-  - Pre-resignation checklist with verification items
-  - Alternative strategies: stay and document, internal complaint, EEOC filing, negotiate exit
-  - Risk/benefit analysis with decision matrix
-  - Output: `OutputResumes/ConstructiveDismissalAssessment_[Date].md`
+- `/code-red [docs] [--mode=assess|respond|plan|exit]` - Employment crisis intervention
+- `/severance-review <agreement> [--benchmark] [--counter-offer]` - Severance analysis
+- `/workplace-documentation [--new-incident|--review|--timeline]` - Incident logging
+- `/non-compete-analysis <agreement> [--state=XX]` - Restrictive covenant analysis
+- `/reference-shield [--assess|--build|--rescue]` - Reference risk management
+- `/unemployment-prep [--state=XX] [--appeal]` - UI claim preparation
+- `/discrimination-assessment [log] [--protected-class=X]` - Pattern assessment
+- `/investigation-prep [--accused|--complainant|--witness]` - Investigation prep
+- `/accommodation-request [--disability|--religious|--medical]` - Accommodation builder
+- `/layoff-intel [--company=X] [--assess|--prepare]` - Layoff risk assessment
+- `/constructive-dismissal [log] [--jurisdiction=X]` - Constructive dismissal analysis
 
 ### Independent Contractor
-- `/defineservices [--guided|--from-profile|--update]`: Define independent contractor service offerings
-  - Three modes: guided interactive (default), automatic from profile, update existing
-  - Creates comprehensive service catalog with 3-5 service offerings
-  - Defines pricing strategy (hourly, daily, retainer) with consistency validation
-  - Establishes engagement models and working preferences
-  - Develops competitive differentiation with evidence-based proof points
-  - Optional target market analysis with ideal client profiles
-  - Validates pricing consistency (daily ≈ hourly × 8, ascending tiers)
-  - Extracts from candidate profile and Vision.md preferences when available
-  - Output: `Client_Prospects/Service_Definition_[Date].md` (+ JSON for --from-profile mode)
+- `/defineservices [--guided|--from-profile|--update]` - Service catalog creation
+- `/ratecard [--format=md|pdf] [--currency=CAD|USD]` - Professional rate card
+- `/findclient [job-file] [--industry=X] [--size=X]` - B2B prospect discovery
+- `/pitchdeck [--prospect=X] [--industry=X]` - B2B pitch deck generation
+- `/proposaltemplate [--client=X] [--type=project|retainer]` - Consulting proposals
 
-- `/ratecard [--format=md|pdf|html] [--currency=CAD|USD] [--include-justification]`: Generate professional rate card from service definition
-  - **Prerequisite**: Requires service definition from `/defineservices` command
-  - Validates pricing consistency (daily ≈ hourly × 8, ascending tiers, premium multiplier 1.3x-2.0x)
-  - Generates professional rate card with service offerings, pricing tiers, engagement models, volume discounts
-  - Supports multiple output formats: markdown (default), HTML, or PDF via Playwright
-  - Currency selection: CAD (default) or USD with real-time conversion if needed
-  - Optional `--include-justification` flag adds credentials and ROI proof points section
-  - Auto-correction offered for minor pricing inconsistencies (daily/hourly alignment)
-  - Refuses generation for invalid rate structures (non-ascending tiers)
-  - Includes payment terms, expense policy, cancellation policy, and terms & conditions
-  - 6-month validity period with annual rate review guidance
-  - Output: `Client_Prospects/Rate_Card_[Date].[md|html|pdf]`
+### Landing Pages
+- `/landing-page:create <name> [--template=tactical|minimal|corporate]`
+- `/landing-page:css-template [--view|--analyze|--create]`
+- `/landing-page:copywrite <purpose> [--tone=X] [--framework=PAS|AIDA]`
 
-- `/findclient [ideal-job-file] [--industry=X] [--size=startup|mid|enterprise] [--location=X] [--limit=N]`: Identify B2B client prospects
-  - **Prerequisite**: Requires service definition from `/defineservices` command
-  - Discovers 10-50 potential B2B clients matching service offerings and ideal client profiles
-  - 10-point B2B fit scoring with 5 weighted factors (contractor history 25%, domain alignment 25%, procurement accessibility 20%, budget fit 15%, geographic match 15%)
-  - Web research for contractor signals, procurement portals, pain point evidence, and budget capacity
-  - Entry point identification (vendor portals, warm introductions, decision-makers, intermediaries)
-  - Priority classification: HIGH (8-10, active outreach), MEDIUM (5-7.9, qualified pipeline), LOW (1-4.9, deprioritize)
-  - Filters: industry, company size (startup/mid/enterprise), location, result limit
-  - Comprehensive outreach strategy with step-by-step approach for each prospect
-  - Market intelligence summary with industry patterns and competitive insights
-  - Output: `Client_Prospects/Prospects_[Domain]_[Date].md` with full detail for HIGH priority, condensed for MEDIUM, brief for LOW
+### System Setup
+- `/create-career-history <resume-files...>` - Parse existing resumes into ResumeSourceFolder
+- `/github-portfolio [-create|-update]` - GitHub portfolio documentation
+- `/install-pandoc` - Install pandoc for document conversion
 
-- `/pitchdeck [--prospect=company-name] [--industry=X] [--service=service-name] [--format=md|pptx]`: Generate professional B2B service pitch deck
-  - **Prerequisites**: Requires service definition from `/defineservices` AND candidate profile from `/assessjob`
-  - Creates 10-12 slide presentations tailored to specific prospects, industries, or services
-  - Four modes: prospect-specific (requires `/findclient` output), industry-generic, service-focused, or general capabilities
-  - Conducts fresh research (5-10 minutes) for prospect pain points, industry trends, decision-makers, and cost of inaction
-  - Slide structure: Title, Problem, Cost of Inaction, Solution, How It Works, Results & Proof, Why Me/Us, Engagement Options, Relevant Experience, Next Steps, Q&A, Appendix
-  - Provenance hardening: Validates ALL claims against candidate profile with evidence citations (target: >90% validation rate)
-  - Automatically filters work history and proof points for relevance to target (prospect/industry/service)
-  - Generates comprehensive provenance trail mapping every quantified claim to source documents with file + line citations
-  - Optional PowerPoint conversion via pandoc (requires `/install-pandoc`)
-  - Output: `Client_Prospects/Pitch_[Target]_[Date].md` (+ optional .pptx)
+## HAM-Z Formula
 
-- `/proposaltemplate [--client=name] [--service=name] [--type=project|retainer|staff-aug|workshop] [--value=amount]`: Generate professional consulting proposal templates
-  - **Prerequisite**: Requires service definition from `/defineservices` command
-  - Creates McKinsey/BCG-style proposals tailored to clients, services, and engagement types
-  - Four engagement types: project (fixed-scope), retainer (ongoing advisory), staff-aug (embedded consulting), workshop (training/facilitation)
-  - Automated pricing calculation with transparency: project (hours × rate with volume discounts), retainer (monthly hours × discounted rate), staff-aug (daily rate × days/month), workshop (delivery + prep days × rates)
-  - Integrates prospect research from pitch deck if available for client-specific pain points and decision-makers
-  - 10-section structure: Cover Page, Executive Summary, Understanding Your Challenge, Proposed Approach, Deliverables & Timeline, Team & Qualifications, Investment, Terms & Conditions, Next Steps, Appendix
-  - Pricing validation against service definition ranges with warnings for below-minimum or above-maximum pricing
-  - Comprehensive YAML frontmatter with pricing calculation metadata for audit trail and transparency
-  - Smart defaults: Generic client if not specified, primary service if not specified, project type if not specified, calculated pricing from rate card if value not specified
-  - Output: `Client_Prospects/Proposal_[Client]_[Service]_[Date].md`
+**Achieved [Metric-Driven Result] by leveraging [Hard Skill] to [perform specific action/process]**
 
-### Landing Page Development
-- `/landing-page:create <page-name> [--template=tactical|minimal|corporate] [--output-dir=docs]`: Create professional landing pages
-  - Invokes frontend-design skill for production-grade HTML generation
-  - Invokes landing-page-copywriter agent for strategic copy development
-  - Three CSS template options: tactical (tech/B2B), minimal (creative), corporate (enterprise)
-  - Proven landing page structure: Hero, Problem, Solution, How It Works, Social Proof, CTA
-  - Mobile-first responsive design with accessibility compliance
-  - Playwright preview for visual validation at desktop/mobile breakpoints
-  - Output: `{output-dir}/{page-name}.html`
+## Provenance Risk Categories
 
-- `/landing-page:css-template [--view|--analyze|--create] [template-name]`: Manage CSS design system templates
-  - **View mode**: List available templates and their component classes
-  - **Analyze mode**: Deep-dive analysis of design system variables, components, responsive behavior
-  - **Create mode**: Generate new CSS templates following established patterns
-  - Documents component usage patterns, extension guidelines, accessibility notes
-  - Available templates: tactical (`docs/subpage-styles.css`), minimal, corporate
+**High Risk:** Unbounded metrics, unsupported superlatives, cross-document inconsistencies, benchmark claims without peer sets
+**Medium Risk:** Mechanism-free outcomes, duplicate achievements, tool names without outcomes
 
-- `/landing-page:copywrite <page-purpose> [--tone=professional|casual|bold] [--framework=PAS|AIDA|StoryBrand]`: Generate strategic landing page copy
-  - Three copywriting frameworks: PAS (Problem-Agitate-Solution), AIDA (Attention-Interest-Desire-Action), StoryBrand
-  - Three tone options: professional (default), casual, bold
-  - Section-by-section copy: Meta tags, Hero, Problem, Solution, How It Works, Social Proof, CTA
-  - Includes A/B test variations for headlines and CTAs
-  - Persuasion psychology principles: social proof, authority, scarcity, urgency, reciprocity
-  - Quality checklist: benefits over features, specificity, "you" language, active voice
-  - Output: Structured copy document for use with `/landing-page:create`
+## File Naming Conventions
 
-## Custom Agents
+- Job Postings: `Job_Postings/CompanyName_Role_Date.md`
+- Rubrics: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md`
+- Outputs: Auto-named with step, role, company, date
 
-The repository includes specialized agents for each step:
+## Template Architecture
 
-### Resume Development Agents
-- `step1-resume-draft`: Initial targeted resume creation
-- `step2-provenance-check`: Comprehensive credibility analysis
-- `step3-final-resume`: Final hardened version production
+Templates in `.claude/templates/` define canonical structures:
+- `assessment_rubric_framework.md` - 100-point scoring (Tech 25, Experience 25, Responsibilities 20, Achievements 15, Education 10, Cultural 5)
+- `evidence_verification_framework.md` - Citation requirements, domain verification, experience classification
+- `assessment_report_structure.md` - Report format with 3-level evidence attribution
+- `candidate_profile_schema.json` - JSON schema for optimized profiles (85-90% token reduction)
 
-### Interview Preparation Agents
-- `candidate-assessment`: Expert HR/domain assessment against job descriptions (Step 4)
-- `interview-briefing`: Creates comprehensive study guides for skill gaps and interview prep (Step 5)
-- `interview-question-generator`: Generates customized interview questions with answer strategies (Step 6)
+## Key Agents
 
-### Modular Assessment Agents
-- `general-purpose`: Used by `/createrubric` for rubric-only generation
-- `candidate-assessment`: Used by `/assesscandidate` for rubric-based evaluation
+| Agent | Purpose |
+|-------|---------|
+| `step1-resume-draft` | Initial tailored resume |
+| `step2-provenance-check` | Credibility analysis |
+| `step3-final-resume` | Hardened final version |
+| `candidate-assessment` | HR-level evaluation |
+| `interview-briefing` | Study guide creation |
+| `interview-question-generator` | Question generation |
+| `resume-summarizer` | Profile optimization (85-90% context reduction) |
+| `osint-*` | 6 specialized intelligence agents |
+| `landing-page-copywriter` | Landing page copy |
 
-### Performance Optimization Agents
-- `resume-summarizer`: Context window optimization agent that creates structured JSON candidate profiles
-  - Extracts comprehensive information from all ResumeSourceFolder/ files into structured JSON format
-  - Achieves 85-90% token reduction (50K-80K → 8K-10K tokens)
-  - Maintains 100% evidence traceability with file paths and line number references
-  - Used automatically by `/assessjob` and `/assesscandidate` for efficient document loading
-  - Caches profile for 7 days to avoid redundant processing
-  - Output: `ResumeSourceFolder/.profile/candidate_profile.json` + `extraction_log.md`
-  - Benefits: 15× faster lookup speed, massive context savings, preserved evidence verification
+## Version Management
 
-### Application Support Agents
-- `step4-cover-letter`: Strategic cover letter with requirements table (Step 7)
-- `step5-document-converter`: Markdown to Word DOCX conversion using pandoc (Step 8)
-
-### Job Search & Intelligence Agents
-- `hiringcafe-search`: Phase 1 API search agent - fast job discovery with structured metadata
-  - Searches hiring.cafe API using keyword, location, and company filters
-  - Returns job metadata: title, company, location, category, seniority, apply URLs
-  - Provides summary statistics and market insights
-  - Phase 2 (main session) uses Playwright MCP to scrape complete verbatim job descriptions
-- `osint-agent`: Orchestrates comprehensive company intelligence gathering operations
-- `osint-corporate`: Corporate structure, financials, and strategic positioning analysis
-- `osint-legal`: Litigation history, regulatory compliance, and legal risk assessment
-- `osint-leadership`: Executive backgrounds and leadership analysis
-- `osint-compensation`: Salary benchmarking and total rewards intelligence
-- `osint-culture`: Employee sentiment and workplace culture analysis
-- `osint-market`: Industry analysis and competitive landscape intelligence
-
-### Landing Page Agents
-- `landing-page-copywriter`: Specialized copywriting agent for landing pages
-  - Expertise in direct response marketing, conversion optimization, persuasion psychology
-  - Supports PAS, AIDA, and StoryBrand copywriting frameworks
-  - Generates section-by-section copy: headlines, hero, problem, solution, CTA
-  - Includes A/B test variations and conversion psychology principles
-  - Quality checklist: benefits over features, specificity, active voice
-  - Output: Structured markdown copy document
-
-### Legacy Agents
-- `resume-tailoring-specialist`: Deprecated orchestrator (use 8-step process instead)
-
-## Working with Resume Files
-
-**For new users**: If your `ResumeSourceFolder/` is empty or doesn't exist, run `/create-career-history <your-resume-file.pdf>` first to parse your existing resume and set up the complete folder structure with pre-populated, HAM-Z-enhanced content.
-
-When processing resumes:
-1. Always read from `ResumeSourceFolder/` for master data
-2. Job descriptions should be stored in `Job_Postings/` directory as `.md` files
-3. Legacy job descriptions may exist in root directory (e.g., `AltoJobPost.md`)
-4. Output resumes should be saved to `OutputResumes/` with descriptive timestamps
-5. Use the HAM-Z formula: **Achieved [Metric-Driven Result] by leveraging [Hard Skill] to [perform specific action/process]**
-
-## File Organization Best Practices
-
-- **Job Postings**: Use format `Job_Postings/CompanyName_Role_Date.md`
-- **Output Files**: Automatically named with step, role, company, and date
-- **Master Resume**: Keep only verified, defensible content in source documents
-- **Evidence Trail**: Maintain clear provenance from master to final resume
-
-## Provenance Analysis Categories
-
-High Risk issues to flag:
-- Unbounded metrics without timeframes
-- Unsupported superlatives ("market-leading", "transformational")
-- Cross-document inconsistencies
-- Benchmark claims without defined peer sets
-
-Medium Risk issues:
-- Mechanism-free outcomes (results without "how")
-- Duplicate achievements across roles
-- Tool names without measurable outcomes
-
-## Cultural Profiles
-
-The system supports different cultural profiles for resume tailoring. When not specified, defaults to Canadian style which emphasizes:
-- Quantified achievements
-- Clear role boundaries
-- Specific technologies and methodologies
-- Conservative language without superlatives
-
-## Important Commands and Tools
-
-### Assessment Workflow Options
-
-#### Option 1: Complete Assessment (Traditional)
-```bash
-/assessjob JobPosting.md  # Creates rubric + performs assessment
-```
-
-#### Option 2: Modular Assessment (Recommended for Multiple Candidates)
-```bash
-/createrubric JobPosting.md  # Create reusable rubric once
-/assesscandidate Rubric_Company_Role_Date.md JobPosting.md  # Assess each candidate
-```
-
-### Development Commands
-- No build/compile commands needed (markdown-based system)
-- No test framework (validation through provenance analysis)
-- Git for version control: `git status`, `git add`, `git commit`
-- Pandoc for document conversion: `pandoc --version` to verify installation
-
-### Key Validation Steps
-When creating or modifying resumes:
-1. Run provenance check after any draft creation
-2. Verify all metrics have timeframes and mechanisms
-3. Ensure cultural profile alignment
-4. Check for duplicate achievements across roles
-
-## System Architecture
-
-The resume optimization system follows a comprehensive 8-step pipeline architecture:
-
-### Phase 1: Resume Development (Steps 1-3)
-1. **Input Layer**: Job postings + Master resume data
-2. **Processing Layer**: HAM-Z methodology transformation with cultural profile adaptation
-3. **Validation Layer**: Provenance hardening and credibility assessment
-4. **Output Layer**: Final, defensible resume ready for submission
-
-### Phase 2: Interview Preparation (Steps 4-6)
-5. **Assessment Layer**: HR-level candidate evaluation with scoring rubrics
-6. **Learning Layer**: Gap analysis and skill development planning
-7. **Practice Layer**: Customized interview question generation with strategic guidance
-
-### Phase 3: Application Finalization (Steps 7-8)
-8. **Communication Layer**: Strategic cover letter with requirements matching
-9. **Presentation Layer**: Professional document conversion for submission
-
-Each step in the pipeline has dedicated agents that maintain consistency and quality throughout the complete application process, from initial resume creation to final interview preparation.
-
-## Version Tracking and Updates
-
-JobOps follows [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH):
-
-### When Making Changes
-
-**PATCH version (1.0.X)** - Increment for:
-- Bug fixes and minor improvements
-- Documentation updates
-- Small enhancements to existing features
-- Non-breaking changes
-
-**MINOR version (1.X.0)** - Increment for:
-- New features and capabilities
-- New slash commands or agents
-- Backward-compatible functionality additions
-- Significant enhancements
-
-**MAJOR version (X.0.0)** - Increment for:
-- Breaking changes or incompatible API changes
-- Major system rewrites or architecture changes
-- Removal of deprecated features
-- Changes requiring user intervention
-
-### Update Process
-
-When making significant changes:
-
-1. **Update version in package.json**:
-   - Change the `version` field to reflect the new version number
-
-2. **Update version in README.md**:
-   - Update the version badge near the top of the file
-
-3. **Update CHANGELOG.md**:
-   - Add new version section following Keep a Changelog format
-   - Document all changes under appropriate categories:
-     - Added (new features)
-     - Changed (changes to existing functionality)
-     - Deprecated (soon-to-be-removed features)
-     - Removed (removed features)
-     - Fixed (bug fixes)
-     - Security (security improvements)
-
-4. **Commit with version tag**:
-   ```bash
-   git add package.json README.md CHANGELOG.md
-   git commit -m "Release version X.Y.Z"
-   git tag -a vX.Y.Z -m "Version X.Y.Z"
-   git push && git push --tags
-   ```
-
-### Version Information Location
-
-- **package.json**: Primary version source (line 3)
-- **README.md**: Version badge with changelog link (line 7)
-- **CHANGELOG.md**: Complete version history and release notes
-- **CLAUDE.md**: Current version reference (line 11)
-
-Always keep version numbers synchronized across all files when releasing new versions.
+Semantic versioning (MAJOR.MINOR.PATCH). Update: `package.json`, `README.md` badge, `CHANGELOG.md`. Tag releases: `git tag -a vX.Y.Z`.
