@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.6.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.6.1** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -430,6 +430,7 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 ```bash
 /change-one-thing <resume-folder>
 /idealjob [output-filename]                                  # Generate ideal job description (v1.4.0)
+/assess-job-offer <offer-document> [--jurisdiction=XX] [--counter-offer]  # Analyze employment offers (v1.6.1)
 ```
 
 **`/idealjob`** - Generates a synthetic job description representing a near-perfect fit:
@@ -455,6 +456,17 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 <p align="center">
   <img src="Images/change-one-thing.png" alt="Change-One-Thing Reflective Career Analysis Framework" width="800">
 </p>
+
+**`/assess-job-offer`** (v1.6.1) - Comprehensive employment offer analysis with multi-jurisdiction support:
+- **Multi-jurisdiction coverage**: All 13 Canadian provinces/territories + US states with jurisdiction-specific employment standards
+- **8-phase analysis**: Document parsing, market research, personal alignment, legal review, red flags, counter-offer, assessment, output
+- **Compensation analysis**: Base salary, bonus, equity, benefits valued against market benchmarks via web research
+- **Contract term review**: Termination clauses, notice periods, severance, probation, restrictive covenants
+- **Legal risk assessment**: Non-competes (enforceability by jurisdiction), IP assignment, NDAs, non-solicitation
+- **Personal alignment**: Compares offer against Vision.md goals and Anti-Vision.md deal-breakers
+- **Counter-offer generation** (`--counter-offer`): Prioritized negotiation points with specific language and justification
+- Default jurisdiction: Ontario, Canada. Override with `--jurisdiction=BC`, `--jurisdiction=CA`, `--jurisdiction=NY`, etc.
+- Output: `OutputResumes/JobOfferAnalysis_[Company]_[Date].md`
 
 ### Independent Contractor Business Development (v1.5.0)
 ```bash
