@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.7.0] - 2026-02-04
 
 ### Changed
-- **Assessment Rubric Framework v2.0**: Major upgrade to candidate scoring system
+- **Assessment Rubric Framework v2.2**: Major upgrade to candidate scoring system
   - **200-point deduplicated scoring structure** (upgraded from 100-point)
+  - **Discrete point-level anchors** (v2.2): Every score has unique, distinguishable criteria - eliminates subjective range-bound decisions like "7-9 = Adjacent industry"
+  - **162 discrete anchors** across all scoring categories for maximum inter-rater reliability
   - **Role-based weight variants**: Technical IC, People Manager, and Executive profiles with automatic weight redistribution
   - **Proficiency-based skill scoring**: 0-6 scale with behavioral anchors instead of years-based metrics
   - **5 consolidated categories** (previously 6):
@@ -23,16 +25,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Weight Justification Table: Evidence-based variant selection
     - Critical Barriers Table: Disqualifying factors checked before detailed scoring
     - Confidence Flagging Protocol: H/M/L confidence levels with scoring adjustments
-    - Inter-Rater Reliability Protocol: Multi-assessor calibration and reconciliation
+    - Inter-Rater Reliability Protocol: Multi-assessor calibration and reconciliation (variance threshold reduced from 20% to 10%)
     - Bias Review Section: 6-point bias checklist with self-correction
     - Quality Control Checklist: 16-item verification before submission
+  - **Evidence Verification Protocol** (v2.1): Domain specificity verification, experience type classification (Direct/Adjacent/Transferable/Assumed), citation requirements
+  - **Scoring Decision Rules**: Default to lower score for borderline cases, document borderline decisions, zero means zero evidence
+  - **Sector-specific anchor examples**: Technology, Financial Services, Real Estate industry customization
   - **Proficiency scale anchors**: Domain-specific examples (Software Engineering, Finance, Leadership)
   - **Quantified achievement anchors**: Financial impact, efficiency gains, scale indicators with specific thresholds
-  - **Common mistakes guide**: Prevents years-as-skill scoring, double-counting, prestige bias
+  - **Common mistakes guide**: Prevents years-as-skill scoring, double-counting, prestige bias, interpolating between anchors
 
 ### Updated
-- `/assessjob` and `/assesscandidate` commands now generate v2.0 rubrics
-- `/createrubric` creates standalone v2.0 rubrics with weight variant selection
+- `/assessjob` and `/assesscandidate` commands now generate v2.2 rubrics with discrete anchors
+- `/createrubric` creates standalone v2.2 rubrics with weight variant selection
 - `/comparejobs` normalizes scores across different weight variants for fair comparison
 
 ## [1.6.1] - 2026-01-15

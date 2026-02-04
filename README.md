@@ -71,7 +71,7 @@ This theoretical foundation explains why JobOps begins with target reconnaissanc
 - **Provenance Hardening**: Comprehensive credibility verification to identify and eliminate fabricated claims
 - **Cultural Profiles**: Adapts resume style to regional theater expectations (Canadian, US, European, etc.)
 - **Arsenal Inventory**: Maintains comprehensive career database separate from mission-specific deployments
-- **Dynamic Target Scoring**: Creates custom 200-point reconnaissance rubrics with role-based weight variants for each opportunity
+- **Dynamic Target Scoring**: Creates custom 200-point reconnaissance rubrics with role-based weight variants and discrete point-level anchors for consistent, objective scoring
 - **Interview Preparation**: Gap analysis intelligence briefings and tactical rehearsal question generation
 - **Distributed OSINT Intelligence**: Professional-grade company reconnaissance with parallel specialized agents
 - **Target Acquisition System**: Hybrid search combining API reconnaissance + Playwright deep-scan for complete intelligence
@@ -157,7 +157,7 @@ resumeoptimizer/
 │   │       └── copywriting-spec.md   # /landing-page:copywriting-spec - Brand spec generator
 │   ├── templates/                     # Assessment framework templates (v1.1.1+)
 │   │   ├── assessment_report_structure.md    # Report format template
-│   │   ├── assessment_rubric_framework.md    # 100-point rubric structure
+│   │   ├── assessment_rubric_framework.md    # 200-point rubric v2.2 with discrete anchors
 │   │   ├── candidate_profile_schema.json     # Profile JSON schema
 │   │   ├── evidence_verification_framework.md # Evidence protocols
 │   │   └── service_definition_schema.json    # B2B service definition schema (v1.5.0)
@@ -666,7 +666,8 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 
 ### Phase 1: Target Reconnaissance (Step 1)
 **Target Assessment & Engagement Viability**
-- Dynamic targeting criteria with 200-point deduplicated scoring framework
+- Dynamic targeting criteria with 200-point deduplicated scoring framework (v2.2)
+- **Discrete point-level anchors** for every score - no subjective range-bound decisions
 - Role-based weight variants: Technical IC, People Manager, or Executive
 - Proficiency-based skill scoring (0-6 scale) instead of years-based
 - Critical barriers detection, confidence flagging, and bias review protocols
