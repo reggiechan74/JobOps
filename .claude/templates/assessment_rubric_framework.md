@@ -1,10 +1,17 @@
-# Assessment Rubric Framework Template v2.0
+# Assessment Rubric Framework Template v2.1
 
 **DO NOT USE THIS FILE DIRECTLY** - This is a meta-template for generating job-specific rubrics.
 
 ## Purpose
 
 This template defines the canonical **200-point deduplicated scoring structure** with **role-based weight variants** for candidate assessments. Each assessment criterion appears in ONE location only to prevent double-counting. Skill scoring is PROFICIENCY-BASED, not years-based.
+
+## Changelog
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 2.1 | 2026-02-04 | Added Evidence Verification Protocol (domain specificity, experience classification, citation requirements) |
+| 2.0 | 2026-02-04 | Initial 200-point framework with role-based weight variants |
 
 ## Commands That Reference This Template
 
@@ -22,7 +29,7 @@ This template defines the canonical **200-point deduplicated scoring structure**
 
 **Generated:** [Date]
 **Job Posting:** [Job Posting File Path]
-**Rubric Version:** 2.0
+**Rubric Version:** 2.1
 
 ---
 
@@ -94,6 +101,62 @@ This template defines the canonical **200-point deduplicated scoring structure**
 | Non-Negotiable Skill | [Critical skill #2] | [ ] Demonstrated / [ ] Absent | If absent: Score Category 1 first |
 
 **Barrier Review Result:** [ ] Proceed with full assessment / [ ] Candidate disqualified - Reason: ___________
+
+---
+
+## EVIDENCE VERIFICATION PROTOCOL
+
+**MANDATORY: Apply this protocol throughout scoring**
+
+### Evidence Citation Requirements
+
+**CRITICAL:** Before finalizing any score above "Basic" (1 point):
+- Quote specific CV/resume text supporting the score
+- Identify exact source section and line numbers where possible
+- Distinguish between **direct experience** vs **transferable skills**
+- Verify claimed experience duration and recency
+- Flag any claims that cannot be verified from provided materials
+
+### Domain Specificity Verification
+
+**NEVER assume domain equivalency without explicit evidence.** Common false equivalencies:
+
+| Claimed Domain | ≠ | Related But Different Domain |
+|----------------|---|------------------------------|
+| Real estate investment | ≠ | Real estate asset management |
+| Commercial real estate | ≠ | Residential real estate |
+| Institutional investment | ≠ | Brokerage/advisory |
+| Due diligence (M&A/investment) | ≠ | General analysis |
+| Software engineering | ≠ | IT support/administration |
+| Product management | ≠ | Project management |
+| Data science/ML | ≠ | Data analytics/BI |
+| Strategic planning | ≠ | Operational planning |
+| P&L ownership | ≠ | Budget management |
+| People leadership | ≠ | Project coordination |
+
+**When in doubt:** Score as "Adjacent" or "Transferable" rather than "Direct Match"
+
+### Experience Type Classification
+
+**MANDATORY: Classify ALL experience claims using these categories:**
+
+| Classification | Definition | Scoring Impact |
+|----------------|------------|----------------|
+| **Direct** | Exact same function, industry, and scope | Full points if proficiency demonstrated |
+| **Adjacent** | Same function, different industry OR same industry, related function | Maximum 80% of points; note transfer gap |
+| **Transferable** | Different function and industry but applicable skills | Maximum 60% of points; flag for interview verification |
+| **Assumed** | No explicit evidence; assessor inference | Maximum "Basic" (1 pt) score; flag as LOW confidence |
+
+### Verification Checklist
+
+Before finalizing Category 1-3 scores:
+
+- [ ] Each skill score has quoted evidence from source materials
+- [ ] Domain-specific claims verified against classification table
+- [ ] Experience type (Direct/Adjacent/Transferable/Assumed) documented
+- [ ] Recency of relevant experience confirmed
+- [ ] No scores above Basic without direct textual support
+- [ ] Ambiguous claims flagged for interview verification
 
 ---
 
@@ -455,7 +518,7 @@ This template defines the canonical **200-point deduplicated scoring structure**
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 2.0 | [Creation Date] | [Assessor] | Initial rubric creation from framework v2.0 |
+| 2.1 | [Creation Date] | [Assessor] | Initial rubric creation from framework v2.1 |
 | | | | |
 
 ---
@@ -479,6 +542,9 @@ This template defines the canonical **200-point deduplicated scoring structure**
 - [ ] Weight variant correctly applied
 - [ ] Normalized score calculated correctly
 - [ ] Score interpretation band identified
+- [ ] Evidence verification protocol applied (all scores have citations)
+- [ ] Experience type classified (Direct/Adjacent/Transferable/Assumed)
+- [ ] Domain specificity verified (no false equivalencies)
 
 ### Documentation Quality
 
@@ -520,6 +586,8 @@ This template defines the canonical **200-point deduplicated scoring structure**
 3. **Confidence flagging** - Be honest about inference vs. direct evidence
 4. **No double-counting** - Check that each achievement/skill appears in ONE category only
 5. **Calibrate with team** - For important hires, use inter-rater protocol
+6. **Domain specificity** - Never assume equivalency; classify as Direct/Adjacent/Transferable/Assumed
+7. **Quote evidence** - For scores above Basic, quote specific text supporting the score
 
 ### Common Mistakes to Avoid
 
@@ -531,6 +599,9 @@ This template defines the canonical **200-point deduplicated scoring structure**
 | Skipping confidence flagging | Every score needs H/M/L confidence assignment |
 | Ignoring bias checklist | Complete bias review before finalizing |
 | Using default weights for all roles | Select appropriate variant for role type |
+| Assuming domain equivalency | Real estate investment ≠ asset management; classify experience type explicitly |
+| Scoring without quoted evidence | Every score above Basic needs specific text citation from source materials |
+| Treating "adjacent" as "direct" experience | Adjacent experience caps at 80% points; document the transfer gap |
 
 ---
 
