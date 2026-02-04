@@ -4,7 +4,7 @@
 
 ## Repository Purpose
 
-**JobOps v1.6.1** - Intelligence-driven job application system using 8-step methodology to create tailored, credible resumes from master career inventory. Uses HAM-Z methodology (Hard Skill, Action, Metrics, Structure) with provenance hardening.
+**JobOps v1.7.0** - Intelligence-driven job application system using 8-step methodology to create tailored, credible resumes from master career inventory. Uses HAM-Z methodology (Hard Skill, Action, Metrics, Structure) with provenance hardening.
 
 ## Key Directories
 
@@ -33,7 +33,7 @@
 - `/provenance <draft-file>` - Standalone credibility analysis
 
 ### Assessment (`/createrubric`, `/assessjob`, `/assesscandidate`, `/comparejobs`)
-- `/createrubric <job-file>` - Create reusable 100-point scoring rubric
+- `/createrubric <job-file>` - Create reusable 200-point scoring rubric with role-based weight variants
 - `/assessjob <job-file>` - Dynamic rubric + full assessment
 - `/assesscandidate <rubric-file> <job-file>` - Assess using pre-created rubric
 - `/comparejobs <assessment-1> <assessment-2> [3] [4]` - Compare 2-4 assessments
@@ -105,7 +105,7 @@
 ## Template Architecture
 
 Templates in `.claude/templates/` define canonical structures:
-- `assessment_rubric_framework.md` - 100-point scoring (Tech 25, Experience 25, Responsibilities 20, Achievements 15, Education 10, Cultural 5)
+- `assessment_rubric_framework.md` - 200-point deduplicated scoring with role-based weight variants (Technical IC, People Manager, Executive)
 - `evidence_verification_framework.md` - Citation requirements, domain verification, experience classification
 - `assessment_report_structure.md` - Report format with 3-level evidence attribution
 - `candidate_profile_schema.json` - JSON schema for optimized profiles (85-90% token reduction)

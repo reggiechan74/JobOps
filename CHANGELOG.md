@@ -5,6 +5,36 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-02-04
+
+### Changed
+- **Assessment Rubric Framework v2.0**: Major upgrade to candidate scoring system
+  - **200-point deduplicated scoring structure** (upgraded from 100-point)
+  - **Role-based weight variants**: Technical IC, People Manager, and Executive profiles with automatic weight redistribution
+  - **Proficiency-based skill scoring**: 0-6 scale with behavioral anchors instead of years-based metrics
+  - **5 consolidated categories** (previously 6):
+    - Category 1: Skills Inventory (50 pts default, 30% Technical IC, 15% Executive)
+    - Category 2: Experience Relevance (40 pts default, 25% Executive)
+    - Category 3: Demonstrated Impact (60 pts default, 35% Executive - highest weighted)
+    - Category 4: Credentials (20 pts default, 5% Executive)
+    - Category 5: Fit & Readiness (30 pts default, 25% People Manager)
+  - **New mandatory sections**:
+    - Alignment Statement: Documents rubric-to-job-requirements mapping
+    - Weight Justification Table: Evidence-based variant selection
+    - Critical Barriers Table: Disqualifying factors checked before detailed scoring
+    - Confidence Flagging Protocol: H/M/L confidence levels with scoring adjustments
+    - Inter-Rater Reliability Protocol: Multi-assessor calibration and reconciliation
+    - Bias Review Section: 6-point bias checklist with self-correction
+    - Quality Control Checklist: 16-item verification before submission
+  - **Proficiency scale anchors**: Domain-specific examples (Software Engineering, Finance, Leadership)
+  - **Quantified achievement anchors**: Financial impact, efficiency gains, scale indicators with specific thresholds
+  - **Common mistakes guide**: Prevents years-as-skill scoring, double-counting, prestige bias
+
+### Updated
+- `/assessjob` and `/assesscandidate` commands now generate v2.0 rubrics
+- `/createrubric` creates standalone v2.0 rubrics with weight variant selection
+- `/comparejobs` normalizes scores across different weight variants for fair comparison
+
 ## [1.6.1] - 2026-01-15
 
 ### Added
@@ -472,6 +502,7 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 
 ---
 
+[1.7.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.7.0
 [1.6.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.6.1
 [1.6.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.6.0
 [1.5.2]: https://github.com/reggiechan74/JobOps/releases/tag/v1.5.2

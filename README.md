@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 1.6.1** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 1.7.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 **Wage war on unemployment.** A tactical job application platform that transforms career inventories into winning applications through systematic opportunity assessment, credible resume development, and strategic interview preparation using an 8-step intelligence-driven methodology.
 
@@ -71,7 +71,7 @@ This theoretical foundation explains why JobOps begins with target reconnaissanc
 - **Provenance Hardening**: Comprehensive credibility verification to identify and eliminate fabricated claims
 - **Cultural Profiles**: Adapts resume style to regional theater expectations (Canadian, US, European, etc.)
 - **Arsenal Inventory**: Maintains comprehensive career database separate from mission-specific deployments
-- **Dynamic Target Scoring**: Creates custom reconnaissance rubrics for each opportunity
+- **Dynamic Target Scoring**: Creates custom 200-point reconnaissance rubrics with role-based weight variants for each opportunity
 - **Interview Preparation**: Gap analysis intelligence briefings and tactical rehearsal question generation
 - **Distributed OSINT Intelligence**: Professional-grade company reconnaissance with parallel specialized agents
 - **Target Acquisition System**: Hybrid search combining API reconnaissance + Playwright deep-scan for complete intelligence
@@ -358,7 +358,7 @@ Executes the core 3-step resume assembly: initial draft creation, provenance ver
 ```bash
 /assessjob <job-description-file>
 ```
-Deploys dynamic reconnaissance rubric and 100-point viability assessment with engage/disengage recommendation. Run this *after* the posting passes `/auditjobposting`.
+Deploys dynamic reconnaissance rubric and 200-point viability assessment with role-based weight variants (Technical IC, People Manager, Executive) and engage/disengage recommendation. Run this *after* the posting passes `/auditjobposting`.
 
 <p align="center">
   <img src="Images/assess-job.png" alt="AI-Powered HR Assessment Pipeline" width="800">
@@ -666,7 +666,10 @@ Deploys 6 specialized intelligence agents in parallel for comprehensive target a
 
 ### Phase 1: Target Reconnaissance (Step 1)
 **Target Assessment & Engagement Viability**
-- Dynamic targeting criteria with 100-point probability framework
+- Dynamic targeting criteria with 200-point deduplicated scoring framework
+- Role-based weight variants: Technical IC, People Manager, or Executive
+- Proficiency-based skill scoring (0-6 scale) instead of years-based
+- Critical barriers detection, confidence flagging, and bias review protocols
 - Domain intelligence integration via web research
 - Comprehensive capability mapping against target requirements
 - Engage/disengage decision based on hit probability and capability gaps
