@@ -23,9 +23,47 @@ Both modes include **Study Priority tags** that guide candidates on how to alloc
   - `1w`, `2w` - Weeks available for preparation
   - If omitted: defaults to full preparation mode with 1 week assumed
 
-## Understanding Gap Severity vs Study Priority
+---
 
-These are two distinct concepts that work together:
+## WORKFLOW ARCHITECTURE
+
+```
+Phase 1 (Parallel batch):     Load assessment + job description (2 parallel reads)
+Phase 2 (PARALLEL):           Extract gaps (main agent) ‖ Research learning resources (subagent)
+Phase 3 (Sequential, visible): Generate study guides by priority tier
+Phase 4 (Sequential):         Create practice schedule + interview strategy → Save
+```
+
+**Dependency Rules:**
+- Phase 1 loads both files in parallel
+- Phase 2: Gap extraction (main agent) feeds into research scope, BUT research subagent can start with job posting requirements immediately while main agent extracts specific gaps
+- Phase 3 WAITS for both gap extraction AND research results
+- Phase 4 WAITS for all study guides
+
+---
+
+## PROGRESS TRACKING (MANDATORY)
+
+**Before starting any work**, create all tasks for user visibility:
+
+| # | Task Subject | activeForm |
+|---|-------------|------------|
+| 1 | Load assessment and job description | Loading assessment and job description |
+| 2 | Extract gaps and requirements | Extracting gaps and requirements from assessment |
+| 3 | Research learning resources | Researching learning resources and best practices |
+| 4 | Generate skill gap analysis | Generating skill gap analysis with priorities |
+| 5 | Create priority-based study plan | Creating priority-based study plan |
+| 6 | Write detailed study guides | Writing detailed study guides for each topic |
+| 7 | Create interview strategy | Creating interview strategy and gap acknowledgment scripts |
+| 8 | Save briefing note | Saving briefing note to Briefing_Notes |
+
+**Task Update Rules:**
+- Mark each task `in_progress` BEFORE starting work on it
+- Mark each task `completed` AFTER finishing it
+
+---
+
+## Understanding Gap Severity vs Study Priority
 
 | Attribute | Gap Severity | Study Priority |
 |-----------|--------------|----------------|
@@ -42,8 +80,6 @@ These are two distinct concepts that work together:
 | 🟢 **SKIM ONLY** | Quick review, don't deep-dive | Low-impact OR requires too much time to master |
 
 ### Priority Assignment Logic
-
-Assign Study Priority based on this decision matrix:
 
 ```
 IF (Gap Severity = Critical) AND (Time to Bridge <= Available Prep Time):
@@ -74,9 +110,10 @@ Additional factors that elevate priority:
 - Quick wins available (certifications, portfolio pieces)
 - Topic affects multiple job requirements
 
-## Step-by-Step Process
+---
 
-### YAML front matter for briefing note
+## YAML FRONT MATTER
+
 When saving the briefing to `Briefing_Notes/`, prepend this metadata:
 
 ```yaml
@@ -96,17 +133,30 @@ version: 1.1
 ---
 ```
 
-Insert it before the first heading and refresh fields each time you regenerate.
+---
 
-### 1. Load Required Documents
-✓ Loading reconnaissance assessment and target specifications
-- Read the assessment report from `{{ARG1}}` (check OutputResumes/ or Scoring_Rubrics/ directories)
-- Read the job description from `Job_Postings/{{ARG2}}` (add .md extension if needed)
-- Parse {{ARG3}} to determine:
-  - Mode: gaps-only if {{ARG3}} == "gaps-only", otherwise full preparation
-  - Prep time: parse time value (1d=1 day, 3d=3 days, 1w=1 week, 2w=2 weeks), default 1 week
+## PHASE 1: LOAD INPUTS (Parallel batch)
 
-### 2. Extract Key Information
+> **Task:** Mark task 1 `in_progress`.
+
+**Read both files in a single parallel batch:**
+- Assessment report from `{{ARG1}}` (check OutputResumes/ or Scoring_Rubrics/ directories)
+- Job description from `Job_Postings/{{ARG2}}` (add .md extension if needed)
+
+Parse {{ARG3}} to determine:
+- Mode: gaps-only if {{ARG3}} == "gaps-only", otherwise full preparation
+- Prep time: parse time value (1d=1 day, 3d=3 days, 1w=1 week, 2w=2 weeks), default 1 week
+
+> **Task:** Mark task 1 `completed`.
+
+---
+
+## PHASE 2: PARALLEL ANALYSIS AND RESEARCH
+
+> **CRITICAL: Dispatch both tasks simultaneously in a SINGLE message.**
+> Mark tasks 2 and 3 as `in_progress` before dispatching.
+
+### 2.1 Extract Gaps and Requirements (Task 2 - Main agent)
 
 #### From Assessment Report:
 - Identify all LOW scores (0-2 points or "None"/"Basic" ratings)
@@ -120,38 +170,42 @@ Insert it before the first heading and refresh fields each time you regenerate.
 - Identify industry-specific knowledge requirements
 - Note soft skills and cultural fit expectations
 
-### 3. Conduct Research for Each Gap/Requirement
-✓ Gathering intelligence on skill gaps and requirements
+> **Task:** Mark task 2 `completed`.
 
-Use WebSearch and WebFetch to research:
-- Current best practices and methodologies
-- Industry standards and trends
-- Technical concepts and implementations
-- Certification requirements and preparation materials
-- Real-world application examples
-- **Realistic time-to-competency estimates for each skill**
+### 2.2 Research Learning Resources (Task 3 - Subagent)
 
-### 4. Generate Briefing Note Structure
-✓ Compiling intelligence brief with training protocol
+**Dispatch a research subagent** to run concurrently with gap extraction:
 
-Create a comprehensive briefing document with the following sections:
+```
+Use Task tool with subagent_type=general-purpose and prompt:
+"Research learning resources and preparation strategies for the role of [ROLE TITLE] at [COMPANY NAME].
+The candidate needs to prepare for an interview with the following key requirements from the job posting:
+[LIST TOP 8-10 REQUIREMENTS FROM JOB POSTING]
 
-#### A. Executive Summary
-- Overall preparedness assessment
-- **Priority Breakdown**:
-  ```
-  🔴 FOCUS NOW: X topics (estimated Y hours)
-  🟡 IF TIME PERMITS: X topics (estimated Y hours)
-  🟢 SKIM ONLY: X topics (estimated Y hours)
-  Total estimated prep time needed: Z hours
-  Available prep time: [from ARG3 or default]
-  Time sufficiency: [Sufficient / Tight / Insufficient - prioritization critical]
-  ```
-- Critical gaps requiring immediate attention
-- Recommended preparation timeline
-- Key focus areas for interview success
+For each requirement area, find:
+1. Best free/quick learning resources (tutorials, documentation, videos)
+2. Realistic time-to-competency estimates for someone with adjacent skills
+3. Common interview questions asked about this topic
+4. Key terminology and concepts that demonstrate knowledge
+5. Practical exercises or hands-on practice recommendations
+6. Industry-specific best practices and current trends
 
-#### B. Skill Gap Analysis (or Full Requirements Overview)
+Organize by topic area. Focus on resources that can be consumed in 1-14 days.
+Prioritize practical, actionable resources over theoretical ones."
+```
+
+> **Task:** Mark task 3 `completed` when subagent returns.
+
+---
+
+## PHASE 3: GENERATE STUDY CONTENT (Sequential, with per-section visibility)
+
+> **Prerequisites:** Both gap extraction (task 2) AND research (task 3) must be `completed`.
+
+### 3.1 Generate Skill Gap Analysis
+
+> **Task:** Mark task 4 `in_progress`.
+
 For each gap/requirement, provide:
 - **Current State**: Candidate's current level
 - **Target State**: What the role requires
@@ -159,141 +213,79 @@ For each gap/requirement, provide:
 - **Time to Bridge**: Estimated hours/days needed
 - **Study Priority**: 🔴 FOCUS NOW / 🟡 IF TIME PERMITS / 🟢 SKIM ONLY
 - **Priority Rationale**: Brief explanation of why this priority was assigned
+- **Minimum Viable Prep**: Absolute minimum hours for basic familiarity
 
-Example format:
-```markdown
-##### Kubernetes Orchestration
-- **Current State**: No direct experience; familiar with Docker
-- **Target State**: Production cluster management
-- **Gap Severity**: Critical (core job requirement)
-- **Time to Bridge**: 40+ hours for competency
-- **Study Priority**: 🟢 SKIM ONLY
-- **Priority Rationale**: Despite critical severity, requires more time than available; focus on terminology and concepts, prepare gap acknowledgment strategy
-- **Minimum Viable Prep**: 2 hours (understand key concepts, prepare to discuss learning plan)
-```
+> **Task:** Mark task 4 `completed`.
 
-```markdown
-##### Python Scripting
-- **Current State**: Basic scripting experience
-- **Target State**: Automation and tooling development
-- **Gap Severity**: Medium (used for automation tasks)
-- **Time to Bridge**: 4-6 hours with existing programming background
-- **Study Priority**: 🔴 FOCUS NOW
-- **Priority Rationale**: Adjacent skills accelerate learning; high ROI for time invested; likely technical screen topic
-- **Minimum Viable Prep**: 3 hours (complete practice exercises, prepare code samples)
-```
+### 3.2 Create Priority-Based Study Plan
 
-#### C. Priority-Based Study Plan
+> **Task:** Mark task 5 `in_progress`.
 
 Generate a day-by-day study plan based on available prep time:
 
 **For 1-3 days available:**
-```markdown
-## Priority-Based Study Plan (3 Days Available)
-
-### Day 1: FOCUS NOW Topics (Priority: Maximum Impact)
-- [ ] [Topic 1] (X hrs) - 🔴 FOCUS NOW
-- [ ] [Topic 2] (X hrs) - 🔴 FOCUS NOW
-Daily total: X hours
-
-### Day 2: FOCUS NOW Completion + IF TIME PERMITS
-- [ ] [Topic 3] (X hrs) - 🔴 FOCUS NOW
-- [ ] [Topic 4] (X hrs) - 🟡 IF TIME PERMITS
-Daily total: X hours
-
-### Day 3: Review + SKIM ONLY
-- [ ] Review FOCUS NOW topics (2 hrs)
-- [ ] [Topic 5] terminology review (30 min) - 🟢 SKIM ONLY
-- [ ] [Topic 6] quick overview (30 min) - 🟢 SKIM ONLY
-- [ ] Prepare gap acknowledgment talking points (30 min)
-Daily total: X hours
-```
+- Day 1: FOCUS NOW topics (maximum impact)
+- Day 2: FOCUS NOW completion + IF TIME PERMITS start
+- Day 3: Review + SKIM ONLY + gap acknowledgment prep
 
 **For 1-2 weeks available:**
-```markdown
-## Priority-Based Study Plan (1 Week Available)
+- Days 1-2: FOCUS NOW topics (foundation building)
+- Days 3-4: FOCUS NOW completion + IF TIME PERMITS start
+- Days 5-6: IF TIME PERMITS + practice
+- Day 7: Review + SKIM ONLY + final prep
 
-### Days 1-2: FOCUS NOW Topics (Foundation Building)
-[List topics with time allocations]
-
-### Days 3-4: FOCUS NOW Completion + IF TIME PERMITS
-[List topics with time allocations]
-
-### Days 5-6: IF TIME PERMITS + Practice
-[List topics with time allocations]
-
-### Day 7: Review + SKIM ONLY + Final Prep
-[List review activities and SKIM ONLY topics]
+Include executive summary with:
+```
+🔴 FOCUS NOW: X topics (estimated Y hours)
+🟡 IF TIME PERMITS: X topics (estimated Y hours)
+🟢 SKIM ONLY: X topics (estimated Y hours)
+Total estimated prep time needed: Z hours
+Available prep time: [from ARG3 or default]
+Time sufficiency: [Sufficient / Tight / Insufficient - prioritization critical]
 ```
 
-#### D. Detailed Study Guide
+> **Task:** Mark task 5 `completed`.
+
+### 3.3 Write Detailed Study Guides
+
+> **Task:** Mark task 6 `in_progress`.
+
 For each topic area (organized by Study Priority - FOCUS NOW topics first):
 
-##### 1. Core Concepts
-- Fundamental principles and theory
-- Key terminology and definitions
-- Industry context and applications
+**1. Core Concepts** - Fundamental principles, key terminology, industry context
 
-##### 2. Technical Deep Dive
-- Implementation details
-- Best practices and patterns
-- Common pitfalls to avoid
-- Tools and technologies overview
+**2. Technical Deep Dive** - Implementation details, best practices, common pitfalls, tools
 
-##### 3. Practical Exercises
-- Hands-on tutorials and labs
-- Sample problems with solutions
-- Real-world scenarios to practice
-- Code examples and implementations
+**3. Practical Exercises** - Hands-on tutorials, sample problems, real-world scenarios
 
-##### 4. Interview Preparation
-- Common interview questions for this topic
-- How to demonstrate knowledge effectively
-- Stories/examples to showcase understanding
-- Whiteboard problem approaches
+**4. Interview Preparation** - Common questions, how to demonstrate knowledge, stories/examples
 
-##### 5. Learning Resources
-- **Immediate** (1-2 days):
-  - Quick tutorials and documentation
-  - Video overviews and crash courses
-  - Cheat sheets and reference guides
+**5. Learning Resources** organized by timeframe:
+- **Immediate** (1-2 days): Quick tutorials, video overviews, cheat sheets
+- **Short-term** (1 week): Online courses, practical projects, community forums
+- **Long-term** (2-4 weeks): Comprehensive courses, certifications, books
 
-- **Short-term** (1 week):
-  - Online courses and workshops
-  - Practical projects to build
-  - Community forums and discussions
+> **Task:** Mark task 6 `completed`.
 
-- **Long-term** (2-4 weeks):
-  - Comprehensive courses or certifications
-  - Books and in-depth resources
-  - Mentorship opportunities
+---
 
-#### E. Action Plan
-- **24 Hours Before Interview**:
-  - Critical topics to review (FOCUS NOW items only)
-  - Key talking points to prepare
-  - Questions to ask the interviewer
-  - Gap acknowledgment scripts ready
+## PHASE 4: INTERVIEW STRATEGY AND SAVE
 
-- **3 Days Before Interview**:
-  - Hands-on practice priorities
-  - Mock interview topics
-  - Portfolio pieces to prepare
+### 4.1 Create Interview Strategy
 
-- **1 Week Before Interview**:
-  - Deeper learning objectives
-  - Projects to complete
-  - Skills to demonstrate
+> **Task:** Mark task 7 `in_progress`.
 
-#### F. Interview Strategy
-
-##### Acknowledging Gaps Professionally
+#### Acknowledging Gaps Professionally
 For each 🟢 SKIM ONLY topic with Critical/High severity, provide a gap acknowledgment script:
 
 ```markdown
 **Gap: [Topic Name]**
 **Acknowledgment Script:**
-"While I haven't had direct production experience with [Topic], I understand its importance for this role. I've familiarized myself with [key concepts/terminology]. In my experience with [related technology], I [relevant transferable experience]. I'm committed to ramping up quickly—I've already [specific action taken] and have a learning plan that includes [specific resources/timeline]."
+"While I haven't had direct production experience with [Topic], I understand its importance
+for this role. I've familiarized myself with [key concepts/terminology]. In my experience
+with [related technology], I [relevant transferable experience]. I'm committed to ramping
+up quickly—I've already [specific action taken] and have a learning plan that includes
+[specific resources/timeline]."
 
 **Key Points to Emphasize:**
 - Awareness of the skill's importance
@@ -302,19 +294,17 @@ For each 🟢 SKIM ONLY topic with Critical/High severity, provide a gap acknowl
 - Quick ramp-up evidence from past experience
 ```
 
-##### Additional Interview Strategies
-- Demonstrating learning ability and growth mindset
-- Pivoting to related strengths
-- Using transferable skills effectively
-- Turning gaps into growth narrative
+#### Additional Strategy Sections:
+- **Action Plan**: 24 hours / 3 days / 1 week before interview priorities
+- **Quick Reference Guide**: One-page summary of key concepts for FOCUS NOW topics
+- **Demonstrating learning ability and growth mindset**
+- **Pivoting to related strengths**
 
-#### G. Quick Reference Guide
-- One-page summary of key concepts (FOCUS NOW topics)
-- Formula sheet or command reference
-- Common acronyms and terminology
-- Industry-specific metrics and KPIs
+> **Task:** Mark task 7 `completed`.
 
-### 5. Customize Based on Mode
+### 4.2 Customize and Save
+
+> **Task:** Mark task 8 `in_progress`.
 
 **If gaps-only mode:**
 - Focus exclusively on addressing weaknesses
@@ -329,43 +319,42 @@ For each 🟢 SKIM ONLY topic with Critical/High severity, provide a gap acknowl
 - Include competitive differentiation strategies
 - Prepare for technical deep-dives in strength areas
 
-### 6. Format and Save
-
 **Multi-Part Output Structure:**
-- If the complete briefing exceeds 25,000 tokens, split it into multiple parts
+- If the complete briefing exceeds 25,000 tokens, split into multiple parts
 - Each part must not exceed 25,000 tokens
 - Save parts as:
   - `Briefing_[Company]_[Role]_[Mode]_Part1_[Date].md`
   - `Briefing_[Company]_[Role]_[Mode]_Part2_[Date].md`
-  - `Briefing_[Company]_[Role]_[Mode]_Part3_[Date].md`
   - etc.
 - Location: `Briefing_Notes/` directory
-- Format: Markdown with clear headings and sections
 
 **Logical Splitting Guidelines:**
-- Part 1: Executive Summary + Priority Breakdown + Skill Gap Analysis + Priority-Based Study Plan
+- Part 1: Executive Summary + Priority Breakdown + Skill Gap Analysis + Study Plan
 - Part 2: Detailed Study Guides for FOCUS NOW and IF TIME PERMITS topics
 - Part 3: SKIM ONLY study guides + Action Plan + Interview Strategy + Quick Reference
 - Split at natural section boundaries, never mid-topic
-- Each part should include a header referencing total parts (e.g., "Part 1 of 3")
-- Include navigation references at start/end of each part
+- Each part includes header referencing total parts and navigation references
+
+> **Task:** Mark task 8 `completed`.
+
+---
 
 ## Quality Checks
 
 Ensure the briefing note:
-- ✅ Addresses every identified gap or requirement
-- ✅ Assigns Study Priority tag to every topic
-- ✅ Includes Priority Breakdown in Executive Summary
-- ✅ Provides Priority-Based Study Plan with daily schedule
-- ✅ Provides actionable, specific learning resources
-- ✅ Includes realistic timelines for skill development
-- ✅ Offers practical exercises and hands-on practice
-- ✅ Prepares for likely interview scenarios
-- ✅ Balances depth with time constraints
-- ✅ Uses current, relevant industry information
-- ✅ Includes gap acknowledgment scripts for SKIM ONLY critical/high items
-- ✅ **Each individual part does not exceed 25,000 tokens**
-- ✅ **Multi-part reports split logically at section boundaries**
+- Addresses every identified gap or requirement
+- Assigns Study Priority tag to every topic
+- Includes Priority Breakdown in Executive Summary
+- Provides Priority-Based Study Plan with daily schedule
+- Provides actionable, specific learning resources
+- Includes realistic timelines for skill development
+- Offers practical exercises and hands-on practice
+- Prepares for likely interview scenarios
+- Balances depth with time constraints
+- Uses current, relevant industry information
+- Includes gap acknowledgment scripts for SKIM ONLY critical/high items
+- Each individual part does not exceed 25,000 tokens
+- Multi-part reports split logically at section boundaries
 
 ## Output
 
@@ -376,14 +365,5 @@ The final briefing note should be a comprehensive, actionable study guide that:
 4. Prepares for specific interview scenarios
 5. Offers quick-reference materials for last-minute review
 6. Provides professional gap acknowledgment strategies
-
-**MULTI-PART OUTPUT REQUIREMENTS**:
-- Create as many parts as needed to cover all content comprehensively
-- **Each individual part must not exceed 25,000 tokens**
-- Split content logically at section boundaries (never mid-topic)
-- Each part should be self-contained enough to be useful independently
-- Include clear navigation between parts (e.g., "Continued in Part 2", "Continued from Part 1")
-- Part 1 should always include the Executive Summary, Priority Breakdown, and Study Plan
-- Final part should always include the Interview Strategy and Quick Reference Guide
 
 The candidate should be able to use this briefing note as their primary preparation resource for the interview, with clear guidance on where to focus their limited preparation time.

@@ -9,9 +9,46 @@ You are acting as an expert HR recruiter and domain-knowledgeable hiring manager
 
 Analyze the {{ARG1}} job posting and generate a detailed, reusable scoring rubric that extracts all requirements and creates standardized evaluation criteria.
 
-## Step-by-Step Process
+---
 
-### YAML front matter for rubric output
+## WORKFLOW ARCHITECTURE
+
+```
+Phase 1 (Parallel batch):   Load templates + Load job posting (3 parallel reads)
+Phase 2 (PARALLEL):         Domain Research (subagent) while main agent determines role variant
+Phase 3 (Sequential):       Create rubric (synthesizes job posting + domain research)
+Phase 4 (Sequential):       Validate and save rubric
+```
+
+**Dependency Rules:**
+- Phase 2 starts after job posting is loaded (Phase 1)
+- Domain research subagent and role variant analysis run concurrently
+- Phase 3 WAITS for domain research results
+- Phase 4 WAITS for rubric completion
+
+---
+
+## PROGRESS TRACKING (MANDATORY)
+
+**Before starting any work**, create all tasks for user visibility:
+
+| # | Task Subject | activeForm |
+|---|-------------|------------|
+| 1 | Load templates and job posting | Loading templates and job posting |
+| 2 | Research domain and industry context | Researching domain and industry context |
+| 3 | Determine role variant and extract requirements | Analyzing role variant and extracting requirements |
+| 4 | Create 200-point scoring rubric | Creating 200-point scoring rubric |
+| 5 | Validate rubric completeness | Validating rubric completeness |
+| 6 | Save rubric | Saving rubric to Scoring_Rubrics |
+
+**Task Update Rules:**
+- Mark each task `in_progress` BEFORE starting work on it
+- Mark each task `completed` AFTER finishing it
+
+---
+
+## YAML FRONT MATTER
+
 Write the rubric to `Scoring_Rubrics/Rubric_*` and begin the file with:
 
 ```yaml
@@ -31,21 +68,54 @@ version: 2.0
 
 Insert this before the first heading and bump `version` if you update the rubric later.
 
-### 1. Load Required Templates
+---
 
-**CRITICAL: Read these framework templates before proceeding:**
+## PHASE 1: LOAD INPUTS (Parallel batch)
+
+> **Task:** Mark task 1 `in_progress`.
+
+**Read all three files in a single parallel batch using three Read tool calls:**
 - `.claude/templates/assessment_rubric_framework.md` - Master 200-point rubric structure with role variants
 - `.claude/templates/evidence_verification_framework.md` - Evidence-based scoring protocols
+- `Job_Postings/{{ARG1}}` (add .md extension if needed)
 
-These templates define the mandatory structure, scoring levels, and verification requirements for all rubrics.
+If the job posting doesn't exist in Job_Postings/, check the root directory for legacy files.
 
-### 2. Load Job Posting
-- Read the job posting from `Job_Postings/{{ARG1}}` (add .md extension if needed)
-- If the file doesn't exist in Job_Postings/, check the root directory for legacy files
+> **Task:** Mark task 1 `completed`.
 
-### 2a. Determine Role Variant
+---
 
-Analyze the job posting to classify the role:
+## PHASE 2: PARALLEL ANALYSIS
+
+> **Mark tasks 2 and 3 as `in_progress` simultaneously.**
+> **Dispatch domain research subagent AND begin role variant analysis in the SAME message.**
+
+### 2.1 Research Domain and Industry Context (Task 2 - Subagent)
+
+**Dispatch a domain research subagent** to run while you analyze the role variant:
+
+```
+Use Task tool with subagent_type=general-purpose and prompt:
+"Research the following for the role of [ROLE TITLE] at [COMPANY NAME]:
+
+1. Industry standards and typical role expectations for this specific position
+2. Required vs nice-to-have skills based on current market standards
+3. Typical responsibilities and seniority indicators for this role level
+4. Company context: culture, values, technology stack, recent developments, size, reputation
+5. Current market conditions: salary ranges, demand, competitive landscape
+6. Industry-specific terminology, certifications, and best practices
+7. What differentiates strong vs average candidates for this type of role
+
+Provide a structured research summary organized by these 7 areas.
+Focus on actionable intelligence that would help calibrate a scoring rubric.
+Be specific - cite sources and data points where possible."
+```
+
+### 2.2 Determine Role Variant and Extract Requirements (Task 3 - Main agent)
+
+**While the domain research subagent runs**, analyze the job posting:
+
+#### Determine Role Variant
 
 | Variant | Indicators | Weight Adjustment |
 |---------|------------|-------------------|
@@ -55,21 +125,6 @@ Analyze the job posting to classify the role:
 
 Document the selected variant in the rubric YAML header.
 
-### 3. Acquire Domain Knowledge
-Use web research to understand:
-- Industry standards and role expectations for the specific position
-- Required vs nice-to-have skills based on current market standards
-- Typical responsibilities and seniority indicators in this domain
-- Company context, culture, technology stack, and recent developments
-- Current market conditions, salary ranges, and competitive landscape
-- Industry-specific terminology and best practices
-
-### 4. Create Job-Specific Rubric
-
-**🚨 MANDATORY DETAILED SCORING REQUIREMENT 🚨**
-
-You MUST create a comprehensive **200-point scoring rubric** following the EXACT structure defined in `assessment_rubric_framework.md`. This is NON-NEGOTIABLE.
-
 #### Parse Job Posting to Extract Requirements:
 - **Hard Skills**: All technical competencies with proficiency levels required
 - **Experience Requirements**: Relevance, recency, and domain specifics (NOT years-based scoring)
@@ -77,7 +132,27 @@ You MUST create a comprehensive **200-point scoring rubric** following the EXACT
 - **Credentials**: Required and preferred education/certifications
 - **Fit & Readiness**: Communication, values alignment, and role readiness indicators
 
-#### Create Job-Specific Rubric Following Template Structure:
+> **Task:** Mark task 3 `completed` when extraction is done.
+> **Task:** Mark task 2 `completed` when domain research subagent returns.
+
+---
+
+## PHASE 3: CREATE RUBRIC (Sequential - needs domain research)
+
+> **Task:** Mark task 4 `in_progress`.
+> **Prerequisite:** Domain research (task 2) must be `completed`.
+
+### 3.1 Synthesize Job Posting + Domain Research
+
+Use domain research findings to calibrate rubric thresholds:
+- Set proficiency levels appropriate to industry standards
+- Weight skills based on market reality, not just posting emphasis
+- Identify implicit requirements the posting may not state
+- Calibrate experience expectations to seniority level
+
+### 3.2 Create Job-Specific Rubric Following Template Structure
+
+**MANDATORY DETAILED SCORING REQUIREMENT**: You MUST create a comprehensive **200-point scoring rubric** following the EXACT structure defined in `assessment_rubric_framework.md`. This is NON-NEGOTIABLE.
 
 **CRITICAL**: Use `assessment_rubric_framework.md` as your MANDATORY reference template. The rubric structure is fixed - you must maintain:
 
@@ -125,48 +200,36 @@ You MUST create a comprehensive **200-point scoring rubric** following the EXACT
    - Usage guidelines and quality control checklists
    - Scoring interpretation guidelines
 
+> **Task:** Mark task 4 `completed`.
+
+---
+
+## PHASE 4: VALIDATE AND SAVE
+
+### 4.1 Validate Rubric Completeness
+
+> **Task:** Mark task 5 `in_progress`.
+
 **ENFORCEMENT CHECK**: After creating the rubric, verify:
-- ✅ Role variant selected and documented in YAML header
-- ✅ Point allocations match selected variant (total = 200)
-- ✅ Five categories present: Skills, Experience, Impact, Credentials, Fit
-- ✅ Alignment Statement with construct definition included
-- ✅ Critical Barriers table with thresholds and consequences
-- ✅ Skills use 7-level proficiency scale (0-6), NOT years-based
-- ✅ No redundancy (years only in Experience, achievements only in Impact)
-- ✅ Anchor examples for each scoring level
-- ✅ Confidence flagging guidance included
-- ✅ Weight justification table present
-- ✅ Evidence verification framework is included
-
-**FAILURE TO FOLLOW TEMPLATE STRUCTURE VIOLATES THE COMMAND REQUIREMENTS**
-
-### 5. Quality Control and Verification
-
-**MANDATORY QUALITY CHECK**: Before saving, verify the rubric matches `assessment_rubric_framework.md` template:
-
-**Template Compliance Verification:**
-- ✅ Role variant selected and documented
-- ✅ Point allocations match selected variant (total = 200)
-- ✅ Alignment Statement with construct definition included
-- ✅ Critical Barriers table with thresholds and consequences
-- ✅ Skills use 7-level proficiency scale (0-6), NOT years-based
-- ✅ No redundancy (years only in Experience, achievements only in Impact)
-- ✅ Anchor examples for each scoring level
-- ✅ Confidence flagging guidance included
-- ✅ Weight justification table present
-- ✅ Five categories present with correct point allocations for variant:
-  - Skills Inventory (adjusted by variant)
-  - Experience Relevance (adjusted by variant)
-  - Demonstrated Impact (adjusted by variant)
-  - Credentials (adjusted by variant)
-  - Fit & Readiness (adjusted by variant)
-- ✅ Evidence verification protocols included
-- ✅ Scoring interpretation guidelines present (200-point scale)
-- ✅ Usage guidelines and quality control checklists included
+- Role variant selected and documented in YAML header
+- Point allocations match selected variant (total = 200)
+- Five categories present: Skills, Experience, Impact, Credentials, Fit
+- Alignment Statement with construct definition included
+- Critical Barriers table with thresholds and consequences
+- Skills use 7-level proficiency scale (0-6), NOT years-based
+- No redundancy (years only in Experience, achievements only in Impact)
+- Anchor examples for each scoring level
+- Confidence flagging guidance included
+- Weight justification table present
+- Evidence verification framework is included
 
 **IF ANY SECTION LACKS REQUIRED COMPONENTS, THE RUBRIC IS INCOMPLETE AND MUST BE REGENERATED**
 
-### 6. Save the Rubric
+> **Task:** Mark task 5 `completed`.
+
+### 4.2 Save the Rubric
+
+> **Task:** Mark task 6 `in_progress`.
 
 Save the generated rubric to: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md`
 
@@ -178,6 +241,10 @@ Provide a summary of:
 - Job-specific customizations made to template
 - Recommended usage guidelines
 
+> **Task:** Mark task 6 `completed`.
+
+---
+
 ## Important Notes
 
 - **Template-Based Approach**: Every rubric MUST follow `assessment_rubric_framework.md` structure exactly
@@ -186,15 +253,14 @@ Provide a summary of:
 - **Role Variant Selection**: Mandatory classification as Technical IC, People Manager, or Executive
 - **Proficiency-Based Scoring**: Skills use 7-level proficiency scale (0-6), NOT years of experience
 - **No Redundancy**: Years of experience only in Experience category; achievements only in Impact category
-- **Dynamic Content Customization**: Each job posting gets tailored criteria within the fixed template structure
+- **Domain Research**: Domain research informs rubric calibration - thresholds and weights should reflect industry reality
 - **Complete Scoring Levels**: All sections must include anchor examples for each scoring level
 - **Critical Barriers**: Must define minimum thresholds with consequences for failing to meet them
 - **Evidence Framework**: Include evidence verification protocols from `evidence_verification_framework.md`
-- **Domain Research**: Use web research to understand industry-specific requirements and adapt scoring thresholds accordingly
 - **Reusable Rubrics**: Save rubric for consistent evaluation across multiple candidates for the same position
 - **No Shortcuts**: Generated rubric must be as detailed as the template - simplified versions violate requirements
 
-## 🔥 CRITICAL ENFORCEMENT RULES 🔥
+## CRITICAL ENFORCEMENT RULES
 
 **ABSOLUTE REQUIREMENTS FOR EVERY RUBRIC:**
 
@@ -219,15 +285,15 @@ Must follow `assessment_rubric_framework.md` structure with:
 - The rubric must match the template structure exactly - no exceptions
 
 **VERIFICATION CHECKLIST - BEFORE SAVING ANY RUBRIC:**
-□ Role variant selected and documented in YAML header
-□ Point allocations match selected variant (total = 200)
-□ Five categories present with correct weight distribution
-□ Alignment Statement with construct definition included
-□ Critical Barriers table with thresholds and consequences
-□ Skills use 7-level proficiency scale (0-6), NOT years-based
-□ No redundancy between categories
-□ Anchor examples for each scoring level
-□ Confidence flagging guidance included
-□ Weight justification table present
-□ Evidence verification protocols included
-□ Job-specific content customized within template structure
+- [ ] Role variant selected and documented in YAML header
+- [ ] Point allocations match selected variant (total = 200)
+- [ ] Five categories present with correct weight distribution
+- [ ] Alignment Statement with construct definition included
+- [ ] Critical Barriers table with thresholds and consequences
+- [ ] Skills use 7-level proficiency scale (0-6), NOT years-based
+- [ ] No redundancy between categories
+- [ ] Anchor examples for each scoring level
+- [ ] Confidence flagging guidance included
+- [ ] Weight justification table present
+- [ ] Evidence verification protocols included
+- [ ] Job-specific content customized within template structure

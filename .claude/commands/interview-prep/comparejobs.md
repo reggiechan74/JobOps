@@ -9,9 +9,45 @@ You are an expert HR analyst specializing in comparative candidate assessment an
 
 Compare 2-4 assessment files from the OutputResumes folder to analyze candidate performance across different roles, identify patterns, and provide strategic hiring recommendations.
 
-## Step-by-Step Process
+---
 
-### YAML front matter for comparison report
+## WORKFLOW ARCHITECTURE
+
+```
+Phase 1 (Parallel batch):   Load all 2-4 assessment files simultaneously
+Phase 2 (Sequential):       Extract and normalize scoring data
+Phase 3 (Sequential):       Perform comparative analysis + strategic insights
+Phase 4 (Sequential):       Generate report → Save
+```
+
+**Dependency Rules:**
+- All assessment file reads are INDEPENDENT - load in single parallel batch
+- Extraction can begin as soon as all files are loaded
+- Analysis and report are sequential cognitive work
+
+---
+
+## PROGRESS TRACKING (MANDATORY)
+
+**Before starting any work**, create all tasks for user visibility:
+
+| # | Task Subject | activeForm |
+|---|-------------|------------|
+| 1 | Load assessment files | Loading assessment files |
+| 2 | Extract and normalize scoring data | Extracting and normalizing scoring data |
+| 3 | Perform comparative analysis | Performing comparative analysis across assessments |
+| 4 | Generate strategic insights | Generating strategic insights and recommendations |
+| 5 | Create comparison report | Creating comprehensive comparison report |
+| 6 | Save comparison report | Saving comparison report |
+
+**Task Update Rules:**
+- Mark each task `in_progress` BEFORE starting work on it
+- Mark each task `completed` AFTER finishing it
+
+---
+
+## YAML FRONT MATTER
+
 Prepend the comparison output with:
 
 ```yaml
@@ -30,27 +66,46 @@ version: 1.0
 
 Replace the placeholder comment with the additional assessment filenames you compare. Insert before the report heading and update on reruns.
 
-### 1. Load Assessment Files
-- Read the specified assessment files from `OutputResumes/{{ARG1}}`, `OutputResumes/{{ARG2}}`, and optionally `OutputResumes/{{ARG3}}` and `OutputResumes/{{ARG4}}`
-- If file extensions are missing, assume `.md` extension
-- Extract key information from each assessment:
-  - Overall scores and ratings
-  - Technical skills scores
-  - Experience ratings
-  - Achievement metrics
-  - Cultural fit assessments
-  - Hiring recommendations
-  - Company and role details
+---
 
-### 2. Analyze Assessment Data
-Parse each assessment to extract:
+## PHASE 1: LOAD INPUTS (Parallel batch)
+
+> **Task:** Mark task 1 `in_progress`.
+
+**Read ALL assessment files in a single parallel batch using multiple Read tool calls:**
+- `OutputResumes/{{ARG1}}` (add .md extension if needed)
+- `OutputResumes/{{ARG2}}` (add .md extension if needed)
+- `OutputResumes/{{ARG3}}` (if provided, add .md extension if needed)
+- `OutputResumes/{{ARG4}}` (if provided, add .md extension if needed)
+
+**CRITICAL**: Use parallel Read tool calls for all files in a single message. Do NOT read them sequentially.
+
+> **Task:** Mark task 1 `completed`.
+
+---
+
+## PHASE 2: EXTRACT DATA
+
+> **Task:** Mark task 2 `in_progress`.
+
+Extract key information from each assessment:
 - **Candidate Information**: Name, role applied for, company
 - **Scoring Breakdown**: Detailed scores by category (Technical Skills, Experience, Responsibilities, Achievements, Education, Cultural Fit)
 - **Strengths & Gaps**: Key strengths and areas of concern
 - **Hiring Recommendations**: Final recommendations and rationale
 - **Assessment Date**: When evaluation was conducted
+- **Overall scores and ratings**
 
-### 3. Perform Comparative Analysis
+> **Task:** Mark task 2 `completed`.
+
+---
+
+## PHASE 3: COMPARATIVE ANALYSIS
+
+### 3.1 Score Comparison
+
+> **Task:** Mark task 3 `in_progress`.
+
 Conduct multi-dimensional comparison across:
 
 #### Score Comparison
@@ -77,14 +132,27 @@ Conduct multi-dimensional comparison across:
 - Cultural fit trends
 - Experience leverage opportunities
 
-### 4. Generate Strategic Insights
+> **Task:** Mark task 3 `completed`.
+
+### 3.2 Strategic Insights
+
+> **Task:** Mark task 4 `in_progress`.
+
 Analyze deeper implications:
 - **Career Trajectory**: How roles complement candidate's progression
 - **Skill Development**: Areas for professional growth
 - **Market Positioning**: How candidate compares across different markets/roles
 - **Strategic Recommendations**: Optimal role selection and negotiation insights
 
-### 5. Create Comprehensive Comparison Report
+> **Task:** Mark task 4 `completed`.
+
+---
+
+## PHASE 4: REPORT AND SAVE
+
+### 4.1 Create Comprehensive Comparison Report
+
+> **Task:** Mark task 5 `in_progress`.
 
 ```markdown
 # Job Assessment Comparison Report
@@ -118,8 +186,6 @@ Analyze deeper implications:
 |--------------|-----------------|-------------------|-------|----------|
 | [Role 1] | [X]/15 | [X]/10 | [X]/25 | [Strength/Gap summary] |
 | [Role 2] | [X]/15 | [X]/10 | [X]/25 | [Strength/Gap summary] |
-| [Role 3] | [X]/15 | [X]/10 | [X]/25 | [Strength/Gap summary] |
-| [Role 4] | [X]/15 | [X]/10 | [X]/25 | [Strength/Gap summary] |
 
 **Key Insights:**
 - [Consistent technical strengths across roles]
@@ -131,109 +197,65 @@ Analyze deeper implications:
 |--------------|-------|----------|---------------|-------|----------|
 | [Role 1] | [X]/10 | [X]/10 | [X]/5 | [X]/25 | [Experience alignment] |
 | [Role 2] | [X]/10 | [X]/10 | [X]/5 | [X]/25 | [Experience alignment] |
-| [Role 3] | [X]/10 | [X]/10 | [X]/5 | [X]/25 | [Experience alignment] |
-| [Role 4] | [X]/10 | [X]/10 | [X]/5 | [X]/25 | [Experience alignment] |
 
 **Key Insights:**
 - [Best experience matches and why]
 - [Experience transfer opportunities]
-- [Seniority level alignment across roles]
 
 #### Key Responsibilities Alignment
 | Role/Company | Primary Duties | Scope & Complexity | Total | Analysis |
 |--------------|----------------|--------------------|-------|----------|
 | [Role 1] | [X]/12 | [X]/8 | [X]/20 | [Responsibility match] |
 | [Role 2] | [X]/12 | [X]/8 | [X]/20 | [Responsibility match] |
-| [Role 3] | [X]/12 | [X]/8 | [X]/20 | [Responsibility match] |
-| [Role 4] | [X]/12 | [X]/8 | [X]/20 | [Responsibility match] |
-
-**Key Insights:**
-- [Strongest capability alignments]
-- [Scope considerations across roles]
-- [Leadership/management fit analysis]
 
 #### Achievements & Impact Performance
 | Role/Company | Quantifiable Results | Innovation/Leadership | Total | Analysis |
 |--------------|---------------------|----------------------|-------|----------|
 | [Role 1] | [X]/10 | [X]/5 | [X]/15 | [Impact potential] |
 | [Role 2] | [X]/10 | [X]/5 | [X]/15 | [Impact potential] |
-| [Role 3] | [X]/10 | [X]/5 | [X]/15 | [Impact potential] |
-| [Role 4] | [X]/10 | [X]/5 | [X]/15 | [Impact potential] |
-
-**Key Insights:**
-- [Consistent achievement patterns]
-- [Role-specific impact opportunities]
-- [Leadership potential across different contexts]
 
 #### Cultural Fit Analysis
 | Role/Company | Communication | Values Alignment | Total | Analysis |
 |--------------|---------------|-------------------|-------|----------|
 | [Role 1] | [X]/3 | [X]/2 | [X]/5 | [Cultural fit assessment] |
 | [Role 2] | [X]/3 | [X]/2 | [X]/5 | [Cultural fit assessment] |
-| [Role 3] | [X]/3 | [X]/2 | [X]/5 | [Cultural fit assessment] |
-| [Role 4] | [X]/3 | [X]/2 | [X]/5 | [Cultural fit assessment] |
-
-**Key Insights:**
-- [Best cultural matches and reasons]
-- [Cultural adaptation requirements]
-- [Communication style fit analysis]
 
 ## Strategic Analysis
 
 ### Candidate Strengths Across Roles
-[Bullet points of consistent strengths that translate across multiple roles]
-- [Strength 1]: Evidence from [X] assessments showing [specific examples]
-- [Strength 2]: Consistent high scoring in [category] across [all/most] roles
-- [Strength 3]: [Achievement/skill] that provides competitive advantage
+- [Strength 1]: Evidence from [X] assessments
+- [Strength 2]: Consistent high scoring in [category]
+- [Strength 3]: Competitive advantage
 
 ### Recurring Gaps & Development Areas
-[Areas that need attention across multiple role applications]
-- [Gap 1]: [Specific area] identified in [X] assessments, requiring [development approach]
-- [Gap 2]: [Cultural/skill gap] that could limit success in [specific contexts]
-- [Gap 3]: [Experience/knowledge gap] that impacts [specific role types]
+- [Gap 1]: Identified in [X] assessments, requiring [development approach]
+- [Gap 2]: Could limit success in [specific contexts]
 
 ### Role-Specific Advantages
 #### Best Fit: [Role Name] at [Company]
 - **Why it's the strongest match**: [Detailed reasoning]
 - **Score advantage**: [X] points higher than average
-- **Key differentiators**: [Specific factors that make this role ideal]
 - **Success probability**: [High/Medium/Low] with rationale
 
 #### Alternative Strong Fit: [Role Name] at [Company]
-- **Positioning rationale**: [Why this is second choice]
-- **Advantages**: [Specific benefits of this role]
+- **Positioning rationale**: [Why second choice]
 - **Trade-offs**: [What candidate gives up vs. top choice]
 
-#### Development Opportunity: [Role Name] at [Company]
-- **Growth potential**: [How this role stretches candidate]
-- **Learning curve**: [Skills/experience to develop]
-- **Risk/reward**: [Assessment of challenges vs. opportunities]
-
 ### Market Positioning Insights
-- **Salary negotiation position**: [Strong/Moderate/Weak] based on score differentials
-- **Competitive advantage**: [Unique value propositions across roles]
-- **Market demand alignment**: [How candidate meets current market needs]
+- **Salary negotiation position**: [Strong/Moderate/Weak]
+- **Competitive advantage**: [Unique value propositions]
 
 ## Interview Strategy Comparison
 
 ### Common Interview Focus Areas
-[Areas that should be explored across all opportunities]
 - [Focus Area 1]: [Why important across roles]
-- [Focus Area 2]: [Validation needed across opportunities]
-- [Focus Area 3]: [Potential concerns to address]
+- [Focus Area 2]: [Validation needed]
 
 ### Role-Specific Interview Priorities
 #### [Role 1] - [Company 1]
-- **Must validate**: [Specific areas from assessment]
-- **Opportunity to highlight**: [Candidate's strongest areas for this role]
-- **Risk mitigation**: [Address specific concerns]
-
-#### [Role 2] - [Company 2]
-- **Must validate**: [Specific areas from assessment]
-- **Opportunity to highlight**: [Candidate's strongest areas for this role]
-- **Risk mitigation**: [Address specific concerns]
-
-[Continue for additional roles]
+- **Must validate**: [Specific areas]
+- **Opportunity to highlight**: [Strongest areas]
+- **Risk mitigation**: [Address concerns]
 
 ## Strategic Recommendations
 
@@ -243,46 +265,47 @@ Analyze deeper implications:
 3. **Development Play**: [Role/Company] - [Reasoning]
 
 ### Negotiation Positioning
-- **Strongest negotiating position**: [Role] due to [specific advantages]
-- **Compensation expectations**: [Insights based on scores and market position]
-- **Non-financial considerations**: [Benefits, growth, culture factors]
+- **Strongest negotiating position**: [Role]
+- **Compensation expectations**: [Insights]
 
 ### Risk Management
-- **Highest risk scenario**: [Role/situation] due to [specific gaps]
-- **Mitigation strategies**: [Specific approaches to address concerns]
-- **Backup planning**: [Alternative scenarios and preparation]
+- **Highest risk scenario**: [Role/situation]
+- **Mitigation strategies**: [Approaches]
 
 ## Implementation Roadmap
 
 ### Immediate Actions (Next 2 weeks)
-1. [Specific action based on analysis]
+1. [Specific action]
 2. [Interview preparation focus]
-3. [Research or networking activities]
+3. [Research or networking]
 
 ### Medium-term Development (Next 3-6 months)
-1. [Skill development priorities]
-2. [Experience building activities]
-3. [Network expansion strategies]
+1. [Skill development]
+2. [Experience building]
 
 ### Long-term Career Planning (6-18 months)
 1. [Strategic role progression]
-2. [Professional development investments]
-3. [Market positioning improvements]
+2. [Professional development]
 
 ## Appendix
-
 ### Assessment Scoring Summary
-[Detailed table showing all scores across all categories for reference]
+[Detailed table showing all scores across all categories]
 
 ### Key Evidence Mapping
 [Cross-reference of major claims/achievements across assessments]
-
-### Market Context Notes
-[Relevant industry/market information that influenced the analysis]
 ```
 
-### 6. Save Comparison Report
+> **Task:** Mark task 5 `completed`.
+
+### 4.2 Save Comparison Report
+
+> **Task:** Mark task 6 `in_progress`.
+
 Save the comparative analysis to: `OutputResumes/Comparison_[Role1]_[Role2]_[etc]_[Date].md`
+
+> **Task:** Mark task 6 `completed`.
+
+---
 
 ## Usage Guidelines
 
@@ -312,5 +335,3 @@ Save the comparative analysis to: `OutputResumes/Comparison_[Role1]_[Role2]_[etc
 ```bash
 claude /comparejobs Assessment_JLL_VP_Office_Leasing_2025-09-25.md Assessment_Canerector_Vice_President_Real_Estate_2025-09-26.md
 ```
-
-This will compare the JLL VP Office Leasing assessment with the Canerector VP Real Estate assessment, providing strategic insights for role selection and career planning.

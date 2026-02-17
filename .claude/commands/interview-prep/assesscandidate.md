@@ -5,7 +5,7 @@ argument-hint: <rubric-file> <job-posting-file>
 
 You are acting as both an expert HR recruiter and a domain-knowledgeable hiring manager. Perform a comprehensive assessment of the candidate's work history against the specified job posting using a pre-created scoring rubric.
 
-## 🔥 CRITICAL OUTPUT CONSTRAINT 🔥
+## CRITICAL OUTPUT CONSTRAINT
 
 **MAXIMUM OUTPUT LIMIT: 20,000 TOKENS**
 
@@ -23,17 +23,53 @@ Your complete assessment report MUST NOT EXCEED 20,000 tokens. This is a hard li
 
 Use the existing scoring rubric from {{ARG1}} to evaluate the candidate against the {{ARG2}} job posting, providing a detailed assessment report with scores and evidence.
 
-## Step-by-Step Process
+---
 
-### Load Required Templates
+## WORKFLOW ARCHITECTURE
 
-**CRITICAL: Read these framework templates before proceeding:**
-- `.claude/templates/evidence_verification_framework.md` - Evidence-based scoring protocols
-- `.claude/templates/assessment_report_structure.md` - Assessment report format
+```
+Phase 1 (Parallel batch):    Load templates + rubric + job posting (4 parallel reads)
+Phase 2 (PARALLEL):          Candidate profile gen (subagent) ‖ Validate rubric alignment
+Phase 3 (Sequential):        Optional domain research (if rubric is stale)
+Phase 4 (Sequential, visible): Score Cat 1 → 2 → 3 → 4 → 5 → 6
+Phase 5 (Sequential):        Generate report → Save files
+```
 
-These templates define the mandatory verification and reporting standards.
+**Dependency Rules:**
+- Phase 2 starts after templates/rubric/posting loaded (Phase 1)
+- Profile gen and rubric validation are INDEPENDENT - run concurrently
+- Phase 4 WAITS for both candidate profile AND rubric validation
+- Phase 5 WAITS for all scoring (Phase 4)
 
-### YAML front matter for assessment output
+---
+
+## PROGRESS TRACKING (MANDATORY)
+
+**Before starting any work**, create all tasks for user visibility:
+
+| # | Task Subject | activeForm |
+|---|-------------|------------|
+| 1 | Load templates, rubric, and job posting | Loading templates, rubric, and job posting |
+| 2 | Generate candidate profile | Generating candidate profile from source materials |
+| 3 | Validate rubric-job alignment | Validating rubric-job posting alignment |
+| 4 | Score Technical Skills & Competencies | Scoring Technical Skills & Competencies |
+| 5 | Score Relevant Experience | Scoring Relevant Experience |
+| 6 | Score Key Responsibilities | Scoring Key Responsibilities alignment |
+| 7 | Score Achievements & Impact | Scoring Achievements & Impact |
+| 8 | Score Education & Certifications | Scoring Education & Certifications |
+| 9 | Score Cultural Fit | Scoring Cultural Fit |
+| 10 | Generate assessment report | Generating comprehensive assessment report |
+| 11 | Save assessment files | Saving assessment and rubric files |
+
+**Task Update Rules:**
+- Mark each task `in_progress` BEFORE starting work on it
+- Mark each task `completed` AFTER finishing it
+- If profile exists and is fresh, mark task 2 `completed` immediately
+
+---
+
+## YAML FRONT MATTER
+
 The generated assessment in `OutputResumes/Assessment_*` must start with:
 
 ```yaml
@@ -54,66 +90,142 @@ overall_score: <XX/100>
 
 Insert this block before any headings and update timestamps, scores, and versioning on reruns.
 
-### 1. Generate Candidate Profile (Context Optimization)
+---
 
-**CRITICAL - Context Window Optimization**: Before loading full source materials, generate a structured candidate profile:
+## PHASE 1: LOAD INPUTS (Parallel batch)
 
-1. **Check for existing profile**: Look for `ResumeSourceFolder/.profile/candidate_profile.json`
-   - If exists and recent (≤7 days old), use it directly
-   - If exists but stale (>7 days old), regenerate
-   - If doesn't exist, generate new profile
+> **Task:** Mark task 1 `in_progress`.
 
-2. **Generate profile using resume-summarizer agent**:
-   ```
-   Use Task tool with subagent_type=general-purpose and prompt:
-   "You are the resume-summarizer agent. Read all files in ResumeSourceFolder/ directory and create a structured JSON candidate profile following the schema in .claude/agents/resume-summarizer.md. Save output to ResumeSourceFolder/.profile/candidate_profile.json and ResumeSourceFolder/.profile/extraction_log.md"
-   ```
+**Read all files in a single parallel batch:**
+- `.claude/templates/evidence_verification_framework.md` - Evidence-based scoring protocols
+- `.claude/templates/assessment_report_structure.md` - Assessment report format
+- `Scoring_Rubrics/{{ARG1}}` (add .md extension if needed)
+- `Job_Postings/{{ARG2}}` (add .md extension if needed)
 
-3. **Expected outcome**:
-   - JSON profile created: `ResumeSourceFolder/.profile/candidate_profile.json` (8K-10K tokens)
-   - Extraction log created: `ResumeSourceFolder/.profile/extraction_log.md`
-   - Token savings: 42K-72K tokens (85-90% reduction from loading 15 source files)
+If job posting doesn't exist in Job_Postings/, check the root directory for legacy files.
 
-### 2. Load Required Documents
-- Read the scoring rubric from `Scoring_Rubrics/{{ARG1}}` (add .md extension if needed)
-- Read the job posting from `Job_Postings/{{ARG2}}` (add .md extension if needed)
-- If job posting doesn't exist in Job_Postings/, check the root directory for legacy files
-- Read the candidate profile from `ResumeSourceFolder/.profile/candidate_profile.json`
-- **Evidence Verification Protocol**: When citing specific achievements or skills in the assessment:
-  - Use line references from JSON profile's evidence fields
-  - Read specific sections from source files ONLY when verification needed
-  - Quote exact text from source files for all scores ≥2 points
-  - Maintain traceability: JSON profile → source file → line numbers
+> **Task:** Mark task 1 `completed`.
 
-### 3. Validate Rubric-Job Alignment
+---
+
+## PHASE 2: PARALLEL DATA ACQUISITION
+
+> **CRITICAL: Dispatch both tasks simultaneously in a SINGLE message.**
+> Mark tasks 2 and 3 as `in_progress` before dispatching.
+
+### 2.1 Generate Candidate Profile (Task 2 - Subagent)
+
+**Check for existing profile**: Look for `ResumeSourceFolder/.profile/candidate_profile.json`
+- If exists and recent (<=7 days old), use it directly (mark task 2 `completed` immediately)
+- If exists but stale (>7 days old), regenerate
+- If doesn't exist, generate new profile
+
+**If regeneration needed**, dispatch subagent:
+```
+Use Task tool with subagent_type=resume-summarizer and prompt:
+"Read all files in ResumeSourceFolder/ directory and create a structured JSON
+candidate profile following the schema in .claude/agents/resume-summarizer.md.
+Save output to ResumeSourceFolder/.profile/candidate_profile.json and
+ResumeSourceFolder/.profile/extraction_log.md"
+```
+
+### 2.2 Validate Rubric-Job Alignment (Task 3 - Main agent)
+
+**While profile generates**, validate the rubric:
 - Verify that the rubric was created for the same job posting or compatible role
 - Check that the rubric includes all detailed scoring breakdowns required
 - Confirm rubric completeness against the framework requirements
 - Note any misalignments between rubric and job posting
+- If rubric lacks current context, note areas needing supplemental domain research
 
-### 4. Acquire Additional Domain Knowledge (if needed)
-If the rubric lacks current context, supplement with web research:
+> **Task:** Mark task 3 `completed` when validation is done.
+> **Task:** Mark task 2 `completed` when profile subagent returns (or immediately if fresh profile exists).
+
+---
+
+## PHASE 3: SUPPLEMENTAL RESEARCH (if needed)
+
+If rubric validation identified stale context or missing information:
 - Current market conditions and salary ranges
 - Recent industry developments since rubric creation
 - Updated technology trends or skill requirements
 - Company developments or changes since rubric generation
 
-### 5. Apply Evidence-Based Scoring Verification
+**Skip this phase if rubric is current and complete.**
+
+---
+
+## PHASE 4: SCORE CANDIDATE (Sequential - needs rubric + candidate data)
+
+> **Prerequisites:** Candidate profile (task 2) AND rubric validation (task 3) must both be `completed`.
+
+### 4.0 Load Candidate Materials
+
+Read the candidate profile from `ResumeSourceFolder/.profile/candidate_profile.json`
+
+**Evidence Verification Protocol**: When citing specific achievements or skills:
+- Use line references from JSON profile's evidence fields
+- Read specific sections from source files ONLY when verification needed
+- Quote exact text from source files for all scores >=2 points
+- Maintain traceability: JSON profile -> source file -> line numbers
 
 **CRITICAL**: Apply the evidence verification framework from `.claude/templates/evidence_verification_framework.md` to all scoring decisions.
 
-### 6. Perform 100-Point Assessment Using Pre-Created Rubric
+### 4.1 Score Technical Skills & Competencies (25 pts)
 
-Apply the existing scoring rubric systematically to evaluate the candidate:
+> **Task:** Mark task 4 `in_progress`.
 
-1. **Core Technical Skills (25 pts)** - Use the specific required/preferred skills from the rubric to map against candidate evidence
-2. **Relevant Experience (25 pts)** - Evaluate against the years, industry, and domain requirements defined in the rubric
-3. **Key Responsibilities (20 pts)** - Match candidate experience to the primary duties extracted in the rubric
-4. **Achievements & Impact (15 pts)** - Verify metrics against the expected outcomes defined in the rubric
-5. **Education & Certifications (10 pts)** - Check against the specific requirements listed in the rubric
-6. **Cultural Fit (5 pts)** - Assess based on the company values and work environment from the rubric
+Use the specific required/preferred skills from the rubric to map against candidate evidence.
 
-### 7. Generate Comprehensive Assessment Report
+> **Task:** Mark task 4 `completed`.
+
+### 4.2 Score Relevant Experience (25 pts)
+
+> **Task:** Mark task 5 `in_progress`.
+
+Evaluate against the years, industry, and domain requirements defined in the rubric.
+
+> **Task:** Mark task 5 `completed`.
+
+### 4.3 Score Key Responsibilities (20 pts)
+
+> **Task:** Mark task 6 `in_progress`.
+
+Match candidate experience to the primary duties extracted in the rubric.
+
+> **Task:** Mark task 6 `completed`.
+
+### 4.4 Score Achievements & Impact (15 pts)
+
+> **Task:** Mark task 7 `in_progress`.
+
+Verify metrics against the expected outcomes defined in the rubric.
+
+> **Task:** Mark task 7 `completed`.
+
+### 4.5 Score Education & Certifications (10 pts)
+
+> **Task:** Mark task 8 `in_progress`.
+
+Check against the specific requirements listed in the rubric.
+
+> **Task:** Mark task 8 `completed`.
+
+### 4.6 Score Cultural Fit (5 pts)
+
+> **Task:** Mark task 9 `in_progress`.
+
+Assess based on the company values and work environment from the rubric.
+
+> **Task:** Mark task 9 `completed`.
+
+---
+
+## PHASE 5: REPORT AND SAVE
+
+### 5.1 Generate Comprehensive Assessment Report
+
+> **Task:** Mark task 10 `in_progress`.
 
 Follow the report structure defined in `.claude/templates/assessment_report_structure.md` exactly.
 
@@ -129,63 +241,40 @@ Follow the report structure defined in `.claude/templates/assessment_report_stru
   - **Rubric Application Analysis** section evaluating rubric effectiveness
   - **Audit Trail** with rubric file reference and assessment method
 
-This is the gold standard assessment format with full rubric criteria attribution.
+> **Task:** Mark task 10 `completed`.
 
-### 8. Save Assessment Report
+### 5.2 Save Assessment Report
+
+> **Task:** Mark task 11 `in_progress`.
 
 **CRITICAL: Folder Structure and Timestamps**
 
 Before saving any files:
-1. **Get Current Eastern Time**: Retrieve current date/time in America/New_York timezone
+1. **Get Current Eastern Time**: `TZ='America/New_York' date '+%Y-%m-%d_%H%M%S'`
 2. **Create Timestamped Sub-Folder**: Format as `YYYY-MM-DD_HHMMSS_[Company]_[Role]`
-   - Example: `2025-11-17_143022_UniversityOfToronto_ExecutiveDirectorAssetManagement`
-   - Remove spaces from company and role names; use CamelCase or underscores
-   - Ensure folder is created in `/workspaces/resumeoptimizer/OutputResumes/`
+   - Remove spaces; use CamelCase or underscores
+   - Create in `/workspaces/resumeoptimizer/OutputResumes/`
 
 **File Save Locations:**
 
-1. **Copy Rubric to Assessment Folder**: `OutputResumes/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Rubric_[Company]_[Role]_[Date].md`
-   - Copy the pre-created rubric from Scoring_Rubrics/ to the timestamped folder
-   - Ensures assessment folder is self-contained with all artifacts for audit trail
+1. **Copy Rubric to Assessment Folder**: `OutputResumes/[timestamp]_[Company]_[Role]/Rubric_[Company]_[Role]_[Date].md`
+   - Copy the pre-created rubric from Scoring_Rubrics/ for audit trail
 
-2. **Save Assessment Report**: `OutputResumes/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Assessment_[Company]_[Role]_[Date].md`
-   - Include reference to using pre-created rubric for audit trail
+2. **Save Assessment Report**: `OutputResumes/[timestamp]_[Company]_[Role]/Assessment_[Company]_[Role]_[Date].md`
+   - Include reference to using pre-created rubric
    - Document all scores with evidence mapping
    - Provide clear traceability between rubric criteria and candidate evaluation
-
-**Example Full Paths:**
-```
-/workspaces/resumeoptimizer/OutputResumes/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Rubric_UofT_ExecutiveDirectorAssetManagement_20251117.md
-/workspaces/resumeoptimizer/OutputResumes/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Assessment_UofT_ExecutiveDirectorAssetManagement_20251117.md
-```
-
-**Folder Creation Steps:**
-1. Use Bash tool to get Eastern time: `TZ='America/New_York' date '+%Y-%m-%d_%H%M%S'`
-2. Extract company name and role from job posting or rubric
-3. Create folder path: `OutputResumes/[timestamp]_[Company]_[Role]/`
-4. Create folder using Bash: `mkdir -p "OutputResumes/[timestamp]_[Company]_[Role]"`
-5. Copy rubric from Scoring_Rubrics/ to timestamped folder
-6. Save assessment to timestamped folder
 
 **Provide a summary of:**
 - Overall score and recommendation
 - Key strengths and gaps identified
 - Rubric application effectiveness
 - Recommended next steps
-- **File locations** for both rubric copy and assessment report
+- File locations for both rubric copy and assessment report
 
-## Important Notes
+> **Task:** Mark task 11 `completed`.
 
-- **Rubric Fidelity**: Strictly apply the pre-created rubric criteria without modification
-- **Evidence-Based Scoring**: All scores must be supported by specific evidence from candidate materials
-- **Rubric Validation**: Verify rubric completeness and alignment with job posting
-- **Scoring Consistency**: Use exact scoring criteria and thresholds from the rubric
-- **Documentation**: Maintain clear audit trail linking rubric criteria to assigned scores
-- **Gap Analysis**: Identify areas where rubric may not fully capture candidate qualities
-- **Objectivity**: Apply rubric criteria consistently without bias or assumptions
-- **Traceability**: Document specific rubric sections used for each evaluation area
-- **Quality Control**: Ensure all scoring follows the detailed breakdowns in the pre-created rubric
-- **Context Consideration**: Note any changes in market/industry since rubric creation
+---
 
 ## Validation Requirements
 
@@ -203,3 +292,16 @@ If issues are encountered:
 - **Incomplete Rubric**: Note any missing detailed scoring breakdowns and suggest rubric regeneration
 - **Misaligned Rubric**: Flag if rubric doesn't match job posting and recommend creating new rubric
 - **Insufficient Candidate Data**: Document where candidate evidence is limited for fair assessment
+
+## Important Notes
+
+- **Rubric Fidelity**: Strictly apply the pre-created rubric criteria without modification
+- **Evidence-Based Scoring**: All scores must be supported by specific evidence from candidate materials
+- **Rubric Validation**: Verify rubric completeness and alignment with job posting
+- **Scoring Consistency**: Use exact scoring criteria and thresholds from the rubric
+- **Documentation**: Maintain clear audit trail linking rubric criteria to assigned scores
+- **Gap Analysis**: Identify areas where rubric may not fully capture candidate qualities
+- **Objectivity**: Apply rubric criteria consistently without bias or assumptions
+- **Traceability**: Document specific rubric sections used for each evaluation area
+- **Quality Control**: Ensure all scoring follows the detailed breakdowns in the pre-created rubric
+- **Context Consideration**: Note any changes in market/industry since rubric creation
