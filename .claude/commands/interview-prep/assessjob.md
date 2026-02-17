@@ -183,7 +183,7 @@ Phase 2 launches two independent subagents that run concurrently. Neither depend
 
 2. **Dispatch profile generation subagent**:
    ```
-   Use Task tool with subagent_type=resume-summarizer and prompt:
+   Use Task tool with subagent_type=resume-summarizer, model=sonnet, and prompt:
    "Read all files in [resume-source-folder]/ directory and create a structured JSON
    candidate profile following the schema in .claude/agents/resume-summarizer.md.
    Save output to [resume-source-folder]/.profile/candidate_profile.json and
@@ -200,7 +200,7 @@ Phase 2 launches two independent subagents that run concurrently. Neither depend
 **Dispatch a domain research subagent** to run concurrently with profile generation:
 
 ```
-Use Task tool with subagent_type=general-purpose and prompt:
+Use Task tool with subagent_type=general-purpose, model=sonnet, and prompt:
 "Research the following for the role of [ROLE TITLE] at [COMPANY NAME]:
 
 1. Industry standards and typical role expectations for this specific position

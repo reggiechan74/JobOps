@@ -95,7 +95,7 @@ If the job posting doesn't exist in Job_Postings/, check the root directory for 
 **Dispatch a domain research subagent** to run while you analyze the role variant:
 
 ```
-Use Task tool with subagent_type=general-purpose and prompt:
+Use Task tool with subagent_type=general-purpose, model=sonnet, and prompt:
 "Research the following for the role of [ROLE TITLE] at [COMPANY NAME]:
 
 1. Industry standards and typical role expectations for this specific position

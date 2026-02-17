@@ -163,7 +163,7 @@ Parse prep time: Use {{ARG4}} if provided, otherwise default to 3 days.
 **Dispatch a research subagent** to run concurrently with resume analysis:
 
 ```
-Use Task tool with subagent_type=general-purpose and prompt:
+Use Task tool with subagent_type=general-purpose, model=sonnet, and prompt:
 "Research common interview questions and patterns for [ROLE TITLE] at [COMPANY NAME] or similar roles:
 
 1. Most commonly asked technical questions for this type of role

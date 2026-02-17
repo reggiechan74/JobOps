@@ -122,7 +122,7 @@ If job posting doesn't exist in Job_Postings/, check the root directory for lega
 
 **If regeneration needed**, dispatch subagent:
 ```
-Use Task tool with subagent_type=resume-summarizer and prompt:
+Use Task tool with subagent_type=resume-summarizer, model=sonnet, and prompt:
 "Read all files in ResumeSourceFolder/ directory and create a structured JSON
 candidate profile following the schema in .claude/agents/resume-summarizer.md.
 Save output to ResumeSourceFolder/.profile/candidate_profile.json and

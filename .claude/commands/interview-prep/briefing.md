@@ -177,7 +177,7 @@ Parse {{ARG3}} to determine:
 **Dispatch a research subagent** to run concurrently with gap extraction:
 
 ```
-Use Task tool with subagent_type=general-purpose and prompt:
+Use Task tool with subagent_type=general-purpose, model=sonnet, and prompt:
 "Research learning resources and preparation strategies for the role of [ROLE TITLE] at [COMPANY NAME].
 The candidate needs to prepare for an interview with the following key requirements from the job posting:
 [LIST TOP 8-10 REQUIREMENTS FROM JOB POSTING]
