@@ -7,6 +7,9 @@ node_modules/
 # docs/ folder contains landing pages for GitHub Pages
 # Note: docs/ is NOT gitignored - it's deployed to GitHub Pages
 
+# JobOps workspace configuration (user-specific)
+.jobops/
+
 # Environment variables
 .env
 .env.local

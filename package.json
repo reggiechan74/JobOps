@@ -1,16 +1,12 @@
 {
   "name": "jobops",
-  "version": "1.7.0",
-  "description": "Intelligence-Driven Application Warfare System - Tactical job application platform with resume development, OSINT intelligence, interview preparation, and career retrospective analysis",
+  "version": "2.0.0",
+  "description": "Intelligence-driven career management plugins for Claude Code - resume development, interview prep, OSINT intelligence, career strategy, and independent contractor toolkit",
   "scripts": {
     "install-browsers": "npx playwright install chrome",
     "install-all": "npm install && npm run install-browsers"
   },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.23.0",
-    "playwright-extra": "^4.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@playwright/test": "^1.48.2"
   },
@@ -19,17 +15,17 @@
     "job-search",
     "interview-prep",
     "osint",
-    "intelligence",
-    "assessment",
-    "playwright",
-    "mcp",
     "career",
-    "tactical"
+    "assessment",
+    "plugin",
+    "marketplace",
+    "claude-code",
+    "independent-contractor"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/reggiechan74/JobOps.git"
   },
-  "author": "",
+  "author": "Reggie Chan",
   "license": "ISC"
 }
