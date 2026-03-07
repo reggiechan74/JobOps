@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo ${CLAUDE_PLUGIN_ROOT} > /tmp/.jobops-ic-plugin-root"
+          }
+        ]
+      }
+    ]
+  }
+}

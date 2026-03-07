@@ -1,0 +1,1058 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Candidate Profile Schema",
+  "description": "Structured JSON schema for compressed candidate profiles with evidence traceability",
+  "version": "1.2.0",
+  "type": "object",
+  "required": ["candidate", "technical_skills", "work_history", "education", "certifications", "metadata"],
+  "properties": {
+    "candidate": {
+      "type": "object",
+      "required": ["name", "current_title", "years_total_experience", "profile_generated", "source_files_count"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of candidate"
+        },
+        "current_title": {
+          "type": "string",
+          "description": "Most recent role title"
+        },
+        "years_total_experience": {
+          "type": "number",
+          "description": "Total years of professional experience"
+        },
+        "profile_generated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO8601 timestamp of profile generation"
+        },
+        "source_files_count": {
+          "type": "integer",
+          "description": "Number of source files processed"
+        }
+      }
+    },
+    "technical_skills": {
+      "type": "array",
+      "description": "All technical skills with proficiency levels and evidence",
+      "items": {
+        "type": "object",
+        "required": ["skill_name", "category", "proficiency_level", "years_experience", "evidence"],
+        "properties": {
+          "skill_name": {
+            "type": "string",
+            "description": "Technology, tool, or framework name"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["Programming", "Database", "Cloud", "DevOps", "Analytics", "Business", "Domain", "Other"],
+            "description": "Skill category classification"
+          },
+          "proficiency_level": {
+            "type": "string",
+            "enum": ["Expert", "Proficient", "Intermediate", "Basic"],
+            "description": "Skill proficiency: Expert (5+ yrs), Proficient (2-4 yrs), Intermediate (1-2 yrs), Basic (<1 yr)"
+          },
+          "years_experience": {
+            "type": "number",
+            "description": "Years of experience with this skill"
+          },
+          "last_used": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$",
+            "description": "Year last used (YYYY format)"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string",
+                "description": "Source file path relative to repository root"
+              },
+              "lines": {
+                "type": "string",
+                "description": "Line numbers (e.g., '45-47' or '89')"
+              },
+              "context": {
+                "type": "string",
+                "description": "Brief quote showing usage"
+              }
+            }
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Project names where skill was applied"
+          }
+        }
+      }
+    },
+    "work_history": {
+      "type": "array",
+      "description": "Complete employment history with achievements and metrics",
+      "items": {
+        "type": "object",
+        "required": ["company", "title", "start_date", "duration_months", "evidence"],
+        "properties": {
+          "company": {
+            "type": "string",
+            "description": "Company name"
+          },
+          "title": {
+            "type": "string",
+            "description": "Job title"
+          },
+          "start_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}$",
+            "description": "Start date in YYYY-MM format"
+          },
+          "end_date": {
+            "type": "string",
+            "pattern": "^([0-9]{4}-[0-9]{2}|Present)$",
+            "description": "End date in YYYY-MM format or 'Present'"
+          },
+          "duration_months": {
+            "type": "integer",
+            "description": "Duration in months"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Industry sector"
+          },
+          "company_size": {
+            "type": "string",
+            "enum": ["Startup", "SMB", "Mid-Market", "Enterprise"],
+            "description": "Company size classification"
+          },
+          "team_size": {
+            "type": "integer",
+            "description": "Size of team managed or worked with"
+          },
+          "budget_managed": {
+            "type": ["string", "null"],
+            "description": "Budget managed (e.g., '$2.5M') or null"
+          },
+          "scope_indicators": {
+            "type": "object",
+            "description": "Quantified scope metrics for rubric scoring (industry-generic)",
+            "properties": {
+              "assets_managed": {
+                "type": "integer",
+                "description": "Number of discrete assets, entities, or units under management. Examples by industry: Real Estate=properties, Finance=accounts/portfolios, Tech=products/services, Healthcare=facilities/patients, Retail=stores, Manufacturing=plants/lines, Consulting=engagements"
+              },
+              "assets_description": {
+                "type": "string",
+                "description": "Brief description of what assets represent (e.g., '40 industrial properties', '150 client accounts', '12 SaaS products')"
+              },
+              "geographic_scope": {
+                "type": "string",
+                "enum": ["Local", "Regional", "National", "International"],
+                "description": "Geographic coverage: Local=single city/site, Regional=multiple cities in region/province, National=country-wide, International=multiple countries"
+              },
+              "stakeholder_level": {
+                "type": "string",
+                "enum": ["Team", "Department", "Executive", "Board", "External"],
+                "description": "Highest level of regular stakeholder interaction: Team=peers, Department=cross-functional leads, Executive=VP/C-suite, Board=directors/investment committee, External=government/regulators/public"
+              },
+              "direct_reports": {
+                "type": "integer",
+                "description": "Number of direct reports (distinct from team_size which may include indirect reports or collaborators)"
+              }
+            }
+          },
+          "key_responsibilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Primary responsibilities with scope"
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["description", "metrics", "evidence"],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "What was achieved"
+                },
+                "metrics": {
+                  "type": "string",
+                  "description": "Quantified impact with timeframe"
+                },
+                "timeframe": {
+                  "type": "string",
+                  "description": "Duration or date range"
+                },
+                "impact_category": {
+                  "type": "string",
+                  "enum": ["Crisis Management", "Innovation", "Transformation", "Operational", "Financial", "Leadership"],
+                  "description": "Primary category of achievement for rubric scoring: Crisis Management=high-stakes problem solving, Innovation=new frameworks/tools/methods created, Transformation=organizational change, Operational=process/efficiency improvements, Financial=revenue/cost impact, Leadership=team/culture achievements"
+                },
+                "evidence": {
+                  "type": "object",
+                  "required": ["file", "lines"],
+                  "properties": {
+                    "file": {
+                      "type": "string"
+                    },
+                    "lines": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "technologies_used": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Technologies and tools used in this role"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "description": "Educational background",
+      "items": {
+        "type": "object",
+        "required": ["degree", "institution", "evidence"],
+        "properties": {
+          "degree": {
+            "type": "string",
+            "description": "Degree type and field"
+          },
+          "institution": {
+            "type": "string",
+            "description": "University or institution name"
+          },
+          "graduation_year": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$",
+            "description": "Graduation year (YYYY)"
+          },
+          "relevant_coursework": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Relevant courses completed"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "certifications": {
+      "type": "array",
+      "description": "Professional certifications and credentials",
+      "items": {
+        "type": "object",
+        "required": ["name", "issuer", "status", "evidence"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Certification name"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Issuing organization"
+          },
+          "date_obtained": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}$",
+            "description": "Date obtained (YYYY-MM)"
+          },
+          "expiry_date": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9]{4}-[0-9]{2}$",
+            "description": "Expiry date (YYYY-MM) or null if no expiry"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Active", "Expired", "In-Progress"],
+            "description": "Current status"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Notable projects with outcomes",
+      "items": {
+        "type": "object",
+        "required": ["name", "role", "technologies", "evidence"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "role": {
+            "type": "string",
+            "description": "Your role in the project"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Project duration (e.g., '6 months')"
+          },
+          "scope": {
+            "type": "string",
+            "description": "Team size, budget, or scale metrics"
+          },
+          "technologies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Technologies used"
+          },
+          "outcomes": {
+            "type": "string",
+            "description": "Measurable results achieved"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "domain_expertise": {
+      "type": "array",
+      "description": "Industry and functional expertise areas",
+      "items": {
+        "type": "object",
+        "required": ["domain", "years_experience", "depth", "evidence"],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Industry or functional area"
+          },
+          "years_experience": {
+            "type": "number",
+            "description": "Years of experience in this domain"
+          },
+          "depth": {
+            "type": "string",
+            "enum": ["Expert", "Proficient", "Familiar"],
+            "description": "Level of domain expertise"
+          },
+          "evidence_roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Roles demonstrating this expertise"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "leadership_experience": {
+      "type": "object",
+      "description": "Leadership and management capabilities",
+      "properties": {
+        "max_team_size": {
+          "type": "integer",
+          "description": "Largest team size managed"
+        },
+        "max_budget": {
+          "type": ["string", "null"],
+          "description": "Largest budget managed (e.g., '$5M') or null"
+        },
+        "management_years": {
+          "type": "number",
+          "description": "Years of management experience"
+        },
+        "leadership_style": {
+          "type": "string",
+          "description": "Leadership approach from evidence"
+        },
+        "mentoring": {
+          "type": "boolean",
+          "description": "Has mentoring experience"
+        },
+        "hiring_experience": {
+          "type": "boolean",
+          "description": "Has hiring/recruitment experience"
+        },
+        "evidence": {
+          "type": "object",
+          "required": ["file", "lines"],
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "lines": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "soft_skills": {
+      "type": "array",
+      "description": "Soft skills with evidence",
+      "items": {
+        "type": "object",
+        "required": ["skill", "evidence_type", "evidence"],
+        "properties": {
+          "skill": {
+            "type": "string",
+            "description": "Soft skill name (e.g., Communication, Collaboration)"
+          },
+          "evidence_type": {
+            "type": "string",
+            "enum": ["Demonstrated", "Claimed"],
+            "description": "Whether skill is demonstrated through actions or claimed"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string",
+                "description": "How the skill was demonstrated"
+              }
+            }
+          }
+        }
+      }
+    },
+    "thought_leadership": {
+      "type": "object",
+      "description": "Publications, frameworks created, awards, and industry recognition for Innovation & Leadership scoring",
+      "properties": {
+        "publications": {
+          "type": "array",
+          "description": "Published works demonstrating thought leadership",
+          "items": {
+            "type": "object",
+            "required": ["title", "type", "year", "evidence"],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Publication title"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["Peer-reviewed", "Whitepaper", "Conference", "Book", "Article", "Internal"],
+                "description": "Publication type: Peer-reviewed=academic journals, Whitepaper=strategic/technical papers, Conference=presentations/proceedings, Book=authored/co-authored, Article=industry publications, Internal=company-wide strategic documents"
+              },
+              "venue": {
+                "type": "string",
+                "description": "Journal name, conference, or publication venue"
+              },
+              "year": {
+                "type": "string",
+                "pattern": "^[0-9]{4}$",
+                "description": "Publication year (YYYY)"
+              },
+              "evidence": {
+                "type": "object",
+                "required": ["file", "lines"],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "frameworks_created": {
+          "type": "array",
+          "description": "Methodologies, models, or tools created (not just used) that were adopted by others",
+          "items": {
+            "type": "object",
+            "required": ["name", "description", "evidence"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of framework, model, or tool"
+              },
+              "description": {
+                "type": "string",
+                "description": "Brief description of what it does and its impact"
+              },
+              "adoption": {
+                "type": "string",
+                "description": "How widely adopted (e.g., 'team-wide', 'company-wide', 'industry')"
+              },
+              "evidence": {
+                "type": "object",
+                "required": ["file", "lines"],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "awards": {
+          "type": "array",
+          "description": "Industry awards, recognition, or honors received",
+          "items": {
+            "type": "object",
+            "required": ["name", "year", "evidence"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Award name"
+              },
+              "issuer": {
+                "type": "string",
+                "description": "Organization that granted the award"
+              },
+              "year": {
+                "type": "string",
+                "pattern": "^[0-9]{4}$",
+                "description": "Year received (YYYY)"
+              },
+              "evidence": {
+                "type": "object",
+                "required": ["file", "lines"],
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patents": {
+          "type": "integer",
+          "description": "Number of patents held or pending"
+        },
+        "speaking_engagements": {
+          "type": "integer",
+          "description": "Number of conference presentations, panels, or keynotes"
+        }
+      }
+    },
+    "professional_activities": {
+      "type": "array",
+      "description": "Volunteer, board, assessor, and professional association roles for Cultural Fit scoring",
+      "items": {
+        "type": "object",
+        "required": ["role", "organization", "evidence"],
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Role or position held (e.g., 'Licensed Assessor', 'Board Member', 'Committee Chair')"
+          },
+          "organization": {
+            "type": "string",
+            "description": "Organization name"
+          },
+          "start_year": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$",
+            "description": "Year started (YYYY)"
+          },
+          "end_year": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9]{4}$",
+            "description": "Year ended (YYYY) or null if current"
+          },
+          "current": {
+            "type": "boolean",
+            "description": "Whether this is a current activity"
+          },
+          "scope": {
+            "type": "string",
+            "description": "Quantified impact or reach (e.g., '24-36 candidates assessed over 12 years', 'Mentored 4 candidates with 75% first-attempt success')"
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lines"],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "lines": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Career pattern metadata",
+      "required": ["total_roles", "career_progression"],
+      "properties": {
+        "total_roles": {
+          "type": "integer",
+          "description": "Total number of roles in career"
+        },
+        "career_progression": {
+          "type": "string",
+          "enum": ["Upward", "Lateral", "Mixed"],
+          "description": "Overall career trajectory"
+        },
+        "industry_changes": {
+          "type": "integer",
+          "description": "Number of industry sector changes"
+        },
+        "role_changes": {
+          "type": "integer",
+          "description": "Number of functional role changes"
+        },
+        "employment_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["start", "end", "duration_months"],
+            "properties": {
+              "start": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}$",
+                "description": "Gap start date (YYYY-MM)"
+              },
+              "end": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}$",
+                "description": "Gap end date (YYYY-MM)"
+              },
+              "duration_months": {
+                "type": "integer",
+                "description": "Gap duration in months"
+              },
+              "explanation": {
+                "type": "string",
+                "description": "Explanation if provided in source materials"
+              }
+            }
+          }
+        }
+      }
+    },
+    "job_preferences": {
+      "type": "object",
+      "description": "Candidate's job search preferences and requirements for job fit assessment (NEW in v1.2.0)",
+      "properties": {
+        "target_roles": {
+          "type": "object",
+          "description": "Preferred role types and industries",
+          "properties": {
+            "ideal_role": {
+              "type": "string",
+              "description": "Most desired role type (e.g., 'AI Agentic engineering in commercial real estate')"
+            },
+            "acceptable_roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Other acceptable role types"
+            },
+            "target_industries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Preferred industries (e.g., ['Commercial Real Estate', 'Linear Infrastructure', 'Technology'])"
+            },
+            "avoid_industries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Industries to avoid"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "employment_type": {
+          "type": "object",
+          "description": "Preferred employment arrangement",
+          "properties": {
+            "preferred": {
+              "type": "string",
+              "enum": ["Full-time Employee", "Part-time Employee", "Contractor", "Consultant", "Entrepreneur", "Flexible"],
+              "description": "Primary employment type preference"
+            },
+            "acceptable": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Full-time Employee", "Part-time Employee", "Contractor", "Consultant", "Entrepreneur"]
+              },
+              "description": "All acceptable employment types"
+            },
+            "avoid": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Employment arrangements to avoid (e.g., 'Long-term salaried employee')"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "compensation": {
+          "type": "object",
+          "description": "Compensation expectations by employment type",
+          "properties": {
+            "salary": {
+              "type": "object",
+              "description": "Salary requirements if employee",
+              "properties": {
+                "minimum": {
+                  "type": "string",
+                  "description": "Minimum acceptable base salary (e.g., 'C$150,000')"
+                },
+                "target": {
+                  "type": "string",
+                  "description": "Target base salary (e.g., 'C$200,000')"
+                },
+                "ideal": {
+                  "type": "string",
+                  "description": "Ideal base salary (e.g., 'C$250,000+')"
+                },
+                "currency": {
+                  "type": "string",
+                  "description": "Currency (e.g., 'CAD', 'USD')"
+                }
+              }
+            },
+            "bonus_expectation": {
+              "type": "string",
+              "description": "Expected bonus as percentage of base (e.g., '30% of base salary')"
+            },
+            "hourly_rate": {
+              "type": "object",
+              "description": "Hourly rate requirements if consultant/contractor",
+              "properties": {
+                "minimum": {
+                  "type": "string",
+                  "description": "Minimum hourly rate (e.g., '$100/hr')"
+                },
+                "target": {
+                  "type": "string",
+                  "description": "Target hourly rate (e.g., '$175/hr')"
+                },
+                "ideal": {
+                  "type": "string",
+                  "description": "Ideal hourly rate (e.g., '$350/hr')"
+                }
+              }
+            },
+            "equity_preference": {
+              "type": "string",
+              "description": "Equity expectations (e.g., 'Restricted units or equity participation')"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "work_arrangement": {
+          "type": "object",
+          "description": "Work location and schedule preferences",
+          "properties": {
+            "location_preference": {
+              "type": "string",
+              "enum": ["Remote", "Hybrid", "On-site", "Flexible"],
+              "description": "Preferred work location arrangement"
+            },
+            "acceptable_locations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Remote", "Hybrid", "On-site"]
+              },
+              "description": "All acceptable location arrangements"
+            },
+            "geographic_preferences": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Preferred geographic locations/cities"
+            },
+            "relocation_willingness": {
+              "type": "boolean",
+              "description": "Willing to relocate for role"
+            },
+            "hours_per_week": {
+              "type": "object",
+              "description": "Weekly hours preference",
+              "properties": {
+                "minimum": {
+                  "type": "integer",
+                  "description": "Minimum hours per week (e.g., 20)"
+                },
+                "maximum": {
+                  "type": "integer",
+                  "description": "Maximum hours per week (e.g., 50)"
+                }
+              }
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "travel": {
+          "type": "object",
+          "description": "Travel tolerance and preferences",
+          "properties": {
+            "tolerance_percentage": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Maximum acceptable travel percentage (0-100)"
+            },
+            "tolerance_level": {
+              "type": "string",
+              "enum": ["None", "Minimal", "Moderate", "Significant", "Heavy"],
+              "description": "Travel tolerance: None (0%), Minimal (1-10%), Moderate (11-25%), Significant (26-50%), Heavy (51%+)"
+            },
+            "international_travel": {
+              "type": "boolean",
+              "description": "Willing to travel internationally"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Additional travel context or constraints"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "benefits": {
+          "type": "object",
+          "description": "Benefits requirements",
+          "properties": {
+            "vacation_weeks": {
+              "type": "integer",
+              "description": "Minimum vacation weeks required"
+            },
+            "health_benefits_required": {
+              "type": "boolean",
+              "description": "Whether health benefits are required"
+            },
+            "required_benefits": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of required benefits (e.g., ['Medical', 'Dental', 'Vision'])"
+            },
+            "nice_to_have_benefits": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Preferred but not required benefits"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "work_environment": {
+          "type": "object",
+          "description": "Preferred work culture and environment",
+          "properties": {
+            "preferred_characteristics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Desired workplace characteristics (e.g., ['Pro-technology', 'Encourages experimentation', 'Advancing new ideas'])"
+            },
+            "avoid_characteristics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Characteristics to avoid (e.g., ['Zero technology', 'Unionized environment resistant to change', 'Highly repetitive work'])"
+            },
+            "company_size_preference": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Startup", "SMB", "Mid-Market", "Enterprise", "Any"]
+              },
+              "description": "Preferred company sizes"
+            },
+            "autonomy_preference": {
+              "type": "string",
+              "enum": ["High", "Moderate", "Low", "Flexible"],
+              "description": "Preferred level of autonomy"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "intellectual_property": {
+          "type": "object",
+          "description": "IP and side work preferences",
+          "properties": {
+            "retain_ip_rights": {
+              "type": "boolean",
+              "description": "Wants to retain rights to own intellectual property"
+            },
+            "side_gig_allowed": {
+              "type": "boolean",
+              "description": "Needs ability to have side business/consulting"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Additional IP/side work context"
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "file": { "type": "string" },
+                "lines": { "type": "string" }
+              }
+            }
+          }
+        },
+        "deal_breakers": {
+          "type": "array",
+          "description": "Absolute deal-breakers that would disqualify an opportunity",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string",
+                "description": "Category of deal-breaker (e.g., 'Compensation', 'Culture', 'Work Arrangement')"
+              },
+              "description": {
+                "type": "string",
+                "description": "Specific deal-breaker description"
+              },
+              "evidence": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string" },
+                  "lines": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
