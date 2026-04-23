@@ -22,6 +22,23 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: assessment_rubric_framework, assessment_report_structure
 
+## Application Path Resolution
+
+This skill writes to a per-application folder. Before writing any output:
+
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
+3. Resolve this skill's sub-folder by category:
+   - resume-development (buildresume, provenance-check) → `resume/`
+   - cover-letter (coverletter) → `cover-letter/`
+   - rubric / assessment (createrubric, assessjob, assesscandidate, auditjobposting) → `assessment/`
+   - briefing / interview prep (briefing, interviewprep) → `interview/`
+4. If the app folder does not exist, `mkdir -p` it, then copy
+   `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
+   so the pinned JD cannot silently change under completed work.
+5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
+   already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+
 ## CRITICAL OUTPUT CONSTRAINT
 
 **MAXIMUM ASSESSMENT REPORT LIMIT: 20,000 TOKENS**
@@ -103,7 +120,7 @@ Create these tasks immediately at the start:
 
 Every markdown artifact you create (rubric and assessment report) must start with YAML metadata populated with real values.
 
-- **Rubric file** (`{config.directories.scoring_rubrics}/Rubric_*`):
+- **Rubric file** (`{applications_root}/{app_slug}/assessment/rubric.md`):
   ```yaml
   ---
   job_file: {config.directories.job_postings}/{{ARG1}}
@@ -118,12 +135,12 @@ Every markdown artifact you create (rubric and assessment report) must start wit
   version: 2.0
   ---
   ```
-- **Assessment file** (`{config.directories.output_resumes}/Assessment_*`):
+- **Assessment file** (`{applications_root}/{app_slug}/assessment/assessment.md`):
   ```yaml
   ---
   job_file: {config.directories.job_postings}/{{ARG1}}
   resume_source: {{ARG2}} or {config.directories.resume_source}
-  rubric_file: {config.directories.scoring_rubrics}/Rubric_[Company]_[Role]_[Date].md
+  rubric_file: {applications_root}/{app_slug}/assessment/rubric.md
   role: <role title>
   company: <company name>
   role_variant: <Technical IC | People Manager | Executive>
@@ -327,8 +344,7 @@ The dynamic rubric you create MUST include granular point allocation for every s
 
 **IF ANY SECTION LACKS DETAILED BREAKDOWNS, THE RUBRIC IS INCOMPLETE AND MUST BE REGENERATED**
 
-Save the generated rubric to: `{config.directories.scoring_rubrics}/Rubric_[Company]_[Role]_[Date].md`
-(Audit copy saved later in Phase 5 with the assessment)
+Save the generated rubric to: `{applications_root}/{app_slug}/assessment/rubric.md`
 
 > **Task:** Mark task 5 `completed`.
 
@@ -429,47 +445,27 @@ Assess based on the company values, work environment, and role-specific readines
 
 > **Task:** Mark task 12 `in_progress`.
 
-**CRITICAL: Folder Structure and Timestamps**
+**File Save Locations (app-centric layout):**
 
-Before saving any files:
-1. **Get Current Eastern Time**: Retrieve current date/time in America/New_York timezone
-2. **Create Timestamped Sub-Folder**: Format as `YYYY-MM-DD_HHMMSS_[Company]_[Role]`
-   - Example: `2025-11-17_143022_UniversityOfToronto_ExecutiveDirectorAssetManagement`
-   - Remove spaces from company and role names; use CamelCase or underscores
-   - Ensure folder is created in `{config.directories.output_resumes}/`
+Resolve `{app_slug}` per the Application Path Resolution protocol at the top of this skill, and ensure `{applications_root}/{app_slug}/assessment/` exists (`mkdir -p`).
 
-**File Save Locations:**
+1. **Save Dynamic Rubric**: `{applications_root}/{app_slug}/assessment/rubric.md`
+   - Include all extracted requirements from the job posting
+   - Document the scoring breakdown with job-specific details
 
-1. **Save Dynamic Rubric to BOTH locations**:
-   - **Primary**: `{config.directories.scoring_rubrics}/Rubric_[Company]_[Role]_[Date].md`
-     - This becomes the official scoring criteria repository
-     - Include all extracted requirements from the job posting
-     - Document the scoring breakdown with job-specific details
-
-   - **Audit Copy**: `{config.directories.output_resumes}/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Rubric_[Company]_[Role]_[Date].md`
-     - Exact copy of rubric for complete audit trail
-     - Ensures assessment folder is self-contained with all artifacts
-
-2. **Save Assessment Report**: `{config.directories.output_resumes}/[YYYY-MM-DD_HHMMSS]_[Company]_[Role]/Assessment_[Company]_[Role]_[Date].md`
+2. **Save Assessment Report**: `{applications_root}/{app_slug}/assessment/assessment.md`
    - Include reference to the specific rubric used
    - Document all scores with evidence mapping and confidence flags
    - Provide clear traceability between rubric criteria and candidate evaluation
 
-**Example Full Paths:**
-```
-{config.directories.scoring_rubrics}/Rubric_UofT_ExecutiveDirectorAssetManagement_20251117.md
-{config.directories.output_resumes}/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Rubric_UofT_ExecutiveDirectorAssetManagement_20251117.md
-{config.directories.output_resumes}/2025-11-17_143022_UofT_ExecutiveDirectorAssetManagement/Assessment_UofT_ExecutiveDirectorAssetManagement_20251117.md
-```
+No timestamped audit sub-folder is required — the app folder itself is the self-contained audit container, and the pinned `job_posting.md` copy guarantees the JD cannot drift after the fact.
 
-**Folder Creation Steps:**
-1. Use Bash tool to get Eastern time: `TZ='America/New_York' date '+%Y-%m-%d_%H%M%S'`
-2. Extract company name and role from job posting
-3. Create folder path: `{config.directories.output_resumes}/[timestamp]_[Company]_[Role]/`
-4. Create folder using Bash: `mkdir -p "{config.directories.output_resumes}/[timestamp]_[Company]_[Role]"`
-5. Save rubric to {config.directories.scoring_rubrics}/ (primary location)
-6. Copy rubric to timestamped folder (audit trail)
-7. Save assessment to timestamped folder
+**Save Steps:**
+1. Compute `{app_slug}` from the job-posting filename (or `--app=<slug>` override)
+2. `mkdir -p {applications_root}/{app_slug}/assessment/`
+3. Pin the JD: copy `{config.directories.job_postings}/{{ARG1}}` to `{applications_root}/{app_slug}/job_posting.md` if not already present
+4. Write the rubric to `{applications_root}/{app_slug}/assessment/rubric.md`
+5. Write the assessment to `{applications_root}/{app_slug}/assessment/assessment.md`
 
 > **Task:** Mark task 12 `completed`.
 

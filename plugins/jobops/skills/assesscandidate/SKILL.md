@@ -22,6 +22,23 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: assessment_rubric_framework, assessment_report_structure, evidence_verification_framework
 
+## Application Path Resolution
+
+This skill writes to a per-application folder. Before writing any output:
+
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
+3. Resolve this skill's sub-folder by category:
+   - resume-development (buildresume, provenance-check) → `resume/`
+   - cover-letter (coverletter) → `cover-letter/`
+   - rubric / assessment (createrubric, assessjob, assesscandidate, auditjobposting) → `assessment/`
+   - briefing / interview prep (briefing, interviewprep) → `interview/`
+4. If the app folder does not exist, `mkdir -p` it, then copy
+   `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
+   so the pinned JD cannot silently change under completed work.
+5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
+   already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+
 ## CRITICAL OUTPUT CONSTRAINT
 
 **MAXIMUM OUTPUT LIMIT: 20,000 TOKENS**
@@ -87,12 +104,12 @@ Phase 5 (Sequential):        Generate report → Save files
 
 ## YAML FRONT MATTER
 
-The generated assessment in `{config.directories.output_resumes}/Assessment_*` must start with:
+The generated assessment in `{applications_root}/{app_slug}/assessment/assessment.md` must start with:
 
 ```yaml
 ---
 job_file: {config.directories.job_postings}/{{ARG2}}
-rubric_file: {config.directories.scoring_rubrics}/{{ARG1}}
+rubric_file: {{ARG1}}
 role: <role title>
 company: <company name>
 candidate: <full candidate name>
@@ -116,7 +133,7 @@ Insert this block before any headings and update timestamps, scores, and version
 **Read all files in a single parallel batch:**
 - `{config.templates.base_dir}/{config.templates.active[evidence_verification_framework]}/evidence_verification_framework.md` - Evidence-based scoring protocols
 - `{config.templates.base_dir}/{config.templates.active[assessment_report_structure]}/assessment_report_structure.md` - Assessment report format
-- `{config.directories.scoring_rubrics}/{{ARG1}}` (add .md extension if needed)
+- `{{ARG1}}` — pre-created rubric file. Accept either an absolute path, a path relative to `{applications_root}/{app_slug}/assessment/rubric.md`, or a bare filename to resolve inside the current app folder.
 - `{config.directories.job_postings}/{{ARG2}}` (add .md extension if needed)
 
 If job posting doesn't exist in {config.directories.job_postings}/, check the root directory for legacy files.
@@ -264,23 +281,18 @@ Follow the report structure defined in the assessment report structure template 
 
 > **Task:** Mark task 11 `in_progress`.
 
-**CRITICAL: Folder Structure and Timestamps**
+**File Save Location (app-centric layout):**
 
-Before saving any files:
-1. **Get Current Eastern Time**: `TZ='America/New_York' date '+%Y-%m-%d_%H%M%S'`
-2. **Create Timestamped Sub-Folder**: Format as `YYYY-MM-DD_HHMMSS_[Company]_[Role]`
-   - Remove spaces; use CamelCase or underscores
-   - Create in `{config.directories.output_resumes}/`
+Resolve `{app_slug}` per the Application Path Resolution protocol at the top of this skill, and ensure `{applications_root}/{app_slug}/assessment/` exists (`mkdir -p`).
 
-**File Save Locations:**
+1. **Pin the rubric inside the app folder**: if `{{ARG1}}` points to a rubric outside the app folder, copy it to `{applications_root}/{app_slug}/assessment/rubric.md` (if one is not already pinned there). The pinned rubric is the authoritative copy used for audit.
 
-1. **Copy Rubric to Assessment Folder**: `{config.directories.output_resumes}/[timestamp]_[Company]_[Role]/Rubric_[Company]_[Role]_[Date].md`
-   - Copy the pre-created rubric from {config.directories.scoring_rubrics}/ for audit trail
-
-2. **Save Assessment Report**: `{config.directories.output_resumes}/[timestamp]_[Company]_[Role]/Assessment_[Company]_[Role]_[Date].md`
-   - Include reference to using pre-created rubric
+2. **Save Assessment Report**: `{applications_root}/{app_slug}/assessment/assessment.md`
+   - Include reference to using pre-created rubric (use the pinned path)
    - Document all scores with evidence mapping
    - Provide clear traceability between rubric criteria and candidate evaluation
+
+The app folder itself is the self-contained audit container — no timestamped audit sub-folder is needed.
 
 **Provide a summary of:**
 - Overall score and recommendation

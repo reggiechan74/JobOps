@@ -14,6 +14,23 @@ Use `config.directories.<key>` for all file paths in this skill.
 Use `config.preferences.cultural_profile` if this skill generates resume-style content.
 Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
+## Application Path Resolution
+
+This skill writes to a per-application folder. Before writing any output:
+
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
+3. Resolve this skill's sub-folder by category:
+   - resume-development (buildresume, provenance-check) → `resume/`
+   - cover-letter (coverletter) → `cover-letter/`
+   - rubric / assessment (createrubric, assessjob, assesscandidate, auditjobposting) → `assessment/`
+   - briefing / interview prep (briefing, interviewprep) → `interview/`
+4. If the app folder does not exist, `mkdir -p` it, then copy
+   `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
+   so the pinned JD cannot silently change under completed work.
+5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
+   already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+
 ## Your Task
 
 Analyze the job posting at `{config.directories.job_postings}/{{ARG1}}` (add .md extension if needed) using a rigorous 100-point scoring rubric that identifies red flags, unrealistic expectations, and posting quality issues that job seekers should consider before applying.
@@ -500,46 +517,11 @@ Based on audit findings, generate 5-7 questions the candidate should ask to clar
 
 ## Step 5: Save Audit Report
 
-**CRITICAL: Check for Existing Timestamped Folder**
+Resolve `{app_slug}` per the Application Path Resolution protocol at the top of this skill, and ensure `{applications_root}/{app_slug}/assessment/` exists (`mkdir -p`). Pin the JD to `{applications_root}/{app_slug}/job_posting.md` if not already present.
 
-Before saving, check if a timestamped folder already exists for this company/role combination:
+**Save Location:** `{applications_root}/{app_slug}/assessment/job_audit.md`
 
-1. **Search for existing folder**: Look for folders matching the pattern:
-   ```
-   {config.directories.output_resumes}/YYYY-MM-DD_HHMMSS_[Company]_[Role]/
-   ```
-   Use Bash to search: `ls -d {config.directories.output_resumes}/*_[Company]_[Role]/ 2>/dev/null | head -1`
-
-2. **If existing folder found**: Save the audit report INSIDE that folder
-   - Example: `{config.directories.output_resumes}/2025-11-29_161353_HydroOne_DataServicesManager/JobAudit_HydroOne_DataServicesManager_20251129.md`
-   - This keeps all artifacts for the same job application together
-
-3. **If no existing folder found**: Save directly to {config.directories.output_resumes}/
-   - Example: `{config.directories.output_resumes}/JobAudit_HydroOne_DataServicesManager_20251129.md`
-
-**Folder Detection Steps:**
-```bash
-# Extract company and role from job posting (remove spaces, use CamelCase)
-# Search for matching timestamped folder
-existing_folder=$(ls -d {config.directories.output_resumes}/*_[Company]_[Role]/ 2>/dev/null | head -1)
-
-# If found, use it; otherwise use {config.directories.output_resumes}/ directly
-if [ -n "$existing_folder" ]; then
-    output_dir="$existing_folder"
-else
-    output_dir="{config.directories.output_resumes}/"
-fi
-```
-
-**File Naming Convention:**
-- Remove spaces; use CamelCase
-- Use `YYYYMMDD` for the date component so automation can parse versions
-- Filename: `JobAudit_[Company]_[Role]_[Date].md`
-- Example: `JobAudit_HydroOne_DataServicesManager_20251129.md`
-
-**Full Path Examples:**
-- With existing folder: `{config.directories.output_resumes}/2025-11-29_161353_HydroOne_DataServicesManager/JobAudit_HydroOne_DataServicesManager_20251129.md`
-- Without existing folder: `{config.directories.output_resumes}/JobAudit_HydroOne_DataServicesManager_20251129.md`
+This co-locates the audit alongside any rubric/assessment that already lives in the same app folder, and the app folder itself is the self-contained container — no timestamped sub-folder is required.
 
 ---
 

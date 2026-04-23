@@ -22,6 +22,23 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: candidate_profile_schema
 
+## Application Path Resolution
+
+This skill writes to a per-application folder. Before writing any output:
+
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
+3. Resolve this skill's sub-folder by category:
+   - resume-development (buildresume, provenance-check) → `resume/`
+   - cover-letter (coverletter) → `cover-letter/`
+   - rubric / assessment (createrubric, assessjob, assesscandidate, auditjobposting) → `assessment/`
+   - briefing / interview prep (briefing, interviewprep) → `interview/`
+4. If the app folder does not exist, `mkdir -p` it, then copy
+   `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
+   so the pinned JD cannot silently change under completed work.
+5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
+   already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+
 ## Arguments
 
 - `$1`: Step 3 final resume file path (required)
@@ -78,7 +95,7 @@ The cover letter will feature a two-column table that:
 ## Output
 
 Your strategic cover letter will be saved as:
-`{config.directories.output_resumes}/Step4_CoverLetter_[Role]_[Company]_[Date].md`
+`{applications_root}/{app_slug}/cover-letter/cover_letter.md`
 
 Before the letter content, write this YAML metadata block with actual values:
 

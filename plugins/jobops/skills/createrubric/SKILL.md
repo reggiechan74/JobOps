@@ -22,6 +22,23 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: assessment_rubric_framework
 
+## Application Path Resolution
+
+This skill writes to a per-application folder. Before writing any output:
+
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
+3. Resolve this skill's sub-folder by category:
+   - resume-development (buildresume, provenance-check) → `resume/`
+   - cover-letter (coverletter) → `cover-letter/`
+   - rubric / assessment (createrubric, assessjob, assesscandidate, auditjobposting) → `assessment/`
+   - briefing / interview prep (briefing, interviewprep) → `interview/`
+4. If the app folder does not exist, `mkdir -p` it, then copy
+   `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
+   so the pinned JD cannot silently change under completed work.
+5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
+   already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+
 ## Your Task
 
 Analyze the {{ARG1}} job posting and generate a detailed, reusable scoring rubric that extracts all requirements and creates standardized evaluation criteria.
@@ -56,7 +73,7 @@ Phase 4 (Sequential):       Validate and save rubric
 | 3 | Determine role variant and extract requirements | Analyzing role variant and extracting requirements |
 | 4 | Create 200-point scoring rubric | Creating 200-point scoring rubric |
 | 5 | Validate rubric completeness | Validating rubric completeness |
-| 6 | Save rubric | Saving rubric to {config.directories.scoring_rubrics} |
+| 6 | Save rubric | Saving rubric to {applications_root}/{app_slug}/assessment/rubric.md |
 
 **Task Update Rules:**
 - Mark each task `in_progress` BEFORE starting work on it
@@ -66,7 +83,7 @@ Phase 4 (Sequential):       Validate and save rubric
 
 ## YAML FRONT MATTER
 
-Write the rubric to `{config.directories.scoring_rubrics}/Rubric_*` and begin the file with:
+Write the rubric to `{applications_root}/{app_slug}/assessment/rubric.md` and begin the file with:
 
 ```yaml
 ---
@@ -248,7 +265,7 @@ Use domain research findings to calibrate rubric thresholds:
 
 > **Task:** Mark task 6 `in_progress`.
 
-Save the generated rubric to: `{config.directories.scoring_rubrics}/Rubric_[Company]_[Role]_[Date].md`
+Save the generated rubric to: `{applications_root}/{app_slug}/assessment/rubric.md`
 
 Provide a summary of:
 - Template compliance confirmation

@@ -22,6 +22,23 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: assessment_report_structure
 
+## Application Path Resolution
+
+This skill writes to a per-application folder. Before writing any output:
+
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
+3. Resolve this skill's sub-folder by category:
+   - resume-development (buildresume, provenance-check) → `resume/`
+   - cover-letter (coverletter) → `cover-letter/`
+   - rubric / assessment (createrubric, assessjob, assesscandidate, auditjobposting) → `assessment/`
+   - briefing / interview prep (briefing, interviewprep) → `interview/`
+4. If the app folder does not exist, `mkdir -p` it, then copy
+   `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
+   so the pinned JD cannot silently change under completed work.
+5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
+   already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+
 ## Your Task
 
 Create a comprehensive briefing note that either:
@@ -72,7 +89,7 @@ Phase 4 (Sequential):         Create practice schedule + interview strategy → 
 | 5 | Create priority-based study plan | Creating priority-based study plan |
 | 6 | Write detailed study guides | Writing detailed study guides for each topic |
 | 7 | Create interview strategy | Creating interview strategy and gap acknowledgment scripts |
-| 8 | Save briefing note | Saving briefing note to {config.directories.briefing_notes} |
+| 8 | Save briefing note | Saving briefing note to {applications_root}/{app_slug}/interview/briefing.md |
 
 **Task Update Rules:**
 - Mark each task `in_progress` BEFORE starting work on it
@@ -131,7 +148,7 @@ Additional factors that elevate priority:
 
 ## YAML FRONT MATTER
 
-When saving the briefing to `{config.directories.briefing_notes}/`, prepend this metadata:
+When saving the briefing to `{applications_root}/{app_slug}/interview/briefing.md`, prepend this metadata:
 
 ```yaml
 ---
@@ -157,7 +174,7 @@ version: 1.1
 > **Task:** Mark task 1 `in_progress`.
 
 **Read both files in a single parallel batch:**
-- Assessment report from `{{ARG1}}` (check {config.directories.output_resumes}/ or {config.directories.scoring_rubrics}/ directories)
+- Assessment report from `{{ARG1}}` (typically `{applications_root}/{app_slug}/assessment/assessment.md`; accept an absolute path, a path relative to the app folder, or a bare filename to resolve inside the current app folder)
 - Job description from `{config.directories.job_postings}/{{ARG2}}` (add .md extension if needed)
 
 Parse {{ARG3}} to determine:
@@ -340,10 +357,10 @@ up quickly--I've already [specific action taken] and have a learning plan that i
 - If the complete briefing exceeds 25,000 tokens, split into multiple parts
 - Each part must not exceed 25,000 tokens
 - Save parts as:
-  - `Briefing_[Company]_[Role]_[Mode]_Part1_[Date].md`
-  - `Briefing_[Company]_[Role]_[Mode]_Part2_[Date].md`
+  - `briefing_part1.md`
+  - `briefing_part2.md`
   - etc.
-- Location: `{config.directories.briefing_notes}/` directory
+- Location: `{applications_root}/{app_slug}/interview/` directory (single-part output saves to `briefing.md`)
 
 **Logical Splitting Guidelines:**
 - Part 1: Executive Summary + Priority Breakdown + Skill Gap Analysis + Study Plan

@@ -22,6 +22,23 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: assessment_report_structure
 
+## Application Path Resolution
+
+This skill writes to a per-application folder. Before writing any output:
+
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
+3. Resolve this skill's sub-folder by category:
+   - resume-development (buildresume, provenance-check) → `resume/`
+   - cover-letter (coverletter) → `cover-letter/`
+   - rubric / assessment (createrubric, assessjob, assesscandidate, auditjobposting) → `assessment/`
+   - briefing / interview prep (briefing, interviewprep) → `interview/`
+4. If the app folder does not exist, `mkdir -p` it, then copy
+   `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
+   so the pinned JD cannot silently change under completed work.
+5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
+   already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+
 ## Your Task
 
 Generate a comprehensive set of interview questions that an employer would likely ask based on:
@@ -116,7 +133,7 @@ IF (Question covers edge cases or advanced scenarios):
 
 ## YAML FRONT MATTER
 
-Save the question set to `{config.directories.briefing_notes}/Interview_Prep_*` with this prefix:
+Save the question set to `{applications_root}/{app_slug}/interview/interview_prep.md` with this prefix:
 
 ```yaml
 ---
@@ -142,7 +159,7 @@ version: 1.1
 > **Task:** Mark task 1 `in_progress`.
 
 **Read both files in a single parallel batch:**
-- Resume from `{{ARG1}}` (check {config.directories.output_resumes}/ directory)
+- Resume from `{{ARG1}}` (typically `{applications_root}/{app_slug}/resume/step3_final.md`; accept an absolute path, a path relative to the app folder, or a bare filename to resolve inside the current app folder)
 - Job description from `{config.directories.job_postings}/{{ARG2}}` (add .md extension if needed)
 
 Set question count: Use {{ARG3}} if provided, otherwise default to 10.
@@ -306,10 +323,10 @@ Create a structured interview preparation guide with:
 - If the complete guide exceeds 25,000 tokens, split into multiple parts
 - Each part must not exceed 25,000 tokens
 - Save parts as:
-  - `Interview_Prep_[Company]_[Role]_Part1_[Date].md`
-  - `Interview_Prep_[Company]_[Role]_Part2_[Date].md`
+  - `interview_prep_part1.md`
+  - `interview_prep_part2.md`
   - etc.
-- Location: `{config.directories.briefing_notes}/` directory
+- Location: `{applications_root}/{app_slug}/interview/` directory (single-part output saves to `interview_prep.md`)
 
 **Logical Splitting Guidelines:**
 - Part 1: Executive Summary + Practice Schedule + HIGH LIKELIHOOD questions
