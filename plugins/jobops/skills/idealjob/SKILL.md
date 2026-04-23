@@ -18,7 +18,7 @@ Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sen
 
 Synthesizes a hypothetical job description representing a near-perfect fit based on the user's comprehensive career history, stated preferences, and patterns from high-scoring assessments.
 
-**Output file:** `$1` if provided; otherwise the default location determined by `config.directories.career_analysis` (filename convention is set in the career-analysis path-update task).
+**Output file:** `$1` if provided; otherwise `{config.directories.career_analysis}/idealjob_{YYYYMMDD}.md`.
 
 ## Phase 1: Comprehensive Career Intelligence Gathering
 
@@ -75,7 +75,8 @@ Search for assessment reports with scores of 90 or higher:
    - Read files matching `Sample_Output/*Great_Fit*.md` or `Sample_Output/*_Fit_Assessment*.md`
    - Extract patterns from assessments scoring 90+
 
-2. **Scan {config.directories.output_resumes} directory:**
+2. **Scan {config.directories.applications_root} directory:**
+   - Iterate application folders (`{applications_root}/{app_slug}/assessment/assessment.md`)
    - Search assessment files for `overall_score: 9` (90-99) in YAML front matter
    - Or scan for "Overall Score: 9" patterns in content
    - Read top 3-5 highest-scoring assessments
@@ -254,7 +255,7 @@ Provide actionable job search guidance:
 
 ### Primary Output: Synthetic Job Description
 
-Save to: `{config.directories.job_postings}/IdealJob_Synthetic_[Date].md` (or specified filename)
+Save to: `{config.directories.career_analysis}/idealjob_{YYYYMMDD}.md` (or the filename passed in `$1`)
 
 The job description should:
 - Be realistic enough to use as a search template
@@ -299,7 +300,7 @@ Before finalizing, verify:
 /idealjob
 
 # Generate with custom output filename
-/idealjob {config.directories.job_postings}/MyIdealRole_AI_RealEstate_2025.md
+/idealjob {config.directories.career_analysis}/idealjob_MyIdealRole_AI_RealEstate_2026.md
 ```
 
 ---

@@ -1,5 +1,5 @@
 ---
-description: Compare assessments selected by the user in the @OutputResumes/ folder
+description: Compare assessment files across application folders under applications_root
 disable-model-invocation: true
 ---
 
@@ -16,7 +16,9 @@ Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sen
 
 ## Your Task
 
-Compare 2-4 assessment files from the {config.directories.output_resumes} folder to analyze candidate performance across different roles, identify patterns, and provide strategic hiring recommendations.
+Compare 2-4 assessment files produced by `/assessjob` (one per application folder under `{config.directories.applications_root}`) to analyze candidate performance across different roles, identify patterns, and provide strategic hiring recommendations.
+
+Each `{{ARGn}}` is the application slug (`{Company}_{Role}_{Date}`) whose assessment should be compared. The skill loads `{applications_root}/{{ARGn}}/assessment/assessment.md` for each slug.
 
 ---
 
@@ -82,10 +84,10 @@ Replace the placeholder comment with the additional assessment filenames you com
 > **Task:** Mark task 1 `in_progress`.
 
 **Read ALL assessment files in a single parallel batch using multiple Read tool calls:**
-- `{config.directories.output_resumes}/{{ARG1}}` (add .md extension if needed)
-- `{config.directories.output_resumes}/{{ARG2}}` (add .md extension if needed)
-- `{config.directories.output_resumes}/{{ARG3}}` (if provided, add .md extension if needed)
-- `{config.directories.output_resumes}/{{ARG4}}` (if provided, add .md extension if needed)
+- `{config.directories.applications_root}/{{ARG1}}/assessment/assessment.md`
+- `{config.directories.applications_root}/{{ARG2}}/assessment/assessment.md`
+- `{config.directories.applications_root}/{{ARG3}}/assessment/assessment.md` (if provided)
+- `{config.directories.applications_root}/{{ARG4}}/assessment/assessment.md` (if provided)
 
 **CRITICAL**: Use parallel Read tool calls for all files in a single message. Do NOT read them sequentially.
 
@@ -310,7 +312,7 @@ Analyze deeper implications:
 
 > **Task:** Mark task 6 `in_progress`.
 
-Save the comparative analysis to: `{config.directories.output_resumes}/Comparison_[Role1]_[Role2]_[etc]_[Date].md`
+Save the comparative analysis to: `{config.directories.career_analysis}/comparison_{YYYYMMDD}_{slug}.md`, where `{slug}` is built from the companies being compared, lowercased and joined with `_vs_` (e.g., `google_vs_meta`, or `google_vs_meta_vs_amazon` for 3+).
 
 > **Task:** Mark task 6 `completed`.
 
@@ -342,5 +344,6 @@ Save the comparative analysis to: `{config.directories.output_resumes}/Compariso
 
 ## Example Usage
 ```bash
-claude /comparejobs Assessment_JLL_VP_Office_Leasing_2025-09-25.md Assessment_Canerector_Vice_President_Real_Estate_2025-09-26.md
+claude /comparejobs JLL_VP_Office_Leasing_2025-09-25 Canerector_Vice_President_Real_Estate_2025-09-26
 ```
+(Each argument is an application slug under `{config.directories.applications_root}`.)

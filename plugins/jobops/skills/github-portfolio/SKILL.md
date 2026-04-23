@@ -16,19 +16,21 @@ Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sen
 
 ## Usage and Arguments
 
-Creates or updates a `GitHub_Repositories.md` portfolio document.
+Creates or updates a GitHub portfolio document.
+
+**Output file:** `{config.directories.career_analysis}/github_portfolio_{YYYYMMDD}.md` — a fresh timestamped snapshot is written on every run (create, add, or refresh).
 
 **Usage forms:**
-- `/github-portfolio <repository-url>` — create if no portfolio exists, otherwise add the repo.
-- `/github-portfolio <repository-url> -create` — force create a new portfolio (first repository).
-- `/github-portfolio <repository-url> -update` — add the repository to an existing portfolio.
-- `/github-portfolio -update` — full portfolio refresh/reorganization (no URL needed).
+- `/github-portfolio <repository-url>` — create if no prior snapshot exists, otherwise add the repo to the latest snapshot.
+- `/github-portfolio <repository-url> -create` — force a brand-new snapshot (first repository).
+- `/github-portfolio <repository-url> -update` — add the repository to the latest existing snapshot.
+- `/github-portfolio -update` — full portfolio refresh/reorganization of the latest snapshot (no URL needed).
 
 **Arguments:**
 - `$1`: Repository URL (required for adding repositories) OR the `-update` flag for refresh-only mode.
 - `$2`: Mode flag (optional, defaults to auto-detect):
-  - `-create`: Force create a new portfolio file.
-  - `-update`: Force update the existing portfolio.
+  - `-create`: Force create a new portfolio snapshot.
+  - `-update`: Force update of the latest portfolio snapshot.
 
 ## Step 1: Parse Arguments and Determine Mode
 
@@ -46,10 +48,9 @@ Checking arguments:
 
 ## Step 2: Check Portfolio Existence
 
-Checking if portfolio already exists:
-@{config.directories.resume_source}/Technology/GitHub_Repositories.md
+Checking whether a prior portfolio snapshot already exists in `{config.directories.career_analysis}/` (any file matching `github_portfolio_*.md`). When more than one exists, use the most recent by date suffix as the working snapshot for add/refresh operations.
 
-**Result**: [Portfolio exists/does not exist]
+**Result**: [Snapshot exists/does not exist]
 
 ---
 
@@ -62,7 +63,7 @@ Based on arguments and portfolio existence:
 
 ## Mode: CREATE NEW PORTFOLIO
 
-**Purpose**: Create initial GitHub_Repositories.md with first repository.
+**Purpose**: Create initial `github_portfolio_{YYYYMMDD}.md` snapshot with first repository.
 
 **Repository URL Provided**: $1
 
@@ -176,13 +177,13 @@ Once you provide the analysis, I'll create your initial portfolio entry.
 
 ## Mode: ADD TO EXISTING PORTFOLIO
 
-**Purpose**: Add new repository to existing portfolio.
+**Purpose**: Add new repository to the latest snapshot and write a new timestamped snapshot.
 
 **Repository URL Provided**: $1
 
-### Step 3.1: Read Existing Portfolio
+### Step 3.1: Read Latest Portfolio Snapshot
 
-@{config.directories.resume_source}/Technology/GitHub_Repositories.md
+Read the most recent `{config.directories.career_analysis}/github_portfolio_*.md` file.
 
 **Current Portfolio Status**:
 - Total repositories: [count from file]
@@ -299,9 +300,9 @@ echo "=== END ANALYSIS ==="
 
 **Triggered When**: User runs `/github-portfolio -update` with no URL
 
-### Step 3.1: Read Existing Portfolio
+### Step 3.1: Read Latest Portfolio Snapshot
 
-@{config.directories.resume_source}/Technology/GitHub_Repositories.md
+Read the most recent `{config.directories.career_analysis}/github_portfolio_*.md` file as the working snapshot.
 
 **Current Portfolio Status**:
 - Total repositories: [count]
@@ -447,7 +448,7 @@ When updating portfolio, ensure these capability matrices remain comprehensive a
 
 ## Output Requirements
 
-**File Location**: `{config.directories.resume_source}/Technology/GitHub_Repositories.md`
+**File Location**: `{config.directories.career_analysis}/github_portfolio_{YYYYMMDD}.md` (new timestamped snapshot per run)
 
 **YAML Front Matter**:
 ```yaml

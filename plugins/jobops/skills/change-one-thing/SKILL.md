@@ -1079,19 +1079,16 @@ The analysis should be:
 
 ## OUTPUT DELIVERY INSTRUCTIONS
 
-**CRITICAL: You MUST save the analysis to files in the following format:**
+**CRITICAL: You MUST save the analysis to a single file in the following format:**
 
 ### File Output Structure
 
-**1. Create 3-4 Part Files** (comprehensive analysis):
+**Primary Output File:** `{config.directories.career_analysis}/change_one_thing_{YYYYMMDD}.md`
 
-Save each part separately to `{config.directories.output_resumes}/` with naming convention:
-- `Change_One_Thing_Analysis_Part1_YYYYMMDD.md`
-- `Change_One_Thing_Analysis_Part2_YYYYMMDD.md`
-- `Change_One_Thing_Analysis_Part3_YYYYMMDD.md`
-- (Optional Part 4 if content requires)
+Consolidate the full analysis (Parts 0 through 6) into this one timestamped file, in the order described below. Do not split into multiple part files.
 
-**Part 1 Contents** (~8,000-12,000 tokens):
+**Section ordering within the single output file:**
+
 - PART 0: User Interview Results (if conducted)
 - PART 1: Executive Summary (brief version, 3-4 sentences)
 - PART 2: PHASE 1A - External Career Patterns (Lenses 1-7)
@@ -1102,8 +1099,6 @@ Save each part separately to `{config.directories.output_resumes}/` with naming 
   - Visibility & Communication
   - Cross-Pollination Opportunities
   - Geographic & Geopolitical Positioning
-
-**Part 2 Contents** (~8,000-12,000 tokens):
 - PART 2 (continued): PHASE 1B - Internal Constraints (Lenses 8-10)
   - Personal Life & Family Dynamics
   - Financial Capacity & Risk Tolerance Evolution
@@ -1116,8 +1111,6 @@ Save each part separately to `{config.directories.output_resumes}/` with naming 
   - Luck Surface Area & Serendipity Manufacturing
   - Values Hierarchy & Identity Evolution
   - Market Timing & Skill vs. Luck Attribution
-
-**Part 3 Contents** (~10,000-15,000 tokens):
 - PART 3: Candidate Recommendations (3-5 scenarios with scoring)
 - PART 4: The Ultimate Recommendation (full detailed execution)
   - THE ONE CHANGE
@@ -1136,11 +1129,7 @@ Save each part separately to `{config.directories.output_resumes}/` with naming 
   - Capability Alignment
 - PART 6: What You Can Still Do Now (detailed recovery plan)
 
-**2. Create Executive Summary File** (REQUIRED, <=6,000 tokens):
-
-Save to: `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
-
-**Executive Summary Contents** (must fit in <=6,000 tokens):
+**Prepend an Executive Summary section** (<=6,000 tokens) at the top of the file, immediately after any YAML frontmatter and before PART 0, using the template below:
 
 ```markdown
 # THE TIME TRAVEL EXERCISE
@@ -1229,27 +1218,23 @@ Save to: `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
 
 ---
 
-## COMPLETE ANALYSIS REFERENCES
+## COMPLETE ANALYSIS BELOW
 
-- Part 1: [filename]
-- Part 2: [filename]
-- Part 3: [filename]
+(Full 16-lens analysis and recommendations follow in the same file.)
 ```
 
 ### File Creation Process
 
 **Step 1**: Complete full analysis following all 16 lenses and phases
-**Step 2**: Save Part 1 to file using Write tool
-**Step 3**: Save Part 2 to file using Write tool
-**Step 4**: Save Part 3 to file using Write tool
-**Step 5**: Create Executive Summary (<=6,000 tokens) and save to file using Write tool
-**Step 6**: Inform user that all files have been created with their paths
+**Step 2**: Assemble the Executive Summary plus PARTS 0-6 into one consolidated document
+**Step 3**: Save to `{config.directories.career_analysis}/change_one_thing_{YYYYMMDD}.md` using the Write tool
+**Step 4**: Inform the user of the single file path created
 
 ### Quality Control
 
-- **Token counting**: Executive Summary MUST be <=6,000 tokens (approximately 4,500-5,000 words)
-- **File naming**: Use YYYYMMDD format (e.g., 20251109 for November 9, 2025)
-- **Completeness**: All parts must be saved before completing the command
+- **Token counting**: Executive Summary section MUST be <=6,000 tokens (approximately 4,500-5,000 words)
+- **File naming**: Use YYYYMMDD format (e.g., 20260423 for April 23, 2026)
+- **Completeness**: Executive Summary plus all six PARTs must appear in the single output file
 - **Evidence**: Every quantified claim must cite specific resume data with dates
 - **Actionability**: "What You Can Still Do Now" section must be executable this week
 
@@ -1257,8 +1242,6 @@ Save to: `Change_One_Thing_EXECUTIVE_SUMMARY_YYYYMMDD.md`
 
 **EXECUTION ORDER:**
 1. Conduct analysis following all frameworks
-2. Save Part 1 (Lenses 1-7)
-3. Save Part 2 (Lenses 8-16)
-4. Save Part 3 (Recommendations + Counterfactual)
-5. Create & save Executive Summary (<=6,000 tokens)
-6. Confirm to user all files created
+2. Assemble Executive Summary plus PARTS 0-6 into one document
+3. Save to `{config.directories.career_analysis}/change_one_thing_{YYYYMMDD}.md`
+4. Confirm to user the file path created
