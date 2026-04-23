@@ -5,7 +5,7 @@
 ## 1. Two plugins, one config
 
 - `jobops` owns resume, interview, OSINT, career, and crisis skills.
-- `jobops-ic` adds an independent-contractor layer on top. It declares `dependencies: {jobops: "^2.0.0"}` in its `plugin.json` so Claude Code refuses to install it without `jobops`.
+- `jobops-ic` adds an independent-contractor layer on top. It declares `dependencies: ["jobops"]` in its `plugin.json` so Claude Code refuses to install it without `jobops`. (The current plugin schema accepts a bare array of plugin names; version floors are not expressible here. Enforce version floors at runtime if ever needed.)
 - Both plugins read the same `.jobops/config.json` in the user's workspace. `jobops-ic:setup` extends that file; it does not create a separate one.
 
 ## 2. Config file

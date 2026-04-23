@@ -24,7 +24,7 @@ Verified via Claude Code documentation research (April 2026). Relevant findings:
 - `${CLAUDE_PLUGIN_ROOT}` now expands directly in skill markdown (not only in hooks/MCP configs). The `/tmp/.jobops-plugin-root` workaround from the March plan is obsolete.
 - `${CLAUDE_PLUGIN_DATA}` provides persistent per-plugin storage that survives updates. Not used by this design (our state is per-workspace, not per-install).
 - `plugin.json` gained a `userConfig` field for declarative per-plugin user configuration, prompted at enable time and stored in `settings.json`. **This design does not use `userConfig`** — user preference is for a dedicated JobOps-owned config file, which `/jobops:setup` populates via a guided interview.
-- `plugin.json` gained a `dependencies` field with semver constraints. `jobops-ic` declares `{"jobops": "^2.0.0"}` instead of a handwritten per-skill prerequisite check.
+- `plugin.json` gained a `dependencies` field for plugin-level requirements. The current schema accepts a bare array of plugin names (e.g., `["jobops"]`); version floors are **not** expressible in this field as of April 2026. `jobops-ic` uses `dependencies: ["jobops"]` instead of a handwritten per-skill prerequisite check.
 - `disable-model-invocation: true` remains the correct frontmatter for manual-invoke-only skills.
 - `claude plugin validate` and `--plugin-dir` remain the validation / local-testing commands.
 
@@ -160,9 +160,7 @@ No `userConfig` block. All user state lives in `.jobops/config.json` (Section 6)
   "repository": "https://github.com/reggiechan74/JobOps",
   "license": "ISC",
   "keywords": ["independent-contractor", "consulting", "proposals", "rate-card", "pitch-deck", "landing-page"],
-  "dependencies": {
-    "jobops": "^2.0.0"
-  }
+  "dependencies": ["jobops"]
 }
 ```
 
