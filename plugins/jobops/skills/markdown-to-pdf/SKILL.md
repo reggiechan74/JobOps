@@ -3,52 +3,43 @@ description: Convert markdown documents to professional PDF format with Obsidian
 disable-model-invocation: true
 ---
 
-## Configuration
-
-Read `.jobops/config.json`. If not found, stop with:
-
-> JOBOPS NOT CONFIGURED
-> Run /jobops:setup to initialize your workspace.
-
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
-
 I'll convert your specified markdown documents to professional PDF format using Obsidian-style preview styling.
 
 **Arguments:**
-- `$1`: File path or pattern to convert (required)
-  - Specific file: `{config.directories.output_resumes}/Assessment_Report.md`
-  - Pattern: `{config.directories.output_resumes}/*.md` (all markdown files in directory)
+- `$1`: File path, glob pattern, or directory to convert (required, absolute or relative to workspace)
+  - Specific file: `Applications/AcmeCorp_Director_2026-04-23/assessment/rubric.md`
+  - Pattern: `Applications/AcmeCorp_Director_2026-04-23/*.md` (all markdown in folder)
   - Multiple files: Space-separated list
-- `$2`: Output directory (optional, defaults to same directory as source files)
+- `$2`: Output directory (optional, defaults to the same directory as each source file)
 
 **Supported Conversion Patterns:**
 
 ### Single File Conversion
 ```
-/pdf {config.directories.output_resumes}/Assessment_OntarioTeachers_SeniorManagerFinancialReporting_20251118.md
-/pdf {config.directories.job_postings}/CompanyName_Role.md
-/pdf {config.directories.resume_source}/README.md
+/pdf Applications/AcmeCorp_Director_2026-04-23/assessment/rubric.md
+/pdf Applications/AcmeCorp_Director_2026-04-23/interview/briefing.md
+/pdf Career_Analysis/idealjob_20260423.md
+/pdf Crisis_Management/severance_review_20260423.md
 ```
 
 ### Pattern-Based Conversion
 ```
-/pdf "{config.directories.output_resumes}/Assessment_*.md"
-/pdf "Briefing_Notes/*.md"
-/pdf "*.md"
+/pdf "Applications/AcmeCorp_Director_2026-04-23/assessment/*.md"
+/pdf "Applications/*/interview/briefing.md"
+/pdf "Company_Intelligence/AcmeCorp/*.md"
 ```
 
 ### Directory-Based Conversion
 ```
-/pdf {config.directories.output_resumes}/
-/pdf {config.directories.job_postings}/
+/pdf Applications/AcmeCorp_Director_2026-04-23/
+/pdf Career_Analysis/
+/pdf Crisis_Management/
 ```
 
 ### With Custom Output Directory
 ```
-/pdf {config.directories.output_resumes}/Assessment_Report.md PDF_Exports/
-/pdf "Briefing_Notes/*.md" PDF_Output/
+/pdf Applications/AcmeCorp_Director_2026-04-23/assessment/rubric.md PDF_Exports/
+/pdf "Applications/*/interview/briefing.md" PDF_Output/
 ```
 
 ## Step 1: System Verification
@@ -62,6 +53,11 @@ If either tool is missing, I'll install it automatically.
 ## Step 2: File Discovery and Validation
 
 I'll locate and validate the specified files based on your input pattern: @$1
+
+Path resolution:
+- Absolute paths are used verbatim.
+- Relative paths are resolved against the current working directory.
+- Glob patterns and directories are expanded to a list of `.md` files.
 
 I'll check:
 - Files exist and are accessible
@@ -108,15 +104,15 @@ pandoc "input.md" -o "output.pdf" \
 For each markdown file, I'll:
 
 1. **Validate the file** exists and is readable
-2. **Determine output path** based on source location or custom output directory
+2. **Determine output path** — same directory as the source file by default, or the custom directory from `$2`
 3. **Execute pandoc conversion** with Obsidian CSS stylesheet
 4. **Verify PDF creation** and check file integrity
 5. **Report success/errors** for each file
 
 ### File Naming:
-- Original: `Assessment_Report.md`
-- Output: `Assessment_Report.pdf`
-- Location: Same directory as source (or custom output directory)
+- Original: `rubric.md`
+- Output: `rubric.pdf`
+- Location: Same directory as source (or custom output directory from `$2`)
 
 ## Step 5: Success Verification
 
@@ -129,9 +125,9 @@ After conversion, I'll verify:
 ## Expected Output
 
 Your documents will be converted with these patterns:
-- `Assessment_Report.md` -> `Assessment_Report.pdf`
-- `Briefing_Notes_Part1.md` -> `Briefing_Notes_Part1.pdf`
-- `Job_Posting.md` -> `Job_Posting.pdf`
+- `rubric.md` -> `rubric.pdf`
+- `briefing.md` -> `briefing.pdf`
+- `idealjob_20260423.md` -> `idealjob_20260423.pdf`
 
 ## Obsidian-Style Features Applied
 
@@ -160,8 +156,8 @@ If any file fails to convert:
 ### Output Organization
 - Original markdown files remain unchanged
 - PDF files created with matching names
-- Consistent directory structure maintained
-- Optional custom output directory support
+- Output directory defaults to the source file's own directory
+- Optional custom output directory via `$2`
 
 ## Implementation
 

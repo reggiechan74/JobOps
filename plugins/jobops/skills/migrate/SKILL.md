@@ -46,12 +46,24 @@ If all four are absent or empty, print:
 
 ## Step 2: Dry-run parse
 
-For each file, attempt to parse `{Company}_{Role}_{YYYYMMDD}` using the
-patterns (tried in order):
+For each file, attempt to parse `{Company}_{Role}_{YYYYMMDD}` (or, for
+Intelligence_Reports, `{Company}_{AgentType}_{YYYYMMDD}`) using the
+patterns below.
+
+**Pattern-to-folder mapping:**
+- Patterns 1–3 apply to files under `OutputResumes/`, `Scoring_Rubrics/`,
+  and `Briefing_Notes/`.
+- Pattern 4 applies only to files under `Intelligence_Reports/`.
+
+Patterns (tried in order within each folder's applicable set):
 
 1. `^([A-Za-z0-9]+)_([A-Za-z0-9]+)_(\d{8})\.md$`
-2. `^(?:Step\d+_)?(?:Draft_|Provenance_Analysis_|Final_Resume_|Cover_Letter_)?([A-Za-z0-9]+)_([A-Za-z0-9]+)_(\d{8})\.md$`
+2. `^(?:Step\d+_)?(?:Draft_|Provenance_Analysis_|Final_Resume_|Cover_Letter_|Briefing_|Interview_Prep_)?([A-Za-z0-9]+)_([A-Za-z0-9]+)_(\d{8})\.md$`
 3. `^Rubric_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(\d{8})\.md$`
+4. `^([A-Za-z0-9]+)_(Corporate|Legal|Leadership|Compensation|Culture|Market)_Intelligence_(\d{8})\.md$` — applied only to files inside `Intelligence_Reports/`.
+
+Capture groups for patterns 1–3: `(Company)_(Role)_(Date)`.
+Capture groups for pattern 4: `(Company)_(AgentType)_(Date)`.
 
 Compose destinations:
 
@@ -61,12 +73,13 @@ Compose destinations:
 - `OutputResumes/Cover_Letter_*` → `.../cover-letter/cover_letter.md`
 - `Scoring_Rubrics/Rubric_*` → `.../assessment/rubric.md`
 - `Briefing_Notes/*` (matches pattern 1 or 2) → `.../interview/briefing.md`
-- `Intelligence_Reports/<Company>_Corporate_*` → `{company_intelligence}/<Company>/corporate.md`
-- `Intelligence_Reports/<Company>_Legal_*` → `{company_intelligence}/<Company>/legal.md`
-- `Intelligence_Reports/<Company>_Leadership_*` → `{company_intelligence}/<Company>/leadership.md`
-- `Intelligence_Reports/<Company>_Compensation_*` → `{company_intelligence}/<Company>/compensation.md`
-- `Intelligence_Reports/<Company>_Culture_*` → `{company_intelligence}/<Company>/culture.md`
-- `Intelligence_Reports/<Company>_Market_*` → `{company_intelligence}/<Company>/market.md`
+- `Intelligence_Reports/*` (matches pattern 4) → `{company_intelligence}/{Company}/{agent_lowercase}.md`
+  - e.g. `AcmeCorp_Corporate_Intelligence_20260423.md` → `{company_intelligence}/AcmeCorp/corporate.md`
+  - e.g. `AcmeCorp_Legal_Intelligence_20260423.md` → `{company_intelligence}/AcmeCorp/legal.md`
+  - e.g. `AcmeCorp_Leadership_Intelligence_20260423.md` → `{company_intelligence}/AcmeCorp/leadership.md`
+  - e.g. `AcmeCorp_Compensation_Intelligence_20260423.md` → `{company_intelligence}/AcmeCorp/compensation.md`
+  - e.g. `AcmeCorp_Culture_Intelligence_20260423.md` → `{company_intelligence}/AcmeCorp/culture.md`
+  - e.g. `AcmeCorp_Market_Intelligence_20260423.md` → `{company_intelligence}/AcmeCorp/market.md`
 
 Files that do not match any pattern are added to an "unresolved" list.
 

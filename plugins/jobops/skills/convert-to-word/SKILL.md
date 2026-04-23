@@ -3,44 +3,34 @@ description: Convert markdown documents to professional Word DOCX format using p
 disable-model-invocation: true
 ---
 
-## Configuration
-
-Read `.jobops/config.json`. If not found, stop with:
-
-> JOBOPS NOT CONFIGURED
-> Run /jobops:setup to initialize your workspace.
-
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
-
 I'll convert your specified markdown documents to professional Word DOCX format using pandoc.
 
 **Arguments:**
-- `$1`: File path, pattern, or type to convert (required)
-  - Specific file: `{config.directories.output_resumes}/Step3_Final_Resume_Director_Alto_2025-09-23.md`
-  - Pattern: `{config.directories.output_resumes}/Step3_*.md` (all Step 3 resumes)
-  - Type: `resume` or `coverletter` or `all`
-- `$2`: Output directory (optional, defaults to same directory as source files)
+- `$1`: File path or glob pattern to convert (required, absolute or relative to workspace)
+  - Specific file: `Applications/AcmeCorp_Director_2026-04-23/resume/step3_final.md`
+  - Pattern: `Applications/AcmeCorp_Director_2026-04-23/resume/*.md`
+  - Pattern across applications: `Applications/*/resume/step3_final.md`
+- `$2`: Output directory (optional, defaults to the same directory as each source file)
 
-**Supported Conversion Types:**
+**Supported Conversion Patterns:**
 
 ### Single File Conversion
 ```
-/convert {config.directories.output_resumes}/Step3_Final_Resume_Director_Alto_2025-09-23.md
+/convert Applications/AcmeCorp_Director_2026-04-23/resume/step3_final.md
+/convert Applications/FinCo_VP_2026-04-23/cover-letter/cover_letter.md
+/convert Career_Analysis/idealjob_20260423.md
 ```
 
 ### Pattern-Based Conversion
 ```
-/convert "{config.directories.output_resumes}/Step3_*.md"
-/convert "{config.directories.output_resumes}/Step4_*.md"
+/convert "Applications/*/resume/step3_final.md"
+/convert "Applications/AcmeCorp_Director_2026-04-23/*.md"
+/convert "Crisis_Management/severance_review_*.md"
 ```
 
-### Type-Based Conversion
+### With Custom Output Directory
 ```
-/convert resume          # All final resumes (Step 3)
-/convert coverletter     # All cover letters (Step 4)
-/convert all            # All documents in {config.directories.output_resumes}/
+/convert Applications/AcmeCorp_Director_2026-04-23/resume/step3_final.md ~/Desktop/
 ```
 
 ## Step 1: System Verification
@@ -50,6 +40,11 @@ First, I'll check if pandoc is installed and ready:
 ## Step 2: File Discovery and Validation
 
 I'll locate and validate the specified files based on your input pattern: @$1
+
+Path resolution:
+- Absolute paths are used verbatim.
+- Relative paths are resolved against the current working directory.
+- Glob patterns are expanded before conversion.
 
 ## Step 3: Direct Conversion Process
 
@@ -72,7 +67,7 @@ I'll convert the files directly using pandoc in the main shell session:
 ### File Organization:
 - Original `.md` files remain unchanged
 - New `.docx` files created with matching names
-- Consistent directory structure maintained
+- Output directory defaults to the source file's own directory
 - Clear success/error reporting
 
 ## Implementation
@@ -116,8 +111,11 @@ pandoc "input.md" -o "input.docx" \
 ## Expected Output
 
 Your documents will be converted with these naming patterns:
-- `Step3_Final_Resume_Director_Alto_2025-09-23.md` -> `Step3_Final_Resume_Director_Alto_2025-09-23.docx`
-- `Step4_CoverLetter_Director_Alto_2025-09-23.md` -> `Step4_CoverLetter_Director_Alto_2025-09-23.docx`
+- `step3_final.md` -> `step3_final.docx`
+- `cover_letter.md` -> `cover_letter.docx`
+- `idealjob_20260423.md` -> `idealjob_20260423.docx`
+
+Output location defaults to the same directory as the source file (e.g. a file under `Applications/AcmeCorp_Director_2026-04-23/resume/` emits its `.docx` alongside the `.md`). Pass `$2` to override.
 
 ## Professional Formatting Applied
 

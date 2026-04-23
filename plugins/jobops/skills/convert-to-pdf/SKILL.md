@@ -3,21 +3,10 @@ description: Convert markdown resume to professionally designed PDF using Playwr
 disable-model-invocation: true
 ---
 
-## Configuration
-
-Read `.jobops/config.json`. If not found, stop with:
-
-> JOBOPS NOT CONFIGURED
-> Run /jobops:setup to initialize your workspace.
-
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
-
 I'll convert your markdown resume into a professionally designed PDF using the frontend-design skill and Playwright rendering.
 
 **Arguments:**
-- `$1`: Path to markdown resume file (required)
+- `$1`: Path to markdown resume file (required, absolute or relative to workspace)
 - `$2`: Theme choice (optional): `modern` | `classic` | `minimal` (default: modern)
 - `$3`: Target page count (optional): `1` | `2` | `3` (default: auto-detect based on content)
 
@@ -35,7 +24,7 @@ I'll convert your markdown resume into a professionally designed PDF using the f
 ## Step 1: Validate Input File
 
 First, I'll verify the markdown resume file exists and read its contents:
-- File path: `$1`
+- File path: `$1` — resolve as given (absolute path used verbatim; relative path resolved against the current working directory)
 - Selected theme: `$2` (defaults to `modern` if not specified)
 - Target pages: `$3` (defaults to `auto` if not specified)
 
@@ -189,7 +178,7 @@ Use the Playwright MCP to render the HTML to PDF:
    - Generate high-quality output
 
 4. **Save PDF to output location:**
-   - Default: Same directory as input file
+   - Default: Same directory as the input file
    - Filename: `{original_name}_formatted.pdf`
 
 ## Step 8: Review PDF Output and Iterative Refinement
@@ -308,24 +297,29 @@ The generated PDF will include:
 
 ## Example Usage
 
+Paths are user-supplied. The examples below use the v2.0 application-centric layout (`Applications/{slug}/...`) and top-level analysis folders, but any absolute or relative path is accepted.
+
 ```bash
 # Modern theme, auto page count (default)
-/formatresume {config.directories.output_resumes}/Step3_Final_Resume_Director_CompanyName_2025-01-15.md
+/formatresume Applications/AcmeCorp_Director_2026-04-23/resume/step3_final.md
 
 # Classic theme, auto page count
-/formatresume {config.directories.output_resumes}/Step3_Final_Resume_VP_FinancialServices_2025-01-15.md classic
+/formatresume Applications/FinCo_VP_2026-04-23/resume/step3_final.md classic
 
 # Minimal theme, auto page count
-/formatresume {config.directories.output_resumes}/Step3_Final_Resume_Engineer_StartupName_2025-01-15.md minimal
+/formatresume Applications/Startup_Engineer_2026-04-23/resume/step3_final.md minimal
 
 # Modern theme, force 1-page (entry-level/targeted)
-/formatresume {config.directories.output_resumes}/Step3_Final_Resume_Analyst_Startup_2025-01-15.md modern 1
+/formatresume Applications/Startup_Analyst_2026-04-23/resume/step3_final.md modern 1
 
 # Classic theme, force 2-page (standard professional)
-/formatresume {config.directories.output_resumes}/Step3_Final_Resume_Manager_Enterprise_2025-01-15.md classic 2
+/formatresume Applications/Enterprise_Manager_2026-04-23/resume/step3_final.md classic 2
 
 # Modern theme, force 3-page (executive/academic)
-/formatresume {config.directories.output_resumes}/Step3_Final_Resume_VP_GlobalCorp_2025-01-15.md modern 3
+/formatresume Applications/GlobalCorp_VP_2026-04-23/resume/step3_final.md modern 3
+
+# Absolute paths are accepted too
+/formatresume /workspaces/JobOps/Applications/AcmeCorp_Director_2026-04-23/resume/step3_final.md modern 2
 ```
 
 **When to use each page count:**
