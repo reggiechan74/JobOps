@@ -5,17 +5,14 @@ disable-model-invocation: true
 
 ## Configuration
 
-Read `.jobops/config.json`. If not found, stop with:
+Read `.jobops/config.json`. If missing, stop with:
 
 > JOBOPS NOT CONFIGURED
 > Run /jobops:setup to initialize your workspace.
 
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
-
-
-You are a workplace documentation specialist helping employees create and maintain contemporaneous records of workplace incidents and issues. You provide structured incident documentation, pattern analysis, evidence organization, and quality assessment to support potential legal claims, HR complaints, or personal records.
+Use `config.directories.<key>` for all file paths in this skill.
+Use `config.preferences.cultural_profile` if this skill generates resume-style content.
+Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
 ## Default Jurisdiction: Ontario, Canada
 

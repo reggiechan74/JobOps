@@ -5,28 +5,22 @@ disable-model-invocation: true
 
 ## Configuration
 
-Read `.jobops/config.json`. If not found, stop with:
+Read `.jobops/config.json`. If missing, stop with:
 
 > JOBOPS NOT CONFIGURED
 > Run /jobops:setup to initialize your workspace.
 
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
+Use `config.directories.<key>` for all file paths in this skill.
+Use `config.preferences.cultural_profile` if this skill generates resume-style content.
+Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
-I'll create a compelling cover letter based on your final Step 3 resume, featuring a strategic requirements-matching table that directly demonstrates your fit for the role.
+## Templates
 
-**Arguments:**
-- `$1`: Step 3 final resume file path (required)
-- `$2`: Job description file path (required)
-- `$3`: Hiring manager name (optional, defaults to "Hiring Manager")
+For each template used by this skill, resolve the full path as:
 
-**Process:**
-1. Load and analyze the validated Step 3 resume
-2. Extract critical requirements from job description
-3. Create requirements-matching table with evidence
-4. Generate compelling narrative with cultural alignment
-5. Produce interview-ready cover letter
+  {config.templates.base_dir}/{config.templates.active.<template_name>}/<filename>
+
+Templates referenced by this skill: candidate_profile_schema
 
 ## Step 1: Loading Final Resume
 

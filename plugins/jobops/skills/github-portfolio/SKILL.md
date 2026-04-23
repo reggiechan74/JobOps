@@ -5,30 +5,14 @@ disable-model-invocation: true
 
 ## Configuration
 
-Read `.jobops/config.json`. If not found, stop with:
+Read `.jobops/config.json`. If missing, stop with:
 
 > JOBOPS NOT CONFIGURED
 > Run /jobops:setup to initialize your workspace.
 
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
-
-I'll help you create or update your GitHub_Repositories.md portfolio documentation.
-
-**Usage:**
-- `/github-portfolio <repository-url>` (default: creates if none exists, updates if exists)
-- `/github-portfolio <repository-url> -create`: Force create new portfolio (first repository)
-- `/github-portfolio <repository-url> -update`: Add repository to existing portfolio
-- `/github-portfolio -update`: Full portfolio refresh/reorganization (no URL needed)
-
-**Arguments:**
-- `$1`: Repository URL (required for adding repositories) OR `-update` flag for refresh-only mode
-- `$2`: Mode flag (optional, defaults to auto-detect)
-  - `-create`: Force create new portfolio file
-  - `-update`: Force update existing portfolio
-
----
+Use `config.directories.<key>` for all file paths in this skill.
+Use `config.preferences.cultural_profile` if this skill generates resume-style content.
+Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
 ## Step 1: Parse Arguments and Determine Mode
 

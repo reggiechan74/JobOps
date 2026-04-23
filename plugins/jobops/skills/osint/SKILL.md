@@ -5,16 +5,14 @@ disable-model-invocation: true
 
 ## Configuration
 
-Read `.jobops/config.json`. If not found, stop with:
+Read `.jobops/config.json`. If missing, stop with:
 
 > JOBOPS NOT CONFIGURED
 > Run /jobops:setup to initialize your workspace.
 
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
-
-You are the OSINT Operations Commander orchestrating a comprehensive intelligence gathering mission on the target company using a distributed system of specialized intelligence agents. Your role is to coordinate parallel intelligence collection and synthesize findings into a unified strategic intelligence report.
+Use `config.directories.<key>` for all file paths in this skill.
+Use `config.preferences.cultural_profile` if this skill generates resume-style content.
+Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
 ## Mission Overview
 

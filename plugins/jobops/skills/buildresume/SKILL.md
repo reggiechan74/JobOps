@@ -5,50 +5,22 @@ disable-model-invocation: true
 
 ## Configuration
 
-Read `.jobops/config.json`. If not found, stop with:
+Read `.jobops/config.json`. If missing, stop with:
 
 > JOBOPS NOT CONFIGURED
 > Run /jobops:setup to initialize your workspace.
 
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
+Use `config.directories.<key>` for all file paths in this skill.
+Use `config.preferences.cultural_profile` if this skill generates resume-style content.
+Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
-I'll create a complete resume by running all three steps of the resume optimization process sequentially.
+## Templates
 
-**Arguments:**
-- `$1`: Job description file path (required)
-- `$2`: Cultural profile (optional, defaults to "Canadian")
+For each template used by this skill, resolve the full path as:
 
-**Process:**
-1. **Step 1**: Create initial tailored resume draft using HAM-Z methodology
-2. **Step 2**: Perform comprehensive provenance analysis for credibility
-3. **Step 3**: Create final hardened resume addressing all issues
+  {config.templates.base_dir}/{config.templates.active.<template_name>}/<filename>
 
-### YAML front matter requirement
-
-Every markdown file generated during this command must begin with a YAML front matter block so downstream tooling can parse metadata without heuristics. Populate the fields with real values before writing any body content.
-
-- **Step 1 draft** (`{config.directories.output_resumes}/Step1_Draft_*`):
-  ```yaml
-  ---
-  job_file: {{ARG1}}
-  role: <target role title>
-  company: <hiring company>
-  candidate: <full candidate name>
-  generated_by: /buildresume step1-resume-draft
-  generated_on: <ISO8601 timestamp>
-  output_type: resume_step1
-  status: draft
-  version: 1.0
-  ---
-  ```
-- **Step 2 provenance analysis** (`{config.directories.output_resumes}/Step2_Provenance_Analysis_*`): use the same fields but set `generated_by` to `/buildresume step2-provenance-check`, `output_type` to `resume_provenance`, and `status` to `analysis`.
-- **Step 3 final resume** (`{config.directories.output_resumes}/Step3_Final_Resume_*`): set `generated_by` to `/buildresume step3-final-resume`, `output_type` to `resume_final`, and `status` to `final`. Increment `version` if you regenerate after revisions.
-
-Always include the front matter before any markdown headings or narrative.
-
-Let me run the complete 3-step resume building process:
+Templates referenced by this skill: candidate_profile_schema, evidence_verification_framework
 
 ## Step 1: Creating Initial Resume Draft
 ✓ Initiating strike package assembly
