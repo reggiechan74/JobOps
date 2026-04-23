@@ -84,7 +84,7 @@ I'll convert each file using pandoc with custom Obsidian-style CSS for beautiful
 ```bash
 pandoc "input.md" -o "output.pdf" \
   --pdf-engine=wkhtmltopdf \
-  --css=.claude/styles/obsidian.css \
+  --css="${CLAUDE_PLUGIN_ROOT}/styles/obsidian.css" \
   --standalone \
   --embed-resources \
   --metadata title="Document Title"

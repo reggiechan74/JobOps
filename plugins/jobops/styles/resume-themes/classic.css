@@ -1,0 +1,223 @@
+/* Classic Theme - Traditional, conservative design for formal industries */
+
+:root {
+  /* Typography - Serif for traditional feel */
+  --font-body: "Georgia", "Times New Roman", "Cambria", serif;
+  --font-heading: "Georgia", "Times New Roman", "Cambria", serif;
+
+  /* Colors - Conservative, professional */
+  --color-primary: #1a1a1a;
+  --color-secondary: #333333;
+  --color-text: #222222;
+  --color-text-muted: #555555;
+  --color-accent: #1a1a1a;
+  --color-bg: #ffffff;
+  --color-divider: #cccccc;
+  --color-link: #000080;
+
+  /* Tags - Subtle, no background */
+  --color-tag-bg: transparent;
+  --color-tag-text: #333333;
+  --tag-radius: 0;
+  --tag-border: none;
+
+  /* Bullets - Traditional */
+  --bullet-char: "•";
+  --color-bullet: #1a1a1a;
+
+  /* Section styling */
+  --section-border: 1px solid #1a1a1a;
+}
+
+/* Classic Header - Centered, formal */
+.resume-header {
+  text-align: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.resume-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.resume-title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.contact-info {
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.contact-item {
+  color: var(--color-text);
+}
+
+/* Use separator between contact items */
+.contact-item:not(:last-child)::after {
+  content: " | ";
+  color: var(--color-text-muted);
+  margin-left: 0.5rem;
+}
+
+/* Classic Section Titles */
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  padding-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+/* Experience styling */
+.experience-item {
+  margin-bottom: 0.7rem;
+}
+
+.item-header {
+  margin-bottom: 0.15rem;
+}
+
+.item-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-primary);
+}
+
+.item-company {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.item-date {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.item-location {
+  font-style: italic;
+}
+
+/* Achievement bullets - Traditional */
+.achievements li {
+  padding-left: 1rem;
+  margin-bottom: 0.15rem;
+  text-align: justify;
+}
+
+.achievements li::before {
+  content: "•";
+  color: var(--color-primary);
+}
+
+/* Skills - Inline text style, no pills */
+.skill-tags {
+  display: inline;
+}
+
+.skill-tag {
+  display: inline;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+}
+
+.skill-tag:not(:last-child)::after {
+  content: ", ";
+}
+
+/* Skill categories */
+.skill-category {
+  margin-bottom: 0.35rem;
+}
+
+.skill-category-name {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.skill-list {
+  font-size: 0.95rem;
+}
+
+/* Education */
+.education-item {
+  margin-bottom: 0.4rem;
+}
+
+.degree {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.institution {
+  font-weight: 600;
+}
+
+.graduation-date {
+  font-style: italic;
+}
+
+/* Summary */
+.summary {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: justify;
+  font-style: italic;
+  padding: 0.4rem 0;
+}
+
+/* Classic single-column preferred */
+.resume-columns {
+  display: block;
+}
+
+/* No visual sidebar separation */
+.resume-sidebar {
+  border: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+/* Certifications - inline */
+.certification-item {
+  margin-bottom: 0.25rem;
+}
+
+.certification-name {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.certification-issuer {
+  font-style: normal;
+}
+
+/* Horizontal rule styling */
+.divider {
+  border-top: 1px solid #999999;
+  margin: 0.6rem 0;
+}
+
+/* Links - subtle underline */
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+}

@@ -27,15 +27,15 @@ I'll help you manage the CSS design system templates for landing page developmen
 
 | Template | File | Description |
 |----------|------|-------------|
-| **tactical** | `docs/subpage-styles.css` | Military/tech aesthetic with gradients, grid layouts, terminal displays |
-| **minimal** | `docs/minimal-styles.css` | Clean, whitespace-focused, modern typography |
-| **corporate** | `docs/corporate-styles.css` | Professional, conservative, enterprise-friendly |
+| **tactical** | `${CLAUDE_PLUGIN_ROOT}/styles/subpage-styles.css` | Military/tech aesthetic with gradients, grid layouts, terminal displays |
+| **minimal** | `${CLAUDE_PLUGIN_ROOT}/styles/minimal-styles.css` | Clean, whitespace-focused, modern typography |
+| **corporate** | `${CLAUDE_PLUGIN_ROOT}/styles/corporate-styles.css` | Professional, conservative, enterprise-friendly |
 
 ---
 
 ## Mode: View Templates (`--view`)
 
-### Tactical Template (`docs/subpage-styles.css`)
+### Tactical Template (`${CLAUDE_PLUGIN_ROOT}/styles/subpage-styles.css`)
 
 **Design Philosophy**: Mission-critical, data-driven, technically sophisticated
 
@@ -87,7 +87,7 @@ When `--analyze tactical` (or other template) is specified:
 
 1. **Read the CSS file completely**
    ```
-   Read: docs/subpage-styles.css
+   Read: ${CLAUDE_PLUGIN_ROOT}/styles/subpage-styles.css
    ```
 
 2. **Extract Design System Variables**

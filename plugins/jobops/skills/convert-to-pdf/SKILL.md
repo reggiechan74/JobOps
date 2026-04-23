@@ -50,8 +50,8 @@ Analyze the markdown content to identify resume sections:
 ## Step 3: Load CSS Theme Files
 
 Load the base CSS and selected theme:
-1. Read `.claude/styles/resume-base.css` (core print/PDF styles)
-2. Read `.claude/styles/resume-themes/{theme}.css` (theme-specific styles)
+1. Read `${CLAUDE_PLUGIN_ROOT}/styles/resume-base.css` (core print/PDF styles bundled with the plugin)
+2. Read `${CLAUDE_PLUGIN_ROOT}/styles/resume-themes/{theme}.css` (theme-specific styles bundled with the plugin)
 
 Combine into a single stylesheet for the HTML document.
 

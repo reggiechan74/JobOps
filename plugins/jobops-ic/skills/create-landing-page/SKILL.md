@@ -74,13 +74,13 @@ The copywriter will deliver:
 
 Based on the `--template` argument, load the appropriate CSS:
 
-| Template | CSS File | Best For |
-|----------|----------|----------|
-| tactical | `docs/subpage-styles.css` | Tech, consulting, B2B services |
-| minimal | `docs/minimal-styles.css` | Creative, portfolio, personal brands |
-| corporate | `docs/corporate-styles.css` | Enterprise, financial, healthcare |
+| Template | CSS File (bundled with plugin) | Best For |
+|----------|--------------------------------|----------|
+| tactical | `${CLAUDE_PLUGIN_ROOT}/styles/subpage-styles.css` | Tech, consulting, B2B services |
+| minimal | `${CLAUDE_PLUGIN_ROOT}/styles/minimal-styles.css` | Creative, portfolio, personal brands |
+| corporate | `${CLAUDE_PLUGIN_ROOT}/styles/corporate-styles.css` | Enterprise, financial, healthcare |
 
-**Default**: Use `docs/subpage-styles.css` (tactical theme) which includes:
+**Default**: Use `${CLAUDE_PLUGIN_ROOT}/styles/subpage-styles.css` (tactical theme) which includes:
 - Military/tactical aesthetic with gradient backgrounds
 - Feature grids and method cards
 - Terminal-style code displays
@@ -126,7 +126,7 @@ Generate HTML following this proven landing page structure:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[Page Title] | [Brand Name]</title>
     <meta name="description" content="[SEO meta description from copywriter]">
-    <link rel="stylesheet" href="subpage-styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -245,9 +245,12 @@ Use Playwright MCP to preview the landing page:
 Save the generated landing page and assets to the per-slug folder:
 
 - Primary: `{config.directories.contractor_root}/landing-pages/{slug}/index.html`
-- Assets (CSS, images, etc.): `{config.directories.contractor_root}/landing-pages/{slug}/` alongside `index.html`
+- Stylesheet: copy the selected template CSS from `${CLAUDE_PLUGIN_ROOT}/styles/{template}-styles.css` to `{config.directories.contractor_root}/landing-pages/{slug}/styles.css` (rename to `styles.css` regardless of template, so the HTML `<link href="styles.css">` resolves).
+- Any other assets (images, etc.) go in the same `{slug}/` folder.
 
-Create the folder if needed: `mkdir -p {config.directories.contractor_root}/landing-pages/{slug}`. The HTML should reference CSS via a relative path (e.g., `href="styles.css"`) so it resolves within the slug folder.
+Create the folder if needed: `mkdir -p {config.directories.contractor_root}/landing-pages/{slug}`. Then `cp ${CLAUDE_PLUGIN_ROOT}/styles/{template}-styles.css {config.directories.contractor_root}/landing-pages/{slug}/styles.css`.
+
+If `/jobops-ic:css-template` is being used to author a custom stylesheet for this page, it will write to the same `{slug}/styles.css` — the two skills coordinate on that fixed filename.
 
 ### 5.2: Report Results
 
