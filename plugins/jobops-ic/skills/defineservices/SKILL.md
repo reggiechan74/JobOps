@@ -3,35 +3,33 @@ description: Define independent contractor service offerings with pricing and po
 disable-model-invocation: true
 ---
 
-## Prerequisite Check
-
-Before executing, verify the `jobops` plugin is installed by checking if the
-`resume-summarizer` agent is available. If not found, stop with:
-
-> PREREQUISITE MISSING: jobops plugin
->
-> The jobops-ic plugin requires the jobops plugin to be installed first.
-> Install it with: `/plugin install jobops@jobops-marketplace`
->
-> Then retry this command.
-
 ## Configuration
 
-Read `.jobops/config.json`. If not found, stop with:
+Read `.jobops/config.json`. If missing, stop with:
 
 > JOBOPS NOT CONFIGURED
-> Run /jobops:setup to initialize your workspace.
+> Run /jobops:setup (then /jobops-ic:setup) to initialize your workspace.
 
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
+Use `config.directories.contractor_root` for output paths in this skill.
+Use `config.preferences.default_currency` for pricing if applicable.
 
-**Modes:**
+## Templates
+
+For each template used by this skill, resolve the full path as:
+
+  {config.templates.base_dir}/{config.templates.active.<template_name>}/<filename>
+
+Templates referenced by this skill: service_definition_schema
+
+## Modes
+
 - `--guided` (default): Interactive questions
 - `--from-profile`: Auto-generate from candidate profile + Vision.md
 - `--update`: Refresh existing service definition
 
-**Output**: `{config.directories.client_prospects}/Service_Definition_[Date].md` (+ JSON for --from-profile)
+## Output
+
+`{config.directories.client_prospects}/Service_Definition_[Date].md` (+ JSON for --from-profile)
 
 ---
 

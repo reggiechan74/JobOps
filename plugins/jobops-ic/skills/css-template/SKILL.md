@@ -3,32 +3,20 @@ description: Manage CSS design system templates for landing pages - view, analyz
 disable-model-invocation: true
 ---
 
-## Prerequisite Check
-
-Before executing, verify the `jobops` plugin is installed by checking if the
-`resume-summarizer` agent is available. If not found, stop with:
-
-> PREREQUISITE MISSING: jobops plugin
->
-> The jobops-ic plugin requires the jobops plugin to be installed first.
-> Install it with: `/plugin install jobops@jobops-marketplace`
->
-> Then retry this command.
-
 ## Configuration
 
-Read `.jobops/config.json`. If not found, stop with:
+Read `.jobops/config.json`. If missing, stop with:
 
 > JOBOPS NOT CONFIGURED
-> Run /jobops:setup to initialize your workspace.
+> Run /jobops:setup (then /jobops-ic:setup) to initialize your workspace.
 
-Use `config.directories` for all file paths in this skill.
-Use `config.templates.active` to resolve template locations — for each template needed,
-read from: `{config.templates.base_dir}/{active_value}/{filename}`
+Use `config.directories.contractor_root` for output paths in this skill.
+Use `config.preferences.default_currency` for pricing if applicable.
+
+## Arguments
 
 I'll help you manage the CSS design system templates for landing page development.
 
-**Arguments:**
 - `--view [template]`: Display available CSS templates and their components
 - `--analyze [template]`: Deep-dive analysis of a specific template's design system
 - `--create [name]`: Create a new CSS template based on existing patterns
