@@ -257,8 +257,9 @@ When `--create [name]` is specified:
    - Preview with Playwright
 
 4. **Save Template**
-   - Location: `docs/[name]-styles.css`
-   - Update template registry (if maintained)
+   - Location: `{config.directories.contractor_root}/landing-pages/{slug}/styles.css`
+   - The `{slug}` is provided by the caller — either the user (passed in) or the `/create-landing-page` orchestrator. The `{slug}` folder under `landing-pages/` is shared with sibling landing-page skills (`create-landing-page`, `copywrite`, `copywriting-spec`) — this skill writes `styles.css` INTO that existing per-slug folder.
+   - Create the folder if needed: `mkdir -p {config.directories.contractor_root}/landing-pages/{slug}`.
 
 ---
 

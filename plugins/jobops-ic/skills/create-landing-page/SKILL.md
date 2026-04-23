@@ -17,9 +17,11 @@ Use `config.preferences.default_currency` for pricing if applicable.
 
 I'll create a professional landing page using the tactical CSS design system and strategic copywriting principles.
 
-- `$1`: Page name/identifier (required) - e.g., `services`, `about`, `product-launch`
+- `$1`: Page name/identifier (required, used as `{slug}`) - e.g., `services`, `about`, `product-launch`
 - `--template`: CSS template style (optional): `tactical` | `minimal` | `corporate` (default: tactical)
-- `--output-dir`: Output directory (optional, default: `docs`)
+
+This skill acts as the landing-page orchestrator and owns the per-slug folder:
+`{config.directories.contractor_root}/landing-pages/{slug}/`. The sibling skills (`copywrite`, `copywriting-spec`, `css-template`) write sibling files (`copy.md`, `spec.md`, `styles.css`) INTO the same `{slug}` folder, with `{slug}` = `$1`.
 
 ## Phase 1: Discovery & Content Planning
 
@@ -240,9 +242,12 @@ Use Playwright MCP to preview the landing page:
 
 ### 5.1: Save Files
 
-Save the generated landing page:
-- Location: `{output-dir}/{page-name}.html`
-- Default: `docs/{page-name}.html`
+Save the generated landing page and assets to the per-slug folder:
+
+- Primary: `{config.directories.contractor_root}/landing-pages/{slug}/index.html`
+- Assets (CSS, images, etc.): `{config.directories.contractor_root}/landing-pages/{slug}/` alongside `index.html`
+
+Create the folder if needed: `mkdir -p {config.directories.contractor_root}/landing-pages/{slug}`. The HTML should reference CSS via a relative path (e.g., `href="styles.css"`) so it resolves within the slug folder.
 
 ### 5.2: Report Results
 
@@ -256,15 +261,15 @@ Provide:
 
 ```bash
 # Create a services landing page with tactical theme
+# -> {contractor_root}/landing-pages/services/index.html
 /landing-page:create services
 
 # Create a product launch page with minimal theme
+# -> {contractor_root}/landing-pages/product-launch/index.html
 /landing-page:create product-launch --template=minimal
 
-# Create an about page in a custom directory
-/landing-page:create about --output-dir=public/pages
-
 # Create with corporate styling for enterprise clients
+# -> {contractor_root}/landing-pages/enterprise-solutions/index.html
 /landing-page:create enterprise-solutions --template=corporate
 ```
 

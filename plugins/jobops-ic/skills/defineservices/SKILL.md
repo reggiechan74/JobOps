@@ -29,7 +29,7 @@ Templates referenced by this skill: service_definition_schema
 
 ## Output
 
-`{config.directories.client_prospects}/Service_Definition_[Date].md` (+ JSON for --from-profile)
+`{config.directories.contractor_root}/services/service_definition_[YYYYMMDD].md` (+ `.json` alongside for `--from-profile`)
 
 ---
 
@@ -47,7 +47,7 @@ Templates referenced by this skill: service_definition_schema
    - Generate via resume-summarizer agent if missing/stale
 3. **Vision.md**: Read `{config.directories.resume_source}/Preferences/Vision.md` for pricing/engagement preferences
 4. **Existing Definition** (--update only):
-   - Find `{config.directories.client_prospects}/Service_Definition_*.md` files
+   - Find `{config.directories.contractor_root}/services/service_definition_*.md` files
    - If multiple, ask user to select
    - Parse current services and pricing
 
@@ -147,7 +147,7 @@ From `candidate_profile.json`:
 ## Phase 4: Update Mode (--update)
 
 ### 4.1 Load Existing
-Find `Service_Definition_*.md` files. If multiple, ask user to select. Parse: services, pricing, engagement models, differentiation.
+Find `{config.directories.contractor_root}/services/service_definition_*.md` files. If multiple, ask user to select. Parse: services, pricing, engagement models, differentiation.
 
 ### 4.2 Identify Updates
 Compare existing with current candidate profile:
@@ -174,7 +174,7 @@ Proceed with targeted updates based on selection.
 
 ### 4.4 Version Control
 - Keep original intact
-- Create new file: `Service_Definition_[NewDate].md`
+- Create new file: `{config.directories.contractor_root}/services/service_definition_[NewDate].md`
 - Reference previous version in metadata
 - Increment version (1.0->1.1 minor, 1.0->2.0 major)
 
@@ -221,14 +221,14 @@ See `{config.templates.base_dir}/{config.templates.active[template_name]}/servic
 10. **Version History**: Version log
 
 ### 6.2 Save Files
-**Primary**: `{config.directories.client_prospects}/Service_Definition_[YYYYMMDD].md`
-**Secondary** (--from-profile only): `{config.directories.client_prospects}/.cache/Service_Definition_[YYYYMMDD].json` (follow schema exactly)
+**Primary**: `{config.directories.contractor_root}/services/service_definition_[YYYYMMDD].md`
+**Secondary** (--from-profile only): `{config.directories.contractor_root}/services/service_definition_[YYYYMMDD].json` (follow schema exactly)
 
 ### 6.3 Summary Report
 ```
 SERVICE DEFINITION GENERATED
 
-Output: Service_Definition_[Date].md (+ JSON if --from-profile)
+Output: service_definition_[Date].md (+ JSON if --from-profile)
 Services: [X] | Pricing: $[min]-$[max]/hr, $[min]-$[max]/day
 Competitive Advantages: [X] with evidence
 

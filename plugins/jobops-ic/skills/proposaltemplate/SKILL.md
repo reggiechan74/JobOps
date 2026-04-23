@@ -28,7 +28,7 @@ Generate McKinsey/BCG-style proposal with transparent pricing calculations.
 
 ### 1.1 Load Service Definition
 
-Find most recent: `find {config.directories.client_prospects}/ -name "Service_Definition_*.md" -type f | sort -r | head -1`
+Find most recent: `find {config.directories.contractor_root}/services/ -name "service_definition_*.md" -type f | sort -r | head -1`
 
 **If missing:** Stop execution. Guide user to run `/defineservices` first.
 
@@ -51,7 +51,7 @@ Find most recent: `find {config.directories.client_prospects}/ -name "Service_De
 ### 1.3 Load Optional Context
 
 **Pitch Deck** (if client != "Generic"):
-- Find: `Pitch_*${client}*.md`
+- Find: `{config.directories.contractor_root}/pitches/*${client}*.md` (most recent)
 - Extract: prospect_research (pain_points, strategic_priorities, decision_makers, research_date)
 - Set `prospect_context.has_prior_research = true/false`
 
@@ -162,8 +162,8 @@ Generate pricing_calculation YAML metadata for frontmatter with method, rates, h
 
 ### 4.1 File Output
 
-**Filename**: `{config.directories.client_prospects}/Proposal_[Client]_[Service]_[YYYYMMDD].md`
-- Sanitize names: PascalCase, no special chars, service max 30 chars
+**Filename**: `{config.directories.contractor_root}/proposals/[ClientCompany]_[YYYYMMDD].md`
+- Sanitize ClientCompany: PascalCase, no special chars
 
 ### 4.2 Summary Report
 

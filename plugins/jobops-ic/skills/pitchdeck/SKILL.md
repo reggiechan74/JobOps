@@ -19,7 +19,7 @@ Generate 10-12 slide B2B pitch deck with provenance-hardened claims. Supports pr
 
 **Modes:** `--prospect=name` | `--industry=X` | `--service=name` | default (general)
 **Format:** `--format=md|pptx` (markdown default, pptx requires pandoc)
-**Output:** `{config.directories.client_prospects}/Pitch_[Target]_[Date].md`
+**Output:** `{config.directories.contractor_root}/pitches/[ClientCompany]_[YYYYMMDD].md`
 
 ---
 
@@ -29,7 +29,7 @@ Generate 10-12 slide B2B pitch deck with provenance-hardened claims. Supports pr
 
 **Required files (stop if missing):**
 
-1. **Service Definition**: `{config.directories.client_prospects}/Service_Definition_*.md`
+1. **Service Definition**: `{config.directories.contractor_root}/services/service_definition_*.md`
    - If missing: Show error, instruct to run `/defineservices`, stop execution
 
 2. **Candidate Profile**: `{config.directories.resume_source}/.profile/candidate_profile.json` (≤7 days old)
@@ -37,7 +37,7 @@ Generate 10-12 slide B2B pitch deck with provenance-hardened claims. Supports pr
 
 ### 1.2 Load Service Definition
 
-Use most recent `Service_Definition_*.md` if multiple exist. Extract:
+Use most recent `{config.directories.contractor_root}/services/service_definition_*.md` if multiple exist. Extract:
 - YAML: consultant, generated_on, version, source_profile
 - Consultant: name, tagline, credentials, years_experience
 - Services: name, category, description, deliverables, ideal_client (industries, pain_points, decision_makers), pricing (model, range, value_justification), success_metrics, case_studies
@@ -52,7 +52,7 @@ Read `candidate_profile.json` and extract: work_history, technical_skills, domai
 ### 1.4 Parse Arguments
 
 **Targeting modes (mutually exclusive):**
-- `--prospect=name`: Load `Prospects_*.md` file (use most recent). If not found, show error with available prospects, stop.
+- `--prospect=name`: Load most recent matching file from `{config.directories.contractor_root}/prospects/`. If not found, show error with available prospects, stop.
 - `--industry=X`: Validate against service definition industries. Warn if not listed, but proceed.
 - `--service=name`: Fuzzy match against service definition. If no match, show error with available services, stop.
 - Default: General capabilities (all services, industry-agnostic)
@@ -160,11 +160,11 @@ Adjust: Service mode 8-10 slides, Prospect 12, Industry 10-11.
 
 ## Phase 5: Generate Output Files
 
-**Filename:** `Pitch_[Target]_[Date].md` where Target = company name (prospect mode), industry name (industry mode), service name (service mode), or "GeneralCapabilities" (default). Sanitize: remove spaces/special chars, PascalCase, max 50 chars. Date: YYYYMMDD.
+**Filename:** `{config.directories.contractor_root}/pitches/[Target]_[YYYYMMDD].md` where Target = company name (prospect mode -> fills `{ClientCompany}`), industry name (industry mode), service name (service mode), or "GeneralCapabilities" (default). Sanitize: remove spaces/special chars, PascalCase, max 50 chars.
 
 **File structure:** YAML frontmatter (pitch_type, target, generated, consultant, service_definition, candidate_profile, research_conducted, provenance_validated, validation_rate, confidence_level, version). 12 slides with `---` separators. PROVENANCE TRAIL section. Usage notes.
 
-**Save:** `{config.directories.client_prospects}/Pitch_[Target]_[Date].md` (UTF-8, Unix LF).
+**Save:** `{config.directories.contractor_root}/pitches/[ClientCompany]_[YYYYMMDD].md` (UTF-8, Unix LF). For industry-mode or service-mode pitches (no specific company), substitute Industry or Service name (sanitized PascalCase) for ClientCompany.
 
 **PPTX conversion (if `--format=pptx`):** Run `pandoc ... -t pptx --slide-level=1`. Evidence citations -> slide notes, Provenance Trail -> hide in presentation.
 

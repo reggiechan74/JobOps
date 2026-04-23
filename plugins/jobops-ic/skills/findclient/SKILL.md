@@ -24,7 +24,7 @@ Identifies potential B2B clients through intelligent discovery with 10-point B2B
 - `--location=X`: Geographic filter
 - `--limit=N`: Max prospects (default: 20, max: 50)
 
-**Output**: `{config.directories.client_prospects}/Prospects_[Domain]_[Date].md`
+**Output**: `{config.directories.contractor_root}/prospects/[Domain]_[YYYYMMDD].md` (Domain = service category/industry, sanitized PascalCase)
 
 ---
 
@@ -32,7 +32,7 @@ Identifies potential B2B clients through intelligent discovery with 10-point B2B
 
 ### 1.1 Check Service Definition Prerequisite
 
-Search for `{config.directories.client_prospects}/Service_Definition_*.md`. If NOT found, stop with:
+Search for `{config.directories.contractor_root}/services/service_definition_*.md`. If NOT found, stop with:
 ```
 SERVICE DEFINITION REQUIRED
 Run /defineservices first to create service catalog with ideal client profiles, pricing, and differentiation.
@@ -226,7 +226,7 @@ Sort by score (descending), group by priority. Limit to `--limit` (default 20). 
 
 ### 5.2 Report Structure
 
-**File:** `{config.directories.client_prospects}/Prospects_[Domain]_[YYYYMMDD].md` (domain = service category/industry, sanitized)
+**File:** `{config.directories.contractor_root}/prospects/[Domain]_[YYYYMMDD].md` (domain = service category/industry, sanitized PascalCase)
 
 **YAML Frontmatter:**
 ```yaml
@@ -235,7 +235,7 @@ consultant: [Name]
 service_definition: [Path]
 generated_by: /findclient
 generated_on: [ISO8601]
-output_type: client_prospects
+output_type: prospects
 status: final
 version: 1.0
 search_criteria:
@@ -420,14 +420,14 @@ prospect_count:
 
 ### 6.1 Save Report
 
-Save to: `{config.directories.client_prospects}/Prospects_[Domain]_[YYYYMMDD].md` (domain = service category/industry, sanitized). Create directory if needed: `mkdir -p {config.directories.client_prospects}`
+Save to: `{config.directories.contractor_root}/prospects/[Domain]_[YYYYMMDD].md` (domain = service category/industry, sanitized PascalCase). Create directory if needed: `mkdir -p {config.directories.contractor_root}/prospects`
 
 ### 6.2 Console Summary
 
 ```
 CLIENT PROSPECT RESEARCH COMPLETE
 
-**Output:** {config.directories.client_prospects}/Prospects_[Domain]_[Date].md
+**Output:** {config.directories.contractor_root}/prospects/[Domain]_[Date].md
 
 **Pipeline:** HIGH (8-10): [X] | MEDIUM (5-7.9): [Y] | LOW (1-4.9): [Z]
 

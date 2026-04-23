@@ -721,7 +721,9 @@ After gathering all information, generate a complete copywriting specification d
 ### Output Location
 
 Save the completed specification to:
-`{config.directories.client_prospects}/[CompanyName]_Copywriting_Spec.md`
+`{config.directories.contractor_root}/landing-pages/{slug}/spec.md`
+
+The `{slug}` is provided by the caller (e.g., user-supplied project name or the `/create-landing-page` orchestrator). The `{slug}` folder under `landing-pages/` is shared with the related landing-page skills (`create-landing-page`, `copywrite`, `css-template`) — this skill writes `spec.md` INTO that existing per-slug folder. If the folder does not yet exist, create it: `mkdir -p {config.directories.contractor_root}/landing-pages/{slug}`.
 
 ---
 

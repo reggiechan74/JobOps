@@ -27,7 +27,7 @@ Generate professional rate card from service definition with pricing validation.
 
 ### 1.1 Find and Load Service Definition
 
-Find most recent: `{config.directories.client_prospects}/Service_Definition_*.md`
+Find most recent: `{config.directories.contractor_root}/services/service_definition_*.md`
 
 **If not found:**
 ```
@@ -127,7 +127,7 @@ valid_until: [+6 months]
 currency: [CAD|USD]
 generated_on: [ISO8601]
 pricing_validated: [true/false]
-source_definition: "{config.directories.client_prospects}/Service_Definition_[Date].md"
+source_definition: "{config.directories.contractor_root}/services/service_definition_[Date].md"
 ```
 
 **Sections:**
@@ -153,7 +153,7 @@ source_definition: "{config.directories.client_prospects}/Service_Definition_[Da
 8. **Contact & Next Steps**: Contact details, 4-step engagement process
 9. **Footer**: Version, generation date, source file
 
-Save to: `{config.directories.client_prospects}/Rate_Card_[YYYYMMDD].md`
+Save to: `{config.directories.contractor_root}/rate-cards/rate_card_[YYYYMMDD].md`
 
 ---
 
@@ -184,7 +184,7 @@ If format is `pdf`:
 4. Generate PDF via `browser_run_code`:
    ```javascript
    await page.pdf({
-     path: '{config.directories.client_prospects}/Rate_Card_[YYYYMMDD].pdf',
+     path: '{config.directories.contractor_root}/rate-cards/rate_card_[YYYYMMDD].pdf',
      format: 'Letter',
      printBackground: true,
      margin: { top: '0.75in', bottom: '0.75in', left: '0.75in', right: '0.75in' }
@@ -195,7 +195,7 @@ If format is `pdf`:
 **If PDF fails:** Fallback to HTML with manual conversion instructions
 
 If format is `html`:
-- Save to `{config.directories.client_prospects}/Rate_Card_[YYYYMMDD].html` and skip Phase 5
+- Save to `{config.directories.contractor_root}/rate-cards/rate_card_[YYYYMMDD].html` and skip Phase 5
 
 ---
 
@@ -206,8 +206,8 @@ If format is `html`:
 ```
 PROFESSIONAL RATE CARD GENERATED
 
-**Output:** {config.directories.client_prospects}/Rate_Card_[YYYYMMDD].[format] ([XX] KB)
-**Source:** Service_Definition_[Date].md
+**Output:** {config.directories.contractor_root}/rate-cards/rate_card_[YYYYMMDD].[format] ([XX] KB)
+**Source:** service_definition_[Date].md
 
 **Pricing:**
 Hourly: $[min]-$[premium]/hr ([Currency])

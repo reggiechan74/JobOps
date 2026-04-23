@@ -267,8 +267,9 @@ The copywriter agent will deliver a structured copy document:
 ### 4.2: Output Location
 
 Copy documents are saved to:
-- Default: `{config.directories.output_resumes}/LandingPageCopy_[PageName]_[Date].md`
-- Or provide to `/landing-page:create` command directly
+- `{config.directories.contractor_root}/landing-pages/{slug}/copy.md`
+
+The `{slug}` is provided by the caller — either the user (e.g., page name/project identifier passed in as `$1`) or the `/create-landing-page` orchestrator. The `{slug}` folder under `landing-pages/` is shared with sibling landing-page skills (`create-landing-page`, `copywriting-spec`, `css-template`) — this skill writes `copy.md` INTO that existing per-slug folder. If the folder does not yet exist, create it: `mkdir -p {config.directories.contractor_root}/landing-pages/{slug}`.
 
 ---
 
