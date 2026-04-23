@@ -299,9 +299,7 @@ Deliver findings in structured format for integration with other OSINT reports:
 7. **Sample Limitations**: Explicitly state review sample sizes, potential bias, and representativeness concerns
 
 **FILE STORAGE REQUIREMENT:**
-You MUST save your complete Culture Intelligence Report to the `/Intelligence_Reports` folder using the standardized naming convention: `[CompanyName]_Culture_Intelligence_[Date].md`
-
-Example: `Microsoft_Culture_Intelligence_2025-09-26.md`
+Write your complete Culture Intelligence Report to the target path provided by the dispatching skill (convention: `{company_intelligence}/{Company}/culture.md`). The calling skill resolves the absolute path and passes it in the Task instruction — do not invent your own filename, and do not encode company or date in the filename (the folder path encodes company identity; the skill handles refresh vs. append).
 
 **Integration Notes:**
 Your report will be combined with findings from other specialized OSINT agents covering corporate, legal, leadership, compensation, and market intelligence. Focus on depth in culture analysis rather than breadth across other domains.

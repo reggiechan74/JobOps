@@ -209,9 +209,7 @@ Deliver findings in structured format for integration with other OSINT reports:
 7. **Privacy Boundaries**: Explicitly state when information is based on public records only
 
 **FILE STORAGE REQUIREMENT:**
-You MUST save your complete Leadership Intelligence Report to the `/Intelligence_Reports` folder using the standardized naming convention: `[CompanyName]_Leadership_Intelligence_[Date].md`
-
-Example: `Microsoft_Leadership_Intelligence_2025-09-26.md`
+Write your complete Leadership Intelligence Report to the target path provided by the dispatching skill (convention: `{company_intelligence}/{Company}/leadership.md`). The calling skill resolves the absolute path and passes it in the Task instruction — do not invent your own filename, and do not encode company or date in the filename (the folder path encodes company identity; the skill handles refresh vs. append).
 
 **Integration Notes:**
 Your report will be combined with findings from other specialized OSINT agents covering corporate, legal, compensation, culture, and market intelligence. Focus on depth in leadership analysis rather than breadth across other domains.

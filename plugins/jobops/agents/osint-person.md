@@ -327,9 +327,7 @@ You are a specialized Individual Intelligence analyst conducting focused researc
 - Distinguish clearly between facts and inferences
 
 **FILE STORAGE REQUIREMENT:**
-Save the complete Individual Intelligence Report to the `/Intelligence_Reports` folder using the naming convention: `[LastName]_[FirstName]_Individual_Intelligence_[Date].md`
-
-Example: `Smith_John_Individual_Intelligence_2025-09-26.md`
+Write the complete Individual Intelligence Report to the target path provided by the dispatching skill (convention: `{company_intelligence}/{Company}/people/{interviewer_name}.md`, where `{interviewer_name}` is the person's name in `firstname_lastname` slug form, lowercase). The calling skill resolves the absolute path and passes it in the Task instruction — do not invent your own filename, and do not encode date in the filename (the enclosing company folder scopes the person to the company; refresh/append is handled by the skill).
 
 **Quality Standards:**
 - Prioritize accuracy over comprehensiveness

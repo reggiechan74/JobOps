@@ -14,6 +14,30 @@ Use `config.directories.<key>` for all file paths in this skill.
 Use `config.preferences.cultural_profile` if this skill generates resume-style content.
 Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
+## Company-Intelligence Path Resolution
+
+This skill writes to a per-company folder under
+`{config.directories.company_intelligence}/{Company}/`. Before dispatching
+any sub-agent:
+
+1. Extract `{Company}` from the job-posting frontmatter or from the explicit
+   argument (e.g., `/jobops:osint Google`).
+2. Compose the target folder:
+   `{config.directories.company_intelligence}/{Company}/`.
+3. If the folder already exists, prompt the user:
+   - **refresh** — overwrite all per-agent files.
+   - **append** — keep existing files, write a new `summary_{YYYYMMDD}.md`
+     alongside them (do not modify per-agent files in place).
+   - **skip** — exit without running.
+4. Sub-agents write to fixed filenames:
+   `corporate.md`, `legal.md`, `leadership.md`, `compensation.md`,
+   `culture.md`, `market.md`.
+5. Person-level reports from `osint-person` land under
+   `{Company}/people/{interviewer_name}.md`.
+6. The aggregated synthesis lands at `{Company}/summary.md` on refresh
+   or `{Company}/summary_{YYYYMMDD}.md` on append.
+
+
 ## Mission Overview
 
 Deploy 6 specialized OSINT agents simultaneously to conduct parallel intelligence gathering on {{ARG1}}:
@@ -30,17 +54,19 @@ Deploy 6 specialized OSINT agents simultaneously to conduct parallel intelligenc
 ### Phase 1: Parallel Agent Deployment
 ✓ Deploying 6 specialized intelligence agents for target analysis
 
-Launch all 6 specialized OSINT agents simultaneously to maximize intelligence gathering efficiency. Each agent will conduct focused research in their specialized domain and produce standardized intelligence reports saved to the `{config.directories.intelligence_reports}` folder.
+Launch all 6 specialized OSINT agents simultaneously to maximize intelligence gathering efficiency. Each agent will conduct focused research in their specialized domain and produce standardized intelligence reports saved to the resolved per-company folder `{config.directories.company_intelligence}/{Company}/`.
 
 **CRITICAL**: You must deploy all agents in parallel using a single message with multiple Task tool calls. This ensures simultaneous execution rather than sequential processing.
 
-**FILE STORAGE REQUIREMENTS**: Each specialized agent MUST save their complete intelligence report to the `{config.directories.intelligence_reports}` folder using the standardized naming convention:
-- `[CompanyName]_Corporate_Intelligence_[Date].md`
-- `[CompanyName]_Legal_Intelligence_[Date].md`
-- `[CompanyName]_Leadership_Intelligence_[Date].md`
-- `[CompanyName]_Compensation_Intelligence_[Date].md`
-- `[CompanyName]_Culture_Intelligence_[Date].md`
-- `[CompanyName]_Market_Intelligence_[Date].md`
+**FILE STORAGE REQUIREMENTS**: Each specialized agent MUST save their complete intelligence report to `{config.directories.company_intelligence}/{Company}/` using the fixed filenames (the folder path encodes company identity; the calling skill handles refresh vs. append dating):
+- `corporate.md`
+- `legal.md`
+- `leadership.md`
+- `compensation.md`
+- `culture.md`
+- `market.md`
+
+When dispatching each sub-agent, pass the fully resolved target path explicitly in the Task instruction so the sub-agent writes to the correct location.
 
 **YAML FRONT MATTER**: Prepend each specialized report with:
 
@@ -70,7 +96,7 @@ Deploy all 6 OSINT agents simultaneously to research [COMPANY]:
 ```
 
 ### Phase 2: Intelligence Synthesis & Integration
-After receiving all 6 specialized intelligence reports, synthesize findings into a comprehensive Master Intelligence Report following the structure below. The Master Intelligence Report MUST be saved to the `{config.directories.intelligence_reports}` folder as `[CompanyName]_Master_Intelligence_[Date].md`.
+After receiving all 6 specialized intelligence reports, synthesize findings into a comprehensive Master Intelligence Report following the structure below. The Master Intelligence Report MUST be saved to `{config.directories.company_intelligence}/{Company}/summary.md` on **refresh**, or `{config.directories.company_intelligence}/{Company}/summary_{YYYYMMDD}.md` on **append**.
 
 Prepend the master report with:
 

@@ -189,6 +189,9 @@ Deliver intelligence in a comprehensive briefing format with:
 - Intelligence confidence levels and source reliability ratings
 - Follow-up intelligence collection recommendations
 
+**FILE STORAGE REQUIREMENT:**
+Write your synthesized Master Intelligence Report to the target path provided by the dispatching skill (convention: `{company_intelligence}/{Company}/summary.md` on refresh, or `{company_intelligence}/{Company}/summary_{YYYYMMDD}.md` when the calling skill requests append mode). The calling skill resolves the absolute path and passes it in the Task instruction — do not invent your own filename, and do not place the file under a legacy `Intelligence_Reports/` root.
+
 **Operational Security:**
 - Maintain ethical boundaries in intelligence gathering
 - Use only publicly available information sources

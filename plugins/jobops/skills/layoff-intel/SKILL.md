@@ -788,7 +788,7 @@ Calculate a vulnerability score (0-100):
 
 ### 10.1 Layoff Intelligence Report
 
-Save comprehensive analysis to: `{config.directories.output_resumes}/LayoffIntel_[Company]_[Date].md`
+Save comprehensive analysis to: `{config.directories.company_intelligence}/{Company}/layoff_intel.md`
 
 **Report Structure:**
 
