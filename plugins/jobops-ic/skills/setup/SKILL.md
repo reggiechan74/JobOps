@@ -1,78 +1,113 @@
 ---
-description: Initialize JobOps Independent Contractor workspace - extends jobops config with IC directories and templates
+description: Extend JobOps workspace with independent-contractor directories, templates, and config - requires /jobops:setup to have run first
 disable-model-invocation: true
 ---
 
-## 1. Prerequisite Check
+# JobOps IC Setup
 
-Read the file `.jobops/config.json`.
+This skill extends an existing JobOps workspace with the directories,
+templates, and config entries needed by the `jobops-ic` plugin. It does not
+create `.jobops/config.json` — it adds to the one created by `/jobops:setup`.
 
-If the file does not exist, stop and display:
+---
 
-> Run `/jobops:setup` first to initialize the base JobOps workspace.
+## Step 1: Prerequisite check
 
-Verify the jobops plugin is installed by checking if the `resume-summarizer` agent is available. If it is not available, stop and display:
+Read `.jobops/config.json`.
 
-> PREREQUISITE MISSING: jobops plugin
-> Install it with: `/plugin install jobops@jobops-marketplace`
+If the file does not exist, stop with:
 
-## 2. Welcome
+> JOBOPS NOT CONFIGURED
+> Run /jobops:setup first, then retry /jobops-ic:setup.
 
-Display the following message:
+(The plugin `dependencies` field ensures `jobops` is installed alongside
+`jobops-ic`; this check catches the separate case of the user skipping the
+base setup.)
+
+---
+
+## Step 2: Welcome
+
+Print:
 
 > **JobOps IC Setup**
 >
-> This command extends your existing JobOps workspace with independent contractor directories and templates. It will:
-> - Create a client prospects directory for tracking B2B opportunities
-> - Install IC-specific templates (service definitions, rate cards, proposals)
-> - Update your workspace configuration with IC settings
+> This extends your existing JobOps workspace with:
+> - A contractor output tree (services, prospects, proposals, pitches, rate cards, landing pages)
+> - The IC service-definition template
+> - Currency preference for pricing outputs
 
-## 3. IC Directory Configuration
+Continue.
 
-Ask the user:
+---
 
-> Where would you like to store client prospect files?
-> (default: `./Client_Prospects`)
+## Step 3: Interview
 
-Accept the user's input. If no input is provided, use `./Client_Prospects`.
+Ask in order:
 
-## 4. Create Directory
+1. **Contractor root directory** — default `./Contractor`. Validate the parent is writable.
+2. **Default currency** — ISO 4217 code, enum: `CAD` | `USD` | `EUR` | `GBP` | `AUD`. Default `CAD`. Used by rate cards and proposals.
 
-Create the directory chosen in step 3 if it does not already exist.
+---
 
+## Step 4: Create directory tree
+
+Run:
+```bash
+mkdir -p <contractor_root>/services \
+         <contractor_root>/prospects \
+         <contractor_root>/proposals \
+         <contractor_root>/pitches \
+         <contractor_root>/rate-cards \
+         <contractor_root>/landing-pages
 ```
-mkdir -p <client_prospects_directory>
+
+Report created vs exists.
+
+---
+
+## Step 5: Template installation
+
+Copy the IC service-definition schema into the workspace template tree:
+
+```bash
+cp ${CLAUDE_PLUGIN_ROOT}/templates/service_definition_schema.json .jobops/templates/default/
 ```
 
-## 5. Template Installation
+If the source file is missing, stop with a clear error. Do not silently skip.
 
-Run the IC template copy script to install independent contractor templates:
+---
 
-```
-bash "$(cat /tmp/.jobops-ic-plugin-root)/scripts/copy-templates.sh" ".jobops/templates/default"
-```
+## Step 6: Extend `.jobops/config.json`
 
-## 6. Update config.json
+Read the existing config, add the following keys, and write it back
+atomically (write to `.jobops/config.json.tmp`, then `mv`):
 
-Read the existing `.jobops/config.json` file. Add the following entries to the configuration:
+- `directories.contractor_root = "<step-3 value>"`
+- `preferences.default_currency = "<step-3 value>"`
+- `templates.active.service_definition_schema = "default"`
 
-- Set `config.directories.client_prospects` to the directory path chosen by the user in step 3.
-- Set `config.templates.active.service_definition_schema` to `"default"`.
+Preserve all existing keys and values. Do not change `version`.
 
-Write the updated configuration back to `.jobops/config.json`.
+---
 
-## 7. Summary
+## Step 7: Gitignore update
 
-Display the following summary:
+If `.gitignore` has a `# JobOps workspace` block, append (if not already
+present) the `contractor_root` path on a new line inside that block.
+Default: `Contractor/`. If the block is missing, print a reminder to the
+user that `/jobops:setup` controls the block and that they can re-run it
+to refresh.
 
-> **IC Workspace Initialized**
->
-> Added to your workspace:
-> - Client prospects directory: `<client_prospects_directory>`
-> - IC templates installed to `.jobops/templates/default`
-> - Configuration updated in `.jobops/config.json`
->
-> **Next steps:**
-> - Try `/jobops-ic:defineservices` to create your service catalog
-> - Try `/jobops-ic:ratecard` to generate a professional rate card
-> - Try `/jobops-ic:findclient` to discover potential clients
+---
+
+## Step 8: Summary
+
+Print:
+
+1. Contractor root path.
+2. Default currency.
+3. Template installed.
+4. Recommended next steps: `/jobops-ic:defineservices`, `/jobops-ic:ratecard`.
+
+Exit.
