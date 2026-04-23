@@ -27,16 +27,38 @@ node_modules/
 Thumbs.db
 
 # ============================================================
-# JobOps Output Directories - Refined Patterns (v1.1.1)
+# JobOps v2.0 Output Directories
 # ============================================================
 
-# OutputResumes/ - Preserve structure, ignore user-generated outputs
-OutputResumes/*
-!OutputResumes/.gitkeep
-!OutputResumes/README.md
-!OutputResumes/.example/
-# Ignore all timestamp-based assessment folders (YYYY-MM-DD_HHMMSS_*)
-OutputResumes/20*
+# Applications/ - Per-application artifacts (resume, cover-letter, assessment, interview)
+Applications/*
+!Applications/.gitkeep
+!Applications/README.md
+!Applications/.example/
+
+# Company_Intelligence/ - OSINT reports per company
+Company_Intelligence/*
+!Company_Intelligence/.gitkeep
+!Company_Intelligence/README.md
+!Company_Intelligence/.example/
+
+# Career_Analysis/ - Flat timestamped career-level outputs
+Career_Analysis/*
+!Career_Analysis/.gitkeep
+!Career_Analysis/README.md
+!Career_Analysis/.example/
+
+# Crisis_Management/ - Flat timestamped crisis-skill outputs
+Crisis_Management/*
+!Crisis_Management/.gitkeep
+!Crisis_Management/README.md
+!Crisis_Management/.example/
+
+# Contractor/ - jobops-ic outputs
+Contractor/*
+!Contractor/.gitkeep
+!Contractor/README.md
+!Contractor/.example/
 
 # ResumeSourceFolder/ - User's personal career inventory (gitignored)
 ResumeSourceFolder/*
@@ -50,29 +72,17 @@ SourceMaterial/*
 !SourceMaterial/README.md
 
 # Job_Postings/ - Track job postings, ignore automated search results
-# Ignore automated job search results
 Job_Postings/SearchResults_*
 
-# Briefing_Notes/ - Preserve structure, ignore user-generated briefings
-Briefing_Notes/*
-!Briefing_Notes/.gitkeep
-!Briefing_Notes/README.md
-!Briefing_Notes/.example/
-# Ignore all timestamp-based briefing folders
-Briefing_Notes/20*
-
-# Intelligence_Reports/ - Preserve structure, ignore user OSINT reports
-Intelligence_Reports/*
-!Intelligence_Reports/.gitkeep
-!Intelligence_Reports/README.md
-!Intelligence_Reports/.example/
-# Ignore all timestamp-based intelligence folders
-Intelligence_Reports/20*
-
-# Scoring_Rubrics/ - KEEP rubrics (they're reusable across candidates)
-# Rubrics are valuable artifacts that should be committed
-!Scoring_Rubrics/
-!Scoring_Rubrics/*.md
+# ============================================================
+# Legacy v1.x directories (pre-2.0) — kept gitignored for any
+# leftovers before `/jobops:migrate` is run on this workspace
+# ============================================================
+OutputResumes/
+Scoring_Rubrics/
+Briefing_Notes/
+Intelligence_Reports/
+Client_Prospects/
 
 # ============================================================
 # Document Conversion Outputs

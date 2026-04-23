@@ -35,17 +35,17 @@ JobOps/
 
 ## User Data Directories
 
-Configured via `.jobops/config.json` (created by `/jobops:setup`):
+Configured via `.jobops/config.json` (created by `/jobops:setup`, extended by `/jobops-ic:setup`). Config keys (not hardcoded paths) are authoritative — see `docs/ARCHITECTURE.md` for the full contract.
 
-| Directory | Purpose |
-|-----------|---------|
-| `ResumeSourceFolder/` | Master career inventory |
-| `Job_Postings/` | Target job descriptions |
-| `OutputResumes/` | Generated outputs |
-| `Scoring_Rubrics/` | Assessment rubrics |
-| `Briefing_Notes/` | Interview prep guides |
-| `Intelligence_Reports/` | OSINT reports |
-| `Client_Prospects/` | IC service definitions and prospects |
+| Config key | Default | Purpose |
+|------------|---------|---------|
+| `resume_source` | `ResumeSourceFolder/` | Master HAM-Z career inventory (input) |
+| `job_postings` | `Job_Postings/` | Target job descriptions (input) |
+| `applications_root` | `Applications/` | Per-application output tree with fixed `resume/`, `cover-letter/`, `assessment/`, `interview/` subfolders + pinned `job_posting.md` |
+| `company_intelligence` | `Company_Intelligence/` | OSINT output tree, one folder per company |
+| `career_analysis` | `Career_Analysis/` | Flat timestamped career-level outputs |
+| `crisis_management` | `Crisis_Management/` | Flat timestamped crisis-skill outputs |
+| `contractor_root` | `Contractor/` | `jobops-ic` outputs (services, prospects, proposals, pitches, rate-cards, landing-pages); added by `/jobops-ic:setup` |
 
 ## Development & Testing
 
@@ -62,9 +62,10 @@ npx playwright test
 
 ## File Naming Conventions
 
-- Job Postings: `Job_Postings/CompanyName_Role_Date.md`
-- Rubrics: `Scoring_Rubrics/Rubric_[Company]_[Role]_[Date].md`
-- Outputs: Auto-named with step, role, company, date
+- Job Postings: `Job_Postings/{Company}_{Role}_{YYYYMMDD}.md`
+- Application artifacts: `Applications/{Company}_{Role}_{YYYYMMDD}/<subfolder>/<fixed-filename>.md` (slug parsed from the JD filename; sub-folder and filename are plugin convention — see `docs/ARCHITECTURE.md` Section 4)
+- OSINT: `Company_Intelligence/{Company}/{corporate,legal,leadership,compensation,culture,market,summary}.md`
+- Career / crisis / contractor: single timestamped file per invocation under the appropriate root
 
 ## Coding Style
 

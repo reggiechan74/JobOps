@@ -164,15 +164,15 @@ Running `/jobops:setup` creates a `.jobops/` directory in your workspace:
 
 All output directories are configurable via `.jobops/config.json`. Default paths:
 
-| Key | Default |
-|-----|---------|
-| `resume_source` | `./ResumeSourceFolder` |
-| `job_postings` | `./Job_Postings` |
-| `output_resumes` | `./OutputResumes` |
-| `scoring_rubrics` | `./Scoring_Rubrics` |
-| `briefing_notes` | `./Briefing_Notes` |
-| `intelligence_reports` | `./Intelligence_Reports` |
-| `client_prospects` | `./Client_Prospects` |
+| Key | Default | Purpose |
+|-----|---------|---------|
+| `resume_source` | `./ResumeSourceFolder` | Master HAM-Z career data (input) |
+| `job_postings` | `./Job_Postings` | Target job descriptions (input) |
+| `applications_root` | `./Applications` | Per-application output tree — one folder per application, with fixed `resume/`, `cover-letter/`, `assessment/`, `interview/` subfolders |
+| `company_intelligence` | `./Company_Intelligence` | OSINT output tree — one folder per company, shared across applications |
+| `career_analysis` | `./Career_Analysis` | Career-level outputs (idealjob, comparejobs, change-one-thing) |
+| `crisis_management` | `./Crisis_Management` | Crisis-skill outputs (severance, non-compete, etc.) |
+| `contractor_root` | `./Contractor` | `jobops-ic` outputs; added by `/jobops-ic:setup` |
 
 ---
 
