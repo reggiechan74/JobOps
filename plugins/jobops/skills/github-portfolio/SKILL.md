@@ -14,6 +14,22 @@ Use `config.directories.<key>` for all file paths in this skill.
 Use `config.preferences.cultural_profile` if this skill generates resume-style content.
 Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
+## Usage and Arguments
+
+Creates or updates a `GitHub_Repositories.md` portfolio document.
+
+**Usage forms:**
+- `/github-portfolio <repository-url>` — create if no portfolio exists, otherwise add the repo.
+- `/github-portfolio <repository-url> -create` — force create a new portfolio (first repository).
+- `/github-portfolio <repository-url> -update` — add the repository to an existing portfolio.
+- `/github-portfolio -update` — full portfolio refresh/reorganization (no URL needed).
+
+**Arguments:**
+- `$1`: Repository URL (required for adding repositories) OR the `-update` flag for refresh-only mode.
+- `$2`: Mode flag (optional, defaults to auto-detect):
+  - `-create`: Force create a new portfolio file.
+  - `-update`: Force update the existing portfolio.
+
 ## Step 1: Parse Arguments and Determine Mode
 
 **Repository URL**: $1

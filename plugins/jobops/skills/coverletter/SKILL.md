@@ -22,6 +22,20 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: candidate_profile_schema
 
+## Arguments
+
+- `$1`: Step 3 final resume file path (required)
+- `$2`: Job description file path (required)
+- `$3`: Hiring manager name (optional, defaults to "Hiring Manager")
+
+Produces a compelling cover letter based on the validated Step 3 resume, featuring a strategic requirements-matching table that directly demonstrates fit for the role. Process:
+
+1. Load and analyze the validated Step 3 resume.
+2. Extract critical requirements from the job description.
+3. Create a requirements-matching table with evidence.
+4. Generate a compelling narrative with cultural alignment.
+5. Produce an interview-ready cover letter.
+
 ## Step 1: Loading Final Resume
 
 First, let me read your Step 3 final resume:

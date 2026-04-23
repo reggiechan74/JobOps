@@ -22,6 +22,38 @@ For each template used by this skill, resolve the full path as:
 
 Templates referenced by this skill: candidate_profile_schema, evidence_verification_framework
 
+## Arguments
+
+- `$1`: Job description file path (required)
+- `$2`: Cultural profile (optional, defaults to "Canadian")
+
+Runs the three-step resume build sequentially:
+1. **Step 1**: Create initial tailored resume draft using HAM-Z methodology
+2. **Step 2**: Perform comprehensive provenance analysis for credibility
+3. **Step 3**: Create final hardened resume addressing all issues
+
+## Output metadata
+
+Every markdown file generated during this skill must begin with a YAML front-matter block so downstream tooling can parse metadata without heuristics. Populate the fields with real values before writing any body content. The output path for each step is determined by the Application Path Resolution protocol (to be added in a later task); `job_file` in the front matter is always the absolute path to the input JD.
+
+- **Step 1 draft** — set `generated_by: /buildresume step1-resume-draft`, `output_type: resume_step1`, `status: draft`, `version: 1.0`.
+- **Step 2 provenance analysis** — set `generated_by: /buildresume step2-provenance-check`, `output_type: resume_provenance`, `status: analysis`.
+- **Step 3 final resume** — set `generated_by: /buildresume step3-final-resume`, `output_type: resume_final`, `status: final`. Increment `version` if regenerating after revisions.
+
+Common fields for all three:
+
+```yaml
+---
+job_file: <absolute path to JD>
+role: <target role title>
+company: <hiring company>
+candidate: <full candidate name>
+generated_on: <ISO8601 timestamp>
+---
+```
+
+Always write the front matter before any markdown headings or narrative body.
+
 ## Step 1: Creating Initial Resume Draft
 ✓ Initiating strike package assembly
 

@@ -14,6 +14,12 @@ Use `config.directories.<key>` for all file paths in this skill.
 Use `config.preferences.cultural_profile` if this skill generates resume-style content.
 Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
+## Output
+
+Synthesizes a hypothetical job description representing a near-perfect fit based on the user's comprehensive career history, stated preferences, and patterns from high-scoring assessments.
+
+**Output file:** `$1` if provided; otherwise the default location determined by `config.directories.career_analysis` (filename convention is set in the career-analysis path-update task).
+
 ## Phase 1: Comprehensive Career Intelligence Gathering
 
 ### 1.1 Load Career Inventory
