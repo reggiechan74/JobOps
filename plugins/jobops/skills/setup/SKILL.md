@@ -1,139 +1,124 @@
 ---
-description: Initialize JobOps workspace - configure directories, install templates, and optionally import career history
+description: Initialize JobOps workspace - configure output directories, install templates, and optionally migrate legacy files
 disable-model-invocation: true
+argument-hint: [--reconfigure] [--skip-migration] [--skip-history]
 ---
 
 # JobOps Workspace Setup
 
-## Step 1: Welcome
+This skill initializes or reconfigures a JobOps workspace. It writes a single
+user-owned config file at `.jobops/config.json`, creates the output directory
+tree, installs templates from the plugin into the workspace, updates
+`.gitignore`, and offers optional career-history import and legacy-file migration.
 
-Welcome to JobOps setup. This skill initializes your workspace with everything needed to run the JobOps intelligence-driven job application system.
-
-Setup will walk you through:
-- **Directory configuration** - establish the folder structure for resumes, job postings, assessments, and output
-- **Template installation** - install scoring rubrics, evidence verification, and assessment report templates
-- **Career history import** (optional) - parse existing resume files into the HAM-Z master inventory format
-- **Profile selection** (optional) - choose a cultural profile that shapes resume tone and language
-
-This is a one-time process. You can re-run it later to reconfigure.
+**Flags:**
+- `--reconfigure` — re-run setup against an existing workspace; prompts before overwriting anything.
+- `--skip-migration` — skip the legacy-file migration step (Step 9) unconditionally.
+- `--skip-history` — skip the optional career-history import (Step 8).
 
 ---
 
-## Step 2: Check for Existing Configuration
+## Step 1: Welcome and existing-config check
 
-Check whether a configuration file already exists:
+If `.jobops/config.json` already exists, read it and present three choices:
 
-```bash
-if [ -f ".jobops/config.json" ]; then
-  echo "EXISTING_CONFIG_FOUND"
-  cat .jobops/config.json
-else
-  echo "NO_CONFIG"
-fi
-```
+1. **Reconfigure all** — walk the full interview; overwrite at the end.
+2. **Reconfigure specific sections** — directories only / preferences only / templates only / migration only.
+3. **Exit** — leave everything as-is.
 
-**If `.jobops/config.json` exists**, present the user with two choices:
+If `--reconfigure` was passed, skip the prompt and go straight to option 1.
 
-1. **Reconfigure** - Start fresh. The existing config will be overwritten and directories will be re-created as needed.
-2. **Skip setup** - The workspace is already configured. Exit setup and show the current configuration summary.
-
-If the user chooses to skip, jump directly to **Step 10: Summary** using the existing config values. Otherwise, continue with Step 3.
-
-**If no config exists**, continue to Step 3.
+If no config exists, proceed to Step 2.
 
 ---
 
-## Step 3: Directory Configuration
+## Step 2: Directory interview
 
-Present the full directory layout to the user with default values. Ask the user to confirm or customize any paths before proceeding.
+Walk the user through every path in `config.directories`. Present the default,
+a one-sentence purpose, and allow inline editing. Paths are normalized
+(strip trailing slash, resolve `~`, keep as relative-to-workspace form that
+starts with `./`).
 
-| Directory Key | Default Path | Purpose |
+| Key | Default | Purpose |
 |---|---|---|
-| `resume_source` | `./ResumeSourceFolder` | Master resume data (Experience/, CareerHighlights/, Technology/, Preferences/, .profile/) |
-| `job_postings` | `./Job_Postings` | Target job descriptions as `.md` files |
-| `output_resumes` | `./OutputResumes` | Generated drafts, analyses, and final resumes |
-| `scoring_rubrics` | `./Scoring_Rubrics` | Assessment rubrics (`Rubric_[Company]_[Role]_[Date].md`) |
-| `briefing_notes` | `./Briefing_Notes` | Interview prep and study guides |
-| `intelligence_reports` | `./Intelligence_Reports` | OSINT and company intelligence reports |
-| `sample_output` | `./Sample_Output` | Reference examples and sample documents |
+| `resume_source` | `./ResumeSourceFolder` | Master HAM-Z career data (user-maintained input) |
+| `job_postings` | `./Job_Postings` | Target job descriptions (user-maintained input) |
+| `applications_root` | `./Applications` | Per-application output tree (one folder per application) |
+| `company_intelligence` | `./Company_Intelligence` | OSINT output tree (shared across applications to same company) |
+| `career_analysis` | `./Career_Analysis` | Career-level outputs (idealjob, change-one-thing, comparejobs) |
+| `crisis_management` | `./Crisis_Management` | Crisis-skill outputs (severance, non-compete, etc.) |
 
-Show all seven directories at once. The user may accept all defaults by confirming, or override individual paths. Store the confirmed values for use in later steps.
-
----
-
-## Step 4: Create Directories
-
-For each directory confirmed in Step 3, create it if it does not already exist:
-
-```bash
-mkdir -p "./ResumeSourceFolder"
-mkdir -p "./Job_Postings"
-mkdir -p "./OutputResumes"
-mkdir -p "./Scoring_Rubrics"
-mkdir -p "./Briefing_Notes"
-mkdir -p "./Intelligence_Reports"
-mkdir -p "./Sample_Output"
-```
-
-Use the actual paths the user confirmed. The `-p` flag ensures no errors if directories already exist and creates any intermediate parent directories.
-
-Also create the JobOps internal config directory:
-
-```bash
-mkdir -p ".jobops"
-```
-
-Report which directories were newly created versus which already existed.
+For each path: validate the parent is writable. If not, surface the specific
+error and allow the user to correct it before continuing.
 
 ---
 
-## Step 5: Template Installation
+## Step 3: Create directories
 
-Install the default template set by running the template copy script:
+For each confirmed path, run `mkdir -p <path>`. Report each as
+**created** (newly made) or **exists** (already present). Do not fail if a
+path already exists.
 
-```bash
-bash "$(cat /tmp/.jobops-plugin-root)/scripts/copy-templates.sh" ".jobops/templates/default"
-```
-
-This copies the canonical templates into the workspace:
-- `assessment_rubric_framework.md` - 200-point deduplicated scoring with role-based weight variants (Technical IC, People Manager, Executive)
-- `evidence_verification_framework.md` - Citation requirements, domain verification, experience classification
-- `assessment_report_structure.md` - Report format with 3-level evidence attribution
-- `candidate_profile_schema.json` - JSON schema for optimized profiles (85-90% token reduction)
-
-If the script fails or the plugin root file is missing, report the error and advise the user to check their plugin installation.
+Also `mkdir -p .jobops .jobops/templates/default .jobops/templates/custom`.
 
 ---
 
-## Step 6: Create Custom Template Directory
+## Step 4: Preferences interview
 
-Create the custom template directory for user overrides:
+Ask in order:
 
-```bash
-mkdir -p ".jobops/templates/custom"
-```
+1. **Cultural profile** — enum `canadian` | `american`. Default `canadian`.
+   Controls resume voice and spelling conventions.
+2. **Default jurisdiction** — ISO 3166-2 code (e.g., `CA-ON`, `US-CA`).
+   Default `CA-ON`. Used by crisis skills; they accept
+   `--jurisdiction=<code>` to override per-invocation.
 
-Users can place modified templates here. When a custom version of a template exists, it takes precedence over the default. This is configured via the `templates.active` section of `config.json` (see Step 7).
+Do **not** ask for `default_currency` here — that is owned by `/jobops-ic:setup`
+(see Step 4 of that flow).
 
 ---
 
-## Step 7: Write config.json
+## Step 5: Template installation
 
-Write the workspace configuration file at `.jobops/config.json` using the directory paths confirmed in Step 3 and default template settings.
+Copy the plugin's bundled templates into the workspace:
 
-The structure must follow this format (substitute the user's confirmed paths):
+```bash
+cp ${CLAUDE_PLUGIN_ROOT}/templates/* .jobops/templates/default/
+```
+
+Report the count of files copied. Expected count after this task runs:
+4 files (`assessment_rubric_framework.md`, `evidence_verification_framework.md`,
+`assessment_report_structure.md`, `candidate_profile_schema.json`).
+
+If the glob fails in the current execution context (no files matched), fall
+back to:
+```bash
+find ${CLAUDE_PLUGIN_ROOT}/templates -maxdepth 1 -type f -exec cp {} .jobops/templates/default/ \;
+```
+
+Do not touch `.jobops/templates/custom/` — it is user-owned.
+
+---
+
+## Step 6: Write `.jobops/config.json`
+
+Emit the full schema below with the values gathered in Steps 2 and 4.
+`migration.completed` starts as `false` so Step 9 runs on first setup.
 
 ```json
 {
-  "version": "1.0",
+  "version": "2.0",
   "directories": {
-    "resume_source": "./ResumeSourceFolder",
-    "job_postings": "./Job_Postings",
-    "output_resumes": "./OutputResumes",
-    "scoring_rubrics": "./Scoring_Rubrics",
-    "briefing_notes": "./Briefing_Notes",
-    "intelligence_reports": "./Intelligence_Reports",
-    "sample_output": "./Sample_Output"
+    "resume_source": "<step-2 value>",
+    "job_postings": "<step-2 value>",
+    "applications_root": "<step-2 value>",
+    "company_intelligence": "<step-2 value>",
+    "career_analysis": "<step-2 value>",
+    "crisis_management": "<step-2 value>"
+  },
+  "preferences": {
+    "cultural_profile": "<step-4 value>",
+    "default_jurisdiction": "<step-4 value>"
   },
   "templates": {
     "base_dir": "./.jobops/templates",
@@ -143,180 +128,133 @@ The structure must follow this format (substitute the user's confirmed paths):
       "assessment_report_structure": "default",
       "candidate_profile_schema": "default"
     }
+  },
+  "migration": {
+    "completed": false,
+    "completed_at": null,
+    "files_moved": 0
   }
 }
 ```
 
-To switch a template to a custom version later, the user changes the value from `"default"` to `"custom"` for that template key.
+Write atomically: write to `.jobops/config.json.tmp`, then `mv` over the final
+name.
 
 ---
 
-## Step 8: Career History Import (Optional)
+## Step 7: Gitignore update
 
-Ask the user: **Do you have existing resume files to import?**
+Show the user the JobOps block that will be appended to `.gitignore`:
 
-If the user declines, skip to Step 9.
-
-If the user has files, proceed with the career history import process:
-
-### 8a. Collect Input Files
-
-Accept one or more resume files in the following formats:
-- PDF (`.pdf`)
-- Word (`.docx`)
-- Plain text (`.txt`)
-- Markdown (`.md`)
-
-Ask the user to provide the file paths.
-
-### 8b. Parse and Extract
-
-Read each provided file and extract structured career data:
-- **Work experience** - company names, titles, dates, responsibilities, accomplishments
-- **Education** - degrees, institutions, dates, certifications
-- **Skills** - technical skills, tools, platforms, methodologies
-- **Achievements** - quantified results, awards, recognitions, project outcomes
-
-### 8c. Transform to HAM-Z Format
-
-Convert extracted achievements and experience into HAM-Z format:
-
-> **Achieved [Metric-Driven Result] by leveraging [Hard Skill] to [perform specific action/process]**
-
-Each bullet point should follow this structure:
-- **H** - Hard Skill: the specific technical or professional skill applied
-- **A** - Action: the concrete action or process performed
-- **M** - Metrics: quantified outcomes (percentages, dollar amounts, time savings, scale)
-- **Z** - Structure: the organizational framing that ties it together
-
-Flag items that lack metrics or hard skills for the user to review and enhance.
-
-### 8d. Create ResumeSourceFolder Structure
-
-Build out the master resume data directory:
-
-```bash
-mkdir -p "./ResumeSourceFolder/Experience"
-mkdir -p "./ResumeSourceFolder/CareerHighlights"
-mkdir -p "./ResumeSourceFolder/Technology"
-mkdir -p "./ResumeSourceFolder/Preferences"
+```
+# JobOps workspace
+.jobops/
+Applications/
+Company_Intelligence/
+Career_Analysis/
+Crisis_Management/
 ```
 
-Use the user's confirmed `resume_source` path from Step 3 instead of the default if it was customized.
+(If the user customized any of the directory names in Step 2, substitute those
+paths in the block.)
 
-### 8e. Populate Files
+Offer three choices:
+1. **Append as shown** — add the block to the end of `.gitignore`.
+2. **Edit inline** — let the user modify the block before appending.
+3. **Skip** — do not modify `.gitignore`.
 
-Write the extracted and transformed data into the appropriate subdirectories:
-
-- **Experience/** - One file per role or employer, with HAM-Z formatted bullets
-- **CareerHighlights/** - Top achievements extracted and ranked by impact
-- **Technology/** - Skills inventory organized by category (languages, platforms, tools, methodologies)
-- **Preferences/** - Job search preferences and constraints
-
-### 8f. Create Vision Template
-
-Create a vision template if one does not already exist:
-
-```bash
-cat > "./ResumeSourceFolder/Preferences/Vision.md" << 'EOF'
-# Career Vision
-
-## Target Roles
-<!-- List the roles you are pursuing -->
-
-## Industry Preferences
-<!-- Industries or sectors of interest -->
-
-## Work Style
-<!-- Remote, hybrid, on-site preferences -->
-
-## Geographic Preferences
-<!-- Locations, willingness to relocate -->
-
-## Compensation Expectations
-<!-- Salary range, equity preferences, benefits priorities -->
-
-## Non-Negotiables
-<!-- Hard requirements for your next role -->
-
-## Growth Goals
-<!-- Skills to develop, career trajectory -->
-EOF
-```
-
-### 8g. Gap Analysis
-
-After import, provide:
-- Count of experience entries, highlights, and skills imported
-- Bullets that could not be converted to HAM-Z (missing metrics or hard skills)
-- Recommendations for strengthening weak entries
-- Suggested next steps for completing the career inventory
-
-### 8h. Profile Generation
-
-If the import produced a substantial career history, suggest running the **resume-summarizer** agent to generate an optimized candidate profile:
-
-> To generate a compressed candidate profile for faster assessments, use the `resume-summarizer` agent. This produces a JSON profile with 85-90% token reduction while preserving all key career data.
+If `.gitignore` does not exist, create it. If the block (detected by the
+`# JobOps workspace` marker line) already exists, replace it in place rather
+than appending a second copy.
 
 ---
 
-## Step 9: Profile Selection (Optional)
+## Step 8: Optional career-history import
 
-Ask the user for their preferred cultural profile:
+Only offer this step if `--skip-history` was not passed and the
+`resume_source` directory is empty or contains fewer than 3 files.
 
-### Canadian Profile (Default)
-- Emphasizes collaborative language and team contribution
-- Uses modest, measured tone ("contributed to" rather than "single-handedly drove")
-- Highlights cross-functional collaboration and stakeholder engagement
-- Frames achievements within team and organizational context
+Prompt: "Do you have an existing resume to import as the basis for your HAM-Z
+career inventory? (yes/no)"
 
-### American Profile
-- Emphasizes individual achievement and assertive language
-- Uses strong action verbs and direct impact statements ("drove", "spearheaded", "delivered")
-- Highlights personal ownership and leadership initiative
-- Frames achievements around individual contribution and competitive results
+If yes, accept a path to a `.pdf`, `.docx`, `.txt`, or `.md` file. Extract
+text, then populate:
+- `{resume_source}/Experience/<Company>_<Role>.md` — one file per role
+- `{resume_source}/CareerHighlights/highlights.md`
+- `{resume_source}/Technology/stack.md`
+- `{resume_source}/Preferences/preferences.md`
+- `{resume_source}/Vision.md` — stub, to be filled in manually
 
-Store the selection in `.jobops/config.json` by adding a `profile` key:
-
-```json
-{
-  "profile": {
-    "cultural": "canadian"
-  }
-}
-```
-
-Valid values: `"canadian"` or `"american"`.
-
-If the user skips this step, default to `"canadian"`.
+After population, flag any entries that lack metrics or hard skills so the
+user knows where to focus subsequent manual enrichment.
 
 ---
 
-## Step 10: Summary
+## Step 9: Optional legacy migration
 
-Display a complete summary of what was configured:
+Skip this step if `--skip-migration` was passed OR `migration.completed` is
+already `true` in the config being reconfigured.
 
-### Workspace Configuration
-- List each directory and whether it was newly created or already existed
-- Show the path to `.jobops/config.json`
+Scan for legacy folders at the workspace root and subfolders named:
+- `OutputResumes/`
+- `Briefing_Notes/`
+- `Scoring_Rubrics/`
+- `Intelligence_Reports/`
 
-### Templates Installed
-- List each template file installed in `.jobops/templates/default/`
-- Note the custom template directory at `.jobops/templates/custom/`
+If all four are absent or empty, skip this step silently (and still set
+`migration.completed = true`).
 
-### Career History (if imported)
-- Number of experience entries created
-- Number of career highlights extracted
-- Number of skills catalogued
-- Files that need review (incomplete HAM-Z conversions)
+Otherwise run:
 
-### Profile
-- Cultural profile selected (Canadian or American)
+**9a. Dry-run parse.** For each file in the legacy folders, attempt to parse
+`{Company}_{Role}_{YYYYMMDD}` from the filename using the following patterns
+(tried in order):
+1. `^([A-Za-z0-9]+)_([A-Za-z0-9]+)_(\d{8})\.md$`
+2. `^(?:Step\d+_)?(?:Draft_|Provenance_Analysis_|Final_Resume_)?([A-Za-z0-9]+)_([A-Za-z0-9]+)_(\d{8})\.md$`
+3. `^Rubric_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(\d{8})\.md$`
 
-### Next Steps
+For each match, compose a planned destination:
+- `OutputResumes/Step1_*` and `Step2_*` and `Step3_*` → `{applications_root}/{Company}_{Role}_{Date}/resume/<stepN>.md`
+- `OutputResumes/Cover_Letter_*` → `{applications_root}/{Company}_{Role}_{Date}/cover-letter/cover_letter.md`
+- `Scoring_Rubrics/Rubric_*` → `{applications_root}/{Company}_{Role}_{Date}/assessment/rubric.md`
+- `Briefing_Notes/*` → `{applications_root}/{Company}_{Role}_{Date}/interview/briefing.md`
+- `Intelligence_Reports/<Company>_*` → `{company_intelligence}/{Company}/<agent>.md` (parse the agent name from the filename segment between Company and Date)
 
-Recommend the following actions:
+**9b. Preview.** Print the planned moves grouped by target app folder. List
+unresolved files (no regex match) in a separate "manual" group.
 
-1. **Review and customize career history files** - Open `ResumeSourceFolder/` and refine the imported data, especially any entries flagged during gap analysis.
-2. **Try `/jobops:buildresume`** - Point it at a job posting to create a targeted, tailored resume using the 3-step process (Draft, Provenance Check, Final).
-3. **Try `/jobops:assessjob`** - Evaluate a job posting against your profile with a full 200-point scored assessment.
+**9c. User-editable mapping.** Offer three options:
+1. **Execute as shown** — proceed with the preview.
+2. **Edit mapping** — drop into an inline editor where the user can reassign
+   specific files to different application folders or mark them as "skip".
+3. **Cancel** — leave everything in place.
+
+**9d. Execute.** For each confirmed move:
+- If the file is tracked in git, use `git mv <src> <dst>` (preserves history).
+- Otherwise use plain `mv`.
+- Create any missing destination parent folders first.
+
+**9e. Update config.** Set:
+- `migration.completed = true`
+- `migration.completed_at = <ISO-8601 now>`
+- `migration.files_moved = <count of successful moves>`
+
+Unresolved files stay in place; the user handles them manually.
+
+---
+
+## Step 10: Summary and next steps
+
+Print:
+
+1. What was configured (each path + confirm/created/exists).
+2. What was installed (template count).
+3. Whether career history was imported (and how many files).
+4. Whether migration ran (and how many files moved).
+5. Recommended next steps:
+   - Drop a job posting into `{job_postings}/` named `{Company}_{Role}_{YYYYMMDD}.md`.
+   - Run `/jobops:buildresume <job_posting.md>` to produce a tailored resume.
+   - Run `/jobops:osint <Company>` to gather company intelligence.
+   - If you are an independent contractor, run `/jobops-ic:setup` to enable IC features.
+
+Exit.
