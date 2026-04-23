@@ -1,0 +1,22 @@
+{
+  "name": "jobops-marketplace",
+  "owner": {
+    "name": "Reggie Chan"
+  },
+  "metadata": {
+    "description": "Intelligence-driven career management plugins for Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "jobops",
+      "source": "./plugins/jobops",
+      "description": "Resume development, interview prep, OSINT, career strategy, and crisis management"
+    },
+    {
+      "name": "jobops-ic",
+      "source": "./plugins/jobops-ic",
+      "description": "Independent contractor toolkit - services, clients, pitches, proposals, rate cards. Requires jobops."
+    }
+  ]
+}

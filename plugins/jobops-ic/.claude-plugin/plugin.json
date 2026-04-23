@@ -1,0 +1,14 @@
+{
+  "name": "jobops-ic",
+  "version": "2.0.0",
+  "description": "Independent contractor toolkit - services, client prospecting, pitch decks, proposals, rate cards, landing pages. Requires jobops.",
+  "author": {
+    "name": "Reggie Chan"
+  },
+  "repository": "https://github.com/reggiechan74/JobOps",
+  "license": "ISC",
+  "keywords": ["independent-contractor", "consulting", "proposals", "rate-card", "pitch-deck", "landing-page"],
+  "dependencies": [
+    "jobops"
+  ]
+}

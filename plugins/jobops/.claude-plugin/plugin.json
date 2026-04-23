@@ -1,0 +1,11 @@
+{
+  "name": "jobops",
+  "version": "2.0.0",
+  "description": "Intelligence-driven job application system - resume development, interview prep, OSINT intelligence, career strategy, and crisis management using HAM-Z methodology",
+  "author": {
+    "name": "Reggie Chan"
+  },
+  "repository": "https://github.com/reggiechan74/JobOps",
+  "license": "ISC",
+  "keywords": ["resume", "job-search", "interview-prep", "osint", "career", "assessment", "crisis-management"]
+}
