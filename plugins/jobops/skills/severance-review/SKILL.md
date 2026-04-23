@@ -38,6 +38,96 @@ This command defaults to **Ontario, Canada** employment law framework. Key princ
 5. **Confidentiality Reminder**: Severance terms are often confidential. Be mindful of what you share and with whom.
 
 
+## Phase 0: Statutory & Case Law Research (MANDATORY)
+
+**CRITICAL**: Before performing ANY analysis, you MUST conduct jurisdiction-specific legal research using web search. This phase is non-negotiable and must be completed before proceeding to document parsing or any other phase.
+
+### 0.1 Identify Applicable Jurisdiction
+
+Determine the governing jurisdiction from:
+1. The agreement's governing law clause (if document already provided)
+2. The user's stated location
+3. Default: Ontario, Canada
+
+### 0.2 Statutory Research
+
+Use web search to research and document the **current** statutory framework. Do NOT rely solely on training data — statutes are amended frequently.
+
+**For Ontario (default):**
+- **Employment Standards Act, 2000 (ESA)**: Current termination pay (s.54-62) and severance pay (s.63-66) provisions, including any recent amendments
+- **Ontario Human Rights Code**: Current protected grounds and remedies relevant to termination
+- **Bill 27 (Working for Workers Act, 2021)** and subsequent amendments: Non-compete restrictions for non-executives
+- **ESA mass termination rules** (if applicable): Current thresholds and notice periods
+- **Canada Labour Code** (if federally regulated employer): Division IX termination provisions
+- **Employment Insurance Act**: Current EI eligibility rules, waiting periods, and benefit calculations
+
+**For US jurisdictions:**
+- Federal: WARN Act, OWBPA/ADEA, Title VII, ADA as applicable
+- State-specific: Relevant employment statutes, non-compete laws, mini-WARN acts
+- Local ordinances if applicable
+
+**For other jurisdictions:**
+- Research the equivalent statutory employment protections
+
+### 0.3 Case Law Research
+
+Use web search to find **recent and leading case law** relevant to the specific severance situation. Focus on:
+
+**For Ontario:**
+- **Bardal factors / reasonable notice**: Search for recent Ontario Superior Court and Court of Appeal decisions on reasonable notice periods for comparable roles (similar tenure, age, position level, industry)
+- **Waksdale v. Swegon (2020 ONCA 391)**: Confirm current status — this landmark case invalidated termination clauses that violated ESA minimums, even if the ESA-compliant portion was separate. Check for any subsequent legislative or judicial developments
+- **Release enforceability**: Recent decisions on what makes a severance release valid or voidable in Ontario (e.g., Rubin v. Home Depot, Titus v. William F. Chicken)
+- **Duty to mitigate**: Current case law on mitigation obligations and how they affect reasonable notice awards
+- **Bad faith damages**: If applicable, search for Honda Canada v. Keays (SCC) and recent applications regarding manner of dismissal damages
+- **Non-compete enforceability post-Bill 27**: Any court decisions interpreting the Working for Workers Act restrictions
+- **Constructive dismissal** (if relevant): Recent case law on what constitutes constructive dismissal
+
+**For US jurisdictions:**
+- State-specific non-compete enforceability precedents
+- OWBPA compliance requirements from recent decisions
+- Relevant circuit court decisions on release validity
+
+### 0.4 Document Research Findings
+
+Present a summary of research findings before proceeding:
+
+```
+LEGAL RESEARCH SUMMARY
+======================
+Jurisdiction: [Province/State]
+Research Date: [Today's date]
+
+APPLICABLE STATUTES:
+| Statute | Key Provisions | Relevance |
+|---------|---------------|-----------|
+| [Statute name] | [Sections] | [How it applies] |
+| ... | ... | ... |
+
+KEY CASE LAW:
+| Case | Citation | Principle | Relevance |
+|------|----------|-----------|-----------|
+| [Case name] | [Year, Court, Citation] | [Legal principle established] | [How it applies to this package] |
+| ... | ... | ... | ... |
+
+REASONABLE NOTICE RANGE (from case law):
+- Low estimate: [X months] (based on [case])
+- Mid estimate: [X months] (based on [case])
+- High estimate: [X months] (based on [case])
+- Key factors: age [X], tenure [X years], position [level], re-employment prospects [assessment]
+
+STATUTORY MINIMUMS:
+- ESA termination pay: [X weeks]
+- ESA severance pay: [X weeks, if applicable]
+- Total statutory floor: [X weeks]
+
+NOTES ON RECENT LEGAL DEVELOPMENTS:
+- [Any recent legislative changes, pending bills, or evolving case law trends]
+```
+
+**Important**: If web search is unavailable or returns insufficient results, clearly disclose this limitation to the user and recommend they verify statutory provisions with a lawyer. Do not fabricate citations or case law.
+
+---
+
 ## Modes of Operation
 
 Parse the mode from arguments:
@@ -920,12 +1010,14 @@ Throughout this analysis, maintain:
 Begin by:
 1. Reading the provided agreement (`$1` if specified)
 2. Delivering the disclaimers
-3. Parsing document metadata and terms
-4. Identifying red flags
-5. Calculating package value
-6. If `--benchmark`: Performing market analysis
-7. If `--counter-offer`: Generating negotiation strategy
-8. Saving comprehensive analysis report
+3. **Conducting Phase 0: Statutory & Case Law Research** — use web search to research current statutes and relevant case law for the applicable jurisdiction. This is MANDATORY before any analysis proceeds.
+4. Presenting the Legal Research Summary to the user
+5. Parsing document metadata and terms (Phase 1)
+6. Identifying red flags (Phase 2) — informed by the legal research
+7. Calculating package value (Phase 3) — using statutory minimums and case law notice ranges as benchmarks
+8. If `--benchmark`: Performing market analysis (Phase 4)
+9. If `--counter-offer`: Generating negotiation strategy (Phase 5) — citing specific case law to support negotiation positions
+10. Saving comprehensive analysis report
 
 
 Now executing Severance Review analysis...
