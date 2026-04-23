@@ -60,9 +60,25 @@ If no mode specified, default to `--new-incident`.
 - Notes or drafts to be formalized
 
 **Default Output Location**:
-- All incident logs saved to: `{config.directories.output_resumes}/IncidentLog_[Company]_[Date].md`
-- All timelines saved to: `{config.directories.output_resumes}/IncidentTimeline_[Company]_[Date].md`
-- All evidence indices saved to: `{config.directories.output_resumes}/EvidenceIndex_[Company]_[Date].md`
+
+All modes write to a single continuously-updated log file:
+`{config.directories.crisis_management}/workplace_documentation_log.md`
+
+## Output mode: APPEND (continuously-updated log)
+
+This skill maintains ONE log file per workspace. Every invocation — new incident,
+timeline update, evidence indexing, or review — APPENDS a new entry to the same
+file. Existing content is preserved.
+
+**Append contract:**
+- Read existing `workplace_documentation_log.md` if present.
+- Add a new section at the end of the file with a timestamp header, for example:
+  `## [YYYY-MM-DD HH:MM] <mode>: <short label>` (e.g. `## [2026-04-23 09:14] new-incident: Retaliation after accommodation request`)
+- Preserve all prior entries verbatim. Never rewrite or truncate earlier sections.
+- If the file does not exist, create it with a top-level heading
+  (`# Workplace Documentation Log`) followed by the first entry.
+- Incident logs, timelines, and evidence indices are all appended as dated
+  sections inside the same log — not written to separate files.
 
 
 ## Mode 1: New Incident Documentation (--new-incident)
@@ -637,26 +653,24 @@ COMPANY MONITORING AWARENESS:
 
 ## Output Deliverables
 
+All modes append to the single log file:
+`{config.directories.crisis_management}/workplace_documentation_log.md`
+
 ### For --new-incident Mode
 
-Save to: `{config.directories.output_resumes}/IncidentLog_[Company]_[Date].md`
-
-If adding to existing log:
-- Append new incident to existing file
-- Update incident count and metadata
+Append a `## [YYYY-MM-DD HH:MM] new-incident: <label>` section to the log file.
+Preserve existing entries. Do not create separate per-company files.
 
 ### For --review Mode
 
-Save assessment to: `{config.directories.output_resumes}/DocumentationReview_[Company]_[Date].md`
-
-Include:
+Append a `## [YYYY-MM-DD HH:MM] review: <label>` section to the log file, containing:
 - Quality assessment with ratings
 - Improvement recommendations with priorities
 - Action items for strengthening documentation
 
 ### For --timeline Mode
 
-Save to: `{config.directories.output_resumes}/IncidentTimeline_[Company]_[Date].md`
+Append a `## [YYYY-MM-DD HH:MM] timeline: <label>` section to the log file.
 
 Include:
 - Visual timeline

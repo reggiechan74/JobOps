@@ -731,7 +731,7 @@ ONGOING:
 
 ### 8.1 Comprehensive Analysis Report
 
-Save complete analysis to: `{config.directories.output_resumes}/SeveranceReview_[Company]_[Date].md`
+Save complete analysis to: `{config.directories.crisis_management}/severance_review_{YYYYMMDD}.md`
 
 Structure:
 ```markdown

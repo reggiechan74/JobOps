@@ -954,7 +954,7 @@ This assessment integrates with other JobOps commands:
 
 ### 12.1 Assessment Report
 
-Save comprehensive analysis to: `{config.directories.output_resumes}/ConstructiveDismissalAssessment_[Date].md`
+Save comprehensive analysis to: `{config.directories.crisis_management}/constructive_dismissal_{YYYYMMDD}.md`
 
 Structure:
 ```markdown

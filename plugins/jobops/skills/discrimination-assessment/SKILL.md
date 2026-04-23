@@ -1162,7 +1162,7 @@ QUESTIONS TO DISCUSS WITH ATTORNEY:
 
 ### 12.1 Save Assessment Report
 
-Save comprehensive analysis to: `{config.directories.output_resumes}/DiscriminationAssessment_[Date].md`
+Save comprehensive analysis to: `{config.directories.crisis_management}/discrimination_assessment_{YYYYMMDD}.md`
 
 **Report Structure:**
 
@@ -1292,7 +1292,7 @@ Bring to attorney consultation:
 ## Session Completion
 
 **Before concluding, confirm:**
-1. Assessment report saved to {config.directories.output_resumes}/
+1. Assessment report saved to {config.directories.crisis_management}/
 2. User understands this is NOT legal advice
 3. User has clear next steps for attorney consultation
 4. Filing deadlines are clearly communicated

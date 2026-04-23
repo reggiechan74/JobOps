@@ -881,7 +881,7 @@ Based on the user's situation, generate appropriate documents:
 
 ### 10.2 Save Output
 
-Save comprehensive output to: `{config.directories.output_resumes}/AccommodationRequest_[Type]_[Date].md`
+Save comprehensive output to: `{config.directories.crisis_management}/accommodation_request_{YYYYMMDD}.md`
 
 Structure:
 ```markdown

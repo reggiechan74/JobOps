@@ -400,7 +400,7 @@ Ensure narrative matches across: Resume dates/titles, LinkedIn, Application form
 
 ### 8.1 Save Reference Strategy Report
 
-Location: `{config.directories.output_resumes}/ReferenceStrategy_[Date].md`
+Location: `{config.directories.crisis_management}/reference_shield_{YYYYMMDD}.md`
 
 **Structure**:
 - Executive Summary

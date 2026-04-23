@@ -659,7 +659,7 @@ If user wants to transition to job search:
 
 ### 7.1 Situation Assessment Report
 
-Save comprehensive analysis to: `{config.directories.output_resumes}/CodeRed_[Company]_[Date].md`
+Save comprehensive analysis to: `{config.directories.crisis_management}/code_red_{YYYYMMDD}.md`
 
 Structure:
 ```markdown
@@ -714,7 +714,7 @@ Structure:
 - Exit negotiation talking points
 - Reference request letter
 
-Save each to: `{config.directories.output_resumes}/CodeRed_[Type]_[Date].md`
+Save each to: `{config.directories.crisis_management}/code_red_{YYYYMMDD}.md` (same file as the assessment; append a distinct section per response document).
 
 ### 7.3 Action Plan
 

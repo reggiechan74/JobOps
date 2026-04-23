@@ -815,7 +815,7 @@ I maintain that [your position]. The evidence demonstrates [key point]. I reques
 
 ### 9.1 Investigation Preparation Report
 
-Save comprehensive preparation guide to: `{config.directories.output_resumes}/InvestigationPrep_[Date].md`
+Save comprehensive preparation guide to: `{config.directories.crisis_management}/investigation_prep_{YYYYMMDD}.md`
 
 **Report Structure**:
 ```markdown

@@ -858,7 +858,7 @@ MOST LIKELY SCENARIO: [Summary of realistic outcomes]
 
 ### 9.1 Save Comprehensive Analysis
 
-Save to: `{config.directories.output_resumes}/NonCompeteAnalysis_[Company]_[Date].md`
+Save to: `{config.directories.crisis_management}/non_compete_analysis_{YYYYMMDD}.md`
 
 Structure:
 

@@ -94,7 +94,7 @@ Parse arguments:
 - Resignation letter (if resigned)
 
 **Load if Available**:
-- Check for existing CodeRed assessment: `{config.directories.output_resumes}/CodeRed_*.md`
+- Check for existing Code Red assessment: `{config.directories.crisis_management}/code_red_*.md`
 - Career context from: `{config.directories.resume_source}/.profile/candidate_profile.json`
 
 
@@ -1003,7 +1003,7 @@ Result: [Applied/Interviewed/Waiting]
 
 ### 11.1 Unemployment Prep Report
 
-Save comprehensive analysis to: `{config.directories.output_resumes}/UnemploymentPrep_[State]_[Date].md`
+Save comprehensive analysis to: `{config.directories.crisis_management}/unemployment_prep_{YYYYMMDD}.md`
 
 Structure:
 

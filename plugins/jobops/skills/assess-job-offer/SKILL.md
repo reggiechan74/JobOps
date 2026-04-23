@@ -949,7 +949,7 @@ RECOMMENDATION:
 
 ### 8.1 Save Comprehensive Analysis
 
-Save to: `{config.directories.output_resumes}/JobOfferAnalysis_[Company]_[Role]_[Date].md`
+Save to: `{config.directories.crisis_management}/offer_assessment_{YYYYMMDD}_{Company}.md`
 
 ```markdown
 ---
