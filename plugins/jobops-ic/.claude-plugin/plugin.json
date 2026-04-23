@@ -8,7 +8,7 @@
   "repository": "https://github.com/reggiechan74/JobOps",
   "license": "ISC",
   "keywords": ["independent-contractor", "consulting", "proposals", "rate-card", "pitch-deck", "landing-page"],
-  "dependencies": {
-    "jobops": "^2.0.0"
-  }
+  "dependencies": [
+    "jobops"
+  ]
 }

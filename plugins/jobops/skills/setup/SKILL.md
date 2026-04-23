@@ -1,7 +1,7 @@
 ---
 description: Initialize JobOps workspace - configure output directories, install templates, and optionally migrate legacy files
 disable-model-invocation: true
-argument-hint: [--reconfigure] [--skip-migration] [--skip-history]
+argument-hint: "[--reconfigure] [--skip-migration] [--skip-history]"
 ---
 
 # JobOps Workspace Setup
