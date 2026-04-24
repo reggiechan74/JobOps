@@ -1,215 +1,137 @@
-# JobOps Setup Instructions
+# JobOps Setup
 
-## Overview
+JobOps v2.0 ships as two Claude Code plugins distributed through a self-hosted marketplace. Setup is a three-step flow: install Claude Code, install the plugin(s), then initialize the workspace.
 
-**JobOps is a Claude Code repository**. This means it runs entirely through Claude Code's slash commands and agents. The vast majority of functionality requires **only Claude Code** to be installed.
+## 1. Install Claude Code
 
-## Required Setup
-
-### Install Claude Code CLI
-
-This is the **only** required dependency for JobOps core functionality:
+Claude Code is the only hard requirement.
 
 ```bash
 npm install -g @anthropic-ai/claude-code
-```
-
-More information at [claude.ai/code](https://claude.ai/code)
-
-### Verify Installation
-
-```bash
 claude --version
 ```
 
-### Start Using JobOps
+More at [claude.ai/code](https://claude.ai/code).
 
-Once Claude Code is installed, navigate to the repository and launch Claude:
+## 2. Install the Plugins
 
-```bash
-cd /path/to/resumeoptimizer
-claude
+From inside any project directory where you want to use JobOps, launch Claude Code (`claude`) and run:
+
+```text
+/plugin marketplace add reggiechan74/JobOps
+/plugin install jobops@jobops-marketplace
 ```
 
-All slash commands are now available:
-- `/create-career-history` - Parse existing resumes
-- `/assessjob` - Evaluate job fit
-- `/buildresume` - Create tailored resumes
-- `/briefing` - Generate interview prep materials
-- `/osint` - Company intelligence gathering
-- And many more (see README.md)
+The core `jobops` plugin provides 31 skills: resume development, interview prep, OSINT, career strategy, crisis management, and application finalization.
+
+**Optional — independent contractor toolkit:**
+
+```text
+/plugin install jobops-ic@jobops-marketplace
+```
+
+`jobops-ic` adds 10 skills for service definitions, client prospecting, pitch decks, proposals, rate cards, and landing pages. It depends on `jobops`, so install the core plugin first.
+
+## 3. Initialize the Workspace
+
+```text
+/jobops:setup
+```
+
+This creates `.jobops/` in the current workspace:
+
+```
+.jobops/
+  config.json                # Directory paths + template settings
+  templates/
+    default/                 # Plugin-bundled templates (read-only by convention)
+    custom/                  # Your overrides
+```
+
+It also scaffolds the default output directories (`ResumeSourceFolder/`, `Job_Postings/`, `Applications/`, `Company_Intelligence/`, `Career_Analysis/`, `Crisis_Management/`). Every path is configurable — edit `.jobops/config.json` to relocate anything.
+
+If you installed `jobops-ic`, run its setup afterward:
+
+```text
+/jobops-ic:setup
+```
+
+This extends `.jobops/config.json` with `contractor_root` (default `Contractor/`) and copies IC-specific templates.
+
+## Configurable Output Layout
+
+All output paths are resolved from `.jobops/config.json` — skills never hardcode directories. Defaults:
+
+| Config key | Default | Purpose |
+|------------|---------|---------|
+| `resume_source` | `ResumeSourceFolder/` | Master HAM-Z career inventory (input) |
+| `job_postings` | `Job_Postings/` | Target job descriptions (input) |
+| `applications_root` | `Applications/` | Per-application tree with fixed `resume/`, `cover-letter/`, `assessment/`, `interview/` subfolders |
+| `company_intelligence` | `Company_Intelligence/` | OSINT output, one folder per company |
+| `career_analysis` | `Career_Analysis/` | Flat timestamped career-level outputs |
+| `crisis_management` | `Crisis_Management/` | Flat timestamped crisis outputs |
+| `contractor_root` | `Contractor/` | `jobops-ic` outputs (added by `/jobops-ic:setup`) |
+
+See `docs/ARCHITECTURE.md` for the full contract.
 
 ## Optional Dependencies
 
-### Pandoc (Document Conversion)
+### Pandoc — `/jobops:convert-to-word`
 
-**Required for**: `/convert` command (markdown to Word DOCX)
+Needed to convert markdown to DOCX. Install via the bundled skill:
 
-**Installation**: Use the built-in installer:
-```bash
-/install-pandoc
+```text
+/jobops:install-pandoc
 ```
 
-Or install manually:
+Or manually:
 - **Ubuntu/Debian**: `sudo apt-get install pandoc`
 - **macOS**: `brew install pandoc`
-- **Windows**: Download from [pandoc.org](https://pandoc.org/installing.html)
+- **Windows**: [pandoc.org/installing.html](https://pandoc.org/installing.html)
 
-### Stealth Browser MCP Server (Job Search)
+### Playwright — `/jobops:convert-to-pdf`, `/jobops:markdown-to-pdf`
 
-**Required for**: `/searchjobs` command
+PDF conversion uses Playwright for pixel-perfect rendering. If the skill reports a missing browser:
 
-**Status**: Works with residential IPs, blocked from cloud environments
-
-The `/searchjobs` command uses a custom stealth browser MCP to bypass hiring.cafe's bot detection.
-
-#### How It Works
-
-JobOps includes a custom **stealth-browser MCP server** that:
-- Uses `playwright-extra` with `puppeteer-extra-plugin-stealth`
-- Bypasses Vercel's bot detection (browser fingerprinting)
-- Patches 10+ detection vectors (webdriver property, HeadlessChrome, WebGL, etc.)
-
-**Important Limitation**: Even with stealth, hiring.cafe still blocks cloud/datacenter IPs. The `/searchjobs` command works best from:
-- Local machines with residential IP addresses
-- Non-cloud/non-VPN networks
-
-#### Installation (Already Included)
-
-The stealth browser is pre-configured in this repository:
-
-1. **Dependencies are in package.json:**
-   ```bash
-   npm install
-   ```
-
-2. **MCP is configured in .mcp.json:**
-   ```json
-   {
-     "mcpServers": {
-       "stealth-browser": {
-         "type": "stdio",
-         "command": "node",
-         "args": ["scripts/mcp/stealth-browser.js"]
-       }
-     }
-   }
-   ```
-
-3. **Restart Claude Code** to load the MCP server
-
-4. **Verify connection:**
-   ```bash
-   claude mcp list
-   ```
-   You should see `stealth-browser` listed.
-
-#### Available Stealth Browser Tools
-
-| Tool | Description |
-|------|-------------|
-| `stealth_navigate` | Navigate to URL with bot detection bypass |
-| `stealth_get_content` | Get text content of current page |
-| `stealth_get_html` | Get HTML content of current page |
-| `stealth_evaluate` | Execute JavaScript in page context |
-| `stealth_fetch_api` | Make fetch request with browser cookies/session |
-| `stealth_wait` | Wait for time or element |
-| `stealth_screenshot` | Take screenshot of current page |
-| `stealth_close` | Close the browser |
-
-#### Troubleshooting
-
-**"Too many requests" or "Please disable VPN/proxy" error:**
-- This is IP-based blocking, not bot detection
-- Run from a local machine with residential IP
-- Use alternative job APIs instead (The Muse, Arbeitnow, etc.)
-
-**Stealth browser not connecting:**
-```bash
-# Verify dependencies
-npm install
-
-# Test the MCP server directly
-node scripts/mcp/stealth-browser.js
-
-# Restart Claude Code
-claude mcp list
-```
-
-**Browser not found:**
 ```bash
 npx playwright install chromium
 ```
 
-### Alternative: Standard Playwright MCP
+## Migrating from v1.x
 
-For other scraping tasks (not hiring.cafe), you can use the standard Playwright MCP:
+If you previously used JobOps v1.x (flat `OutputResumes/` and `Client_Prospects/` layouts):
 
-```bash
-claude mcp add playwright -s local -- npx @playwright/mcp@latest
+```text
+/jobops:setup       # Creates .jobops/config.json and new directory tree
+/jobops:migrate     # Relocates v1 outputs into the v2 app-centric layout
 ```
 
-## Architecture Summary
-
-```
-JobOps
-├── Claude Code CLI (REQUIRED)
-│   └── All core functionality
-│       - Resume development (/buildresume)
-│       - Assessment (/assessjob)
-│       - Interview prep (/briefing, /interviewprep)
-│       - OSINT (/osint)
-│       - Career analysis (/change-one-thing)
-│
-├── Pandoc (OPTIONAL)
-│   └── Document conversion (/convert)
-│
-└── Stealth Browser MCP (OPTIONAL)
-    └── Job search automation (/searchjobs)
-        - Works from residential IPs
-        - Blocked from cloud environments
-```
-
-## Free Job Search APIs (Alternative to hiring.cafe)
-
-If `/searchjobs` is blocked due to IP restrictions, use these free public APIs:
-
-| API | Endpoint | Focus |
-|-----|----------|-------|
-| **The Muse** | `https://www.themuse.com/api/public/jobs` | US corporate jobs (477K+) |
-| **Arbeitnow** | `https://arbeitnow.com/api/job-board-api` | EU/Global tech jobs |
-| **Remotive** | `https://remotive.com/api/remote-jobs` | Remote jobs only |
-| **Jobicy** | `https://jobicy.com/api/v2/remote-jobs` | Remote jobs only |
-
-Example:
-```bash
-curl -s 'https://www.themuse.com/api/public/jobs?page=1&per_page=10' | jq '.results[] | {title: .name, company: .company.name}'
-```
-
-## What About the package.json?
-
-The `package.json` file contains dependencies for optional features:
-
-- **@modelcontextprotocol/sdk** - For the stealth browser MCP server
-- **playwright-extra** - Stealth browser automation
-- **puppeteer-extra-plugin-stealth** - Bot detection bypass
-- **@playwright/test** - Browser installation
-
-These packages are **not required** for core JobOps functionality.
+`/jobops:migrate` moves per-application artifacts into `Applications/{Company}_{Role}_{YYYYMMDD}/`, consolidates OSINT files into `Company_Intelligence/{Company}/`, and routes career/crisis/contractor outputs to their dedicated roots.
 
 ## Quick Start Checklist
 
-- [x] Install Claude Code CLI: `npm install -g @anthropic-ai/claude-code`
-- [x] Clone/download this repository
-- [x] Launch Claude Code in the repository: `claude`
-- [ ] (Optional) Install Pandoc for document conversion: `/install-pandoc`
-- [ ] (Optional) Install npm dependencies for job search: `npm install`
-- [ ] (Optional) Test job search from local machine: `/searchjobs "software engineer"`
+- [ ] Install Claude Code: `npm install -g @anthropic-ai/claude-code`
+- [ ] In Claude: `/plugin marketplace add reggiechan74/JobOps`
+- [ ] In Claude: `/plugin install jobops@jobops-marketplace`
+- [ ] In Claude: `/jobops:setup`
+- [ ] (Optional) `/plugin install jobops-ic@jobops-marketplace` then `/jobops-ic:setup`
+- [ ] (Optional) `/jobops:install-pandoc` for Word export
+- [ ] (Optional) `npx playwright install chromium` for PDF export
+- [ ] (v1.x users) `/jobops:migrate` to relocate existing outputs
+
+## Troubleshooting
+
+**`/plugin` commands not recognized**: update Claude Code (`npm i -g @anthropic-ai/claude-code@latest`) — the plugin system ships in recent versions only.
+
+**Skills not appearing after install**: restart Claude Code. Verify the plugin is listed via `/plugin list`.
+
+**`/jobops-ic:*` skills fail with prerequisite error**: run `/jobops:setup` before `/jobops-ic:setup`. The IC plugin extends the shared `.jobops/config.json` and will not run standalone.
+
+**Config drift after editing `.jobops/config.json`**: skills read config at invocation time, so changes take effect immediately — no restart needed. If a skill writes to an unexpected path, confirm the key it reads is present and spelled correctly (see `docs/ARCHITECTURE.md`).
 
 ## Getting Help
 
-For tactical assistance:
-- **README.md** - Complete command reference and workflow guide
-- **CLAUDE.md** - Technical implementation details for Claude Code
-- **comprehensive_work_history_FAQ.md** - Master resume philosophy
-- **SourceMaterial/** - Methodology documentation
+- **README.md** — Full skill catalog and workflow guide
+- **CLAUDE.md** — Contributor notes on repo structure
+- **docs/ARCHITECTURE.md** — Config contract and output-layout rules
+- **CHANGELOG.md** — Version history and v2.0 migration notes

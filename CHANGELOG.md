@@ -5,6 +5,44 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-04-24
+
+### Changed — BREAKING
+
+- **Plugin architecture**: JobOps is now distributed as two Claude Code plugins via a self-hosted marketplace (`.claude-plugin/marketplace.json`) instead of a single monorepo of `.claude/commands` and `.claude/agents`.
+  - **`jobops`** — Core plugin: resume development, interview prep, OSINT intelligence, career strategy, career crisis management, application finalization. 31 skills, 16 agents.
+  - **`jobops-ic`** — Independent contractor add-on: service definitions, client prospecting, pitch decks, proposals, rate cards, landing pages. 10 skills, 1 agent. Declares `jobops` as a plugin dependency.
+- **Commands → skills**: All former slash commands converted to skills with `disable-model-invocation: true` frontmatter. Invocation surface changes from `/command` to `/plugin:skill` (e.g. `/buildresume` → `/jobops:buildresume`, `/defineservices` → `/jobops-ic:defineservices`).
+- **Config-driven output layout**: Hardcoded directories (`ResumeSourceFolder/`, `OutputResumes/`, `Client_Prospects/`, etc.) replaced with `.jobops/config.json` keys resolved by every skill's config preamble. See `docs/ARCHITECTURE.md` for the full contract.
+  - `resume_source` (default `ResumeSourceFolder/`) — master HAM-Z career inventory
+  - `job_postings` (default `Job_Postings/`) — target job descriptions
+  - `applications_root` (default `Applications/`) — per-application output tree with fixed `resume/`, `cover-letter/`, `assessment/`, `interview/` subfolders and a pinned `job_posting.md`
+  - `company_intelligence` (default `Company_Intelligence/`) — OSINT output, one folder per company, with fixed `corporate.md`, `legal.md`, `leadership.md`, `compensation.md`, `culture.md`, `market.md`, `summary.md` filenames
+  - `career_analysis` (default `Career_Analysis/`) — flat timestamped career-level outputs
+  - `crisis_management` (default `Crisis_Management/`) — flat timestamped crisis-skill outputs
+  - `contractor_root` (default `Contractor/`) — flat timestamped `jobops-ic` outputs; added by `/jobops-ic:setup`
+- **Application artifacts relocated**: Former flat `OutputResumes/...` files now live under `Applications/{Company}_{Role}_{YYYYMMDD}/<subfolder>/<fixed-filename>.md` so every artifact tied to a single application lands in one folder.
+- **OSINT artifacts relocated**: Former flat OSINT reports now live under `Company_Intelligence/{Company}/` with one file per specialist domain, so repeat research on the same company consolidates rather than duplicates.
+- **Career, crisis, and contractor artifacts flattened**: Outputs drop into their dedicated roots as single timestamped files per invocation instead of being interleaved with application artifacts.
+
+### Added
+
+- **`/jobops:setup`** — Initializes `.jobops/config.json`, scaffolds output directories, and copies bundled templates to `.jobops/templates/default/`.
+- **`/jobops-ic:setup`** — Extends the shared config with `contractor_root` and scaffolds contractor output directories; requires `jobops` to be set up first.
+- **`/jobops:migrate`** — Standalone skill to migrate v1.x layouts (`OutputResumes/`, `Client_Prospects/`) into the v2.0 app-centric and per-company structures.
+- **`docs/ARCHITECTURE.md`** — Contributor reference documenting the config contract, output-layout rules, and plugin boundaries.
+- **Bundled templates**: Each plugin ships its templates under `plugins/<plugin>/templates/` and copies them to `.jobops/templates/default/` on setup, eliminating the prior dependency on user-maintained template files.
+
+### Removed
+
+- `.claude/commands/` and `.claude/agents/` trees — replaced by `plugins/*/skills/` and `plugins/*/agents/`.
+- `ResumeSourceFolder/`, `OutputResumes/`, `Client_Prospects/`, `Scoring_Rubrics/` as hardcoded paths — all now configurable via `.jobops/config.json`.
+- Legacy copy-templates hooks and scripts that predated the plugin-bundled template model.
+
+### Migration
+
+Existing v1.x users should run `/jobops:setup` followed by `/jobops:migrate` to relocate prior outputs into the v2.0 layout. Shared CSS for PDF conversion continues to live in `.claude/styles/` at the repo root.
+
 ## [1.7.0] - 2026-02-04
 
 ### Changed
@@ -485,28 +523,9 @@ JobOps follows [Semantic Versioning](https://semver.org/):
 - **MINOR**: New features, enhancements, backward-compatible functionality
 - **PATCH**: Bug fixes, documentation updates, minor improvements
 
-### Planned Releases
-
-#### v1.5.0 (Planned)
-- Enhanced OSINT capabilities with additional intelligence sources
-- Advanced interview simulation and practice mode
-- Resume comparison and version tracking
-- Expanded cultural profile options
-
-#### v1.6.0 (Planned)
-- AI-powered interview coaching with real-time feedback
-- Salary negotiation intelligence and strategy
-- Industry-specific resume templates
-- Networking strategy recommendations
-
-#### v2.0.0 (Planned)
-- Multi-language support for international job markets
-- Advanced analytics dashboard for application tracking
-- Integration with major job boards and ATS systems
-- Team collaboration features for career coaches
-
 ---
 
+[2.0.0]: https://github.com/reggiechan74/JobOps/releases/tag/v2.0.0
 [1.7.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.7.0
 [1.6.1]: https://github.com/reggiechan74/JobOps/releases/tag/v1.6.1
 [1.6.0]: https://github.com/reggiechan74/JobOps/releases/tag/v1.6.0

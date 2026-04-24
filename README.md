@@ -34,6 +34,26 @@ Two Claude Code plugins for systematic, intelligence-driven career management �
 
 ---
 
+## Building Your Career Inventory
+
+Every `/jobops:*` skill that produces resumes, assessments, or interview prep reads from a structured career inventory in your `resume_source` directory (default: `ResumeSourceFolder/`). The inventory is a collection of markdown files with YAML frontmatter — one file per role, credential, or technology anchor — that serves as the single source of truth for everything the plugins generate. The deeper and more specific this inventory, the less the plugins have to guess; the less they guess, the less fabrication ends up in your output.
+
+If you're building your inventory from scratch, start here:
+
+| Doc | What it covers |
+|-----|----------------|
+| [comprehensive_work_history_FAQ.md](comprehensive_work_history_FAQ.md) | **Why** a comprehensive master inventory exists — the anti-hallucination rationale and how it differs from a 2-page resume |
+| [Master_Resume_Comprehensive_Setup_Guide.md](Master_Resume_Comprehensive_Setup_Guide_v1.md) | **How** to structure the inventory — documentation frameworks for experience, credentials, skills, projects, and development |
+| [Guides/Experience_Template.md](Guides/Experience_Template.md) | Frontmatter + section scaffold for an individual role file under `ResumeSourceFolder/Experience/` |
+| [Guides/CareerHighlight_Template.md](Guides/CareerHighlight_Template.md) | Template for certifications, publications, and non-role highlights under `ResumeSourceFolder/CareerHighlights/` |
+| [Guides/TechnologyMatrix_Template.md](Guides/TechnologyMatrix_Template.md) | Template for technology anchor files under `ResumeSourceFolder/Technology/` |
+| [Guides/Metadata_Standards.md](Guides/Metadata_Standards.md) | YAML frontmatter conventions shared across all inventory files |
+| [Guides/Maintenance_Checklist.md](Guides/Maintenance_Checklist.md) | What to update when you add a new role, certification, or tech anchor |
+
+The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the frontmatter shape are what every skill in the `jobops` plugin expects when it reads `resume_source`.
+
+---
+
 ## jobops Plugin
 
 ### Setup
