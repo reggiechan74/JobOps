@@ -155,9 +155,7 @@ If both flags are specified, perform all analyses.
 - Reduction in force (RIF) documentation
 
 **Load Career Context**:
-- Check for `{config.directories.resume_source}/` for career history context
-- If available, read candidate profile from `{config.directories.resume_source}/.profile/candidate_profile.json`
-- This provides context for tenure, compensation level, and role for benchmarking
+If career context is needed (tenure for severance formula, industry benchmarks), read `WorkHistory/*.md` files directly from `{config.directories.resume_source}`. Compute tenure from explicit Start/End dates. Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
 
 ## Phase 1: Document Parsing & Term Extraction
