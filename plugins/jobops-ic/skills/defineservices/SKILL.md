@@ -219,7 +219,16 @@ Search: "[Service type] consultant rates [year]", "[Domain] consulting hourly ra
 See `{config.templates.base_dir}/{config.templates.active[template_name]}/service_definition_schema.json` for complete structure.
 
 **Markdown sections**:
-1. **Header**: Metadata (consultant, generated_by, version, timestamps, source paths)
+1. **Header**: YAML frontmatter with the following fields:
+   ```yaml
+   consultant: <name>
+   generated_on: <YYYY-MM-DD>
+   version: <plugin-version>
+   source_files_read:
+     - {config.directories.resume_source}/Technology/TechStack.md
+     - {config.directories.resume_source}/WorkHistory/*.md
+     - ... (whichever files Phase 1 actually read)
+   ```
 2. **Identity**: Name, Tagline, Credentials, Experience
 3. **Service Offerings** (per service): Category, Description, Deliverables, Ideal Client (Industries/Size/Pain Points/Decision Makers), Pricing (Model/Range/Duration/Value), Success Metrics, Case Study (if available), Evidence
 4. **Engagement Models**: Preferred/Acceptable/Avoid, Parameters (Min Engagement/Duration/Concurrent Clients)

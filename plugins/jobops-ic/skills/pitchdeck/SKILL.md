@@ -38,7 +38,7 @@ Generate 10-12 slide B2B pitch deck with provenance-hardened claims. Supports pr
 ### 1.2 Load Service Definition
 
 Use most recent `{config.directories.contractor_root}/services/service_definition_*.md` if multiple exist. Extract:
-- YAML: consultant, generated_on, version, source_profile
+- YAML: consultant, generated_on, version, source_files_read
 - Consultant: name, tagline, credentials, years_experience
 - Services: name, category, description, deliverables, ideal_client (industries, pain_points, decision_makers), pricing (model, range, value_justification), success_metrics, case_studies
 - Rate Card: hourly/daily/retainer rates, payment_terms
