@@ -49,13 +49,12 @@ Templates referenced by this skill: service_definition_schema
    - `{config.directories.resume_source}/WorkHistory/*.md` — extract leadership scope (team size, budget, P&L mentions); leadership signals map to Strategic Advisory services
    - `{config.directories.resume_source}/Industries/*.md` if present, otherwise infer from WorkHistory industries — domains with 5+ years of mentions map to Domain Expertise services
    - `{config.directories.resume_source}/Thought_Leadership/*.md` if present (publications, frameworks, awards) — these map to Thought Leadership services
-   - `{config.directories.resume_source}/Preferences/Vision.md` — engagement preferences and pricing anchors; if absent, use market-rate formula (documented in the skill)
 
    Service identification is a judgment task done in the context of this skill invocation. Do NOT pre-compute service candidates from a global enum; judge each potential service against the source evidence.
 
    Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
-3. **Vision.md**: Read `{config.directories.resume_source}/Preferences/Vision.md` for pricing/engagement preferences
+3. **Vision.md** (`--guided`, `--update` only): Read `{config.directories.resume_source}/Preferences/Vision.md` if present — pricing anchors and engagement preferences (skip if not present; fall back to market-rate formula in §3.3)
 4. **Existing Definition** (--update only):
    - Find `{config.directories.contractor_root}/services/service_definition_*.md` files
    - If multiple, ask user to select
@@ -138,8 +137,8 @@ Read `{config.directories.resume_source}/WorkHistory/*.md` and `{config.director
 - Extract "avoid" preferences
 
 **If Vision.md missing**:
-- Research market rates for service type + seniority
-- Formula: Min = (salary / 2000) x 1.5, Target = Min x 1.3, Premium = Target x 1.5-2.0
+- Research market rates for service type + seniority + geography to determine `target_annual_rate`
+- Formula: Min hourly = (target_annual_rate / 2000) x 1.5, where target_annual_rate is sourced from Preferences/Vision.md if a base-salary target is stated, otherwise from market research for the role + seniority + geography combination; Target = Min x 1.3, Premium = Target x 1.5-2.0
 
 ### 3.4 Build Differentiation
 **UVP**: Synthesize dominant domain + Expert technical skills + years span + track record from WorkHistory
@@ -224,11 +223,12 @@ See `{config.templates.base_dir}/{config.templates.active[template_name]}/servic
    consultant: <name>
    generated_on: <YYYY-MM-DD>
    version: <plugin-version>
-   source_files_read:
+   source_files_read:  # --from-source / --update only; omit field entirely for --guided
      - {config.directories.resume_source}/Technology/TechStack.md
-     - {config.directories.resume_source}/WorkHistory/*.md
+     - {config.directories.resume_source}/WorkHistory/2019-Acme.md
      - ... (whichever files Phase 1 actually read)
    ```
+   List each file actually read individually — do NOT use globs (e.g. `WorkHistory/*.md`). Pitchdeck and other downstream consumers expand the source list per-file.
 2. **Identity**: Name, Tagline, Credentials, Experience
 3. **Service Offerings** (per service): Category, Description, Deliverables, Ideal Client (Industries/Size/Pain Points/Decision Makers), Pricing (Model/Range/Duration/Value), Success Metrics, Case Study (if available), Evidence
 4. **Engagement Models**: Preferred/Acceptable/Avoid, Parameters (Min Engagement/Duration/Concurrent Clients)
