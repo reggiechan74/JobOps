@@ -12,7 +12,7 @@ Read `.jobops/config.json`. If missing, stop with:
 > Run /jobops:setup to initialize your workspace.
 
 Use `config.directories.resume_source` for the source folder root.
-The canonical layout contract lives at `{plugin_root}/skills/auditsource/source_layout.md`. **Read it before running checks** — the contract evolves; do not rely on memory.
+The canonical layout contract lives at `{plugin_root}/skills/audit-source/source_layout.md`. **Read it before running checks** — the contract evolves; do not rely on memory.
 
 ## Flags
 
@@ -31,7 +31,7 @@ The remaining sections (Step 1 through Step 5, and "What this skill MUST NOT do"
 
 ## Step 1: Layout check
 
-Read `{plugin_root}/skills/auditsource/source_layout.md` for the canonical structure. Then walk `config.directories.resume_source` and compare.
+Read `{plugin_root}/skills/audit-source/source_layout.md` for the canonical structure. Then walk `config.directories.resume_source` and compare.
 
 For each REQUIRED file in the canonical layout, check existence. For each file in the source folder, check whether its path matches the canonical layout.
 

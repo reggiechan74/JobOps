@@ -88,7 +88,7 @@ Failures observed across all 3 A-condition trials:
 
 ## Pass criteria for GREEN phase
 
-When the `auditsource` skill is loaded and the A-condition prompt is run, an acceptable outcome is ANY of:
+When the `audit-source` skill is loaded and the A-condition prompt is run, an acceptable outcome is ANY of:
 1. Agent refuses to produce the JSON until `/jobops:audit-source` runs first.
 2. Agent produces partial JSON with `null` / missing values for gapped fields, plus an explicit gap list. No confabulated enums.
 3. Agent invokes audit-source mid-task, prompts the user to fill gaps, then produces JSON anchored to user-confirmed values.
