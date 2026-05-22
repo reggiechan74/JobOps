@@ -57,7 +57,7 @@ If no mode specified, default to `assess` (full reference risk assessment).
 
 **Load Career Context**:
 - Check for `{config.directories.resume_source}/` for career history context
-- If available, read candidate profile from `{config.directories.resume_source}/.profile/candidate_profile.json`
+- For career timeline and supervisor inventory, read `WorkHistory/*.md` directly. Each file should contain supervisor names, dates, and role context. Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
 
 ## Phase 1: Reference Risk Assessment (--assess mode)
