@@ -305,9 +305,11 @@ Parse arguments:
 - Recruiter communications about role
 
 **Automatically Load**:
-- `{config.directories.resume_source}/.profile/candidate_profile.json` for career context
+- `{config.directories.resume_source}/Identity/CurrentRole.md` and `{config.directories.resume_source}/WorkHistory/*.md` for career context (tenure, current role, scope)
 - `{config.directories.resume_source}/Preferences/Vision.md` for personal goals/constraints
 - `{config.directories.resume_source}/Preferences/Anti-Vision.md` for deal-breakers
+
+Do NOT load `candidate_profile.json` — that artifact is removed in v2.2.0. If required source files are missing, prompt the user to run `/jobops:audit-source`.
 
 ---
 
@@ -660,7 +662,7 @@ BAIT-AND-SWITCH INDICATORS:
 Check for and load:
 - `{config.directories.resume_source}/Preferences/Vision.md`
 - `{config.directories.resume_source}/Preferences/Anti-Vision.md`
-- Candidate profile from `.profile/candidate_profile.json`
+- `{config.directories.resume_source}/Identity/CurrentRole.md` and most-recent `{config.directories.resume_source}/WorkHistory/*.md` for career-context inputs (do NOT load `candidate_profile.json` — removed in v2.2.0)
 
 ```
 PERSONAL ALIGNMENT ANALYSIS
