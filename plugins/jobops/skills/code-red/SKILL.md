@@ -65,8 +65,7 @@ If no mode specified, default to `assess` (full process).
 
 **Load Career Context**:
 - Check for `{config.directories.resume_source}/` for career history context
-- If available, read candidate profile from `{config.directories.resume_source}/.profile/candidate_profile.json`
-- This provides context for skills, achievements, and job search transition if needed
+- If career context would help, read `{config.directories.resume_source}/Identity/CurrentRole.md` and the most-recent `WorkHistory/NN_*.md` file. Do NOT attempt to load `candidate_profile.json` — that artifact is removed in v2.2.0. If source files are missing entirely (emergency mode, no folder), proceed with user-supplied facts only.
 
 
 ## Phase 1: Intake & Document Analysis
