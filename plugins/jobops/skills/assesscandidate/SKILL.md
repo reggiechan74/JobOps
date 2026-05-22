@@ -63,7 +63,7 @@ Use the existing scoring rubric from {{ARG1}} to evaluate the candidate against 
 
 ```
 Phase 1 (Parallel batch):    Load templates + rubric + job posting (4 parallel reads)
-Phase 2 (PARALLEL):          Candidate profile gen (subagent) ‖ Validate rubric alignment
+Phase 2 (Sequential):        Read source files directly + Validate rubric alignment
 Phase 3 (Sequential):        Optional domain research (if rubric is stale)
 Phase 4 (Sequential, visible): Score Cat 1 → 2 → 3 → 4 → 5 → 6
 Phase 5 (Sequential):        Generate report → Save files
@@ -71,8 +71,8 @@ Phase 5 (Sequential):        Generate report → Save files
 
 **Dependency Rules:**
 - Phase 2 starts after templates/rubric/posting loaded (Phase 1)
-- Profile gen and rubric validation are INDEPENDENT - run concurrently
-- Phase 4 WAITS for both candidate profile AND rubric validation
+- Source reads and rubric validation can be done together in Phase 2
+- Phase 4 WAITS for source reads AND rubric validation
 - Phase 5 WAITS for all scoring (Phase 4)
 
 ---
@@ -84,7 +84,7 @@ Phase 5 (Sequential):        Generate report → Save files
 | # | Task Subject | activeForm |
 |---|-------------|------------|
 | 1 | Load templates, rubric, and job posting | Loading templates, rubric, and job posting |
-| 2 | Generate candidate profile | Generating candidate profile from source materials |
+| 2 | Read candidate source files | Reading candidate source files directly |
 | 3 | Validate rubric-job alignment | Validating rubric-job posting alignment |
 | 4 | Score Technical Skills & Competencies | Scoring Technical Skills & Competencies |
 | 5 | Score Relevant Experience | Scoring Relevant Experience |
@@ -98,7 +98,7 @@ Phase 5 (Sequential):        Generate report → Save files
 **Task Update Rules:**
 - Mark each task `in_progress` BEFORE starting work on it
 - Mark each task `completed` AFTER finishing it
-- If profile exists and is fresh, mark task 2 `completed` immediately
+- If source is a single file, mark task 2 `completed` immediately after reading it
 
 ---
 
@@ -142,30 +142,32 @@ If job posting doesn't exist in {config.directories.job_postings}/, check the ro
 
 ---
 
-## PHASE 2: PARALLEL DATA ACQUISITION
+## PHASE 2: DATA ACQUISITION
 
-> **CRITICAL: Dispatch both tasks simultaneously in a SINGLE message.**
-> Mark tasks 2 and 3 as `in_progress` before dispatching.
+> Mark tasks 2 and 3 as `in_progress`.
 
-### 2.1 Generate Candidate Profile (Task 2 - Subagent)
+### 2.1 Read Candidate Source Files (Task 2)
 
-**Check for existing profile**: Look for `{config.directories.resume_source}/.profile/candidate_profile.json`
-- If exists and recent (<=7 days old), use it directly (mark task 2 `completed` immediately)
-- If exists but stale (>7 days old), regenerate
-- If doesn't exist, generate new profile
+Determine source structure:
+- **Single-file source** (resume.md or similar passed by user): read that file directly. Skip everything below; you have the candidate data in-hand.
+- **Folder source** (`{config.directories.resume_source}/`): read these files directly for the rubric scoring you are about to do:
+  - `Identity/Name.md`, `Identity/CurrentRole.md` (candidate identity)
+  - `Technology/TechStack.md` (skill inventory)
+  - `Technology/Certifications.md` (active credentials)
+  - `WorkHistory/*.md` (roles, achievements, scope)
+  - `Projects/*.md` if present (case studies)
+  - `Education/*.md` if present
+  - `Preferences/Vision.md` (cultural-fit signals)
 
-**If regeneration needed**, dispatch subagent:
-```
-Use Task tool with subagent_type=resume-summarizer, model=sonnet, and prompt:
-"Read all files in {config.directories.resume_source}/ directory and create a structured JSON
-candidate profile following the schema in .claude/agents/resume-summarizer.md.
-Save output to {config.directories.resume_source}/.profile/candidate_profile.json and
-{config.directories.resume_source}/.profile/extraction_log.md"
-```
+If a required file is missing, prompt the user to run `/jobops:audit-source` and stop. Do NOT attempt to generate or load `candidate_profile.json` — that artifact is removed in v2.2.0.
+
+Token budget: most rubric scoring needs ~30K of source markdown loaded at once for a thorough assessment. Read what you need; do not pre-summarize.
+
+> **Task:** Mark task 2 `completed` when source reads are done.
 
 ### 2.2 Validate Rubric-Job Alignment (Task 3 - Main agent)
 
-**While profile generates**, validate the rubric:
+Validate the rubric:
 - Verify that the rubric was created for the same job posting or compatible role
 - Check that the rubric includes all detailed scoring breakdowns required
 - Confirm rubric completeness against the framework requirements
@@ -173,7 +175,6 @@ Save output to {config.directories.resume_source}/.profile/candidate_profile.jso
 - If rubric lacks current context, note areas needing supplemental domain research
 
 > **Task:** Mark task 3 `completed` when validation is done.
-> **Task:** Mark task 2 `completed` when profile subagent returns (or immediately if fresh profile exists).
 
 ---
 
@@ -191,17 +192,11 @@ If rubric validation identified stale context or missing information:
 
 ## PHASE 4: SCORE CANDIDATE (Sequential - needs rubric + candidate data)
 
-> **Prerequisites:** Candidate profile (task 2) AND rubric validation (task 3) must both be `completed`.
+> **Prerequisites:** Source file reads (task 2) AND rubric validation (task 3) must both be `completed`.
 
-### 4.0 Load Candidate Materials
+### 4.0 Score Against Source Files
 
-Read the candidate profile from `{config.directories.resume_source}/.profile/candidate_profile.json`
-
-**Evidence Verification Protocol**: When citing specific achievements or skills:
-- Use line references from JSON profile's evidence fields
-- Read specific sections from source files ONLY when verification needed
-- Quote exact text from source files for all scores >=2 points
-- Maintain traceability: JSON profile -> source file -> line numbers
+Score each rubric category against the source files you read in Phase 2. For each score, cite the specific source `{filepath}:{line_number}` you anchored on. Do not invent enums (proficiency_level, company_size, impact_category) — judge from the source prose with citation.
 
 **CRITICAL**: Apply the evidence verification framework from the evidence verification framework template to all scoring decisions.
 
@@ -266,7 +261,7 @@ Follow the report structure defined in the assessment report structure template 
 **CRITICAL FORMAT REQUIREMENTS:**
 - Use the detailed 3-level format with sub-bullets for all scored items:
   - **Rubric Criteria Applied**: [Specific criteria used from rubric]
-  - **Candidate Evidence**: [Detailed evidence mapping with CV line numbers]
+  - **Candidate Evidence**: [Detailed evidence mapping with source file citations {filepath}:{line_number}]
   - **Score Justification**: [Why this score level was assigned]
 - Include all sections from the template (Executive Summary, Detailed Scoring, Analysis, Evidence Mapping, Interview Strategy, etc.)
 - Maintain command-specific content:
