@@ -55,10 +55,15 @@ Find most recent: `find {config.directories.contractor_root}/services/ -name "se
 - Extract: prospect_research (pain_points, strategic_priorities, decision_makers, research_date)
 - Set `prospect_context.has_prior_research = true/false`
 
-**Candidate Profile**:
-- Find: `{config.directories.resume_source}/.profile/candidate_profile.json`
-- Extract: certifications (Active), top achievements, thought_leadership
-- Use for Team & Qualifications section, warn if missing
+**Candidate Credentials** (read directly from resume source):
+For proposal-relevant credentials, read:
+- `WorkHistory/*.md` — relevant role history, achievements with metrics
+- `Projects/*.md` — case studies with outcomes
+- `Technology/Certifications.md` — Active certifications relevant to the proposal scope
+- `CareerHighlights/*.md` if present — quantified accomplishments
+- `Preferences/Vision.md` — engagement and pricing preferences
+
+Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
 ---
 
@@ -126,8 +131,8 @@ Generate pricing_calculation YAML metadata for frontmatter with method, rates, h
 - Key milestones with gates, regular check-in cadence
 
 **Team & Qualifications**:
-- If candidate_profile exists: Credentials, domain expertise, technical capabilities, relevant achievements (top 3-5 with evidence), certifications, thought leadership
-- If no profile: Use differentiation section (competitive_advantages, proof_points, unique_value)
+- If candidate credentials loaded from source files: Credentials, domain expertise, technical capabilities, relevant achievements (top 3-5 with evidence from WorkHistory/Projects), certifications from Technology/Certifications.md, thought leadership
+- If source files missing or sparse: Use differentiation section (competitive_advantages, proof_points, unique_value)
 
 **Investment**:
 - Pricing table by type (project phases, retainer tiers, staff-aug breakdown, workshop components)
@@ -151,8 +156,8 @@ Generate pricing_calculation YAML metadata for frontmatter with method, rates, h
 - Contact info and customization options
 
 **Appendix**:
-- Detailed credentials (certifications, education, thought leadership, technical proficiencies from profile)
-- Case studies (from service_definition or candidate profile projects)
+- Detailed credentials (certifications from Technology/Certifications.md, education, thought leadership, technical proficiencies from WorkHistory/*.md)
+- Case studies (from service_definition or Projects/*.md)
 - References (available upon request)
 - Terms/definitions, proposal metadata (generated date, reference, sources)
 
