@@ -4,7 +4,7 @@
 
 ## Repository Purpose
 
-**JobOps v2.0.0** — Intelligence-driven career management plugins for Claude Code, distributed via a self-hosted marketplace.
+**JobOps v2.1.0** — Intelligence-driven career management plugins for Claude Code, distributed via a self-hosted marketplace.
 
 Two plugins:
 - **jobops** — Resume development, interview prep, OSINT intelligence, career strategy, career crisis management, application finalization
@@ -21,7 +21,7 @@ JobOps/
       hooks/hooks.json
       scripts/copy-templates.sh
       templates/                      # Bundled templates (copied to workspace on setup)
-      skills/                         # 31 skills (flat, no subdirectories)
+      skills/                         # 32 skills (flat, no subdirectories)
       agents/                         # 16 agents
     jobops-ic/                        # Independent contractor add-on
       .claude-plugin/plugin.json

@@ -22,7 +22,7 @@ From inside any project directory where you want to use JobOps, launch Claude Co
 /plugin install jobops@jobops-marketplace
 ```
 
-The core `jobops` plugin provides 31 skills: resume development, interview prep, OSINT, career strategy, crisis management, and application finalization.
+The core `jobops` plugin provides 32 skills: resume development, interview prep, OSINT, career strategy, crisis management, and application finalization.
 
 **Optional — independent contractor toolkit:**
 

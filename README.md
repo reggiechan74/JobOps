@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 2.0.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 2.1.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 Two Claude Code plugins for systematic, intelligence-driven career management — from resume development to independent consulting.
 
@@ -29,7 +29,7 @@ Two Claude Code plugins for systematic, intelligence-driven career management �
 
 | Plugin | Description | Skills | Prerequisite |
 |--------|-------------|--------|--------------|
-| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization | 31 | None |
+| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization | 32 | None |
 | **jobops-ic** | Independent contractor toolkit — service definitions, client prospecting, pitch decks, proposals, rate cards, landing pages | 10 | jobops |
 
 ---
@@ -61,6 +61,7 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 | Skill | Description |
 |-------|-------------|
 | `/jobops:setup` | Initialize workspace — configure directories, install templates, import career history |
+| `/jobops:audit-source` | Audit `ResumeSourceFolder/` for structural completeness and layout conformance; interactively fill gaps with propose-then-confirm edits |
 
 ### Resume Development
 
@@ -206,7 +207,7 @@ JobOps/
   plugins/
     jobops/                          # Core plugin
       .claude-plugin/plugin.json
-      skills/                        # 31 skills (flat layout)
+      skills/                        # 32 skills (flat layout)
       agents/                        # 16 agents
       templates/                     # Bundled templates
       hooks/                         # SessionStart hook
