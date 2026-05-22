@@ -1,0 +1,317 @@
+---
+description: Audit ResumeSourceFolder for structural completeness and layout conformance; interactively fill gaps and write edits back to source markdown
+disable-model-invocation: true
+argument-hint: "[--deep] [--migrate-layout] [--section=<path>] [--dry-run]"
+---
+
+## Configuration
+
+Read `.jobops/config.json`. If missing, stop with:
+
+> JOBOPS NOT CONFIGURED
+> Run /jobops:setup to initialize your workspace.
+
+Use `config.directories.resume_source` for the source folder root.
+The canonical layout contract lives at `{plugin_root}/skills/audit-source/source_layout.md`. **Read it before running checks** — the contract evolves; do not rely on memory.
+
+## Flags
+
+- `--deep` — also run semantic checks (achievements without metrics, vague responsibilities, cross-file skill inconsistencies). Slower, more questions. Default off.
+- `--migrate-layout` — interactively reorganize an existing folder into the canonical layout. Run once at adoption time. Refuses to run if layout already matches.
+- `--section=<path>` — audit only the named subfolder (e.g. `WorkHistory/`). Default: whole tree.
+- `--dry-run` — produce the gap report without prompting for fills or writing edits.
+
+## Your Task
+
+Audit the source folder so downstream skills can rely on it as authoritative — no inference, no hallucination, no synthesized fields. Every gap is either filled with user-authored content or explicitly marked as known-incomplete.
+
+The remaining sections (Step 1 through Step 5, and "What this skill MUST NOT do") follow.
+
+---
+
+## Step 1: Layout check
+
+Read `{plugin_root}/skills/audit-source/source_layout.md` for the canonical structure. Then walk `config.directories.resume_source` and compare.
+
+For each REQUIRED file in the canonical layout, check existence. For each file in the source folder, check whether its path matches the canonical layout.
+
+Produce a layout diff:
+
+| Status | Canonical path | Found at |
+|---|---|---|
+| OK | Identity/Name.md | Identity/Name.md |
+| MISSING | Identity/CurrentRole.md | (not found) |
+| MISLOCATED | Technology/TechStack.md | Skills.md (root) |
+
+Decision tree:
+
+- All canonical-required files present AND no mislocated files, WITHOUT `--migrate-layout` → proceed to Step 2.
+- All canonical-required files present AND no mislocated files, WITH `--migrate-layout` → print "Layout already matches canonical contract; no reorganization needed." and stop.
+- Missing files OR mislocated files present, WITHOUT `--migrate-layout` → print the diff and stop. Tell the user: "Layout does not match canonical contract. Re-run with `--migrate-layout` to interactively reorganize, or fix manually and re-run."
+- Missing files OR mislocated files present, WITH `--migrate-layout` → enter Step 1a (migration).
+
+### Step 1a: Migration (only with --migrate-layout)
+
+Refuse to run if `git status` shows uncommitted changes in the source folder. Tell the user to commit or stash first.
+
+For each MISLOCATED file:
+1. Display the current path, the proposed target path, and the first 5 lines of the file as preview.
+2. Use `AskUserQuestion` with options: `Move to proposed path` / `Specify different target` / `Leave in place (mark as orphan)` / `Skip this file`.
+3. On confirm: use `Bash` to `git mv` the file (preserves history).
+4. Append a line to `<resume_source>/migration_log.md` recording (timestamp, old path, new path, decision).
+
+For each MISSING required file:
+1. Note in the migration log: file required but not present; user must create it (audit-source will block on this in Step 2 if not addressed).
+
+After all moves are confirmed and logged, proceed to Step 2.
+
+---
+## Step 2: Structural audit (deterministic — no LLM judgment)
+
+Every check in this step is a literal pattern match against file content. If a check requires LLM interpretation, it belongs in Step 5 (semantic audit, behind `--deep`).
+
+For each file in the canonical layout, apply the checks below. Each match (or miss) produces a gap record: `{ file, line, category, description, severity, suggestion }`.
+
+### Identity/CurrentRole.md
+
+| Check | Severity | Description if failed |
+|---|---|---|
+| Contains a level-1 or level-2 heading | blocking | No job title heading found |
+| Contains a line matching `(?i)^company:` OR a heading matching `^#+\s+.+\s+—\s+.+$` (canonical `<Company> — <Title>` em-dash pattern) | blocking | No company identified |
+| Contains a line matching `(?i)start[:\s]+\d{4}-\d{2}` OR an explicit `Status: Unemployed since YYYY-MM` line | blocking | No start_date in YYYY-MM format |
+
+### WorkHistory/NN_company_role.md (for each file)
+
+| Check | Severity | Description if failed |
+|---|---|---|
+| Filename matches `^\d{2}_.+\.md$` | advisory | Filename does not follow NN_ ordering prefix |
+| Contains a heading with company name and title | blocking | No role title heading |
+| Contains a line `(?i)start[:\s]+\d{4}-\d{2}` | blocking | No start_date |
+| Contains a line `(?i)end[:\s]+(\d{4}-\d{2}|present)` | blocking | No end_date (or 'Present') |
+| Contains a `## Responsibilities` or `## Achievements` heading | blocking | No content sections |
+| For each line containing `%`, `$`, or `\d+x`, check if any of the 5 lines preceding contain a non-numeric context word (>3 chars) | advisory | Numeric claim without nearby context |
+
+### Technology/TechStack.md
+
+| Check | Severity | Description if failed |
+|---|---|---|
+| Contains at least one bullet, table row, or sub-heading | blocking | File has no enumerated skills |
+| (cross-file, --deep only) Every skill word that appears in WorkHistory file headings or tech-listing lines also appears here | advisory | Skill in WorkHistory missing from TechStack |
+
+### Technology/Certifications.md
+
+For each bullet or section in the file:
+
+| Check | Severity | Description if failed |
+|---|---|---|
+| Line contains a cert name AND issuer (or `None` as file content) | blocking | Cert lacks issuer |
+| Line contains a date in `YYYY-MM` format OR explicit `In-Progress` | blocking | Cert lacks date |
+| Line contains status `Active`/`Expired`/`In-Progress` | blocking | Cert lacks status |
+
+### Preferences/Vision.md and AntiVision.md
+
+| Check | Severity | Description if failed |
+|---|---|---|
+| File exists | blocking | Required preference file missing |
+| File is non-empty OR contains the single word `None` | blocking | Preference file empty without explicit `None` |
+
+### Cross-file timeline checks
+
+Sort all WorkHistory files by `start_date`. For each adjacent pair (file_a ends, file_b starts):
+
+| Check | Severity | Description if failed |
+|---|---|---|
+| `file_b.start_date < file_a.end_date` (date arithmetic, deterministic) | advisory | Timeline conflict: roles overlap |
+| `(file_b.start_date - file_a.end_date).days > 30` AND no gap explanation is documented in `Preferences/` or `Identity/` | advisory | Unexplained gap > 30 days |
+
+Also check `Identity/CurrentRole.md` vs the most recent WorkHistory entry: if CurrentRole says "currently" or "present" but the most recent WorkHistory file has an explicit end_date in the past, flag as advisory: "CurrentRole says 'currently' but most recent role has end_date < today".
+
+### Output
+
+Build `gaps[]` as a list of `{ file, line, category, description, severity, suggestion }`. Hand to Step 3.
+
+---
+## Step 3: Present gap report
+
+If `gaps[]` is empty, print:
+
+> ✓ Source folder passes structural audit. No gaps found.
+
+If `--dry-run`, print the table below and stop without prompting.
+
+Otherwise, print the gap table:
+
+```
+| # | Severity | File | Line | Gap | Suggestion |
+|---|---|---|---|---|---|
+| 1 | blocking | WorkHistory/01_globex.md | (front-matter) | No start_date in YYYY-MM format | Add line: `Start: YYYY-MM` |
+| 2 | advisory | WorkHistory/01_globex.md | L8 | "Reduced costs significantly" — no metric | Add quantification or rewrite |
+| ... |
+```
+
+Group counts at the top: `5 blocking, 7 advisory`.
+
+Then use `AskUserQuestion` with the question:
+
+> How would you like to proceed?
+
+Options (single-select):
+1. `Fix all blocking gaps interactively` (recommended if any blocking present)
+2. `Fix a specific gap by number`
+3. `Mark all blocking gaps as known-incomplete and continue` (downstream skills will see incomplete-source warnings)
+4. `Exit — I'll edit manually`
+
+Looping:
+- Option 1: enter Step 4 with `pending_gaps = blocking_gaps`. After processing all, ask again with the remaining advisory gaps and the same options.
+- Option 2: ask "Which gap number?" via free-form `AskUserQuestion`, enter Step 4 with that single gap.
+- Option 3: write all remaining gaps to `<resume_source>/audit_log.md` as "acknowledged-incomplete" entries; proceed to Step 5.
+- Option 4: write current state to `audit_log.md` and Step 5 with `gaps_fixed: 0`.
+
+---
+
+## Step 4: Interactive gap fill (propose-then-confirm)
+
+For each gap in `pending_gaps`:
+
+### 4a: Display context
+
+Read the relevant file. Display the line at `gap.line` plus 3 lines of context before and after. If the gap is "file missing entirely," display the canonical path and a one-line description of what the file should contain (from `source_layout.md`).
+
+### 4b: Elicit the fact via AskUserQuestion
+
+Question phrasing is **literal and narrow**. Never lead with categorical enums. Never suggest a value from the LLM's prior knowledge of the candidate.
+
+Examples by gap category:
+
+- **Missing date**: "What is the start date for your role at Acme? (format: YYYY-MM)" — free-text input. Validate the response matches `^\d{4}-\d{2}$` before proceeding.
+- **Missing certification field**: For "AWS Solutions Architect — no issuer/date/status", ask three separate questions: "What is the issuer?" / "When did you obtain it? (YYYY-MM)" / Multi-select: `Active` / `Expired` / `In-Progress`.
+- **Vague achievement** (advisory): "The line reads: 'Reduced costs significantly through restructuring'. Would you like to: `Add a specific metric` / `Add a timeframe only` / `Leave as-is (acknowledge advisory)`?"
+- **Timeline gap**: "There's an unexplained 14-month gap between your role at Initech (ending 2022-11) and Globex (starting 2024-01). What was happening during this time? (Free text — or type 'skip' to mark as acknowledged-incomplete.)"
+
+If the user types `skip` or selects "Leave as-is", record the gap as acknowledged-incomplete and move to the next gap.
+
+### 4c: Propose the edit
+
+Construct the exact edit as a unified diff:
+
+```diff
+--- WorkHistory/01_globex.md
++++ WorkHistory/01_globex.md
+@@ -2,3 +2,4 @@
+ # Globex Corp — VP, Engineering
+
++Start: 2022-12
+ End: 2024-08
+ Industry: FinTech
+```
+
+Display the diff to the user.
+
+### 4d: Confirm via AskUserQuestion
+
+Single-select question: "Apply this edit?"
+- `Apply` — write the edit using the `Edit` tool.
+- `Modify` — re-ask Step 4b with the user's choice as default; loop back to 4c.
+- `Skip` — discard, record as acknowledged-incomplete.
+
+### 4e: Apply and log
+
+On `Apply`:
+1. Use the `Edit` tool to make the change.
+2. Append to `<resume_source>/audit_log.md`:
+
+```markdown
+## YYYY-MM-DDTHH:MM:SSZ — Gap fix
+- File: WorkHistory/01_globex.md
+- Line: (front-matter)
+- Gap: No start_date in YYYY-MM format
+- User input: 2022-12
+- Edit applied: yes
+```
+
+Never batch edits across gaps. Each gap is a separate Edit call with a separate confirmation. The user owns their resume; the tool's job is to make the user's intent explicit and durable.
+
+### 4f: Loop or exit
+
+After each gap is resolved, loop to the next pending gap. After all pending gaps are processed, return to Step 3 to offer the next decision (e.g., switch from blocking to advisory).
+
+---
+
+## Step 5: Audit summary and machine state
+
+Write `.jobops/source_audit.json`:
+
+```json
+{
+  "schema_version": "1.0.0",
+  "audit_timestamp": "<ISO8601>",
+  "checks_run": ["structural", "semantic"],
+  "flags_used": ["--deep"],
+  "gaps_found": 12,
+  "gaps_fixed": 9,
+  "gaps_acknowledged_incomplete": 3,
+  "remaining_blocking_gaps": 0,
+  "files_edited": [
+    "WorkHistory/01_globex.md",
+    "Technology/Certifications.md"
+  ]
+}
+```
+
+If `--deep` was used, add `"semantic"` to `checks_run`.
+
+If `remaining_blocking_gaps > 0`, print a final warning:
+
+> ⚠ Audit complete with N blocking gaps remaining.
+> Downstream skills (resume, cover letter, pitch deck) may produce incomplete
+> or inaccurate output until these are addressed. Re-run /jobops:audit-source
+> to continue.
+>
+> Acknowledged-incomplete gaps:
+> 1. <file>:<line> — <gap description>
+> ...
+
+If `remaining_blocking_gaps == 0`, print:
+
+> ✓ Source folder passes structural audit.
+> Downstream skills can rely on the source as authoritative.
+
+---
+
+## Step 6 (optional, --deep only): Semantic audit
+
+Run additional LLM-driven checks that the user can disagree with:
+
+- **Vague responsibilities**: bullets under "Responsibilities" with no scope (no number, no scale, no named system). Flag advisory.
+- **Unquantified achievements**: bullets under "Achievements" with no metric (no %, $, count, timeframe). Flag advisory.
+- **Cross-file inconsistency**: skill mentioned in WorkHistory but missing from TechStack (and vice versa). Flag advisory.
+
+Each flag goes through the same Step 4 propose-then-confirm flow with its existing Apply / Modify / Skip options. All --deep flags are advisory (never blocking). When the user selects `Skip` for a semantic-audit flag, record it in `audit_log.md` as `user disagreed with semantic flag` (rather than the generic `acknowledged-incomplete` used for structural skips), so the dissent is auditable.
+
+---
+
+## What this skill MUST NOT do
+
+These are not suggestions. Each one is a documented failure mode from baseline testing (see `tests/baseline_broken_folder.md`).
+
+- **Never edit a source markdown file without per-edit user confirmation.** Even if the user said "fix all blocking gaps interactively" in Step 3 — that authorizes the *flow*, not specific edits. Every edit goes through Step 4d.
+- **Never infer values to write into source files.** If Globex has no `start_date` in the source, do not fill it from "the gap before Globex started must equal the end of Initech." The user must state it. Period.
+- **Never fill an enum field where the source doesn't have a verbatim anchor.** Baseline trials populated `company_size: "Enterprise"` based on a VP title. That is the exact failure mode this skill exists to prevent.
+- **Never silently move files.** Migration (Step 1a) is opt-in via `--migrate-layout` and per-file confirmed.
+- **Never run semantic checks without `--deep`.** Default mode is fast and deterministic.
+- **Never delete content from source files.** Only insert missing fields or correct verbatim factual errors the user explicitly directs.
+- **Never narrow a range the user hasn't narrowed.** "High six figures" stays as "high six figures" unless the user provides a specific number when prompted. Do not store `compensation_target: 850000` from ambiguous prose.
+- **Never assume `Active` status for a certification without a date or explicit user statement.** Status enums require source evidence.
+- **Never proceed past Step 1 if the layout check fails without `--migrate-layout`.** Tell the user and stop.
+
+## Red flags — STOP and re-read this section
+
+If you find yourself thinking any of the following while running this skill, you are about to violate the rules:
+
+| Thought | Reality |
+|---|---|
+| "The user obviously means X — I'll just fill it in" | If it's obvious, ask anyway. The cost of asking is one question. The cost of guessing wrong is a fabricated resume. |
+| "This is just an advisory gap, it doesn't really matter" | Advisory gaps still produce downstream confabulation if filled silently. Ask or skip — never quietly invent. |
+| "The user said 'fix all gaps' — I have authorization" | They authorized the *flow*, not the *content*. Every edit needs its own confirmation. |
+| "I can compute this from other fields" | Date arithmetic is fine. Categorical inference (company_size from title, proficiency from time spent) is not. |
+| "Saying 'I don't know' is unhelpful" | Saying "I don't know" is the most helpful thing this skill can do. Confabulation is the failure mode. |
