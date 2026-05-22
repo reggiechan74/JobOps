@@ -60,11 +60,18 @@ Required structure:
 Fix with: /defineservices --update
 ```
 
-### 1.2 Load Candidate Profile (if --include-justification)
+### 1.2 Load Source Data (if --include-justification)
 
-Check: `{config.directories.resume_source}/.profile/candidate_profile.json`
-- Extract: certifications (Active), top 3-5 achievements, thought leadership
-- If missing: Warn but continue without justification section
+For rate-card generation, read these source files:
+- `Preferences/Vision.md` — explicit rate preferences if user has stated them (overrides market research)
+- `Technology/TechStack.md` — identify Expert-level skills (judged in-context from WorkHistory mentions, not from a precomputed enum)
+- `Technology/Certifications.md` — Active certifications only
+- `WorkHistory/*.md` — for years of experience, leadership scope, budget magnitude
+
+Compute `years_total_experience` from earliest WorkHistory Start date to today. Do NOT load `candidate_profile.json` — removed in v2.2.0.
+
+- Extract from above: certifications (Active), top 3-5 achievements, thought leadership
+- If source files missing: Warn but continue without justification section
 
 ---
 
@@ -252,7 +259,7 @@ PAYMENT: [Deposit]% upfront, Net [days] | MINIMUM: [hours]
 **Missing Prerequisites:**
 - No service definition -> Run /defineservices
 - Missing rate_card section -> Show required structure, suggest /defineservices --update
-- Missing profile (with --include-justification) -> Warn, continue without justification
+- Missing source files (with --include-justification) -> Warn, continue without justification
 
 **Validation Failures:**
 - Invalid rate progression (min > target > premium) -> Refuse generation, require manual fix
