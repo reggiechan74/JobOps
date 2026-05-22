@@ -20,7 +20,7 @@ For each template used by this skill, resolve the full path as:
 
   {config.templates.base_dir}/{config.templates.active.<template_name>}/<filename>
 
-Templates referenced by this skill: candidate_profile_schema, evidence_verification_framework
+Templates referenced by this skill: evidence_verification_framework
 
 ## Application Path Resolution
 
