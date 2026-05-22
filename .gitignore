@@ -10,6 +10,9 @@ node_modules/
 # JobOps workspace configuration (user-specific)
 .jobops/
 
+# Personal scratch / draft specs (not for distribution)
+.superpowers/
+
 # Environment variables
 .env
 .env.local
