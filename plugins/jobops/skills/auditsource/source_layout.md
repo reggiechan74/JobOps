@@ -78,7 +78,7 @@ Auditsource flags as **blocking** any of:
 - A REQUIRED file is missing
 - A WorkHistory file lacks Start or End date
 - A WorkHistory file has neither Responsibilities nor Achievements section
-- A Certifications.md entry has no issuer OR no date
+- A Certifications.md entry has no issuer OR no date OR no status
 
 Auditsource flags as **advisory** any of:
 - A numeric claim lacks nearby context
