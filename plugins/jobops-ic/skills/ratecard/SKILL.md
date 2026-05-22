@@ -70,7 +70,6 @@ For rate-card generation, read these source files:
 
 Compute `years_total_experience` from earliest WorkHistory Start date to today. Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
-- Extract from above: certifications (Active), top 3-5 achievements, thought leadership
 - If source files missing: Warn but continue without justification section
 
 ---
