@@ -286,7 +286,7 @@ Run additional LLM-driven checks that the user can disagree with:
 - **Unquantified achievements**: bullets under "Achievements" with no metric (no %, $, count, timeframe). Flag advisory.
 - **Cross-file inconsistency**: skill mentioned in WorkHistory but missing from TechStack (and vice versa). Flag advisory.
 
-Each flag goes through the same Step 4 propose-then-confirm flow. All --deep flags are advisory (never blocking). The user gets an explicit "I see your judgment but I disagree" option that records dissent in audit_log.md.
+Each flag goes through the same Step 4 propose-then-confirm flow with its existing Apply / Modify / Skip options. All --deep flags are advisory (never blocking). When the user selects `Skip` for a semantic-audit flag, record it in `audit_log.md` as `user disagreed with semantic flag` (rather than the generic `acknowledged-incomplete` used for structural skips), so the dissent is auditable.
 
 ---
 
