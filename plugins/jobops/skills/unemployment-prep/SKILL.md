@@ -95,7 +95,7 @@ Parse arguments:
 
 **Load if Available**:
 - Check for existing Code Red assessment: `{config.directories.crisis_management}/code_red_*.md`
-- Career context from: `{config.directories.resume_source}/.profile/candidate_profile.json`
+For employment timeline and insurable-hours calculation, read `WorkHistory/*.md` directly. Compute dates and tenure from explicit Start/End fields. Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
 
 ## Phase 1: Jurisdiction-Specific Guidance
