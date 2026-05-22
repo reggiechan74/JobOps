@@ -87,8 +87,8 @@ cp ${CLAUDE_PLUGIN_ROOT}/templates/* .jobops/templates/default/
 ```
 
 Report the count of files copied. Expected count after this task runs:
-4 files (`assessment_rubric_framework.md`, `evidence_verification_framework.md`,
-`assessment_report_structure.md`, `candidate_profile_schema.json`).
+3 files (`assessment_rubric_framework.md`, `evidence_verification_framework.md`,
+`assessment_report_structure.md`).
 
 If the glob fails in the current execution context (no files matched), fall
 back to:
@@ -125,8 +125,7 @@ Emit the full schema below with the values gathered in Steps 2 and 4.
     "active": {
       "assessment_rubric_framework": "default",
       "evidence_verification_framework": "default",
-      "assessment_report_structure": "default",
-      "candidate_profile_schema": "default"
+      "assessment_report_structure": "default"
     }
   },
   "migration": {
