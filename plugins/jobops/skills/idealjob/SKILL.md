@@ -61,7 +61,7 @@ Read the complete career inventory from `{config.directories.resume_source}/`:
 
 ### 1.2 Check for Optimized Candidate Profile
 
-If available, read `{config.directories.resume_source}/.profile/candidate_profile.json` for structured summary with evidence references.
+For self-assessment narrative, read `Preferences/Vision.md` (preferred role/industry signals) and the file `CareerHighlights/CareerHighlights_Summary.md` if present (career narrative). For evidence anchors, read individual `WorkHistory/*.md` files as needed. Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
 ---
 
