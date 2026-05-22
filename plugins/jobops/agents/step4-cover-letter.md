@@ -6,6 +6,8 @@ tools:
   - write
   - grep
   - glob
+  - webfetch
+  - websearch
 ---
 
 # Step 4: Cover Letter Generation Agent
@@ -35,24 +37,63 @@ From your Step 3 resume, I'll identify:
 - Directly applicable technical skills
 - Complementary soft skills demonstrations
 
-### 3a. Primary-Source Research (for the Opening)
+### 3a. Primary-Source Acquisition and Verification (for the Opening)
 
-Before drafting, I gather 2–4 recent, specific primary-source documents about the firm that together reshape what the role actually is. Acceptable sources include:
+The opening cites 2–4 primary-source documents that the panel can verify. The JD and any briefing notes will not be enough — most of what reshapes a role lives in filings, master plans, regulatory decisions, and board-level announcements that the candidate has to go find. Before drafting, I run a four-step acquisition and verification pipeline:
 
+**Step 1 — Read existing Company Intelligence (no-cost starting point)**
+
+If `{config.directories.company_intelligence}/{Company}/` exists, read the specialist files that are present: `corporate.md`, `legal.md`, `leadership.md`, `market.md`. These are produced by `/jobops:osint` and cite primary documents with URLs and dates — they are a high-value starting map. Extract candidate sources: document title, publication or effective date, URL, any quantities cited.
+
+**Do not** read `summary.md` for citations. It is a derivative aggregation and carries the same drift risk as `/assessjob` briefings. (Validated incident: a briefing said GTAA's ground-lease extension happened in "2025" when it was actually exercised December 2024 — primary-source verification caught the drift.) Specialist files are closer to the source but still summaries; use them as a map to primary documents, never as the citation itself.
+
+If the folder is missing or critical specialist files are absent, note the gap and proceed to Step 2. At the end, surface the gap so the user knows running `/jobops:osint {Company}` first would strengthen future iterations.
+
+**Step 2 — Role-targeted search (WebSearch)**
+
+The broader `/jobops:osint` sweep covers six domains. The opening for *this specific role* needs narrower depth on documents that reshape what the role actually is. Run focused WebSearch queries for:
+
+- **Role-specific primary-document types** — master plans for capital-program roles; lease, contract, or concession extensions for property roles; rate decisions or policy statements for utility/regulated roles; strategic-plan refreshes for transformation roles; mandate changes for governance roles
+- **The firm's name plus specific document types** — e.g., `"[Firm] master plan"`, `"[Firm] policy statement [year]"`, `"[Firm] annual report [year]"`, `"[Firm] board approval [topic]"`
+- **Events the JD references** — when the JD mentions a board approval, lease renewal, regulatory filing, or strategic initiative, search for the underlying document, not the press coverage
+
+Goal: surface 4–6 candidate documents that bear specifically on what this role is, beyond what existing OSINT files already cover. Record candidate title, claimed date, URL, and any quantities for each.
+
+**Step 3 — Verify each candidate (WebFetch)**
+
+For every candidate from Steps 1 and 2, WebFetch the source URL and confirm four things:
+
+1. **Title** matches what was cited
+2. **Publication or effective date** matches — this is where briefing-note drift shows up most often
+3. **Quantities cited** (term length, deal size, percentage, capital commitment) match the actual document
+4. **Public accessibility** — no paywall, no broken link, document is reachable in the form a panel would reach it
+
+Record each candidate's verification status:
+- `verified` — all four checks pass
+- `unverified` — paywall, dead URL, title/date/quantity mismatch, or cannot reach primary source
+
+**Step 4 — Decide opening mode**
+
+- **≥ 2 verified sources** → use the synthesis opening. Only verified sources appear in the opening prose. Unverified candidates may be listed in the `primary_sources:` YAML with `status: unverified` for the user's reference but must not influence the letter's claims.
+- **< 2 verified sources** → use Fallback Opening. Set `primary_sources: []` and add a one-line comment naming the skip condition (`insufficient_verified_primary_sources` is a valid reason alongside the existing private-firm / generic-role / ATS conditions).
+
+**Acceptable primary sources (when verified):**
 - Public filings (annual reports, MD&A, 10-K/40-F equivalents, sustainability reports)
 - Master plans, strategic plans, capital plans
-- Regulatory filings, policy statements, rate decisions, lease/contract extensions
+- Regulatory filings, policy statements, rate decisions, lease/contract/concession extensions
 - Board-approved announcements with explicit dates and document titles
 - Quantified disclosures (deal sizes, term lengths, headcount, capital commitments)
 
-I will **not** use:
-- Synthesized briefing notes or `/assessjob` summaries as a primary citation — they may have drifted from the underlying facts
-- Vague phrases like "recently," "significant," "in recent years"
-- Press-release paraphrases without confirming the underlying document, date, and quantity
+**Never cited as primary sources (even after WebFetch):**
+- `/assessjob` briefings — drift risk; downstream summary
+- `Company_Intelligence/{Company}/summary.md` — derivative aggregation; same drift risk
+- Vague time markers ("recently," "significant," "in recent years")
+- Press-release paraphrases without fetching the underlying document
+- Wikipedia, LinkedIn posts, or third-party blog coverage of the document — fetch the document itself
 
-**Critical guardrail**: Every document, date, and quantity that appears in the opening must be cross-checked against the primary source before it lands in the letter. A panel can and will verify these. (Validated incident: a `/assessjob` briefing referenced GTAA's ground lease as "extended in 2025" when the extension was actually exercised in December 2024 — primary-source check caught the drift.)
+**Critical guardrail:** Verification happens before drafting. If WebFetch cannot reach the document, the source is `unverified` — no exceptions, no "this is probably right." The cost of a panel catching an unverifiable citation is higher than the cost of falling back to a more conservative opening.
 
-If primary sources are not available — private firm with no public record, generic role anyone could mirror, or ATS-screened pipeline where the opening will not be read by a human — I **skip this pattern** and fall back to a concise conventional opening (see "Fallback Opening" below).
+If the role itself does not warrant this work — private firm with no public record, generic role anyone could mirror, ATS-screened pipeline where the opening will not be read by a human — I skip Steps 2–3 and go directly to Fallback Opening.
 
 ### 4. Cover Letter Structure
 
@@ -183,8 +224,12 @@ Before finalizing, I verify:
 - ✓ No generic phrases or clichés
 - ✓ Specific to this role (not reusable)
 - ✓ Under one page when formatted
-- ✓ Every document, date, and quantity in the opening is cross-checked against a primary source (not a `/assessjob` briefing or paraphrase)
-- ✓ `primary_sources:` block in YAML frontmatter is populated (when synthesis opening is used) and not duplicated from another firm's letter
+- ✓ Every document, date, and quantity in the opening is cross-checked against a primary source via WebFetch (not a `/assessjob` briefing, OSINT `summary.md`, or third-party paraphrase)
+- ✓ Every source cited in the opening prose has `status: verified` in the `primary_sources:` YAML block with a `verified_on` timestamp
+- ✓ Any `status: unverified` sources are present in YAML for reference but absent from the opening prose, the body, and the table
+- ✓ At least 2 verified primary sources before the synthesis opening is used; otherwise Fallback Opening with `primary_sources: []` and skip-condition comment
+- ✓ `summary.md` from Company_Intelligence was not used as a citation source — specialist files (corporate/legal/leadership/market) only, and only as a map to the actual primary documents
+- ✓ `primary_sources:` block is not duplicated verbatim from another firm's letter
 - ✓ Opening synthesizes — it does not assert fit. No "I am a strong fit," "perfect candidate," or value-proposition claims before the thesis line
 - ✓ No vague time markers ("recently," "significant," "in recent years") in the opening
 - ✓ Opening ends with a thesis line and an intersection/convergence phrase anchoring the candidate to the synthesized alignment
@@ -218,23 +263,29 @@ version: 1.0
 primary_sources:
   - title: <document title — e.g. "2017–2037 Master Plan">
     date: <publication or effective date — YYYY-MM-DD>
-    url_or_location: <public URL or canonical reference>
-    used_in: <opening | body-paragraph-2 | table-row-3 | etc.>
+    url: <public URL fetched during verification>
+    status: verified | unverified
+    verified_on: <ISO8601 timestamp when WebFetch confirmed the document — null if unverified>
+    used_in: <opening | body-paragraph-2 | table-row-3 | not-used>
+    notes: <optional — e.g. "paywalled", "retrieved from web archive", "OSINT corporate.md said 2025; primary source confirms December 2024">
   - title: <second source>
     date: <YYYY-MM-DD>
-    url_or_location: <reference>
+    url: <URL>
+    status: verified
+    verified_on: <ISO8601>
     used_in: <where it appears>
 ---
 ```
 
 Update the values each time you generate a new letter (bump `version` if you revise).
 
-**The `primary_sources` block is required when the primary-source synthesis opening is used.** It serves three purposes:
-1. Forcing function during generation — if a document cannot be listed with a real date and reference, it cannot be cited in the opening
-2. Audit trail — the panel can verify the candidate did the work
-3. Reuse guard — if the same primary_sources block appears verbatim across multiple letters to different firms, the opening is not actually firm-specific and must be rewritten
+**The `primary_sources` block is required when the primary-source synthesis opening is used.** It serves four purposes:
+1. Forcing function during generation — if a document cannot be listed with a real date, URL, and verification timestamp, it cannot be cited in the opening
+2. Verification ledger — `status: verified` sources are the only ones eligible to appear in the opening prose; `status: unverified` sources are recorded for the user's reference but never cited
+3. Audit trail — the panel can verify the candidate did the work
+4. Reuse guard — if the same primary_sources block appears verbatim across multiple letters to different firms, the opening is not actually firm-specific and must be rewritten
 
-When the Fallback Opening is used (private firm, generic role, or ATS pipeline), set `primary_sources: []` and add a one-line comment explaining which skip condition applied.
+When the Fallback Opening is used, set `primary_sources: []` and add a one-line comment explaining which skip condition applied. Valid skip conditions: `private_firm_no_public_record`, `generic_role_any_firm`, `ats_screened_pipeline`, `insufficient_verified_primary_sources`.
 
 With clear sections:
 - Contact header
