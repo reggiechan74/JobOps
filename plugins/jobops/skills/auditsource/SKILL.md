@@ -237,5 +237,57 @@ After each gap is resolved, loop to the next pending gap. After all pending gaps
 
 ---
 
-<!-- TASK-MARKER: Step 5 inserted by Task 8 -->
+## Step 5: Audit summary and machine state
+
+Write `.jobops/source_audit.json`:
+
+```json
+{
+  "schema_version": "1.0.0",
+  "audit_timestamp": "<ISO8601>",
+  "checks_run": ["structural"],
+  "flags_used": ["--deep"],
+  "gaps_found": 12,
+  "gaps_fixed": 9,
+  "gaps_acknowledged_incomplete": 3,
+  "remaining_blocking_gaps": 0,
+  "files_edited": [
+    "WorkHistory/01_globex.md",
+    "Technology/Certifications.md"
+  ]
+}
+```
+
+If `--deep` was used, add `"semantic"` to `checks_run`.
+
+If `remaining_blocking_gaps > 0`, print a final warning:
+
+> ⚠ Audit complete with N blocking gaps remaining.
+> Downstream skills (resume, cover letter, pitch deck) may produce incomplete
+> or inaccurate output until these are addressed. Re-run /jobops:audit-source
+> to continue.
+>
+> Acknowledged-incomplete gaps:
+> 1. <file>:<line> — <gap description>
+> ...
+
+If `remaining_blocking_gaps == 0`, print:
+
+> ✓ Source folder passes structural audit.
+> Downstream skills can rely on the source as authoritative.
+
+---
+
+## Step 6 (optional, --deep only): Semantic audit
+
+Run additional LLM-driven checks that the user can disagree with:
+
+- **Vague responsibilities**: bullets under "Responsibilities" with no scope (no number, no scale, no named system). Flag advisory.
+- **Unquantified achievements**: bullets under "Achievements" with no metric (no %, $, count, timeframe). Flag advisory.
+- **Cross-file inconsistency**: skill mentioned in WorkHistory but missing from TechStack (and vice versa). Flag advisory.
+
+Each flag goes through the same Step 4 propose-then-confirm flow. All --deep flags are advisory (never blocking). The user gets an explicit "I see your judgment but I disagree" option that records dissent in audit_log.md.
+
+---
+
 <!-- TASK-MARKER: MUST NOT inserted by Task 9 -->
