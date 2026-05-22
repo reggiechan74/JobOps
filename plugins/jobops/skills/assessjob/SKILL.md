@@ -73,7 +73,7 @@ Create a job-specific scoring rubric from the {{ARG1}} job posting, then evaluat
 
 ```
 Phase 1 (Sequential, fast):     Load templates + Validate inputs + Load job posting
-Phase 2 (PARALLEL subagents):   Domain Research ‖ Candidate Profile Generation
+Phase 2 (PARALLEL subagents):   Domain Research ‖ Source Reading
 Phase 3 (Sequential):           Create Rubric (synthesizes job posting + domain research)
 Phase 4 (Sequential, visible):  Score Cat 1 → 2 → 3 → 4 → 5
 Phase 5 (Sequential):           Generate Report → Save Files
@@ -83,7 +83,7 @@ Phase 5 (Sequential):           Generate Report → Save Files
 - Phase 2 starts after job posting is loaded (Phase 1)
 - Phase 2 tasks are INDEPENDENT of each other - dispatch simultaneously
 - Phase 3 WAITS for domain research results from Phase 2
-- Phase 4 WAITS for rubric (Phase 3) AND candidate profile (Phase 2)
+- Phase 4 WAITS for rubric (Phase 3) AND source reading (Phase 2)
 - Phase 5 WAITS for all scoring (Phase 4)
 
 ---
@@ -98,7 +98,7 @@ Create these tasks immediately at the start:
 |---|-------------|------------|-------|
 | 1 | Load assessment framework templates | Loading assessment framework templates | 1 |
 | 2 | Validate job posting and resume source | Validating job posting and resume source | 1 |
-| 3 | Generate candidate profile | Generating candidate profile from source materials | 2 |
+| 3 | Read candidate source materials | Reading candidate source materials | 2 |
 | 4 | Research domain and industry context | Researching domain and industry context | 2 |
 | 5 | Create job-specific scoring rubric | Creating job-specific scoring rubric | 3 |
 | 6 | Score Skills Inventory (Category 1) | Scoring Skills Inventory against rubric | 4 |
@@ -112,7 +112,7 @@ Create these tasks immediately at the start:
 **Task Update Rules:**
 - Mark each task `in_progress` BEFORE starting work on it
 - Mark each task `completed` AFTER finishing it
-- If a task is skipped (e.g., task 3 when source is a single file), mark it `completed` with a note
+- If a task completes quickly (e.g., task 3 when source is a single file already read in Phase 1), mark it `completed` with a note
 
 ---
 
@@ -204,30 +204,24 @@ Use three parallel Read tool calls. These templates define the mandatory structu
 
 Phase 2 launches two independent subagents that run concurrently. Neither depends on the other. Both need only the job posting content (loaded in Phase 1).
 
-### 2.1 Generate Candidate Profile (Task 3)
+### 2.1 Read Candidate Source Materials (Task 3)
 
-**NOTE**: Skip this step (mark task 3 `completed` immediately) if resume source is a single file.
+## Phase 2: Source-Reading Strategy
 
-**For folder-based sources**, dispatch a subagent to generate/load the candidate profile:
+Determine source structure:
+- **Single-file source** (resume.md or similar passed by user): read that file directly. Skip everything below; you have the candidate data in-hand.
+- **Folder source** (`{config.directories.resume_source}/`): read these files directly for the rubric scoring you are about to do:
+  - `Identity/Name.md`, `Identity/CurrentRole.md` (candidate identity)
+  - `Technology/TechStack.md` (skill inventory)
+  - `Technology/Certifications.md` (active credentials)
+  - `WorkHistory/*.md` (roles, achievements, scope)
+  - `Projects/*.md` if present (case studies)
+  - `Education/*.md` if present
+  - `Preferences/Vision.md` (cultural-fit signals)
 
-1. **Check for existing profile**: Look for `[resume-source-folder]/.profile/candidate_profile.json`
-   - If exists and recent (<=7 days old), use it directly (mark task 3 `completed`)
-   - If exists but stale (>7 days old), regenerate
-   - If doesn't exist, generate new profile
+If a required file is missing, prompt the user to run `/jobops:audit-source` and stop. Do NOT attempt to generate or load `candidate_profile.json` — that artifact is removed in v2.2.0.
 
-2. **Dispatch profile generation subagent**:
-   ```
-   Use Task tool with subagent_type=resume-summarizer, model=sonnet, and prompt:
-   "Read all files in [resume-source-folder]/ directory and create a structured JSON
-   candidate profile following the schema in .claude/agents/resume-summarizer.md.
-   Save output to [resume-source-folder]/.profile/candidate_profile.json and
-   [resume-source-folder]/.profile/extraction_log.md"
-   ```
-
-3. **Expected outcome**:
-   - JSON profile: `[resume-source-folder]/.profile/candidate_profile.json` (8K-10K tokens)
-   - Extraction log: `[resume-source-folder]/.profile/extraction_log.md`
-   - Token savings: 42K-72K tokens (85-90% reduction)
+Token budget: most rubric scoring needs ~30K of source markdown loaded at once for a thorough assessment. Read what you need; do not pre-summarize.
 
 ### 2.2 Research Domain and Industry Context (Task 4)
 
@@ -259,7 +253,7 @@ Be specific - cite sources and data points where possible."
 ## PHASE 3: CREATE RUBRIC (Sequential - needs Phase 2 domain research)
 
 > **Task:** Mark task 5 `in_progress`.
-> **Prerequisite:** Domain research (task 4) must be `completed`. Candidate profile (task 3) is NOT needed yet.
+> **Prerequisite:** Domain research (task 4) must be `completed`. Source reading (task 3) is NOT needed yet.
 
 ### 3.1 Synthesize Job Posting + Domain Research
 
@@ -352,25 +346,17 @@ Save the generated rubric to: `{applications_root}/{app_slug}/assessment/rubric.
 
 ## PHASE 4: SCORE CANDIDATE (Sequential - needs rubric + candidate data)
 
-> **Prerequisites:** Rubric (task 5) AND candidate profile (task 3) must both be `completed`.
+> **Prerequisites:** Rubric (task 5) AND source reading (task 3) must both be `completed`.
 
 ### 4.1 Load Candidate Materials
 
 **Load candidate materials (depends on source type):**
-- **If single file**: Read the resume file directly
-- **If folder**: Read the candidate profile from `[resume-source-folder]/.profile/candidate_profile.json`
+- **If single file**: Candidate data is already in-hand from Phase 2 — no additional reads required.
+- **If folder**: Source files are already read from `{config.directories.resume_source}/` in Phase 2 — use those directly for scoring.
 
 **Evidence Verification Protocol** (from the evidence verification framework template):
-- **For folder-based profiles**: When citing specific achievements or skills:
-  - Use line references from JSON profile's evidence fields
-  - Read specific sections from source files ONLY when verification needed
-  - Quote exact text from source files for all scores >=2 points
-  - Maintain traceability: JSON profile -> source file -> line numbers
 
-- **For single file resumes**: When citing specific achievements or skills:
-  - Reference the resume file directly with line numbers
-  - Quote exact text from the resume for all scores >=2 points
-  - Maintain traceability: resume file -> line numbers
+Score each rubric category against the source files you read in Phase 2. For each score, cite the specific source `{filepath}:{line_number}` you anchored on. Do not invent enums (proficiency_level, company_size, impact_category) — judge from the source prose with citation.
 
 ### 4.2 Score Skills Inventory (Category 1)
 
