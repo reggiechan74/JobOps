@@ -32,8 +32,8 @@ Generate 10-12 slide B2B pitch deck with provenance-hardened claims. Supports pr
 1. **Service Definition**: `{config.directories.contractor_root}/services/service_definition_*.md`
    - If missing: Show error, instruct to run `/defineservices`, stop execution
 
-2. **Candidate Profile**: `{config.directories.resume_source}/.profile/candidate_profile.json` (≤7 days old)
-   - If missing/stale: Show error, instruct to run `/assessjob <job-file.md>`, stop execution
+2. **Career Source Files**: `{config.directories.resume_source}/CareerHighlights/`, `Technology/`, `Projects/`, `WorkHistory/` directories
+   - If missing: Show error, instruct user to populate their resume source folder, stop execution
 
 ### 1.2 Load Service Definition
 
@@ -45,11 +45,25 @@ Use most recent `{config.directories.contractor_root}/services/service_definitio
 - Differentiation: unique_value, competitive_advantages, proof_points, certifications, publications, speaking
 - Target Market: primary_markets, secondary_markets, geographic_focus
 
-### 1.3 Load Candidate Profile
+### 1.3 Source Reading for Pitch Deck
 
-Read `candidate_profile.json` and extract: work_history, technical_skills, domain_expertise, certifications (Active only), projects, thought_leadership, leadership_experience, achievements. Create evidence index mapping all quantified metrics/credentials to source file + lines for provenance validation.
+Read these source files directly:
+- `CareerHighlights/CareerHighlights_Summary.md` and `CareerHighlights/*.md` — quantified achievements with metrics, timeframe, mechanism
+- `Technology/TechStack.md` — skills (judge "Expert" level in-context from depth of WorkHistory mentions, not from a precomputed enum)
+- `Technology/Certifications.md` — Active certs only (Expired/In-Progress excluded)
+- `Projects/*.md` — case studies
+- `Thought_Leadership/*.md` if present — publications, frameworks, awards
+- `WorkHistory/*.md` — relevant roles for industry/scope context
 
-### 1.4 Parse Arguments
+Do NOT load `candidate_profile.json` — removed in v2.2.0.
+
+### 1.4 Provenance Discipline
+
+The pitch deck's 90%+ provenance validation rate is now enforced by direct source citation: every quantified claim on a slide must cite `{filepath}:{line_number}` and that line must contain the verbatim metric. No claim survives without a direct source pointer. Validate by re-reading the cited line before finalizing each slide.
+
+Failure path unchanged: validation rate <80% requires major revision.
+
+### 1.5 Parse Arguments
 
 **Targeting modes (mutually exclusive):**
 - `--prospect=name`: Load most recent matching file from `{config.directories.contractor_root}/prospects/`. If not found, show error with available prospects, stop.
@@ -94,14 +108,14 @@ Validate: >=5 credible sources, <=6 months old, quantified data, current decisio
 | 2 | Problem | Pain points | Research + service definition |
 | 3 | Cost of Inaction | Quantified impact | Research + industry data |
 | 4 | Solution | Service overview | Service definition |
-| 5 | How It Works | Methodology | Service definition + evidence |
-| 6 | Results & Proof | Case studies, metrics | Candidate profile + service def |
+| 5 | How It Works | Methodology | Service definition + source files |
+| 6 | Results & Proof | Case studies, metrics | Source files + service def |
 | 7 | Why Me/Us | Credentials, differentiation | Both sources |
 | 8 | Engagement Options | Pricing, packages | Rate card |
-| 9 | Relevant Experience | Industry examples | Candidate profile (filtered) |
+| 9 | Relevant Experience | Industry examples | Source files (filtered) |
 | 10 | Next Steps | CTA, timeline | Mode-specific |
 | 11 | Q&A | Objections | Generated |
-| 12 | Appendix | Credentials | Candidate profile |
+| 12 | Appendix | Credentials | Source files |
 
 Adjust: Service mode 8-10 slides, Prospect 12, Industry 10-11.
 
@@ -110,7 +124,7 @@ Adjust: Service mode 8-10 slides, Prospect 12, Industry 10-11.
 **General Rules (all slides):**
 - Include evidence citations for all quantified claims
 - Customize "Presented to" field based on mode
-- Use ONLY data from service definition and candidate profile
+- Use ONLY data from service definition and career source files
 - Maximum 3-4 main points per slide (focus over volume)
 
 **Slide 2 (Problem):** Mode-specific pain points with evidence. Prospect: company-specific from research. Industry: common challenges with statistics. Service: pain point service addresses with prevalence. Max 3 pain points, cite sources.
@@ -119,21 +133,21 @@ Adjust: Service mode 8-10 slides, Prospect 12, Industry 10-11.
 
 **Slide 4 (Solution):** Service overview. Multi-service: 2-3 services with top deliverables. Single-service: full deliverables + success metrics. Prospect: challenge-solution-outcome table. Use exact deliverables from service definition.
 
-**Slide 5 (How It Works):** 3-5 methodology phases with duration, activities, deliverables, client involvement. Extract methodology from candidate profile work_history. Timeline must align with service definition typical_duration.
+**Slide 5 (How It Works):** 3-5 methodology phases with duration, activities, deliverables, client involvement. Extract methodology from `WorkHistory/*.md` source files. Timeline must align with service definition typical_duration.
 
-**Slide 6 (Results & Proof):** CRITICAL PROVENANCE SLIDE. 3-5 top achievements with Result/Context/Relevance format. Include case study if available. Add credentials. ALL claims must have evidence citations from candidate profile. Rank by relevance (industry match 10pts, service match 10pts, recency 5pts, scale 5pts). Validate: quantified metric, evidence.file + evidence.lines exist, timeframe present, mechanism described.
+**Slide 6 (Results & Proof):** CRITICAL PROVENANCE SLIDE. 3-5 top achievements with Result/Context/Relevance format. Include case study if available. Add credentials. ALL claims must have direct source citations (`{filepath}:{line_number}`). Rank by relevance (industry match 10pts, service match 10pts, recency 5pts, scale 5pts). Validate: quantified metric, source file:line citation exists, timeframe present, mechanism described.
 
 **Slide 7 (Why Me/Us):** Unique value proposition (2-3 sentences). 3-4 competitive advantages with What/Why It Matters/Proof format. Comparison table (Typical vs. Us). Use competitive_advantages directly from service definition.
 
 **Slide 8 (Engagement Options):** Service packages with pricing model, investment range (standard/entry/premium), duration, included deliverables. Engagement models table (project/retainer/hourly/value-based). Payment terms. Use ONLY pricing from service definition.
 
-**Slide 9 (Relevant Experience):** Filter work_history by mode. Prospect: industry-matching roles (2-3). Industry: industry-specific roles (2-4). Service: cross-industry capability demonstration (3-5). Include technical depth (Expert-level skills). All must have evidence citations.
+**Slide 9 (Relevant Experience):** Filter `WorkHistory/*.md` by mode. Prospect: industry-matching roles (2-3). Industry: industry-specific roles (2-4). Service: cross-industry capability demonstration (3-5). Include technical depth (Expert-level skills from `Technology/TechStack.md`). All must have direct source citations (`{filepath}:{line_number}`).
 
 **Slide 10 (Next Steps):** Prospect: Timeline with discovery/proposal/launch phases, required stakeholders, 3 engagement options including entry point from prospect file. Generic: typical timeline, engagement options (call/proposal/download), contact info, testimonials if available.
 
 **Slide 11 (Q&A):** 4-6 common objections based on mode. Prospect: company-type objections. Industry: industry-specific concerns. Service: technical feasibility, ROI validation. Include answers with evidence references.
 
-**Slide 12 (Appendix):** Certifications table (Active only), education, thought leadership (publications/speaking/frameworks), professional associations, technical proficiencies (Expert + top 5-7 Proficient), awards, reference policy.
+**Slide 12 (Appendix):** Certifications table (Active only from `Technology/Certifications.md`), education, thought leadership (publications/speaking/frameworks from `Thought_Leadership/*.md`), professional associations, technical proficiencies (Expert + top 5-7 Proficient from `Technology/TechStack.md`), awards, reference policy.
 
 ---
 
@@ -144,9 +158,9 @@ Adjust: Service mode 8-10 slides, Prospect 12, Industry 10-11.
 **Extract claims:** Scan slides for quantified metrics, credentials, superlatives, client references, technologies, timeframes, ROI claims. Create inventory with slide #, type, source.
 
 **Validate each claim:**
-1. **Locate evidence:** Match METRIC/ACHIEVEMENT to work_history/projects/leadership_experience. CREDENTIAL to certifications (Active only). TECHNICAL SKILL to technical_skills (Expert/Proficient). THOUGHT LEADERSHIP to publications/speaking/frameworks.
-2. **Verify quality:** evidence.file + evidence.lines exist, file verifiable, metric has timeframe + mechanism.
-3. **Classify:** VALIDATED (HIGH: complete evidence, quantified, timeframe, mechanism). WEAK (MEDIUM: evidence incomplete, no timeframe, unclear mechanism). FAIL (none found, contradicts, superlative without benchmark, expired cert).
+1. **Locate evidence:** Match METRIC/ACHIEVEMENT to `CareerHighlights/*.md` or `WorkHistory/*.md` or `Projects/*.md`. CREDENTIAL to `Technology/Certifications.md` (Active only). TECHNICAL SKILL to `Technology/TechStack.md` (Expert/Proficient in-context). THOUGHT LEADERSHIP to `Thought_Leadership/*.md`.
+2. **Verify quality:** Source `{filepath}:{line_number}` citation present, file verifiable (re-read cited line), metric has timeframe + mechanism.
+3. **Classify:** VALIDATED (HIGH: complete source citation, quantified, timeframe, mechanism). WEAK (MEDIUM: source incomplete, no timeframe, unclear mechanism). FAIL (none found, contradicts, superlative without benchmark, expired cert).
 
 **Handle failures:** Try alternative evidence, soften claim, or remove. Priority: remove superlatives first, unbounded metrics second, keep partial evidence if critical (mark "Estimated").
 
@@ -162,7 +176,7 @@ Adjust: Service mode 8-10 slides, Prospect 12, Industry 10-11.
 
 **Filename:** `{config.directories.contractor_root}/pitches/[Target]_[YYYYMMDD].md` where Target = company name (prospect mode -> fills `{ClientCompany}`), industry name (industry mode), service name (service mode), or "GeneralCapabilities" (default). Sanitize: remove spaces/special chars, PascalCase, max 50 chars.
 
-**File structure:** YAML frontmatter (pitch_type, target, generated, consultant, service_definition, candidate_profile, research_conducted, provenance_validated, validation_rate, confidence_level, version). 12 slides with `---` separators. PROVENANCE TRAIL section. Usage notes.
+**File structure:** YAML frontmatter (pitch_type, target, generated, consultant, service_definition, source_files_read, research_conducted, provenance_validated, validation_rate, confidence_level, version). 12 slides with `---` separators. PROVENANCE TRAIL section. Usage notes.
 
 **Save:** `{config.directories.contractor_root}/pitches/[ClientCompany]_[YYYYMMDD].md` (UTF-8, Unix LF). For industry-mode or service-mode pitches (no specific company), substitute Industry or Service name (sanitized PascalCase) for ClientCompany.
 
@@ -180,7 +194,7 @@ Show: Output files (markdown + pptx if applicable), Pitch details (target, type,
 
 **Critical errors (stop execution):**
 1. No service definition -> instruct `/defineservices`
-2. No/stale candidate profile -> instruct `/assessjob`
+2. Missing career source files -> instruct user to populate resume source folder
 3. Prospect not found -> list available, suggest alternatives
 4. Service not found -> list available services
 
@@ -203,7 +217,7 @@ Show: Output files (markdown + pptx if applicable), Pitch details (target, type,
 
 ## Important Notes
 
-**Provenance:** 90%+ = HIGH (ready), 80-89% = MEDIUM (review), <80% = LOW (major review). All claims need evidence: metrics -> achievements, credentials -> certifications (Active), skills -> technical_skills (Expert/Proficient), case studies -> service def or projects, advantages -> differentiation section.
+**Provenance:** 90%+ = HIGH (ready), 80-89% = MEDIUM (review), <80% = LOW (major review). All claims need direct source citations (`{filepath}:{line_number}`): metrics -> `CareerHighlights/*.md`, credentials -> `Technology/Certifications.md` (Active only), skills -> `Technology/TechStack.md` (Expert/Proficient), case studies -> `Projects/*.md` or service def, advantages -> differentiation section.
 
 **Research ethics:** Public info only (news, LinkedIn, Glassdoor, websites). No private data. 5-10 min time limit. Cite all sources.
 
