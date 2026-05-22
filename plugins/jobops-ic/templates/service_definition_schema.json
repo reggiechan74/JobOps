@@ -545,9 +545,10 @@
           "format": "date-time",
           "description": "ISO8601 timestamp of last update"
         },
-        "source_profile": {
-          "type": "string",
-          "description": "Path to candidate profile used (e.g., 'ResumeSourceFolder/.profile/candidate_profile.json')"
+        "source_files_read": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of source markdown files read to generate this service definition (e.g., ['ResumeSourceFolder/Technology/TechStack.md', 'ResumeSourceFolder/WorkHistory/2019-Acme.md']). Replaces the deprecated source_profile field as of v2.2.0; list each file actually read individually — do not use globs."
         },
         "source_vision": {
           "type": "string",
