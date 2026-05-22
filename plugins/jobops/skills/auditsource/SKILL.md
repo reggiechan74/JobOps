@@ -166,6 +166,70 @@ Looping:
 - Option 2: ask "Which gap number?" via free-form `AskUserQuestion`, enter Step 4 with that single gap.
 - Option 3: write all remaining gaps to `<resume_source>/audit_log.md` as "acknowledged-incomplete" entries; proceed to Step 5.
 - Option 4: write current state to `audit_log.md` and Step 5 with `gaps_fixed: 0`.
-<!-- TASK-MARKER: Step 4 inserted by Task 7 -->
+## Step 4: Interactive gap fill (propose-then-confirm)
+
+For each gap in `pending_gaps`:
+
+### 4a: Display context
+
+Read the relevant file. Display the line at `gap.line` plus 3 lines of context before and after. If the gap is "file missing entirely," display the canonical path and a one-line description of what the file should contain (from `source_layout.md`).
+
+### 4b: Elicit the fact via AskUserQuestion
+
+Question phrasing is **literal and narrow**. Never lead with categorical enums. Never suggest a value from the LLM's prior knowledge of the candidate.
+
+Examples by gap category:
+
+- **Missing date**: "What is the start date for your role at Acme? (format: YYYY-MM)" — free-text input. Validate the response matches `^\d{4}-\d{2}$` before proceeding.
+- **Missing certification field**: For "AWS Solutions Architect — no issuer/date/status", ask three separate questions: "What is the issuer?" / "When did you obtain it? (YYYY-MM)" / Multi-select: `Active` / `Expired` / `In-Progress`.
+- **Vague achievement** (advisory): "The line reads: 'Reduced costs significantly through restructuring'. Would you like to: `Add a specific metric` / `Add a timeframe only` / `Leave as-is (acknowledge advisory)`?"
+- **Timeline gap**: "There's an unexplained 14-month gap between your role at Initech (ending 2022-11) and Globex (starting 2024-01). What was happening during this time? (Free text — or type 'skip' to mark as acknowledged-incomplete.)"
+
+If the user types `skip` or selects "Leave as-is", record the gap as acknowledged-incomplete and move to the next gap.
+
+### 4c: Propose the edit
+
+Construct the exact edit as a unified diff:
+
+```diff
+--- WorkHistory/01_globex.md
++++ WorkHistory/01_globex.md
+@@ -2,3 +2,4 @@
+ # Globex Corp — VP, Engineering
+
++Start: 2022-12
+ End: 2024-08
+ Industry: FinTech
+```
+
+Display the diff to the user.
+
+### 4d: Confirm via AskUserQuestion
+
+Single-select question: "Apply this edit?"
+- `Apply` — write the edit using the `Edit` tool.
+- `Modify` — re-ask Step 4b with the user's choice as default; loop back to 4c.
+- `Skip` — discard, record as acknowledged-incomplete.
+
+### 4e: Apply and log
+
+On `Apply`:
+1. Use the `Edit` tool to make the change.
+2. Append to `<resume_source>/audit_log.md`:
+
+```markdown
+## YYYY-MM-DDTHH:MM:SSZ — Gap fix
+- File: WorkHistory/01_globex.md
+- Line: (front-matter)
+- Gap: No start_date in YYYY-MM format
+- User input: 2022-12
+- Edit applied: yes
+```
+
+Never batch edits across gaps. Each gap is a separate Edit call with a separate confirmation. The user owns their resume; the tool's job is to make the user's intent explicit and durable.
+
+### 4f: Loop or exit
+
+After each gap is resolved, loop to the next pending gap. After all pending gaps are processed, return to Step 3 to offer the next decision (e.g., switch from blocking to advisory).
 <!-- TASK-MARKER: Step 5 inserted by Task 8 -->
 <!-- TASK-MARKER: MUST NOT inserted by Task 9 -->
