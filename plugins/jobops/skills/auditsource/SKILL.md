@@ -131,7 +131,41 @@ Also check `Identity/CurrentRole.md` vs the most recent WorkHistory entry: if Cu
 Build `gaps[]` as a list of `{ file, line, category, description, severity, suggestion }`. Hand to Step 3.
 
 ---
-<!-- TASK-MARKER: Step 3 inserted by Task 6 -->
+## Step 3: Present gap report
+
+If `gaps[]` is empty, print:
+
+> ✓ Source folder passes structural audit. No gaps found.
+
+If `--dry-run`, print the table below and stop without prompting.
+
+Otherwise, print the gap table:
+
+```
+| # | Severity | File | Line | Gap | Suggestion |
+|---|---|---|---|---|---|
+| 1 | blocking | WorkHistory/01_globex.md | (front-matter) | No start_date in YYYY-MM format | Add line: `Start: YYYY-MM` |
+| 2 | advisory | WorkHistory/01_globex.md | L8 | "Reduced costs significantly" — no metric | Add quantification or rewrite |
+| ... |
+```
+
+Group counts at the top: `5 blocking, 7 advisory`.
+
+Then use `AskUserQuestion` with the question:
+
+> How would you like to proceed?
+
+Options (single-select):
+1. `Fix all blocking gaps interactively` (recommended if any blocking present)
+2. `Fix a specific gap by number`
+3. `Mark all blocking gaps as known-incomplete and continue` (downstream skills will see incomplete-source warnings)
+4. `Exit — I'll edit manually`
+
+Looping:
+- Option 1: enter Step 4 with `pending_gaps = blocking_gaps`. After processing all, ask again with the remaining advisory gaps and the same options.
+- Option 2: ask "Which gap number?" via free-form `AskUserQuestion`, enter Step 4 with that single gap.
+- Option 3: write all remaining gaps to `<resume_source>/audit_log.md` as "acknowledged-incomplete" entries; proceed to Step 5.
+- Option 4: write current state to `audit_log.md` and Step 5 with `gaps_fixed: 0`.
 <!-- TASK-MARKER: Step 4 inserted by Task 7 -->
 <!-- TASK-MARKER: Step 5 inserted by Task 8 -->
 <!-- TASK-MARKER: MUST NOT inserted by Task 9 -->
