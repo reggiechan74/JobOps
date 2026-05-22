@@ -32,7 +32,7 @@ Generate 10-12 slide B2B pitch deck with provenance-hardened claims. Supports pr
 1. **Service Definition**: `{config.directories.contractor_root}/services/service_definition_*.md`
    - If missing: Show error, instruct to run `/defineservices`, stop execution
 
-2. **Career Source Files**: `{config.directories.resume_source}/CareerHighlights/`, `Technology/`, `Projects/`, `WorkHistory/` directories
+2. **Career Source Files**: `{config.directories.resume_source}/CareerHighlights/`, `{config.directories.resume_source}/Technology/`, `{config.directories.resume_source}/Projects/`, `{config.directories.resume_source}/WorkHistory/` directories
    - If missing: Show error, instruct user to populate their resume source folder, stop execution
 
 ### 1.2 Load Service Definition
@@ -59,7 +59,7 @@ Do NOT load `candidate_profile.json` — removed in v2.2.0.
 
 ### 1.4 Provenance Discipline
 
-The pitch deck's 90%+ provenance validation rate is now enforced by direct source citation: every quantified claim on a slide must cite `{filepath}:{line_number}` and that line must contain the verbatim metric. No claim survives without a direct source pointer. Validate by re-reading the cited line before finalizing each slide.
+The pitch deck's 90%+ provenance validation rate is now enforced by direct source citation: every quantified claim on a slide must cite `{filepath}:{line_number}` and that line must contain the verbatim metric. No claim survives without a direct source pointer. Validate by re-reading the cited line before finalizing each slide. Validation bands: ≥90% PASS, 80-89% MEDIUM (review recommended, not a fail), <80% FAIL.
 
 Failure path unchanged: validation rate <80% requires major revision.
 
@@ -135,7 +135,7 @@ Adjust: Service mode 8-10 slides, Prospect 12, Industry 10-11.
 
 **Slide 5 (How It Works):** 3-5 methodology phases with duration, activities, deliverables, client involvement. Extract methodology from `WorkHistory/*.md` source files. Timeline must align with service definition typical_duration.
 
-**Slide 6 (Results & Proof):** CRITICAL PROVENANCE SLIDE. 3-5 top achievements with Result/Context/Relevance format. Include case study if available. Add credentials. ALL claims must have direct source citations (`{filepath}:{line_number}`). Rank by relevance (industry match 10pts, service match 10pts, recency 5pts, scale 5pts). Validate: quantified metric, source file:line citation exists, timeframe present, mechanism described.
+**Slide 6 (Results & Proof):** CRITICAL PROVENANCE SLIDE. 3-5 top achievements with Result/Context/Relevance format. Include case study if available. Add credentials. ALL claims must have direct source citations (`{filepath}:{line_number}`). Rank by relevance (industry match 10pts, service match 10pts, recency 5pts, scale 5pts). Validate: quantified metric, `{filepath}:{line_number}` citation exists, timeframe present, mechanism described.
 
 **Slide 7 (Why Me/Us):** Unique value proposition (2-3 sentences). 3-4 competitive advantages with What/Why It Matters/Proof format. Comparison table (Typical vs. Us). Use competitive_advantages directly from service definition.
 
