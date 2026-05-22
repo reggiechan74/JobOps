@@ -45,7 +45,8 @@ Produce a layout diff:
 
 Decision tree:
 
-- All canonical-required files present AND no mislocated files → proceed to Step 2.
+- All canonical-required files present AND no mislocated files, WITHOUT `--migrate-layout` → proceed to Step 2.
+- All canonical-required files present AND no mislocated files, WITH `--migrate-layout` → print "Layout already matches canonical contract; no reorganization needed." and stop.
 - Missing files OR mislocated files present, WITHOUT `--migrate-layout` → print the diff and stop. Tell the user: "Layout does not match canonical contract. Re-run with `--migrate-layout` to interactively reorganize, or fix manually and re-run."
 - Missing files OR mislocated files present, WITH `--migrate-layout` → enter Step 1a (migration).
 
