@@ -121,8 +121,8 @@ Sort all WorkHistory files by `start_date`. For each adjacent pair (file_a ends,
 
 | Check | Severity | Description if failed |
 |---|---|---|
-| `file_b.start_date >= file_a.end_date` (date arithmetic, deterministic) | advisory | Timeline conflict: roles overlap |
-| `(file_b.start_date - file_a.end_date).days < 30` OR a gap is documented in `Preferences/` or `Identity/` | advisory | Unexplained gap > 30 days |
+| `file_b.start_date < file_a.end_date` (date arithmetic, deterministic) | advisory | Timeline conflict: roles overlap |
+| `(file_b.start_date - file_a.end_date).days > 30` AND no gap explanation is documented in `Preferences/` or `Identity/` | advisory | Unexplained gap > 30 days |
 
 Also check `Identity/CurrentRole.md` vs the most recent WorkHistory entry: if CurrentRole says "currently" or "present" but the most recent WorkHistory file has an explicit end_date in the past, flag as advisory: "CurrentRole says 'currently' but most recent role has end_date < today".
 
@@ -245,7 +245,7 @@ Write `.jobops/source_audit.json`:
 {
   "schema_version": "1.0.0",
   "audit_timestamp": "<ISO8601>",
-  "checks_run": ["structural"],
+  "checks_run": ["structural", "semantic"],
   "flags_used": ["--deep"],
   "gaps_found": 12,
   "gaps_fixed": 9,

@@ -55,7 +55,7 @@ The fixture path `tests/fixtures/broken_folder/` may have helped prime the subag
 
 ## Conclusion
 
-The auditsource skill, as written, eliminates the convergent confabulation class observed in baseline testing under the same pressure prompt. No REFACTOR loop required for the failure modes documented in `baseline_broken_folder.md`.
+The audit-source skill, as written, eliminates the convergent confabulation class observed in baseline testing under the same pressure prompt. No REFACTOR loop required for the failure modes documented in `baseline_broken_folder.md`.
 
 Open work tracked separately:
 - Re-run GREEN with a neutral fixture path to confirm the result is not path-primed.

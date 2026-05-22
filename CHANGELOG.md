@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Notes
 
-- The `audit-source` skill is the first half of a planned candidate-profile-JSON deprecation. RED-phase baseline trials documented 10+ convergent confabulation patterns when downstream skills synthesize JSON profiles under pressure (see `plugins/jobops/skills/audit-source/tests/baseline_broken_folder.md`); GREEN-phase verification with the skill loaded eliminated all of them (see `tests/GREEN_RESULTS.md`).
+- The `audit-source` skill is the first half of a planned candidate-profile-JSON deprecation. RED-phase baseline trials documented 10+ convergent confabulation patterns when downstream skills synthesize JSON profiles under pressure (see `plugins/jobops/skills/audit-source/tests/baseline_broken_folder.md`); GREEN-phase verification with the skill loaded eliminated all of them (see `plugins/jobops/skills/audit-source/tests/GREEN_RESULTS.md`).
 - The second half (migrating downstream skills off `candidate_profile.json` and removing the `resume-summarizer` agent in favor of direct source-markdown reads) is tracked in a separate plan and not yet implemented.
 
 ## [2.0.0] - 2026-04-24
