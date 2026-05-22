@@ -5,6 +5,31 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-05-22
+
+### Removed
+
+- **`plugins/jobops/agents/resume-summarizer.md`** — agent that created `candidate_profile.json` from source markdown. No longer needed: downstream skills now read source markdown directly.
+- **`plugins/jobops/templates/candidate_profile_schema.json`** — JSON Schema for the deprecated profile artifact.
+- Generated artifact `<resume_source>/.profile/candidate_profile.json` is no longer created. Users may delete the `.profile/` directory at their convenience.
+
+### Changed
+
+- **Twelve skills migrated to source-direct reads** (Tasks 1–11 + the post-release `assess-job-offer` cleanup, plan `docs/superpowers/plans/2026-05-22-deprecate-candidate-profile-json.md`):
+  - jobops: `code-red`, `severance-review`, `reference-shield`, `unemployment-prep`, `idealjob`, `assessjob`, `assesscandidate`, `assess-job-offer`
+  - jobops-ic: `ratecard`, `proposaltemplate`, `pitchdeck`, `defineservices`
+- Each migrated skill now reads the specific source files it needs and makes judgments (proficiency_level, company_size, impact_category, etc.) in the context of the specific task, anchored to source file:line citations.
+- Provenance discipline strengthened: skills cite `{filepath}:{line_number}` directly instead of indexing JSON `evidence.file`/`evidence.lines` fields. No intermediate layer to drift.
+- `ratecard` and `defineservices` `--from-profile` flag removed (or renamed to `--from-source`).
+- `service_definition_schema.json` field `source_profile` renamed to `source_files_read` (array of source file paths); `pitchdeck` updated to consume the new field name.
+- `buildresume` and `coverletter` SKILL.md template-list metadata cleaned up (the deleted `candidate_profile_schema` was a stale documentation reference; neither skill actually loaded the schema).
+- `setup` skill bundled-template list updated: schema removed from the list and from the `templates.active` config emitted by setup; bundled template count is now 3.
+
+### Notes
+
+- Companion skill `/jobops:audit-source` (shipped in v2.1.0) is the recommended way to keep source markdown structurally complete. Downstream skills will prompt users to run audit-source if required source files are missing.
+- This is the second half of the candidate-profile-JSON deprecation effort. Plan A was v2.1.0 (audit-source); Plan B is this release.
+
 ## [2.1.0] - 2026-05-22
 
 ### Added
