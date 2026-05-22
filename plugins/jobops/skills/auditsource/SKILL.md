@@ -77,7 +77,7 @@ For each file in the canonical layout, apply the checks below. Each match (or mi
 | Check | Severity | Description if failed |
 |---|---|---|
 | Contains a level-1 or level-2 heading | blocking | No job title heading found |
-| Contains a line matching `(?i)company:` or a heading naming a company | blocking | No company identified |
+| Contains a line matching `(?i)^company:` OR a heading matching `^#+\s+.+\s+—\s+.+$` (canonical `<Company> — <Title>` em-dash pattern) | blocking | No company identified |
 | Contains a line matching `(?i)start[:\s]+\d{4}-\d{2}` OR an explicit `Status: Unemployed since YYYY-MM` line | blocking | No start_date in YYYY-MM format |
 
 ### WorkHistory/NN_company_role.md (for each file)
