@@ -29,7 +29,42 @@ The remaining sections (Step 1 through Step 5, and "What this skill MUST NOT do"
 
 ---
 
-<!-- TASK-MARKER: Step 1 inserted by Task 4 -->
+## Step 1: Layout check
+
+Read `{plugin_root}/skills/auditsource/source_layout.md` for the canonical structure. Then walk `config.directories.resume_source` and compare.
+
+For each REQUIRED file in the canonical layout, check existence. For each file in the source folder, check whether its path matches the canonical layout.
+
+Produce a layout diff:
+
+| Status | Canonical path | Found at |
+|---|---|---|
+| OK | Identity/Name.md | Identity/Name.md |
+| MISSING | Identity/CurrentRole.md | (not found) |
+| MISLOCATED | Technology/TechStack.md | Skills.md (root) |
+
+Decision tree:
+
+- All canonical-required files present AND no mislocated files → proceed to Step 2.
+- Missing files OR mislocated files present, WITHOUT `--migrate-layout` → print the diff and stop. Tell the user: "Layout does not match canonical contract. Re-run with `--migrate-layout` to interactively reorganize, or fix manually and re-run."
+- Missing files OR mislocated files present, WITH `--migrate-layout` → enter Step 1a (migration).
+
+### Step 1a: Migration (only with --migrate-layout)
+
+Refuse to run if `git status` shows uncommitted changes in the source folder. Tell the user to commit or stash first.
+
+For each MISLOCATED file:
+1. Display the current path, the proposed target path, and the first 5 lines of the file as preview.
+2. Use `AskUserQuestion` with options: `Move to proposed path` / `Specify different target` / `Leave in place (mark as orphan)` / `Skip this file`.
+3. On confirm: use `Bash` to `git mv` the file (preserves history).
+4. Append a line to `<resume_source>/migration_log.md` recording (timestamp, old path, new path, decision).
+
+For each MISSING required file:
+1. Note in the migration log: file required but not present; user must create it (audit-source will block on this in Step 2 if not addressed).
+
+After all moves are confirmed and logged, proceed to Step 2.
+
+---
 <!-- TASK-MARKER: Step 2 inserted by Task 5 -->
 <!-- TASK-MARKER: Step 3 inserted by Task 6 -->
 <!-- TASK-MARKER: Step 4 inserted by Task 7 -->
