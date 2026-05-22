@@ -185,8 +185,8 @@ Use three parallel Read tool calls. These templates define the mandatory structu
    - If {{ARG2}} is not provided: Default to `{config.directories.resume_source}`
 
 2. **Validate source path**:
-   - If path is a file: Read the single resume file directly (skip profile generation in Phase 2)
-   - If path is a directory: Will trigger profile generation in Phase 2
+   - If path is a file: Read the single resume file directly in Phase 2 — this is the only candidate source you have
+   - If path is a directory: Phase 2 reads the canonical source files (Identity, Technology, WorkHistory, etc.) from this directory
    - If path doesn't exist: Report error and halt
 
 3. **Load job posting**:
@@ -197,16 +197,14 @@ Use three parallel Read tool calls. These templates define the mandatory structu
 
 ---
 
-## PHASE 2: PARALLEL DATA ACQUISITION
+## PHASE 2: SOURCE READING & DOMAIN RESEARCH
 
-> **CRITICAL: Dispatch both tasks simultaneously using parallel Task tool calls in a SINGLE message.**
-> Mark tasks 3 and 4 as `in_progress` before dispatching.
+> **CRITICAL: Dispatch the §2.2 subagent BEFORE starting §2.1's reads so both run concurrently.**
+> Mark tasks 3 and 4 as `in_progress` before beginning.
 
-Phase 2 launches two independent subagents that run concurrently. Neither depends on the other. Both need only the job posting content (loaded in Phase 1).
+Phase 2 combines direct in-session source reads (§2.1) with a parallel domain-research subagent (§2.2). §2.1 requires no subagent — you perform the reads yourself. §2.2 dispatches a Task subagent. Both need only the job posting content (loaded in Phase 1).
 
 ### 2.1 Read Candidate Source Materials (Task 3)
-
-## Phase 2: Source-Reading Strategy
 
 Determine source structure:
 - **Single-file source** (resume.md or similar passed by user): read that file directly. Skip everything below; you have the candidate data in-hand.
@@ -225,7 +223,7 @@ Token budget: most rubric scoring needs ~30K of source markdown loaded at once f
 
 ### 2.2 Research Domain and Industry Context (Task 4)
 
-**Dispatch a domain research subagent** to run concurrently with profile generation:
+**Dispatch a domain research subagent** to run concurrently with the in-session source reads (§2.1):
 
 ```
 Use Task tool with subagent_type=general-purpose, model=sonnet, and prompt:
@@ -244,7 +242,7 @@ Focus on actionable intelligence that would help calibrate a scoring rubric.
 Be specific - cite sources and data points where possible."
 ```
 
-**IMPORTANT**: Both subagents (2.1 and 2.2) MUST be dispatched in the SAME message using parallel Task tool calls. Do NOT wait for one to complete before starting the other.
+**IMPORTANT**: §2.1 (source reading) is done in-session via direct Read tool calls — it is NOT a subagent dispatch. §2.2 (domain research) is a Task tool subagent dispatch. Dispatch §2.2 BEFORE starting §2.1's reads so the two run concurrently — do not wait for §2.1's reads to complete before launching the §2.2 subagent.
 
 > **Task:** When each subagent completes, mark its respective task (3 or 4) as `completed`.
 
