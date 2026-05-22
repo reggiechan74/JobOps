@@ -290,4 +290,28 @@ Each flag goes through the same Step 4 propose-then-confirm flow with its existi
 
 ---
 
-<!-- TASK-MARKER: MUST NOT inserted by Task 9 -->
+## What this skill MUST NOT do
+
+These are not suggestions. Each one is a documented failure mode from baseline testing (see `tests/baseline_broken_folder.md`).
+
+- **Never edit a source markdown file without per-edit user confirmation.** Even if the user said "fix all blocking gaps interactively" in Step 3 — that authorizes the *flow*, not specific edits. Every edit goes through Step 4d.
+- **Never infer values to write into source files.** If Globex has no `start_date` in the source, do not fill it from "the gap before Globex started must equal the end of Initech." The user must state it. Period.
+- **Never fill an enum field where the source doesn't have a verbatim anchor.** Baseline trials populated `company_size: "Enterprise"` based on a VP title. That is the exact failure mode this skill exists to prevent.
+- **Never silently move files.** Migration (Step 1a) is opt-in via `--migrate-layout` and per-file confirmed.
+- **Never run semantic checks without `--deep`.** Default mode is fast and deterministic.
+- **Never delete content from source files.** Only insert missing fields or correct verbatim factual errors the user explicitly directs.
+- **Never narrow a range the user hasn't narrowed.** "High six figures" stays as "high six figures" unless the user provides a specific number when prompted. Do not store `compensation_target: 850000` from ambiguous prose.
+- **Never assume `Active` status for a certification without a date or explicit user statement.** Status enums require source evidence.
+- **Never proceed past Step 1 if the layout check fails without `--migrate-layout`.** Tell the user and stop.
+
+## Red flags — STOP and re-read this section
+
+If you find yourself thinking any of the following while running this skill, you are about to violate the rules:
+
+| Thought | Reality |
+|---|---|
+| "The user obviously means X — I'll just fill it in" | If it's obvious, ask anyway. The cost of asking is one question. The cost of guessing wrong is a fabricated resume. |
+| "This is just an advisory gap, it doesn't really matter" | Advisory gaps still produce downstream confabulation if filled silently. Ask or skip — never quietly invent. |
+| "The user said 'fix all gaps' — I have authorization" | They authorized the *flow*, not the *content*. Every edit needs its own confirmation. |
+| "I can compute this from other fields" | Date arithmetic is fine. Categorical inference (company_size from title, proficiency from time spent) is not. |
+| "Saying 'I don't know' is unhelpful" | Saying "I don't know" is the most helpful thing this skill can do. Confabulation is the failure mode. |
