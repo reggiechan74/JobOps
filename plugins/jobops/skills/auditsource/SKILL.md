@@ -166,6 +166,9 @@ Looping:
 - Option 2: ask "Which gap number?" via free-form `AskUserQuestion`, enter Step 4 with that single gap.
 - Option 3: write all remaining gaps to `<resume_source>/audit_log.md` as "acknowledged-incomplete" entries; proceed to Step 5.
 - Option 4: write current state to `audit_log.md` and Step 5 with `gaps_fixed: 0`.
+
+---
+
 ## Step 4: Interactive gap fill (propose-then-confirm)
 
 For each gap in `pending_gaps`:
@@ -231,5 +234,8 @@ Never batch edits across gaps. Each gap is a separate Edit call with a separate 
 ### 4f: Loop or exit
 
 After each gap is resolved, loop to the next pending gap. After all pending gaps are processed, return to Step 3 to offer the next decision (e.g., switch from blocking to advisory).
+
+---
+
 <!-- TASK-MARKER: Step 5 inserted by Task 8 -->
 <!-- TASK-MARKER: MUST NOT inserted by Task 9 -->
