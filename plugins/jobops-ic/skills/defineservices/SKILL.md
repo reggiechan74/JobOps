@@ -24,12 +24,12 @@ Templates referenced by this skill: service_definition_schema
 ## Modes
 
 - `--guided` (default): Interactive questions
-- `--from-profile`: Auto-generate from candidate profile + Vision.md
+- `--from-source`: Auto-generate by reading source markdown files directly
 - `--update`: Refresh existing service definition
 
 ## Output
 
-`{config.directories.contractor_root}/services/service_definition_[YYYYMMDD].md` (+ `.json` alongside for `--from-profile`)
+`{config.directories.contractor_root}/services/service_definition_[YYYYMMDD].md`
 
 ---
 
@@ -37,14 +37,24 @@ Templates referenced by this skill: service_definition_schema
 
 ### Parse Mode
 - Default or `--guided`: Interactive mode
-- `--from-profile`: Automatic generation
+- `--from-source`: Automatic generation from source markdown files
 - `--update`: Update existing
 
 ### Load Resources
 1. **JSON Schema**: Read `{config.templates.base_dir}/{config.templates.active[template_name]}/service_definition_schema.json`
-2. **Candidate Profile** (--from-profile, --update):
-   - Check `{config.directories.resume_source}/.profile/candidate_profile.json` (≤7 days old)
-   - Generate via resume-summarizer agent if missing/stale
+2. **Source files** (--from-source, --update):
+
+   For service-catalog generation, read these source files:
+   - `{config.directories.resume_source}/Technology/TechStack.md` — judge Expert-level skills in-context from depth/recency of WorkHistory mentions; each Expert skill maps to a Technical Implementation service
+   - `{config.directories.resume_source}/WorkHistory/*.md` — extract leadership scope (team size, budget, P&L mentions); leadership signals map to Strategic Advisory services
+   - `{config.directories.resume_source}/Industries/*.md` if present, otherwise infer from WorkHistory industries — domains with 5+ years of mentions map to Domain Expertise services
+   - `{config.directories.resume_source}/Thought_Leadership/*.md` if present (publications, frameworks, awards) — these map to Thought Leadership services
+   - `{config.directories.resume_source}/Preferences/Vision.md` — engagement preferences and pricing anchors; if absent, use market-rate formula (documented in the skill)
+
+   Service identification is a judgment task done in the context of this skill invocation. Do NOT pre-compute service candidates from a global enum; judge each potential service against the source evidence.
+
+   Do NOT load `candidate_profile.json` — removed in v2.2.0.
+
 3. **Vision.md**: Read `{config.directories.resume_source}/Preferences/Vision.md` for pricing/engagement preferences
 4. **Existing Definition** (--update only):
    - Find `{config.directories.contractor_root}/services/service_definition_*.md` files
@@ -98,33 +108,33 @@ Repeat until user declines additional services.
 
 ---
 
-## Phase 3: Profile-Based Mode (--from-profile)
+## Phase 3: Source-Based Mode (--from-source)
 
 ### 3.1 Extract Identity
-From `candidate_profile.json`:
-- Name: `candidate.name`
-- Years: `candidate.years_total_experience`
-- Credentials: `certifications` (Active) + `education`
-- Tagline: Top 2-3 Expert `technical_skills` + Expert `domain_expertise` -> "[Capability] for [domain]"
+Read `{config.directories.resume_source}/WorkHistory/*.md` and `{config.directories.resume_source}/Technology/TechStack.md`:
+- Name: From the most recent WorkHistory file header or author attribution
+- Years: Count span of dated WorkHistory entries
+- Credentials: From any certifications block in WorkHistory or TechStack files (Active status only) + education references
+- Tagline: Top 2-3 Expert-level skills from TechStack + dominant industry from WorkHistory → "[Capability] for [domain]"
 
 ### 3.2 Identify Services (3-5)
-**Technical Implementation**: Expert programming/cloud/analytics skills + quantified project outcomes
-**Strategic Advisory**: Leadership (team >5 or budget exists) + transformation projects
-**Domain Expertise**: Expert/Proficient `domain_expertise` (5+ years) + domain achievements
-**Thought Leadership**: Publications (Peer-reviewed/Whitepaper/Conference) + frameworks created
+**Technical Implementation**: Expert skills in `{config.directories.resume_source}/Technology/TechStack.md` cross-referenced with depth/recency of mentions in WorkHistory files; each Expert skill with recent project outcomes maps to a service
+**Strategic Advisory**: Leadership scope extracted from WorkHistory — team size >5, budget ownership, P&L responsibility, or transformation programmes; each qualifying signal maps to a service
+**Domain Expertise**: Industries with 5+ years of combined WorkHistory mentions (or from `{config.directories.resume_source}/Industries/*.md` if present) — each qualifying domain maps to a service
+**Thought Leadership**: Publications, frameworks, and awards from `{config.directories.resume_source}/Thought_Leadership/*.md` if present — Peer-reviewed, Whitepaper, Conference presentations, and named frameworks each map to a service
 
 **Per Service Extract**:
-- Name: Capability + outcome
-- Category: Map to activity type
-- Description: Synthesize from achievements + technologies
-- Deliverables: From project outcomes
-- Ideal Client: Industries (`domain_expertise`, `work_history.industry`), Size (`company_size`), Pain points (inferred), Decision makers (`stakeholder_level`)
+- Name: Capability + outcome (judged from source evidence)
+- Category: Map to activity type (Technical Implementation / Strategic Advisory / Domain Expertise / Thought Leadership)
+- Description: Synthesize from WorkHistory achievements + technologies — cite source file and line
+- Deliverables: From project outcomes in WorkHistory
+- Ideal Client: Industries from WorkHistory/Industries files, company size inferred from WorkHistory scope, pain points inferred from transformation narratives, decision-maker level inferred from stakeholder references
 
 ### 3.3 Generate Pricing
 **From Vision.md** (if exists):
-- Extract hourly rates (min/target/ideal) -> rate_card.hourly
+- Extract hourly rates (min/target/ideal) → rate_card.hourly
 - Calculate daily = hourly x 8
-- Map employment preferences -> engagement models
+- Map employment preferences → engagement models
 - Extract "avoid" preferences
 
 **If Vision.md missing**:
@@ -132,15 +142,15 @@ From `candidate_profile.json`:
 - Formula: Min = (salary / 2000) x 1.5, Target = Min x 1.3, Premium = Target x 1.5-2.0
 
 ### 3.4 Build Differentiation
-**UVP**: Synthesize domain + technical skill intersection + years + track record
-**Competitive Advantages**: Cross-domain expertise, proven scale (team size/budget), certifications (Active), proprietary frameworks
-**Proof Points**: Achievements with metrics, assets managed, project outcomes, publications + speaking count
-**Authority Builders**: Active certifications, Peer-reviewed/Whitepaper/Conference publications, speaking engagements
+**UVP**: Synthesize dominant domain + Expert technical skills + years span + track record from WorkHistory
+**Competitive Advantages**: Cross-domain expertise (from Industries files or WorkHistory), proven scale (team size/budget from WorkHistory), active certifications, proprietary frameworks (from Thought_Leadership)
+**Proof Points**: Quantified achievements with metrics from WorkHistory — cite file and line; publications + speaking count from Thought_Leadership
+**Authority Builders**: Active certifications from WorkHistory/TechStack, Peer-reviewed/Whitepaper/Conference publications, speaking engagements from Thought_Leadership
 
 ### 3.5 Define Target Markets
-**Primary**: Most frequent + recent industries, inferred segment from assets/company_size, common stakeholder_level, research market size
-**Avoid**: Vision.md avoid_industries + industries not in work history
-**Geographic**: `geographic_scope` patterns, international if applicable
+**Primary**: Most frequent + recent industries from WorkHistory (or Industries files), inferred company segment from scope of roles, common decision-maker level from stakeholder references, research market size
+**Avoid**: Vision.md avoid_industries + industries absent from work history
+**Geographic**: Geographic scope patterns from WorkHistory locations; international if applicable
 
 ---
 
@@ -150,10 +160,10 @@ From `candidate_profile.json`:
 Find `{config.directories.contractor_root}/services/service_definition_*.md` files. If multiple, ask user to select. Parse: services, pricing, engagement models, differentiation.
 
 ### 4.2 Identify Updates
-Compare existing with current candidate profile:
-- **New Services**: Recent work history (12 months), new certifications, new technical skills/domain expertise
+Compare existing definition with current source files (WorkHistory, TechStack, Industries, Thought_Leadership):
+- **New Services**: Recent WorkHistory entries (12 months), new certifications, new Expert-level skills in TechStack, new domain coverage
 - **Pricing**: Compare with Vision.md, validate daily = hourly x 8, check market shifts
-- **Proof Points**: Recent achievements, new publications/speaking, new case studies
+- **Proof Points**: Recent achievements from WorkHistory, new publications/speaking from Thought_Leadership, new case studies
 
 ### 4.3 Interactive Update
 Present findings + ask:
@@ -195,7 +205,7 @@ Variance: [%]% - Recommend alignment
 
 **Service vs Rate Card**: Verify service pricing within rate card ranges. Flag if exceeds premium (may be value-based) or below minimum (below-market).
 
-### 5.2 Market Validation (--from-profile only)
+### 5.2 Market Validation (--from-source only)
 Search: "[Service type] consultant rates [year]", "[Domain] consulting hourly rate [region]", "[Seniority] [skill] contractor rates [year]"
 - Flag if <50% market median (underpriced)
 - Flag if >200% market 75th percentile (overpriced unless justified)
@@ -222,13 +232,12 @@ See `{config.templates.base_dir}/{config.templates.active[template_name]}/servic
 
 ### 6.2 Save Files
 **Primary**: `{config.directories.contractor_root}/services/service_definition_[YYYYMMDD].md`
-**Secondary** (--from-profile only): `{config.directories.contractor_root}/services/service_definition_[YYYYMMDD].json` (follow schema exactly)
 
 ### 6.3 Summary Report
 ```
 SERVICE DEFINITION GENERATED
 
-Output: service_definition_[Date].md (+ JSON if --from-profile)
+Output: service_definition_[Date].md
 Services: [X] | Pricing: $[min]-$[max]/hr, $[min]-$[max]/day
 Competitive Advantages: [X] with evidence
 
@@ -239,7 +248,7 @@ Pricing Validation:
 
 Next Steps: Review accuracy, update LinkedIn, create portfolio, identify 10-20 prospects, use for SOW templates
 
-Market Validation (--from-profile): Rates align with [percentile] - [insights]
+Market Validation (--from-source): Rates align with [percentile] - [insights]
 ```
 
 ---
@@ -253,10 +262,10 @@ Market Validation (--from-profile): Rates align with [percentile] - [insights]
 - [ ] Payment terms clear and enforceable
 - [ ] Currency specified
 
-### 7.2 Evidence (--from-profile)
-- [ ] Services -> work history/project evidence
-- [ ] Advantages -> file + line citations
-- [ ] Proof points -> source achievements
+### 7.2 Evidence (--from-source)
+- [ ] Services → WorkHistory/TechStack/Thought_Leadership evidence cited
+- [ ] Advantages → file + line citations
+- [ ] Proof points → source achievements with file + line references
 - [ ] Certifications Active only
 - [ ] Publications/speaking verified (not inferred)
 
@@ -273,7 +282,7 @@ Market Validation (--from-profile): Rates align with [percentile] - [insights]
 - [ ] Engagement models (preferred/acceptable/avoid)
 - [ ] Complete rate card (hourly/daily/payment terms)
 - [ ] Differentiation with proof points
-- [ ] Evidence mapping (profile-based)
+- [ ] Evidence mapping (--from-source)
 - [ ] Next steps
 
 ---
@@ -281,7 +290,7 @@ Market Validation (--from-profile): Rates align with [percentile] - [insights]
 ## Error Handling
 
 **Missing Data**:
-- Profile missing (--from-profile): Generate via resume-summarizer
+- Source files missing (--from-source): List which expected files are absent; fall back to guided mode if WorkHistory is unavailable
 - Vision.md missing: Use market-based pricing + warning
 - Insufficient work history: Fall back to guided mode
 
@@ -295,7 +304,7 @@ Market Validation (--from-profile): Rates align with [percentile] - [insights]
 - Unverifiable proof: Exclude or mark "Self-reported - verification recommended"
 
 **Update Conflicts**:
-- Custom edits in existing definition: Warn --from-profile may overwrite, recommend targeted updates
+- Custom edits in existing definition: Warn --from-source may overwrite, recommend targeted updates
 
 ---
 
@@ -304,7 +313,7 @@ Market Validation (--from-profile): Rates align with [percentile] - [insights]
 ```bash
 /defineservices              # Default guided mode
 /defineservices --guided     # Explicit guided mode
-/defineservices --from-profile  # Auto-generate from profile
+/defineservices --from-source  # Auto-generate from source markdown files
 /defineservices --update     # Update existing definition
 ```
 
@@ -313,8 +322,8 @@ Market Validation (--from-profile): Rates align with [percentile] - [insights]
 ## Key Requirements
 
 - **Pricing Consistency**: Clients notice hourly/daily misalignment. Always validate.
-- **Evidence-Based**: --from-profile only includes verifiable claims.
-- **Market Research**: Validate pricing competitiveness (--from-profile).
+- **Evidence-Based**: --from-source only includes verifiable claims cited to source files.
+- **Market Research**: Validate pricing competitiveness (--from-source).
 - **Confidentiality**: Anonymize case study client details.
 - **Version Control**: Create new timestamped files, never overwrite.
 - **Schema Compliance**: JSON must validate against service_definition_schema.json.
