@@ -164,8 +164,8 @@ sed -i \
   -e "s|__MUTED_G__|${MUTED_G}|g" \
   -e "s|__MUTED_B__|${MUTED_B}|g" \
   -e "s|__MAIN_FONT__|${MAIN_FONT}|g" \
-  -e "s|__HEADING_FONT__|${HEADING_FONT}|g" \
   -e "s|__HEADING_FONT_FALLBACK__|${HEADING_FONT_FALLBACK}|g" \
+  -e "s|__HEADING_FONT__|${HEADING_FONT}|g" \
   -e "s|__SECTION_LETTERSPACE__|${SECTION_LETTERSPACE}|g" \
   -e "s|__LIST_ITEMSEP_PT__|${LIST_ITEMSEP_PT}|g" \
   -e "s|__LINE_SPREAD__|${LINE_SPREAD}|g" \
