@@ -356,6 +356,16 @@ fi
 basename=$(basename "$src" .md)
 work=$(mktemp -d)
 
+# Copy sibling image assets (signature, logos) so relative \includegraphics paths
+# resolve inside the temp compile dir. Without this, xelatex can't read the
+# missing image's dimensions and (because the base preamble sets
+# keepaspectratio) degrades into a Package-graphics "Division by 0" hard failure
+# instead of a clean "file not found". One copy suffices — $work persists across
+# the recompile/page-target iteration loop.
+srcdir=$(dirname "$src")
+find "$srcdir" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) \
+  -exec cp {} "$work/" \; 2>/dev/null || true
+
 # The OMERS Lua filter maps the markdown onto the hand-built LaTeX vocabulary
 # (header block, \section, \role/\subrole, navy+zebra tables). It needs to know
 # the doctype; it is pass-through for `document`.
@@ -440,15 +450,60 @@ regen_preamble() {
   sed -i -e "/__BODY__/{r ${work}/body.tex" -e "d;}" "${work}/${basename}.tex"
 }
 
+# Corrected last-page fill: % of page height down to the lowest inked row,
+# EXCLUDING the bottom ~7% footer band where the centered page number lives
+# (otherwise a nearly blank page reports ~97% full and hides an orphan).
+# Echoes an integer 0-100, or empty if the tooling is unavailable.
+measure_fill() {
+  command -v pdftoppm >/dev/null && command -v python3 >/dev/null || { echo ""; return; }
+  local pg="$1"
+  rm -f "${work}"/fillchk-*.png 2>/dev/null
+  pdftoppm -png -r 100 -f "$pg" -l "$pg" "${work}/${basename}.pdf" "${work}/fillchk" 2>/dev/null
+  local img; img=$(find "${work}" -maxdepth 1 -name 'fillchk-*.png' | head -1)
+  [ -n "$img" ] || { echo ""; return; }
+  python3 - "$img" <<'PY'
+import sys
+from PIL import Image
+im = Image.open(sys.argv[1]).convert("L")
+w, h = im.size
+px = im.load()
+footer_cut = int(h * 0.93)   # ignore bottom 7% (page-number band)
+last_ink_row = 0
+for y in range(footer_cut):
+    for x in range(w):
+        if px[x, y] < 240:
+            last_ink_row = y
+            break
+print(last_ink_row * 100 // h)
+PY
+}
+
 compile_once || { echo "xelatex compile failed; see ${work}/${basename}.log"; exit 1; }
 pages=$(pdfinfo "${work}/${basename}.pdf" 2>/dev/null | awk '/^Pages:/{print $2}')
 echo "Initial compile: ${pages} pages (target=${pages_target})"
 
+# Auto mode: detect a near-empty trailing (orphan) page and re-target one fewer
+# page using the SAME tuning loop below, with a 10pt font floor so text never
+# shrinks into illegibility. The explicit 1|2|3 path is unchanged (FONT_FLOOR
+# stays empty there, so the floor clamp is a no-op).
+auto_retarget=0
+FONT_FLOOR=""
+if [ "$pages_target" = "auto" ] && [ -n "$pages" ] && [ "$pages" -gt 1 ]; then
+  orphan_fill=$(measure_fill "$pages")
+  if [ -n "$orphan_fill" ] && [ "$orphan_fill" -lt 35 ]; then
+    echo "Auto: trailing page only ${orphan_fill}% full (orphan) — re-targeting $((pages - 1)) pages (font floor 10pt)."
+    pages_target=$((pages - 1))
+    FONT_FLOOR=10.0
+    auto_retarget=1
+  fi
+fi
+
 if [ "$pages_target" != "auto" ] && [ -n "$pages" ] && [ "$pages" != "$pages_target" ]; then
   for iter in 1 2 3; do
     if [ "$pages" -gt "$pages_target" ]; then
-      # too many pages: tighten
-      FONT_SIZE_PT=$(awk -v v="$FONT_SIZE_PT" 'BEGIN{printf "%.2f", v-0.25}')
+      # too many pages: tighten. FONT_FLOOR (set only for auto orphan re-target)
+      # clamps the font size so it never shrinks below legibility; empty/0 = no clamp.
+      FONT_SIZE_PT=$(awk -v v="$FONT_SIZE_PT" -v f="${FONT_FLOOR:-0}" 'BEGIN{nv=v-0.25; if(f>0 && nv<f) nv=f; printf "%.2f", nv}')
       LIST_ITEMSEP_PT=$(awk -v v="${LIST_ITEMSEP_PT:-2.3}" 'BEGIN{printf "%.2f", v-0.3}')
       PARSKIP_EM=$(awk -v v="${PARSKIP_EM:-0.4}" 'BEGIN{printf "%.2f", v-0.05}')
     else
@@ -465,7 +520,12 @@ if [ "$pages_target" != "auto" ] && [ -n "$pages" ] && [ "$pages" != "$pages_tar
     [ "$pages" = "$pages_target" ] && break
   done
   if [ "$pages" != "$pages_target" ]; then
-    echo "WARN: could not hit target after 3 iterations. Final: ${pages} pages."
+    if [ "$auto_retarget" = "1" ]; then
+      echo "WARN: could not clear the orphan page within the 10pt font floor. Final: ${pages} pages."
+      echo "      Pass an explicit page target (1|2|3) and choose which content to cut."
+    else
+      echo "WARN: could not hit target after 3 iterations. Final: ${pages} pages."
+    fi
   fi
 fi
 ````
@@ -522,8 +582,10 @@ from PIL import Image
 im = Image.open(sys.argv[1]).convert("L")
 w, h = im.size
 px = im.load()
+footer_cut = int(h * 0.93)   # ignore bottom 7% (page-number band) so an orphan
+                             # page doesn't report ~97% full off the page number
 last_ink_row = 0
-for y in range(h):
+for y in range(footer_cut):
     for x in range(w):
         if px[x, y] < 240:
             last_ink_row = y

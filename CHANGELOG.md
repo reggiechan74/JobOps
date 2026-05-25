@@ -5,6 +5,13 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.1] - 2026-05-25
+
+### Fixed
+
+- **`plugins/jobops/skills/latex-pdf/SKILL.md`** — image assets are now copied into the temp compile dir. **Any document referencing a local image (e.g. a cover letter with `![](signature.png){width=2in}`) was previously uncompilable** — this is a correctness fix, not cosmetic. Pandoc emits `\includegraphics` with a path relative to the source dir, but Step 6 compiled from a `mktemp -d` dir the image was never copied into; because the base preamble sets `keepaspectratio`, xelatex couldn't read the missing image's dimensions and degraded into `! Package graphics Error: Division by 0` rather than a clean "file not found". Step 6 now copies sibling `*.png`/`*.jpg`/`*.jpeg` files into `$work` before compiling. Resumes have no images, so this slipped through 2.5.0 release testing.
+- **`plugins/jobops/skills/latex-pdf/SKILL.md`** — the last-page fill metric is now honest and `auto` mode no longer ships orphan pages. The Pillow heuristic scanned to the bottom of the page, so the centered page-number glyph (sitting at ~95–97% of page height) made a nearly blank trailing page report `≈97%` full and hid the orphan. The scan now excludes the bottom 7% footer band. Additionally, in `auto` mode, when a multi-page document's corrected last-page fill is below 35%, the skill automatically re-targets one fewer page using the existing tuning loop, with a 10pt font-size floor so text never shrinks into illegibility; if the floor is hit before the orphan clears it emits a loud `WARN` recommending an explicit page target. The explicit `1|2|3` target path is unchanged. Verified end-to-end: a cover letter with a signature now compiles and lands on a filled final page, and a resume that spilled ~11% onto a second page auto-tightens (font 10.75pt) back to a single full page.
+
 ## [2.5.0] - 2026-05-25
 
 ### Changed
