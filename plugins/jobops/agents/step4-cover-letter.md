@@ -241,6 +241,67 @@ Before finalizing, I verify:
 - ✓ No banned phrases, dead verbs, hedge adverbs, or adjective stacks (run the banned-construction list as a final pass)
 - ✓ No three consecutive paragraphs open with "As [role] at [company], I…" or "I…"
 - ✓ Close ties to the synthesized alignment; does not contain "thank you for your consideration" or "I look forward to hearing from you"
+- ✓ Step 6a sub-agent review was dispatched (independent agent, not the drafting agent), returned a pass verdict, and all `REVISE` / `CUT` recommendations were applied before writing the final file
+
+### 6a. Sub-Agent Sentence Review (mandatory before output)
+
+After the draft passes the Step 6 self-checks, **dispatch a separate sub-agent** to review the draft using the **What / So What / Now What** framing. The reviewing agent must be a fresh subagent (use the `Agent` tool with `subagent_type: general-purpose` or `claude`) — not the drafting agent itself. The point is independent scrutiny: a writer who has just produced the draft will not see the dead sentences in it.
+
+The reviewer's mandate: **every single sentence in the letter must be impactful and must address a concern the hiring manager actually holds.** Filler sentences, throat-clearing transitions, restated requirements, generic enthusiasm, and sentences that exist only to set up the next sentence are all defects.
+
+**Reviewer prompt scaffold** — when dispatching the sub-agent, hand it:
+1. The full draft cover letter (text, not just a path)
+2. The job description
+3. The Requirements Alignment Table (so it knows what concerns were prioritized)
+4. The `primary_sources:` YAML block (so it can sanity-check claims)
+5. The instruction to apply the framework below to **each sentence in turn**, then return a structured report
+
+**The framework — applied per sentence:**
+
+| Question | What the reviewer is checking |
+|----------|------------------------------|
+| **What** | What does this sentence literally say or claim? State it in plain terms — strip the rhetoric. If the reviewer cannot state the "what" in one short clause, the sentence is too vague to survive. |
+| **So what** | Which specific concern of the hiring manager does this sentence address? Concerns are concrete: "Can this person actually close a lease under regulatory pressure?", "Has this person managed a P&L at this scale?", "Will this person survive the board?" If the sentence does not address a real concern — cut it. "Sets up the next paragraph" is not a concern. "Demonstrates passion" is not a concern. |
+| **Now what** | What does the hiring manager *do* with this information? Does it move them toward an interview decision? Does it preempt an objection? Does it shift how they read the rest of the letter? If the answer is "nothing — they just keep reading," the sentence is filler. |
+
+**Reviewer output — structured report:**
+
+For each sentence the reviewer flags, return:
+
+```
+Sentence: "<verbatim sentence from the draft>"
+Location: <opening | body paragraph N | table row N | close>
+What: <one-clause restatement>
+So what: <concern addressed, or "none — no specific hiring-manager concern">
+Now what: <decision the reader can make, or "none — filler">
+Verdict: KEEP | REVISE | CUT
+Recommended rewrite (if REVISE): "<proposed replacement sentence>"
+Reason: <one line — why the rewrite is stronger>
+```
+
+The reviewer must also return an overall judgment:
+- **Total sentences in the letter**
+- **Count of KEEP / REVISE / CUT**
+- **Top 3 highest-leverage rewrites** (the changes that most improve the letter's persuasive force)
+- **Pass/fail call**: a letter passes only if ≥ 90% of sentences are KEEP, and zero CUT verdicts remain in the opening or close
+
+**What the reviewer is specifically hunting for:**
+
+- Sentences that paraphrase the JD back at the reader ("You need someone who can manage stakeholders" — the reader wrote the JD, they know)
+- Sentences that announce instead of demonstrate ("I bring deep expertise in commercial real estate" — show one deal, do not assert the category)
+- Connective tissue with no payload ("Building on this experience…", "In addition…", "Furthermore…")
+- Sentences whose only job is to introduce the next sentence (collapse the two)
+- Past-tense achievements that lack a counterparty, quantity, date, or named artifact (fails the Step 4 specificity floor at the sentence level)
+- Sentences that would read identically in a letter to a different firm (the letter is not firm-specific at that line)
+- Closes that thank, hope, or look forward (already banned in Step 4 — reviewer confirms enforcement)
+
+**Feedback loop:**
+
+The drafting agent must apply the reviewer's `REVISE` and `CUT` verdicts before producing the final output file. If applying the changes would drop the letter below the required structure (e.g., cutting filler leaves a body paragraph too thin), the drafting agent rewrites that paragraph around a stronger artifact rather than restoring the cut sentence.
+
+If the reviewer issues a **fail** verdict, the drafting agent revises and **re-dispatches a fresh sub-agent for a second review pass**. Do not have the same sub-agent review its own prior feedback — independence is the point. A letter may go through up to two review passes before being written to disk; if it fails the second pass, surface the reviewer's report to the user rather than shipping a weak letter.
+
+**Why this step exists:** The Step 6 self-checks catch structural and banned-phrase defects. They do not catch sentences that are technically compliant but persuasively dead — sentences that occupy real estate without earning it. An independent reviewer applying What / So What / Now What is the only reliable filter for that failure mode.
 
 ### 7. Output Format
 

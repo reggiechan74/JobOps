@@ -5,6 +5,13 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1] - 2026-05-24
+
+### Fixed
+
+- **`plugins/jobops/agents/step4-cover-letter.md`** — added mandatory Step 6a: Sub-Agent Sentence Review. After the draft passes self-checks, a fresh independent sub-agent reviews every sentence using a **What / So What / Now What** framing — flagging any sentence that does not address a real hiring-manager concern or move the reader toward a decision. Reviewer returns per-sentence KEEP / REVISE / CUT verdicts plus an overall pass/fail (≥90% KEEP, zero CUT in opening or close); drafter must apply revisions before writing the final file. Up to two review passes allowed before surfacing failure to the user. Addresses the failure mode where letters pass structural quality checks but contain persuasively dead sentences that the drafting agent cannot detect in its own work.
+- Step 6 Quality Checks updated with a corresponding line confirming Step 6a ran and revisions were applied — the review cannot be silently skipped.
+
 ## [2.2.0] - 2026-05-22
 
 ### Removed
