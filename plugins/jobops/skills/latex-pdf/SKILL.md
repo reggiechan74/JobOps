@@ -223,15 +223,71 @@ sed -i \
 sed -i -e "/__BODY__/{r ${work}/body.tex" -e "d;}" "$tex"
 ```
 
-## Step 8: Compile (2 passes)
+## Step 8: Compile with optional page-count targeting
 
-```bash
-( cd "$work" && xelatex -interaction=nonstopmode "${basename}.tex" >/dev/null \
-              && xelatex -interaction=nonstopmode "${basename}.tex" >/dev/null ) \
-  || { echo "xelatex compile failed; see ${work}/${basename}.log"; exit 1; }
-```
+````bash
+pages_target="${3:-auto}"
+case "$pages_target" in 1|2|3|auto) ;; *) echo "Bad \$3 '$pages_target'; expected 1|2|3|auto"; exit 1;; esac
 
-On failure, leave `$work` in place and tell the user the log path.
+compile_once() {
+  ( cd "$work" && xelatex -interaction=nonstopmode "${basename}.tex" >/dev/null \
+                && xelatex -interaction=nonstopmode "${basename}.tex" >/dev/null )
+}
+
+regen_preamble() {
+  # Re-run the sed pipeline against a fresh copy of the template so iterative
+  # tuning starts from the template, not from an already-substituted file.
+  cp "${latex_dir}/${preamble_file}" "${work}/${basename}.tex"
+  sed -i \
+    -e "s|__FONT_SIZE_PT__|${FONT_SIZE_PT}|g" \
+    -e "s|__MARGIN_TOP__|${MARGIN_TOP}|g" \
+    -e "s|__MARGIN_BOTTOM__|${MARGIN_BOTTOM}|g" \
+    -e "s|__MARGIN_LEFT__|${MARGIN_LEFT}|g" \
+    -e "s|__MARGIN_RIGHT__|${MARGIN_RIGHT}|g" \
+    -e "s|__ACCENT_R__|${ACCENT_R}|g" -e "s|__ACCENT_G__|${ACCENT_G}|g" -e "s|__ACCENT_B__|${ACCENT_B}|g" \
+    -e "s|__MUTED_R__|${MUTED_R}|g"   -e "s|__MUTED_G__|${MUTED_G}|g"   -e "s|__MUTED_B__|${MUTED_B}|g" \
+    -e "s|__MAIN_FONT__|${MAIN_FONT}|g" \
+    -e "s|__HEADING_FONT_FALLBACK__|${HEADING_FONT_FALLBACK}|g" \
+    -e "s|__HEADING_FONT__|${HEADING_FONT}|g" \
+    -e "s|__SECTION_LETTERSPACE__|${SECTION_LETTERSPACE}|g" \
+    -e "s|__LIST_ITEMSEP_PT__|${LIST_ITEMSEP_PT:-2.3}|g" \
+    -e "s|__PARSKIP_EM__|${PARSKIP_EM:-0.4}|g" \
+    -e "s|__LINE_SPREAD__|${LINE_SPREAD}|g" \
+    "${work}/${basename}.tex"
+  sed -i -e "/__BODY__/{r ${work}/body.tex" -e "d;}" "${work}/${basename}.tex"
+}
+
+compile_once || { echo "xelatex compile failed; see ${work}/${basename}.log"; exit 1; }
+pages=$(pdfinfo "${work}/${basename}.pdf" 2>/dev/null | awk '/^Pages:/{print $2}')
+echo "Initial compile: ${pages} pages (target=${pages_target})"
+
+if [ "$pages_target" != "auto" ] && [ -n "$pages" ] && [ "$pages" != "$pages_target" ]; then
+  for iter in 1 2 3; do
+    if [ "$pages" -gt "$pages_target" ]; then
+      # too many pages: tighten
+      FONT_SIZE_PT=$(awk -v v="$FONT_SIZE_PT" 'BEGIN{printf "%.2f", v-0.25}')
+      LIST_ITEMSEP_PT=$(awk -v v="${LIST_ITEMSEP_PT:-2.3}" 'BEGIN{printf "%.2f", v-0.3}')
+      PARSKIP_EM=$(awk -v v="${PARSKIP_EM:-0.4}" 'BEGIN{printf "%.2f", v-0.05}')
+    else
+      # too few pages: loosen
+      FONT_SIZE_PT=$(awk -v v="$FONT_SIZE_PT" 'BEGIN{printf "%.2f", v+0.25}')
+      LIST_ITEMSEP_PT=$(awk -v v="${LIST_ITEMSEP_PT:-2.3}" 'BEGIN{printf "%.2f", v+0.3}')
+      PARSKIP_EM=$(awk -v v="${PARSKIP_EM:-0.4}" 'BEGIN{printf "%.2f", v+0.05}')
+    fi
+    echo "Iter ${iter}: tuning font_size_pt→${FONT_SIZE_PT}, list_itemsep_pt→${LIST_ITEMSEP_PT}, parskip_em→${PARSKIP_EM}"
+    regen_preamble
+    compile_once || { echo "xelatex compile failed during iter ${iter}; see ${work}/${basename}.log"; exit 1; }
+    pages=$(pdfinfo "${work}/${basename}.pdf" 2>/dev/null | awk '/^Pages:/{print $2}')
+    echo "Iter ${iter} result: ${pages} pages"
+    [ "$pages" = "$pages_target" ] && break
+  done
+  if [ "$pages" != "$pages_target" ]; then
+    echo "WARN: could not hit target after 3 iterations. Final: ${pages} pages."
+  fi
+fi
+````
+
+On any xelatex failure, leave `$work` in place and tell the user the log path.
 
 ## Step 9: Resolve output dir and copy artifacts
 
