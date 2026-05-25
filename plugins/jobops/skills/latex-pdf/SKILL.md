@@ -76,7 +76,8 @@ Determine the doctype in this order (first match wins):
 2. YAML front-matter `output_type` field in `$1` (read the front matter; the file's first 30 lines suffice):
    - `output_type ∈ {resume_final, resume_step1, resume_step2, resume_provenance}` → doctype `resume`
    - `output_type ∈ {cover_letter, coverletter}` → doctype `coverletter`
-3. Filename heuristic: if `basename "$1"` contains the substring `cover_letter` → `coverletter`, else → `resume`.
+3. Parent-directory name: if the file's immediate parent dir is `cover-letter` → doctype `coverletter`.
+4. Filename heuristic: if `basename "$1"` contains the substring `cover_letter` → `coverletter`, else → `resume`.
 
 ```bash
 # Pull --doctype= flag if present in any of the positional args
@@ -94,6 +95,14 @@ if [ -z "$doctype" ]; then
   esac
 fi
 
+# Parent-directory heuristic: file inside <slug>/cover-letter/ → coverletter
+if [ -z "$doctype" ]; then
+  case "$(basename "$(dirname "$1")")" in
+    cover-letter) doctype="coverletter";;
+  esac
+fi
+
+# Filename heuristic
 if [ -z "$doctype" ]; then
   case "$(basename "$1")" in
     *cover_letter*) doctype="coverletter";;
@@ -144,22 +153,53 @@ On failure, print the offending key path and stop.
 
 ## Step 4: Resolve effective settings
 
-Doctype is already resolved (Step 2). Determine theme: `$2` override → `doctype.theme` → `default_theme`. If the named theme is not in `themes`, stop with the "available themes" message.
+Doctype is already resolved (Step 2). Determine theme: `$2` override → `doctypes[doctype].theme` → `default_theme`. If the named theme is not in `themes`, stop with the "available themes" message.
 
-Pull these resolved values into shell variables (use `jq -r`):
+```bash
+# Theme resolution
+theme_arg="${2:-}"
+if [ -n "$theme_arg" ]; then
+  THEME_NAME="$theme_arg"
+elif jq -e --arg d "$doctype" '.doctypes[$d].theme' "$cfg" >/dev/null; then
+  THEME_NAME=$(jq -r --arg d "$doctype" '.doctypes[$d].theme' "$cfg")
+else
+  THEME_NAME=$(jq -r '.default_theme' "$cfg")
+fi
+if ! jq -e --arg t "$THEME_NAME" '.themes[$t]' "$cfg" >/dev/null; then
+  avail=$(jq -r '.themes | keys | join(", ")' "$cfg")
+  echo "Theme '$THEME_NAME' is not defined in latex/config.json. Available: $avail"
+  exit 1
+fi
 
+# Theme-level values (from .themes[$THEME_NAME])
+FONT_SIZE_PT=$(jq -r --arg t "$THEME_NAME" '.themes[$t].font_size_pt'         "$cfg")
+LINE_SPREAD=$( jq -r --arg t "$THEME_NAME" '.themes[$t].line_spread'          "$cfg")
+MAIN_FONT=$(   jq -r --arg t "$THEME_NAME" '.themes[$t].main_font'            "$cfg")
+HEADING_FONT=$(jq -r --arg t "$THEME_NAME" '.themes[$t].heading_font'         "$cfg")
+HEADING_FONT_FALLBACK=$(jq -r --arg t "$THEME_NAME" '.themes[$t].heading_font_fallback' "$cfg")
+ACCENT_R=$(jq -r --arg t "$THEME_NAME" '.themes[$t].accent_rgb[0]' "$cfg")
+ACCENT_G=$(jq -r --arg t "$THEME_NAME" '.themes[$t].accent_rgb[1]' "$cfg")
+ACCENT_B=$(jq -r --arg t "$THEME_NAME" '.themes[$t].accent_rgb[2]' "$cfg")
+MUTED_R=$( jq -r --arg t "$THEME_NAME" '.themes[$t].muted_rgb[0]'  "$cfg")
+MUTED_G=$( jq -r --arg t "$THEME_NAME" '.themes[$t].muted_rgb[1]'  "$cfg")
+MUTED_B=$( jq -r --arg t "$THEME_NAME" '.themes[$t].muted_rgb[2]'  "$cfg")
+
+# Doctype-level values (from .doctypes[$doctype])
+MARGIN_TOP=$(   jq -r --arg d "$doctype" '.doctypes[$d].margins_in.top'    "$cfg")
+MARGIN_BOTTOM=$(jq -r --arg d "$doctype" '.doctypes[$d].margins_in.bottom' "$cfg")
+MARGIN_LEFT=$(  jq -r --arg d "$doctype" '.doctypes[$d].margins_in.left'   "$cfg")
+MARGIN_RIGHT=$( jq -r --arg d "$doctype" '.doctypes[$d].margins_in.right'  "$cfg")
+SECTION_LETTERSPACE=$(jq -r --arg d "$doctype" '.doctypes[$d].section_letterspace' "$cfg")
+
+# Doctype-specific
+if [ "$doctype" = "resume" ]; then
+  LIST_ITEMSEP_PT=$(jq -r '.doctypes.resume.list_itemsep_pt' "$cfg")
+elif [ "$doctype" = "coverletter" ]; then
+  PARSKIP_EM=$(jq -r '.doctypes.coverletter.parskip_em' "$cfg")
+fi
 ```
-THEME_NAME, FONT_SIZE_PT, LINE_SPREAD,
-MAIN_FONT, HEADING_FONT, HEADING_FONT_FALLBACK,
-ACCENT_R, ACCENT_G, ACCENT_B,
-MUTED_R, MUTED_G, MUTED_B,
-MARGIN_TOP, MARGIN_BOTTOM, MARGIN_LEFT, MARGIN_RIGHT,
-SECTION_LETTERSPACE
-```
 
-Then, doctype-specific:
-- If `doctype == "resume"`: also pull `LIST_ITEMSEP_PT` from `.doctypes.resume.list_itemsep_pt`.
-- If `doctype == "coverletter"`: also pull `PARSKIP_EM` from `.doctypes.coverletter.parskip_em` and `SIGNATURE_IMAGE` from `.doctypes.coverletter.signature_image` (may be `null`).
+Note: `signature_image` (config key `.doctypes.coverletter.signature_image`) is reserved for a future Phase 2.1 enhancement that injects `\includegraphics` into the coverletter body. Phase 2 does not consume it.
 
 ## Step 5: Font availability check
 
