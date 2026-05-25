@@ -68,51 +68,102 @@ fi
 
 Stop on missing deps; do NOT proceed.
 
+## Step 1.5: Expand $1 into a list of source files
+
+The skill accepts `$1` as a file, a glob, or a directory (matching the old `/pdf` shape). Expand to a list of files; iterate Steps 2-11 once per file.
+
+```bash
+input="$1"
+if [ -d "$input" ]; then
+  # Directory: list *.md non-recursively
+  shopt -s nullglob
+  sources=( "$input"/*.md )
+  shopt -u nullglob
+elif [[ "$input" == *[\*\?]* ]]; then
+  # Glob expression: expand
+  shopt -s nullglob
+  # shellcheck disable=SC2206
+  sources=( $input )
+  shopt -u nullglob
+elif [ -f "$input" ]; then
+  sources=( "$input" )
+else
+  echo "ERROR: '$input' is not a file, glob, or directory."
+  exit 1
+fi
+
+if [ ${#sources[@]} -eq 0 ]; then
+  echo "ERROR: no markdown files matched '$input'."
+  exit 1
+fi
+
+echo "Will process ${#sources[@]} file(s):"
+printf "  - %s\n" "${sources[@]}"
+```
+
+Steps 2 through 11 below execute for EACH `$src` in `${sources[@]}`. Wrap them in:
+
+```bash
+for src in "${sources[@]}"; do
+  echo ""
+  echo "=== Processing: $src ==="
+  # ... Steps 2-11 below, using $src in place of any $1 reference ...
+done
+```
+
+Inside the loop, `$src` is the current source file. References to `$1` in Step 2's front-matter check and Step 6's pandoc input use `$src` instead.
+
 ## Step 2: Detect doctype
 
 Determine the doctype in this order (first match wins):
 
 1. `--doctype=<value>` flag on the command line.
-2. YAML front-matter `output_type` field in `$1` (read the front matter; the file's first 30 lines suffice):
+2. YAML front-matter `output_type` field in `$src` (the file's first 30 lines suffice):
    - `output_type ∈ {resume_final, resume_step1, resume_step2, resume_provenance}` → doctype `resume`
    - `output_type ∈ {cover_letter, coverletter}` → doctype `coverletter`
-3. Parent-directory name: if the file's immediate parent dir is `cover-letter` → doctype `coverletter`.
-4. Filename heuristic: if `basename "$1"` contains the substring `cover_letter` → `coverletter`, else → `resume`.
+   - (any other value or absent → fall through to next check)
+3. Parent-directory name: if the file's immediate parent dir is `cover-letter` → `coverletter`; if `resume` → `resume`.
+4. Filename heuristic:
+   - contains `cover_letter` → `coverletter`
+   - contains `step1`, `step2`, `step3`, or `resume` → `resume`
+   - otherwise → fall through
+5. Default fallback: `document`.
 
 ```bash
-# Pull --doctype= flag if present in any of the positional args
+# Pull --doctype= flag if present in any positional arg
 doctype=""
 for a in "$@"; do
   case "$a" in --doctype=*) doctype="${a#--doctype=}";; esac
 done
 
 if [ -z "$doctype" ]; then
-  # Try YAML front-matter
-  fm_type=$(awk '/^---$/{n++;next} n==1 && /^output_type:/{print $2; exit}' "$1" | tr -d '"' || true)
+  fm_type=$(awk '/^---$/{n++;next} n==1 && /^output_type:/{print $2; exit}' "$src" | tr -d '"' || true)
   case "$fm_type" in
     resume_final|resume_step1|resume_step2|resume_provenance) doctype="resume";;
     cover_letter|coverletter)                                  doctype="coverletter";;
   esac
 fi
 
-# Parent-directory heuristic: file inside <slug>/cover-letter/ → coverletter
 if [ -z "$doctype" ]; then
-  case "$(basename "$(dirname "$1")")" in
+  case "$(basename "$(dirname "$src")")" in
     cover-letter) doctype="coverletter";;
+    resume)       doctype="resume";;
   esac
 fi
 
-# Filename heuristic
 if [ -z "$doctype" ]; then
-  case "$(basename "$1")" in
-    *cover_letter*) doctype="coverletter";;
-    *)              doctype="resume";;
+  case "$(basename "$src")" in
+    *cover_letter*)                          doctype="coverletter";;
+    *step1*|*step2*|*step3*|*resume*)        doctype="resume";;
   esac
 fi
+
+# Final fallback: document
+doctype="${doctype:-document}"
 
 case "$doctype" in
-  resume|coverletter) ;;
-  *) echo "Doctype '$doctype' not supported (Phase 2: resume, coverletter)"; exit 1;;
+  resume|coverletter|document) ;;
+  *) echo "Doctype '$doctype' not supported (Phase 3: resume, coverletter, document)"; exit 1;;
 esac
 echo "Detected doctype: $doctype"
 ```
@@ -189,17 +240,17 @@ MARGIN_TOP=$(   jq -r --arg d "$doctype" '.doctypes[$d].margins_in.top'    "$cfg
 MARGIN_BOTTOM=$(jq -r --arg d "$doctype" '.doctypes[$d].margins_in.bottom' "$cfg")
 MARGIN_LEFT=$(  jq -r --arg d "$doctype" '.doctypes[$d].margins_in.left'   "$cfg")
 MARGIN_RIGHT=$( jq -r --arg d "$doctype" '.doctypes[$d].margins_in.right'  "$cfg")
-SECTION_LETTERSPACE=$(jq -r --arg d "$doctype" '.doctypes[$d].section_letterspace' "$cfg")
+SECTION_LETTERSPACE=$(jq -r --arg d "$doctype" '.doctypes[$d].section_letterspace // "0"' "$cfg")
 
 # Doctype-specific
 if [ "$doctype" = "resume" ]; then
   LIST_ITEMSEP_PT=$(jq -r '.doctypes.resume.list_itemsep_pt' "$cfg")
 elif [ "$doctype" = "coverletter" ]; then
   PARSKIP_EM=$(jq -r '.doctypes.coverletter.parskip_em' "$cfg")
+elif [ "$doctype" = "document" ]; then
+  PARSKIP_EM=$(jq -r '.doctypes.document.parskip_em' "$cfg")
 fi
 ```
-
-Note: `signature_image` (config key `.doctypes.coverletter.signature_image`) is reserved for a future Phase 2.1 enhancement that injects `\includegraphics` into the coverletter body. Phase 2 does not consume it.
 
 ## Step 5: Font availability check
 
@@ -218,7 +269,7 @@ fi
 ## Step 6: Pandoc body generation
 
 ```bash
-src="$1"
+# (src is set by the per-file loop wrapper from Step 1.5)
 basename=$(basename "$src" .md)
 work=$(mktemp -d)
 pandoc "$src" -t latex -o "${work}/body.tex" --no-highlight --wrap=none
@@ -339,12 +390,16 @@ slug=$(basename "$grandparent")
 apps_root=$(jq -r '.directories.applications_root' .jobops/config.json)
 
 case "$doctype" in
-  resume)      sub="resume";;
-  coverletter) sub="cover-letter";;
+  resume)       sub="resume";;
+  coverletter)  sub="cover-letter";;
+  "document")   sub="";;
 esac
 
-if [[ "$slug" =~ ^[A-Za-z0-9]+_[A-Za-z0-9]+_[0-9]{8}$ ]] \
-   && [[ "$grandparent" == "${apps_root}/"* ]]; then
+if [ "$doctype" = "document" ]; then
+  # Documents always write next to source — no app-slug subfolder.
+  outdir="$parent"
+elif [[ "$slug" =~ ^[A-Za-z0-9]+_[A-Za-z0-9]+_[0-9]{8}$ ]] \
+     && [[ "$grandparent" == "${apps_root}/"* ]]; then
   outdir="${grandparent}/${sub}"
 else
   outdir="$parent"
