@@ -61,6 +61,9 @@ City, ST • [email](mailto:…) • [linkedin.com/in/…](https://…) • [git
   `\role{COMPANY}{Dates}` + `\subrole{Title — Location}`. The subline is split on
   ` | `; the **last** segment is the right-aligned dates, the rest is the subrole.
   If there is no ` | `, the whole italic line becomes the subrole with no dates.
+- Markdown thematic breaks (`---`) are **dropped** — they would render as a
+  distracting standalone centered rule. Use them freely as source separators;
+  the navy `\section` headings are the only visible dividers.
 
 **Cover letter** (`output_type: cover_letter`):
 

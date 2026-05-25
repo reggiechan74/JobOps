@@ -275,6 +275,11 @@ function Pandoc(doc)
       out[#out + 1] = t and pandoc.RawBlock('latex', t) or b
       i = i + 1
 
+    elseif b.t == 'HorizontalRule' then
+      -- Drop markdown thematic breaks (`---`): they render as a distracting
+      -- centered rule. The de-numbered \section headings are the only dividers.
+      i = i + 1
+
     else
       out[#out + 1] = b
       i = i + 1
