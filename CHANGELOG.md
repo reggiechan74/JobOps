@@ -5,6 +5,17 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-05-25
+
+### Changed
+
+- **`plugins/jobops/templates/latex/` + `skills/latex-pdf/SKILL.md`** — reworked the `latex-pdf` pipeline so resumes and cover letters render to the hand-built "OMERS" gold standard, both built the same way off a shared base. New `preamble.base.tex.template` holds everything common (fonts, palette, section style, `\role`/`\subrole`, table helpers); the three `preamble.<doctype>` templates are now small deltas concatenated after it (`cat base + delta + body`), replacing the previous one-file-per-doctype copy. Fixes the four root causes of the prior broken output: (a) headings are now de-numbered (`\setcounter{secnumdepth}{-\maxdimen}`, which fragment-mode pandoc omits), so sections no longer render as "1.1 EXECUTIVE SUMMARY"; (b) the helper macros pandoc's standalone template normally supplies but fragment mode drops (`\tightlist`, `\pandocbounded`, `\real`, booktabs/calc) are now provided, so lists and tables no longer error; (c) `\setkeys{Gin}{keepaspectratio}` stops pandoc's `width=..,height=\textheight` from stretching signatures/logos; (d) the fragile `\AtBeginDocument{\renewcommand{\toprule}…}` table-header hack (which dropped header text below the navy band) is gone.
+
+### Added
+
+- **`plugins/jobops/templates/latex/omers-filter.lua`** — new pandoc Lua filter (Tier 2 parity) that maps the JobOps markdown authoring contract onto the OMERS LaTeX vocabulary: the first H1 (name + post-nominals) plus the following tagline/contact lines become a centered header block (resume) or left letterhead with navy rule (cover letter) rather than a heading; H2 → navy ruled `\section`; resume `### **COMPANY**` + italic `*Title | Location | Dates*` → `\role{COMPANY}{Dates}` + `\subrole{Title — Location}` (subline split on ` | `, last segment is the right-aligned dates); markdown tables → navy header row (white bold) + zebra striping, with a 29/71 split for the 2-column cover requirements table. Pass-through for the `document` doctype so rubrics/briefings keep working. Tolerant: an italic subline with no ` | ` renders wholly as the subrole with no dates.
+- **`skills/latex-pdf/SKILL.md` "Markdown authoring contract" section** — documents the exact markdown shape `buildresume` and `coverletter` must emit (and that the filter consumes) so output stays at parity. Step 6 now runs pandoc with `--lua-filter` + `-M doctype`; the Templates section and `setup/SKILL.md` expected-files list include the new base template and Lua filter. Verified by compiling a sample resume and a cover letter (with a markdown table and a non-square signature image): zero "Undefined control sequence" errors, no heading numbers, undistorted signature, correct page counts.
+
 ## [2.4.0] - 2026-05-25
 
 ### Changed

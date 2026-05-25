@@ -19,11 +19,87 @@ This skill resolves the LaTeX config and preamble via:
 
   {config.templates.base_dir}/{config.templates.active.latex_config}/latex/<filename>
 
-Templates referenced: `config.json`, `preamble.resume.tex.template`, `preamble.coverletter.tex.template`.
+Templates referenced: `config.json`, `preamble.base.tex.template`,
+`preamble.resume.tex.template`, `preamble.coverletter.tex.template`,
+`preamble.document.tex.template`, and `omers-filter.lua` (the Tier 2 pandoc
+filter). The final `.tex` is assembled as **base + doctype delta + body**:
+`preamble.base.tex.template` holds everything shared (fonts, palette,
+de-numbering, helper macros, section style, `\role`/`\subrole`, table helpers);
+each `preamble.<doctype>.tex.template` is a small delta (margins live in the
+base via tokens; the delta sets paragraph spacing, lists, tables, and
+`\begin{document}…__BODY__…\end{document}`).
 
 If `config.templates.active.latex_config` is unset (older config), fall back to
 `${CLAUDE_PLUGIN_ROOT}/templates/latex/` and warn the user to re-run
 `/jobops:setup` so their workspace owns a copy they can customize.
+
+## Markdown authoring contract
+
+The OMERS Lua filter maps a specific markdown shape onto the gold-standard
+LaTeX. The `buildresume` and `coverletter` skills MUST emit markdown in this
+shape; the filter is tolerant but parity depends on it.
+
+**Resume** (`output_type: resume_*`):
+
+```markdown
+# Name, PostNoms
+**One-line tagline**
+City, ST • [email](mailto:…) • [linkedin.com/in/…](https://…) • [github.com/…](https://…)
+
+## SECTION NAME
+
+### **COMPANY** (optional parenthetical)
+*Title | Location | Dates*
+
+- Achievement bullet with a metric.
+```
+
+- The first `#` (name) plus the tagline and contact lines become the centered
+  header block — not a section.
+- Each `## ` becomes a navy ruled `\section`.
+- Each `### **COMPANY**` immediately followed by an italic `*…*` subline becomes
+  `\role{COMPANY}{Dates}` + `\subrole{Title — Location}`. The subline is split on
+  ` | `; the **last** segment is the right-aligned dates, the rest is the subrole.
+  If there is no ` | `, the whole italic line becomes the subrole with no dates.
+
+**Cover letter** (`output_type: cover_letter`):
+
+```markdown
+# Name, PostNoms
+City, ST • [email](mailto:…) • [linkedin.com/in/…](https://…)
+
+Month DD, YYYY
+
+Recipient Name\
+Recipient Title\
+Recipient Org
+
+Dear FirstName:
+
+Body paragraph…
+
+## Requirements Alignment
+
+| Requirement | Evidence |
+|---|---|
+| … | … |
+
+On X: evidence paragraph…
+
+Sincerely,
+
+![](signature.png){width=2in}
+
+Name, PostNoms
+```
+
+- The first `#` plus the contact line become the left letterhead (name + navy
+  rule + contact). The date line that follows is NOT consumed into the header.
+- Use a trailing `\` for hard line breaks in the recipient block.
+- The 2-column requirements table renders with a navy header row, white bold
+  text, zebra striping, and a 29/71 column split.
+- Keep the signature image width in the markdown (`{width=2in}` ≈ 5 cm);
+  `keepaspectratio` in the base preamble prevents distortion regardless.
 
 ## Application Path Resolution
 
@@ -279,7 +355,12 @@ fi
 # (src is set by the per-file loop wrapper from Step 1.5)
 basename=$(basename "$src" .md)
 work=$(mktemp -d)
-pandoc "$src" -t latex -o "${work}/body.tex" --no-highlight --wrap=none
+
+# The OMERS Lua filter maps the markdown onto the hand-built LaTeX vocabulary
+# (header block, \section, \role/\subrole, navy+zebra tables). It needs to know
+# the doctype; it is pass-through for `document`.
+pandoc "$src" -t latex -o "${work}/body.tex" --no-highlight --wrap=none \
+  --lua-filter="${latex_dir}/omers-filter.lua" -M doctype="$doctype"
 ```
 
 ## Step 7: Generate preamble + assemble
@@ -288,12 +369,16 @@ Copy the template and run a single sed pipeline. Use a delimiter unlikely to
 appear in values (`|`):
 
 ```bash
-preamble_file="preamble.${doctype}.tex.template"
-if [ ! -f "${latex_dir}/${preamble_file}" ]; then
-  echo "ERROR: ${latex_dir}/${preamble_file} not found."
-  exit 1
-fi
-cp "${latex_dir}/${preamble_file}" "${work}/${basename}.tex"
+base_file="preamble.base.tex.template"
+delta_file="preamble.${doctype}.tex.template"
+for f in "$base_file" "$delta_file"; do
+  if [ ! -f "${latex_dir}/${f}" ]; then
+    echo "ERROR: ${latex_dir}/${f} not found."
+    exit 1
+  fi
+done
+# Assemble base + doctype delta into the working .tex, then substitute tokens.
+cat "${latex_dir}/${base_file}" "${latex_dir}/${delta_file}" > "${work}/${basename}.tex"
 tex="${work}/${basename}.tex"
 
 sed -i \
@@ -333,9 +418,9 @@ compile_once() {
 }
 
 regen_preamble() {
-  # Re-run the sed pipeline against a fresh copy of the template so iterative
-  # tuning starts from the template, not from an already-substituted file.
-  cp "${latex_dir}/${preamble_file}" "${work}/${basename}.tex"
+  # Re-assemble base + delta from scratch so iterative tuning starts from the
+  # templates, not from an already-substituted file.
+  cat "${latex_dir}/${base_file}" "${latex_dir}/${delta_file}" > "${work}/${basename}.tex"
   sed -i \
     -e "s|__FONT_SIZE_PT__|${FONT_SIZE_PT}|g" \
     -e "s|__MARGIN_TOP__|${MARGIN_TOP}|g" \
