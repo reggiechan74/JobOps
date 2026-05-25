@@ -5,6 +5,20 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-05-25
+
+### Changed
+
+- **`plugins/jobops/skills/coverletter/SKILL.md` + `plugins/jobops/agents/step4-cover-letter.md`** — overhauled the cover-letter methodology. The agent now enforces a fixed seven-element structure (thesis cold-open → role reframe → Requirements Alignment table → "On X:" evidence paragraphs → honest-limitation paragraph → forward-looking close → signature) written in a declarative first-person voice that demonstrates insight rather than stating intent. Adds a mandatory `primary_sources` provenance ledger in the YAML metadata (only `status: verified` sources may appear in prose; the block is reconciled when facts are cut), an expanded banned-construction tell-list (zero em-dashes, banned dead verbs/clichés/hedge adverbs), a gold-standard exemplar with anonymized placeholders, and an independent sentence-by-sentence sub-agent review pass (What / So What / Now What) before the letter is written to disk. Addresses the failure mode where letters read as generic AI prose that recited institutional facts and asserted fit instead of synthesizing verified primary sources into firm-specific insight.
+
+### Added
+
+- **`plugins/jobops/agents/step4-cover-letter.md` + `coverletter/SKILL.md`** — added an explicit ban on trivializing a skill gap as quickly closeable ("X is learnable in a few weeks," "I can pick this up fast," "a matter of ramping up"). The honest-limitation move now acknowledges a gap and pivots to a rarer existing strength without promising to erase the gap on a timeline. Codified in the honest-limitation rule (4.5), the anti-patterns list, and the banned-phrases tell-list, plus the skill's seven-element spec. Addresses the failure mode where a timeframe claim signals a lack of humility toward genuine expertise and undercuts the credibility of the limitation paragraph.
+
+### Fixed
+
+- **`plugins/jobops/agents/step4-cover-letter.md`** — corrected the `tools:` front matter, which listed tool names in lowercase (`read`, `write`, `grep`, `glob`, `webfetch`, `websearch`). Claude Code resolves agent tool grants case-sensitively against its PascalCase registry, so none of the lowercase names matched and the agent's tool allowlist was effectively broken. Names are now `Read`, `Write`, `Grep`, `Glob`, `WebFetch`, `WebSearch`. This was the only agent declaring an explicit `tools:` field — all others omit it and inherit full tool access, so no other agent carried the same defect.
+
 ## [2.3.0] - 2026-05-25
 
 ### Added

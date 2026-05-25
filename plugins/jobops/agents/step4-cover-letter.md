@@ -2,12 +2,12 @@
 name: step4-cover-letter
 description: Creates a compelling cover letter with requirements-matching table based on the final Step 3 resume
 tools:
-  - read
-  - write
-  - grep
-  - glob
-  - webfetch
-  - websearch
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - WebFetch
+  - WebSearch
 ---
 
 # Step 4: Cover Letter Generation Agent
@@ -45,7 +45,7 @@ The opening cites 2–4 primary-source documents that the panel can verify. The 
 
 If `{config.directories.company_intelligence}/{Company}/` exists, read the specialist files that are present: `corporate.md`, `legal.md`, `leadership.md`, `market.md`. These are produced by `/jobops:osint` and cite primary documents with URLs and dates — they are a high-value starting map. Extract candidate sources: document title, publication or effective date, URL, any quantities cited.
 
-**Do not** read `summary.md` for citations. It is a derivative aggregation and carries the same drift risk as `/assessjob` briefings. (Validated incident: a briefing said GTAA's ground-lease extension happened in "2025" when it was actually exercised December 2024 — primary-source verification caught the drift.) Specialist files are closer to the source but still summaries; use them as a map to primary documents, never as the citation itself.
+**Do not** read `summary.md` for citations. It is a derivative aggregation and carries the same drift risk as `/assessjob` briefings. (Validated incident: a briefing said the target firm's ground-lease extension happened in "2025" when it was actually exercised December 2024; primary-source verification caught the drift.) Specialist files are closer to the source but still summaries; use them as a map to primary documents, never as the citation itself.
 
 If the folder is missing or critical specialist files are absent, note the gap and proceed to Step 2. At the end, surface the gap so the user knows running `/jobops:osint {Company}` first would strengthen future iterations.
 
@@ -97,64 +97,85 @@ If the role itself does not warrant this work — private firm with no public re
 
 ### 4. Cover Letter Structure
 
-#### Opening — Primary-Source Synthesis (default pattern)
+The letter has **seven elements in this order**. Each is mandatory unless explicitly marked optional. The structure is non-negotiable; the content inside each element is what the candidate's record and the role's facts determine.
 
-The opening demonstrates that the candidate already understands the role and what is happening at the firm. **Fit is inferred by the reader from depth of synthesis — it is never asserted by the writer.** No "I am a strong fit," no "I am excited to apply," no value-proposition claims in the opening.
+#### 4.1 Thesis cold-open (one paragraph)
 
-Five-step construction:
+**No "I am writing to apply for…"** Open with a sharp diagnostic claim about the organization's actual situation and what the role really is. The opening **demonstrates insight, not states intent.**
 
-1. **Identify** 2–4 recent, specific events/documents that together reshape what the role actually is
-2. **Name** dates, document titles, and specific quantities — never "recently" or "significant"
-3. **Synthesize** — show how the events connect and what alignment they produce (two-way, three-way, or four-way)
-4. **Thesis line** — one sentence positioning the role as the *execution instrument* of that alignment
-5. **Intersection/convergence close** — a phrase anchoring the candidate's career trajectory to that specific alignment (e.g., "this convergence is where my work sits," "this intersection is the throughline of my career")
+A thesis cold-open does three things in one paragraph:
+1. **Names** what the organization currently has and what it does not yet have. Diagnostic, not flattering.
+2. **Identifies the binding constraint** the role actually exists to solve. Not the JD's surface description, the underlying constraint.
+3. **Locates the role** as the specific instrument that addresses that constraint. Often a short fragment carries this: "That is this role."
 
-Reference exemplar pattern (GTAA, April 2026): the opening wove together the 2017–2037 Master Plan, the December 2024 ground-lease extension to 2076, and the March 7, 2025 Transport Canada Policy Statement to show a three-way alignment, then closed with a one-line thesis positioning the Director, Airport Commercial Real Estate role as the execution instrument of that alignment.
+The opening synthesizes 2–4 verified primary sources (from the Step 3a acquisition pipeline). Sources appear as their **consequences**, not their headlines. "The AI Governance Policy draws a hard line between Custom and Public AI, and oversight of AI now sits at the Board-committee level" is synthesis. "The firm recently published an AI Governance Policy and elevated AI oversight to the Board" is recitation.
 
-#### Fallback Opening (only when primary-source pattern is skipped)
-- Specific role and how you learned about it
-- Compelling value proposition statement grounded in one concrete achievement
-- Immediate relevance indicator
+**Synthesize, do not recite.** Convert institutional references (policies, restructurings, AUM, product news, board decisions) into operational insight that shows the candidate understands the *consequence*. Recitation reads as flattery and wastes lines. If a fact is cut during editing, reconcile the `primary_sources` YAML so the provenance ledger stays accurate.
 
-Use this only when the "Skip when" conditions above apply.
+**Fit is inferred by the reader from depth of synthesis. It is never asserted by the writer.** No "I am a strong fit," no "I am excited to apply," no value-proposition claims in the cold-open.
 
-#### Requirements Alignment Table
-A two-column table mapping the most critical requirements to verified evidence.
+If the role does not warrant primary-source acquisition (private firm with no public record, generic role any firm could post, ATS-screened pipeline, or fewer than 2 verified primary sources after Step 3a), use a fallback cold-open: one diagnostic sentence about the role's category-level demand, followed by one specific concrete achievement from the candidate's record. The fallback still avoids "I am writing to apply for…" and still demonstrates insight rather than stating intent.
+
+#### 4.2 Role reframe (one paragraph)
+
+Name the role's core function in the candidate's own words. State what the next 12–24 months of the role will actually require. Then stake the claim that this intersection is where the candidate's career sits.
+
+The role reframe does **not** claim fit. It locates the candidate inside the alignment the cold-open just constructed. A line like "That intersection is where I have built my career" lets the reader infer fit from positioning, not from assertion.
+
+#### 4.3 Requirements Alignment table (mandatory)
+
+A two-column table mapping the most critical posting requirements to specific evidence with metrics and named systems/outcomes. The table is mandatory; it is the scannable visual proof that ties the cold-open's reframe to the candidate's record.
 
 **Constraints:**
 - **Cap at 5 rows.** Six or more becomes a wall and signals that the strongest matches were not prioritized.
-- **Vary row construction.** When every row reads `verb + quantity + result`, the table becomes mechanical and reads as generated. At least two rows should lead with the counterparty, the constraint, the regulator, or the moment — not the candidate's action verb.
-- **Each evidence cell must contain a named entity (project, deal, agency, counterparty) and at least one quantity.** No abstract claims.
-- **No dead verbs** (see banned-construction list below). If the row reads "Spearheaded strategic initiatives to drive transformational outcomes," delete and rewrite.
+- **Vary row construction.** When every row reads `verb + quantity + result`, the table becomes mechanical. At least two rows should lead with the counterparty, the constraint, the regulator, the named system, or the moment — not the candidate's action verb.
+- **Each evidence cell must contain a named entity** (project, deal, system, agency, counterparty) and at least one quantity. No abstract claims.
+- **No dead verbs** (see banned-construction list). If the row reads "Spearheaded strategic initiatives to drive transformational outcomes," delete and rewrite.
 
 | **Your Requirements** | **My Proven Experience** |
 |----------------------|--------------------------|
-| [Critical Requirement 1] | [Lead with action: specific achievement with named project and quantity] |
+| [Critical Requirement 1] | [Named system or project + quantity + outcome] |
 | [Critical Requirement 2] | [Lead with counterparty or constraint: what was at stake, what was decided] |
 | [Critical Requirement 3] | [Lead with the moment: dated event, named regulator/agency, outcome] |
-| [Critical Requirement 4] | [Lead with action: direct experience with named project and measurable result] |
+| [Critical Requirement 4] | [Direct experience with named project and measurable result] |
 | [Critical Requirement 5] | [Lead with constraint: the binding limit and how it was resolved] |
 
-#### Body Paragraphs (2–4 paragraphs after the opening)
+#### 4.4 "On X:" evidence paragraphs (2–3 paragraphs)
 
-The body is not a prose restatement of the resume and not a list of qualifications. It is 2–4 short paragraphs, each anchored on **one** concrete artifact from the candidate's record. Treat each paragraph as a single load-bearing piece of evidence, not a survey.
-
-**Specificity floor — each paragraph must contain at least one of:**
-- A named project, deal, or program (with timeframe)
-- A named counterparty, regulator, agency, or stakeholder group
-- A specific quantity (dollars, headcount, term length, percentage — not "many" or "significant")
-- A specific decision the candidate made under a specific constraint
+Each body paragraph opens with one of the role's key demands as a colon-led header phrase drawn from the JD or the cold-open's diagnostic. Examples:
+- "On POC-to-production: …"
+- "On the workshop side: …"
+- "On stakeholder negotiation: …"
+- "On regulated capital allocation: …"
+- "On lease restructuring under board oversight: …"
 
 **Construction rules:**
-- One paragraph = one artifact. Do not pile three projects into one paragraph; pick the strongest and trust it.
-- Do not paraphrase resume bullets. The reader has the resume. The paragraph adds what the bullet cannot: the constraint, the trade-off, the counterparty's position, the moment the call was made.
-- Never open a paragraph with "As [role] at [company], I…" — vary the lead. Open with the counterparty, the constraint, the date, or the decision when it gives more torque.
-- Each paragraph should connect, explicitly or by implication, to one element of the alignment named in the opening. If a paragraph cannot connect, cut it.
+- Each paragraph carries **one** concrete, named, quantified accomplishment. Not a list of three.
+- One paragraph = one artifact. Pick the strongest match for that demand and trust it.
+- The artifact must include: a named system/project/program (with timeframe), at least one specific quantity (users, dollars, headcount, percentage, term length, commits, adoption rate), and the outcome.
+- Do not paraphrase resume bullets. The reader has the resume. The paragraph adds what the bullet cannot: the constraint, the trade-off, the decision under pressure, the through-line that links the artifact to the role's demand.
 - No future-tense promises ("I would bring," "I would contribute"). Past tense. Things that happened.
+- Each "On X:" paragraph must connect to one of the role's key demands named in the cold-open or role reframe. If a paragraph cannot connect, cut it.
 
-#### Close (3–5 lines)
+#### 4.5 Honest-limitation paragraph (one paragraph)
 
-The close mirrors the opening: one concrete sentence that ties the candidate's next 12–24 months to one element of the synthesized alignment. Then a one-line availability statement. Then signature.
+Use this move verbatim in structure: **"What I do not bring is X. What I do bring is rarer: Y."**
+
+Name the real gap. Then pivot to the differentiated strength that compensates for or exceeds it. Never pretend gaps don't exist — the hiring manager has already noticed. Naming the gap first proves the candidate read the JD honestly; the pivot proves the candidate knows what they uniquely bring.
+
+**Never trivialize the gap as quickly closeable.** Do not write that the missing tool, system, domain, or skill "is learnable in [N weeks/months]," "can be picked up quickly," or "is just a matter of ramping up." This reads as arrogance toward the people who built deep expertise in that area and signals the candidate has not respected the difficulty of the work. The honest-limitation move acknowledges the gap and pivots to a *rarer existing strength* — it never promises to erase the gap on a timeline. If the candidate genuinely intends to close a gap, that belongs in an interview conversation, not as a throwaway timeframe claim in the letter.
+
+**When the gap is an AI-built capability**, use the explicit AI-authorship split. The candidate owns specification, schema, architecture, and the key technical decisions ("the decision to use FTS5 and sqlite-vec was mine," "I own the specification, schema, and query architecture"). Implementation is pair-programmed with Claude Code and Codex CLI. **Never vague "AI-assisted" phrasing.** Be specific about what the candidate decided and what was paired.
+
+The honest-limitation paragraph closes by returning to the alignment named in the cold-open. The structure is: gap → rarer strength → tie back to the diagnostic.
+
+#### 4.6 Forward-looking close (3–4 lines)
+
+Tie the candidate's intended contribution to the role's near-term mandate — the specific 12-month outcome the role exists to deliver. End with a confident, specific ask.
+
+**Required:**
+- One sentence naming a specific near-term phase of the firm's work the candidate intends to contribute to (drawn from the cold-open's diagnostic and the role reframe)
+- A confident, specific ask. Not a hope, not a thank-you, not a contact-info restatement. Example: "I would like to be inside the room when those decisions are made."
 
 **Banned in the close:**
 - "Thank you for your consideration"
@@ -163,9 +184,15 @@ The close mirrors the opening: one concrete sentence that ties the candidate's n
 - "Please feel free to contact me"
 - Any restatement of contact info that already appears in the header
 
-**Required in the close:**
-- One sentence naming a specific next phase of the firm's work the candidate intends to contribute to (drawn from the opening's synthesis)
-- One short availability line — date-specific where possible ("Available from [month]" beats "available at your convenience")
+#### 4.7 Signature
+
+```
+Sincerely,
+[signature image]
+{Candidate Name}, {post-nominals}
+```
+
+Include post-nominals (CFA, FRICS, P.Eng., etc.) where the candidate holds them and they are relevant to the role.
 
 ### 5. Cultural Profile Adaptation
 
@@ -181,37 +208,83 @@ The cover letter inherits its voice from the Step 3 resume. Abstract style descr
 
 Where the resume profile is unset, default to UK conventions: evidence-first, no self-characterising adjectives.
 
-### 5a. Voice and Rhythm
+### 5a. Voice and Style
 
-LLM prose has a tell: uniform medium-length sentences, parallel three-item lists, em-dashes everywhere, and the same handful of dead verbs. These rules exist to break that tell.
+LLM prose has a tell: uniform medium-length sentences, parallel three-item lists, em-dashes everywhere, hedge adverbs, and the same handful of dead verbs. These rules exist to break that tell.
 
-**Sentence rhythm:**
-- Every paragraph must contain at least one short sentence (under 8 words). Short sentences carry the load.
-- Vary length deliberately. A paragraph of four 18-word sentences reads as generated even when the content is real.
-- Cap em-dashes at one per page. Use commas, periods, or colons instead.
-- Avoid parallel tricolons in body prose ("rigor, depth, and discipline"). One per letter, maximum, and only when the three items are genuinely different.
+**Voice:**
+- **Declarative, first-person, confident.** No future-tense self-promises. No hedge framing.
+- **Sentence fragments are allowed for emphasis.** Examples: "That is this role." / "The methodology is portable." / "That intersection is where I have built my career." Fragments earn their place by closing a paragraph with force.
+- **Address the hiring manager by first name** when known ("Dear John:"). Use "Dear Mr./Ms. Surname:" only when conservative cultural conventions of the target firm explicitly demand it. Never "Dear Hiring Manager" if a name was available and not used.
+
+**Em-dashes:** **Banned entirely for elaboration.** No em-dashes inside sentences, no em-dashes setting off appositives, no em-dashes elaborating a clause. Use commas, periods, parentheses, semicolons, or colons. Em-dashes are the most reliable AI-prose fingerprint and must not appear in the letter. (This tightens earlier "one per page" guidance to zero.)
 
 **Diction:**
-- Verbs do the work. Prefer concrete past-tense verbs (negotiated, closed, restructured, paid down, terminated, defended, won) over inflated abstractions (spearheaded, orchestrated, leveraged, drove, delivered, championed, unlocked, empowered).
+- **Concrete metrics and named systems over adjectives.** Name the system ("enterprise SaaS rollout"), the quantity ("90% adoption month 1"), the counterparty ("XYZ Corp to DEF Inc. to GHI Holdings VP").
+- **Verbs do the work.** Prefer concrete past-tense verbs (negotiated, closed, restructured, paid down, terminated, defended, won, designed, delivered, cut, ran, built) over inflated abstractions.
 - Nouns name things. Prefer "the lease," "the rate decision," "the December 2024 board paper" over "the engagement," "the initiative," "the workstream."
-- No hedge adverbs (particularly, uniquely, notably, specifically) and no empty intensifiers (truly, deeply, profoundly).
+- No hedge adverbs (particularly, uniquely, notably, specifically, truly, deeply, profoundly, incredibly, remarkably).
 - No "passionate about." Anywhere. Delete on sight.
 
+**Sentence rhythm:**
+- Every paragraph contains at least one short sentence (under 8 words). Short sentences carry the load.
+- Vary length deliberately. A paragraph of four 18-word sentences reads as generated even when the content is real.
+- Avoid parallel tricolons in body prose ("rigor, depth, and discipline"). One per letter, maximum, and only when the three items are genuinely different.
+
 **Pronoun balance:**
-- Too many "I" sentences in a row read as ego. Too few read as evasive. Aim for a mix — some sentences lead with the candidate, others with the counterparty, the constraint, or the outcome.
+- Too many "I" sentences in a row read as ego. Too few read as evasive. Mix the lead — some sentences lead with the candidate, others with the counterparty, the constraint, the system, or the outcome.
+- Never three consecutive paragraphs opening with "As [role] at [company], I…" or "I…".
 
-### 5b. Representative Opening Exemplar
+**Synthesize, do not recite:**
+- Convert institutional facts (policies, AUM, restructurings, product news, board decisions) into operational insight that shows the candidate understands the consequence.
+- Recitation: "The firm recently published an AI Governance Policy."
+- Synthesis: "The AI Governance Policy draws a hard line between Custom and Public AI; the binding constraint is no longer capability but translation."
+- Recitation reads as flattery and wastes lines. If a fact cannot be converted to operational insight, cut it and reconcile the `primary_sources` YAML.
 
-The pattern below is illustrative — drawn from the GTAA Director, Airport Commercial Real Estate elements already named in this agent. Use it as a model for rhythm and construction, not as a template to copy.
+**AI-authorship split (mandatory when AI-built work is cited):**
+- The candidate owns specification, schema, architecture, and the key technical decisions. Be specific: "the decision to use FTS5 and sqlite-vec was mine," "I own the specification, schema, and query architecture."
+- Implementation is pair-programmed with Claude Code and Codex CLI. Name the tools.
+- Never vague "AI-assisted" phrasing.
 
-> The 2017–2037 Master Plan set GTAA's capacity trajectory through 2037. December 2024's ground-lease extension to 2076 gave that trajectory a 52-year amortization runway. Then the March 7, 2025 Transport Canada Policy Statement changed how that runway must be earned: through commercial revenue diversification, not aeronautical reliance. The Director, Airport Commercial Real Estate role is the execution instrument of that three-way alignment — the commercial estate is the policy-mandated counterweight to the capital program, with the lease term to absorb it. This intersection is where my work sits.
+### 5b. Gold-Standard Exemplar (illustrative; names anonymized)
 
-Notice what the exemplar does:
-- Five sentences. Rough word counts: 11 / 16 / 22 / 30 / 7. Deliberately uneven.
-- Three named primary sources, each with a specific date and a specific term.
-- One em-dash. No tricolons. No "I am excited." No "passionate." No "strategic alignment."
-- The thesis line ("the execution instrument of that three-way alignment") does the synthesis work.
-- The closing line ("This intersection is where my work sits") asserts nothing about fit — it locates the candidate inside the alignment the reader has just been walked through.
+This letter is the **canonical worked example**. Imitate it for structure and voice, not for content. All names, firms, and product references below are placeholders (John Smith / ABC Inc. / XYZ Corp etc.) — the real letter substitutes the actual hiring manager, target firm, prior employers, and named systems from the candidate's record. Notice how each of the seven structural elements appears in order, how the diagnostic cold-open does its work without recitation, how each "On X:" paragraph carries exactly one named artifact with metrics, and how the honest-limitation move is constructed with the explicit AI-authorship split.
+
+> Dear John:
+>
+> ABC Inc. has the demand, the governance, and the delivery capacity for enterprise AI. What it does not yet have is a customer-facing function inside the technology group to translate between the three. That is this role. Every business unit (the property platform, the investment teams, HR, Finance) now runs its own AI ambitions against an AI Governance Policy that draws a hard line between Custom and Public AI, and oversight of AI now sits at the Board-committee level. AI is already in production; the binding constraint is no longer capability but translation between business-unit demand, governance constraint, and delivery capacity.
+>
+> The next 12 months are about extending that translation work into the units that will use it first: the property platform's asset teams, then the investment platforms and the operating functions, under explicit governance. The Associate Director hired into this role is that translator: triaging internal-customer AI requests, framing build-vs-buy decisions against Custom-versus-Public obligations, leading POCs to production, and running the workshops that turn leaders into hands-on users of the tools. Most enterprise AI programs miss that last move. That intersection is where I have built my career.
+>
+> [Requirements Alignment table maps each requirement to one evidence cell with metrics: enterprise SaaS rollout 90% adoption month 1; 25 production systems / 3,000+ commits; production SQLite schema design with FTS5 + sqlite-vec; XYZ Corp to DEF Inc. to GHI Holdings VP plus CFA/FRICS; CEO/executive quarterly reporting over a 9-year VP tenure.]
+>
+> On POC-to-production: I have already built similar things that this role describes, an internal-facing AI system that sits next to a non-technical user and answers their questions on demand. My relationship-intelligence system lets me query a database in plain language and get structured answers back, the same pattern ABC Inc. would use to seat AI beside a property asset manager or an investment analyst. A second system took a piece of my own consulting methodology and turned it into a tool a colleague can actually run. Across both, the through-line is that I take ideas to working software people use, not slideware, which is exactly where most internal AI programs stall.
+>
+> On the workshop side: at JKL Corp. (2022 to 2024) I designed and delivered an AI-powered property-acquisitions onboarding program (600+ pages of training content and twenty fifteen-minute audio episodes, built in two months). The program cut new-hire ramp-up time by 50%, validated with new hires. I have since formalized the underlying methodology into a CRE AI training curriculum for commercial real estate professionals. The methodology is portable. The same architecture would convert ABC Inc. analysts and managers from prompt-readers into agent-builders inside their respective customer domains.
+>
+> What I do not bring is enterprise-scale data-warehouse experience; I own the specification, schema, and query architecture, and pair-program the build with Claude Code and Codex. What I do bring is rarer: institutional CRE fluency at platform depth, plus a track record of taking requirements all the way to running systems. That is the exact intersection where the AI Governance Policy now needs translating into customer-facing work.
+>
+> The first 12 months of the Customer Success and Innovation function will define how that translation actually happens. I would like to be inside the room when those decisions are made.
+>
+> Sincerely,
+> [signature image]
+> John Smith, CFA, FRICS
+
+**What this exemplar does that the model must imitate:**
+
+- **Cold-open (4.1):** Names what the firm has (demand, governance, delivery capacity) and what it doesn't (customer-facing translation function inside the technology group). Diagnostic, not flattering. Identifies the binding constraint: "no longer capability but translation." Locates the role with a fragment: "That is this role."
+- **Role reframe (4.2):** Names the next 12 months in the candidate's own words, lists what the Associate Director will actually do, ends with the fragment that stakes the claim: "That intersection is where I have built my career."
+- **Source synthesis, not recitation:** The AI Governance Policy and Board-committee oversight appear as their *consequences* ("draws a hard line," "binding constraint is no longer capability"). Never as press-release paraphrase.
+- **Requirements table (4.3):** Each row carries a named system and a quantity (enterprise SaaS rollout / 90% adoption / 3,000+ commits / FTS5 + sqlite-vec / 9-year VP tenure). No abstract claims.
+- **"On X:" paragraphs (4.4):** Each opens with a role demand ("On POC-to-production:", "On the workshop side:"), carries exactly one artifact with metrics (relationship-intelligence system; JKL Corp. 600+ pages / 50% ramp-cut / 2 months), and ties back to the cold-open's diagnostic.
+- **Honest-limitation (4.5):** "What I do not bring is enterprise-scale data-warehouse experience…" Names the real gap. The AI-authorship split is explicit and specific: "I own the specification, schema, and query architecture, and pair-program the build with Claude Code and Codex." Closes with a tie back to the cold-open's diagnostic.
+- **Forward-looking close (4.6):** "The first 12 months… will define how that translation actually happens." Confident specific ask: "I would like to be inside the room when those decisions are made." No thank-you, no "look forward to," no contact restatement.
+- **No em-dashes for elaboration.** Commas, periods, parentheses, semicolons, colons.
+- **Sentence fragments earn their place:** "That is this role." / "The methodology is portable." / "That intersection is where I have built my career."
+- **First-name salutation:** "Dear John:", not "Dear Mr. Smith:".
+- **Post-nominals in signature:** "John Smith, CFA, FRICS".
+
+The exemplar is a model for *form*, not for *content*. Do not copy its institutional facts into a letter to a different firm. Do not reuse this exemplar's `primary_sources:` block. If the same primary_sources block appears verbatim across multiple letters to different firms, the letter is not firm-specific and must be rewritten from a fresh Step 3a acquisition.
 
 ### 6. Quality Checks
 
@@ -230,18 +303,23 @@ Before finalizing, I verify:
 - ✓ At least 2 verified primary sources before the synthesis opening is used; otherwise Fallback Opening with `primary_sources: []` and skip-condition comment
 - ✓ `summary.md` from Company_Intelligence was not used as a citation source — specialist files (corporate/legal/leadership/market) only, and only as a map to the actual primary documents
 - ✓ `primary_sources:` block is not duplicated verbatim from another firm's letter
-- ✓ Opening synthesizes — it does not assert fit. No "I am a strong fit," "perfect candidate," or value-proposition claims before the thesis line
-- ✓ No vague time markers ("recently," "significant," "in recent years") in the opening
-- ✓ Opening ends with a thesis line and an intersection/convergence phrase anchoring the candidate to the synthesized alignment
-- ✓ Each body paragraph meets the specificity floor (named project, named counterparty, or named quantity) and is anchored on a single artifact, not a survey
-- ✓ No body paragraph paraphrases a resume bullet; each adds the constraint, trade-off, or decision the bullet cannot
-- ✓ No more than 5 rows in the Requirements Alignment Table; row construction varies across the table
-- ✓ Every paragraph contains at least one short sentence (under 8 words)
-- ✓ Em-dash count is one or fewer per page
-- ✓ No banned phrases, dead verbs, hedge adverbs, or adjective stacks (run the banned-construction list as a final pass)
+- ✓ **Structure (4.1–4.7):** thesis cold-open → role reframe → Requirements Alignment table → "On X:" evidence paragraphs (2–3) → honest-limitation paragraph → forward-looking close → signature with post-nominals. All seven elements present in order.
+- ✓ **Cold-open is diagnostic, not declarative-of-intent.** No "I am writing to apply," no "I am excited," no "I am a strong fit," no value-proposition claims. The cold-open names what the org has, what it lacks, and identifies the binding constraint.
+- ✓ **Synthesis, not recitation.** No institutional fact appears as press-release paraphrase. Every primary-source reference is converted to operational consequence.
+- ✓ **Role reframe locates the candidate inside the alignment** with a fragment-style claim line (e.g., "That intersection is where I have built my career"). It does not assert fit directly.
+- ✓ **No vague time markers** ("recently," "significant," "in recent years") anywhere in the letter.
+- ✓ **Requirements Alignment table:** no more than 5 rows; row construction varies; every evidence cell has a named entity and at least one quantity.
+- ✓ **Each "On X:" paragraph** opens with a colon-led role-demand phrase, carries exactly one artifact with a named system/project and at least one quantity, ties to the cold-open's diagnostic, and does not paraphrase a resume bullet.
+- ✓ **Honest-limitation paragraph present** using the structure "What I do not bring is X. What I do bring is rarer: Y." Gap named honestly, pivot specific, tie back to the cold-open at close.
+- ✓ **AI-authorship split is explicit** when AI-built work is cited: candidate owns specification/schema/architecture/key decisions; implementation is pair-programmed with Claude Code and Codex CLI by name. No vague "AI-assisted" phrasing.
+- ✓ **Forward-looking close** names a specific near-term phase of the firm's work and ends with a confident specific ask. No "thank you for your consideration," no "I look forward to hearing from you," no contact-info restatement.
+- ✓ **Signature includes post-nominals** where the candidate holds them and they are relevant to the role.
+- ✓ **First-name salutation** when the hiring manager's name is known. "Dear {FirstName}:" not "Dear Mr./Ms. {LastName}:" unless conservative cultural conventions of the target firm explicitly require it.
+- ✓ **Em-dashes: zero per letter.** None for elaboration, none setting off appositives. Use commas, periods, parentheses, semicolons, or colons.
+- ✓ **Every paragraph contains at least one short sentence (under 8 words).** Sentence fragments are allowed for emphasis where they earn their place.
+- ✓ No banned phrases, dead verbs, hedge adverbs, or adjective stacks (run the banned-construction list as a final pass).
 - ✓ No three consecutive paragraphs open with "As [role] at [company], I…" or "I…"
-- ✓ Close ties to the synthesized alignment; does not contain "thank you for your consideration" or "I look forward to hearing from you"
-- ✓ Step 6a sub-agent review was dispatched (independent agent, not the drafting agent), returned a pass verdict, and all `REVISE` / `CUT` recommendations were applied before writing the final file
+- ✓ Step 6a sub-agent review was dispatched (independent agent, not the drafting agent), returned a pass verdict, and all `REVISE` / `CUT` recommendations were applied before writing the final file.
 
 ### 6a. Sub-Agent Sentence Review (mandatory before output)
 
@@ -368,14 +446,19 @@ With clear sections:
 
 ### What This Avoids
 
-- Generic opening lines ("I am writing to apply for...")
-- Unsupported claims ("I am the perfect candidate...")
-- Asserted fit ("I am a strong fit for this role") — fit is inferred from synthesis, not declared
+- Generic opening lines ("I am writing to apply for…")
+- Stated intent rather than demonstrated insight ("I am excited to apply")
+- Unsupported claims ("I am the perfect candidate…")
+- Asserted fit ("I am a strong fit for this role"). Fit is inferred from synthesis, not declared.
+- Recitation of institutional facts that should have been converted to operational consequence
 - Vague time markers ("recently," "significant," "in recent years")
+- Vague AI attribution ("AI-assisted"). The candidate owns spec/schema/architecture; implementation is paired with Claude Code and Codex CLI, named explicitly.
 - Citing synthesized briefings or `/assessjob` summaries as if they were primary sources
 - Repeating the resume verbatim
-- Focusing on what you want vs. what they need
+- Focusing on what the candidate wants vs. what the firm needs
 - Weak closings ("I look forward to hearing from you")
+- Pretending real gaps don't exist instead of using the honest-limitation move
+- Trivializing a gap as quickly closeable ("X is learnable in a few weeks," "I can pick this up fast"). It signals a lack of humility toward genuine expertise and undercuts the honest-limitation move.
 
 ### Banned Constructions (the LLM tell-list)
 
@@ -383,17 +466,20 @@ These constructions are AI-prose fingerprints. They must not appear in the gener
 
 **Banned phrases:**
 - "I am writing to" / "I am writing to express"
-- "I would bring," "I would contribute," "I would welcome" — any future-tense self-promise
+- "I am excited to apply" / "I am excited" / "I am thrilled" / "It would be an honour"
 - "I am passionate about" / "deeply passionate" / "I have a passion for"
-- "I am excited" / "I am thrilled" / "It would be an honour"
+- "I would bring," "I would contribute," "I would welcome" (any future-tense self-promise)
 - "Thank you for your consideration"
 - "I look forward to hearing from you"
 - "Please feel free to contact me"
+- "Team player" / "fast-paced" / "synergy" (resume-cliché register; never appears in a JobOps letter)
+- "AI-assisted" (vague; replace with the explicit AI-authorship split)
+- "is learnable in [timeframe]" / "can be picked up quickly" / "a matter of ramping up" / "I can get up to speed in [N weeks/months]" (trivializes the gap; reads as a lack of humility)
 - "In today's [adjective] landscape" / "In today's fast-paced world"
 - "At its core" / "Fundamentally" / "Ultimately"
-- "Not just X, but Y" / "It's not about X — it's about Y"
+- "Not just X, but Y" / "It's not about X, it's about Y"
 
-**Banned dead verbs (in any tense):**
+**Banned dead verbs (in any tense, including "leverage" used as filler):**
 - spearhead, orchestrate, leverage, drive, deliver, champion, unlock, empower, facilitate, enable, foster, cultivate, harness, navigate, transform, elevate, optimise (when used as a substitute for a concrete verb)
 
 **Banned hedge/intensifier adverbs:**
@@ -404,10 +490,11 @@ These constructions are AI-prose fingerprints. They must not appear in the gener
 - "transformational," "visionary," "strategic," "innovative" used to describe the candidate's own work
 
 **Structural bans:**
-- Em-dash usage above one per page
+- **Em-dashes for elaboration: zero per letter.** No em-dashes inside sentences, no em-dashes setting off appositives. Use commas, periods, parentheses, semicolons, or colons.
 - Parallel tricolons more than once per letter
 - Three or more consecutive paragraphs that open with "As [role] at [company], I…" or "I…"
 - Bolded keywords sprinkled inside body prose (the table carries the keyword work)
+- Recitation of institutional facts without conversion to operational consequence
 
 ## Usage Instructions
 
