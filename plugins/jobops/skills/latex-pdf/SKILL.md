@@ -1,7 +1,7 @@
 ---
 description: Convert a markdown resume to a polished PDF via a config-driven LaTeX pipeline (replaces wkhtmltopdf-based /pdf for resumes)
 disable-model-invocation: true
-argument-hint: "<source.md> [theme] [doctype]"
+argument-hint: "<source.md> [theme] [pages]"
 ---
 
 ## Configuration
@@ -19,7 +19,7 @@ This skill resolves the LaTeX config and preamble via:
 
   {config.templates.base_dir}/{config.templates.active.latex_config}/latex/<filename>
 
-Templates referenced: `config.json`, `preamble.resume.tex.template`.
+Templates referenced: `config.json`, `preamble.resume.tex.template`, `preamble.coverletter.tex.template`.
 
 If `config.templates.active.latex_config` is unset (older config), fall back to
 `${CLAUDE_PLUGIN_ROOT}/templates/latex/` and warn the user to re-run
@@ -30,22 +30,23 @@ If `config.templates.active.latex_config` is unset (older config), fall back to
 This skill writes a PDF into a per-application folder.
 
 1. Parse `{Company}_{Role}_{YYYYMMDD}` from the markdown filename OR from the
-   parent folder name (the existing `buildresume` flow produces files inside
-   `{applications_root}/{slug}/resume/`, so the parent's parent is usually the
-   slug).
-2. Output dir: `{config.directories.applications_root}/{slug}/resume/`.
+   parent folder name (the existing `buildresume` / `coverletter` flows produce
+   files inside `{applications_root}/{slug}/{sub}/`, so the parent's parent is
+   usually the slug).
+2. Output dir is per-doctype: `{applications_root}/{slug}/resume/` for the
+   `resume` doctype; `{applications_root}/{slug}/cover-letter/` for the
+   `coverletter` doctype.
 3. If the slug cannot be parsed, write the PDF next to the source markdown and
    warn the user that application-folder placement was skipped.
 
 ## Arguments
 
 - `$1`: Source markdown file (required, absolute or relative to workspace).
-- `$2`: Theme name override (optional). Phase 1 ships only `navy-serif`. Any
-  other value: stop with "Theme '<name>' is not defined in latex/config.json.
-  Available: <list>". Phase 2 will add `modern`/`classic`/`minimal`.
-- `$3`: Doctype override (optional). Phase 1 supports only `resume`. Any other
-  value: stop with "Doctype '<name>' not supported in Phase 1 (resume only).
-  Phase 2 will add coverletter; Phase 3 will add document."
+- `$2`: Theme name override (optional). Available themes: `navy-serif`, `modern`, `classic`, `minimal`. Unknown name: stop with "Theme '<name>' is not defined in latex/config.json. Available: <list>".
+- `$3`: Target page count (optional). One of `1`, `2`, `3`, or `auto` (default `auto`). When 1/2/3, the skill iteratively tunes font_size_pt and list_itemsep_pt (resume) or parskip_em (coverletter) toward the target, up to 3 iterations. When `auto`, the skill compiles once with the doctype's defaults.
+
+Flags:
+- `--doctype=resume|coverletter` — override doctype autodetection. Rarely needed.
 
 ## Step 1: Dependency check
 
@@ -67,7 +68,47 @@ fi
 
 Stop on missing deps; do NOT proceed.
 
-## Step 2: Load and validate LaTeX config
+## Step 2: Detect doctype
+
+Determine the doctype in this order (first match wins):
+
+1. `--doctype=<value>` flag on the command line.
+2. YAML front-matter `output_type` field in `$1` (read the front matter; the file's first 30 lines suffice):
+   - `output_type ∈ {resume_final, resume_step1, resume_step2, resume_provenance}` → doctype `resume`
+   - `output_type ∈ {cover_letter, coverletter}` → doctype `coverletter`
+3. Filename heuristic: if `basename "$1"` contains the substring `cover_letter` → `coverletter`, else → `resume`.
+
+```bash
+# Pull --doctype= flag if present in any of the positional args
+doctype=""
+for a in "$@"; do
+  case "$a" in --doctype=*) doctype="${a#--doctype=}";; esac
+done
+
+if [ -z "$doctype" ]; then
+  # Try YAML front-matter
+  fm_type=$(awk '/^---$/{n++;next} n==1 && /^output_type:/{print $2; exit}' "$1" | tr -d '"' || true)
+  case "$fm_type" in
+    resume_final|resume_step1|resume_step2|resume_provenance) doctype="resume";;
+    cover_letter|coverletter)                                  doctype="coverletter";;
+  esac
+fi
+
+if [ -z "$doctype" ]; then
+  case "$(basename "$1")" in
+    *cover_letter*) doctype="coverletter";;
+    *)              doctype="resume";;
+  esac
+fi
+
+case "$doctype" in
+  resume|coverletter) ;;
+  *) echo "Doctype '$doctype' not supported (Phase 2: resume, coverletter)"; exit 1;;
+esac
+echo "Detected doctype: $doctype"
+```
+
+## Step 3: Load and validate LaTeX config
 
 Read the LaTeX config:
 
@@ -101,13 +142,9 @@ jq -e '
 
 On failure, print the offending key path and stop.
 
-## Step 3: Resolve effective settings
+## Step 4: Resolve effective settings
 
-Determine doctype (`$3` override, else `resume`). Phase 1 hard-rejects anything
-other than `resume`.
-
-Determine theme: `$2` override → `doctype.theme` → `default_theme`. If the
-named theme is not in `themes`, stop with the "available themes" message.
+Doctype is already resolved (Step 2). Determine theme: `$2` override → `doctype.theme` → `default_theme`. If the named theme is not in `themes`, stop with the "available themes" message.
 
 Pull these resolved values into shell variables (use `jq -r`):
 
@@ -117,10 +154,14 @@ MAIN_FONT, HEADING_FONT, HEADING_FONT_FALLBACK,
 ACCENT_R, ACCENT_G, ACCENT_B,
 MUTED_R, MUTED_G, MUTED_B,
 MARGIN_TOP, MARGIN_BOTTOM, MARGIN_LEFT, MARGIN_RIGHT,
-LIST_ITEMSEP_PT, SECTION_LETTERSPACE
+SECTION_LETTERSPACE
 ```
 
-## Step 4: Font availability check
+Then, doctype-specific:
+- If `doctype == "resume"`: also pull `LIST_ITEMSEP_PT` from `.doctypes.resume.list_itemsep_pt`.
+- If `doctype == "coverletter"`: also pull `PARSKIP_EM` from `.doctypes.coverletter.parskip_em` and `SIGNATURE_IMAGE` from `.doctypes.coverletter.signature_image` (may be `null`).
+
+## Step 5: Font availability check
 
 ```bash
 fallback_msg=""
@@ -134,7 +175,7 @@ if ! fc-list | grep -Fiq "$HEADING_FONT"; then
 fi
 ```
 
-## Step 5: Pandoc body generation
+## Step 6: Pandoc body generation
 
 ```bash
 src="$1"
@@ -143,13 +184,18 @@ work=$(mktemp -d)
 pandoc "$src" -t latex -o "${work}/body.tex" --no-highlight --wrap=none
 ```
 
-## Step 6: Generate preamble + assemble
+## Step 7: Generate preamble + assemble
 
 Copy the template and run a single sed pipeline. Use a delimiter unlikely to
 appear in values (`|`):
 
 ```bash
-cp "${latex_dir}/preamble.resume.tex.template" "${work}/${basename}.tex"
+preamble_file="preamble.${doctype}.tex.template"
+if [ ! -f "${latex_dir}/${preamble_file}" ]; then
+  echo "ERROR: ${latex_dir}/${preamble_file} not found."
+  exit 1
+fi
+cp "${latex_dir}/${preamble_file}" "${work}/${basename}.tex"
 tex="${work}/${basename}.tex"
 
 sed -i \
@@ -168,7 +214,8 @@ sed -i \
   -e "s|__HEADING_FONT_FALLBACK__|${HEADING_FONT_FALLBACK}|g" \
   -e "s|__HEADING_FONT__|${HEADING_FONT}|g" \
   -e "s|__SECTION_LETTERSPACE__|${SECTION_LETTERSPACE}|g" \
-  -e "s|__LIST_ITEMSEP_PT__|${LIST_ITEMSEP_PT}|g" \
+  -e "s|__LIST_ITEMSEP_PT__|${LIST_ITEMSEP_PT:-2.3}|g" \
+  -e "s|__PARSKIP_EM__|${PARSKIP_EM:-0.4}|g" \
   -e "s|__LINE_SPREAD__|${LINE_SPREAD}|g" \
   "$tex"
 
@@ -176,7 +223,7 @@ sed -i \
 sed -i -e "/__BODY__/{r ${work}/body.tex" -e "d;}" "$tex"
 ```
 
-## Step 7: Compile (2 passes)
+## Step 8: Compile (2 passes)
 
 ```bash
 ( cd "$work" && xelatex -interaction=nonstopmode "${basename}.tex" >/dev/null \
@@ -186,7 +233,7 @@ sed -i -e "/__BODY__/{r ${work}/body.tex" -e "d;}" "$tex"
 
 On failure, leave `$work` in place and tell the user the log path.
 
-## Step 8: Resolve output dir and copy artifacts
+## Step 9: Resolve output dir and copy artifacts
 
 ```bash
 # Try to detect slug from parent folder structure (buildresume layout):
@@ -195,9 +242,14 @@ grandparent=$(dirname "$parent")
 slug=$(basename "$grandparent")
 apps_root=$(jq -r '.directories.applications_root' .jobops/config.json)
 
+case "$doctype" in
+  resume)      sub="resume";;
+  coverletter) sub="cover-letter";;
+esac
+
 if [[ "$slug" =~ ^[A-Za-z0-9]+_[A-Za-z0-9]+_[0-9]{8}$ ]] \
    && [[ "$grandparent" == "${apps_root}/"* ]]; then
-  outdir="${grandparent}/resume"
+  outdir="${grandparent}/${sub}"
 else
   outdir="$parent"
   echo "WARN: could not resolve application slug; writing PDF next to source ($outdir)."
@@ -208,7 +260,7 @@ cp "${work}/${basename}.pdf" "${outdir}/${basename}.pdf"
 cp "${work}/${basename}.tex" "${outdir}/${basename}.tex"   # advanced override artifact
 ```
 
-## Step 9: Page/fill report
+## Step 10: Page/fill report
 
 ```bash
 pages="?"; fill="unavailable"
@@ -245,7 +297,7 @@ echo "REPORT: pages=${pages}, last_page_fill≈${fill}"
 acceptable for Phase 1 — the report just stays "unavailable" and the user
 sees the install hint.)
 
-## Step 10: Final report
+## Step 11: Final report
 
 Print:
 
@@ -253,7 +305,7 @@ Print:
 latex-pdf complete.
   Source:   $src
   Theme:    $THEME_NAME
-  Doctype:  resume
+  Doctype:  ${doctype}
   Output:   ${outdir}/${basename}.pdf
   TeX:      ${outdir}/${basename}.tex   (advanced-override artifact)
   Pages:    ${pages}
