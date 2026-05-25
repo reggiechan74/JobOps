@@ -8,6 +8,7 @@ copies under `.jobops/templates/custom/latex/` and switch via
 Files:
 - `preamble.resume.tex.template` — resume preamble with `__TOKEN__` substitutions.
 - `preamble.coverletter.tex.template` — coverletter preamble (wider margins, longtable styling, signature support).
+- `preamble.document.tex.template` — generic document preamble (rubrics, briefings, analyses).
 - `config.json` — themes + doctypes registry. See `../../skills/latex-pdf/SKILL.md` for schema.
 
 The skill GENERATES the final `.tex`. You do not edit `.tex` files directly.
