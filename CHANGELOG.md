@@ -13,11 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`plugins/jobops/templates/latex/`** — bundled LaTeX assets: `preamble.resume.tex.template` (navy-serif preamble with `__TOKEN__` placeholders), `config.json` (themes + doctypes registry), `README.md`. Copied into `.jobops/templates/default/latex/` by `/jobops:setup`.
 - `latex-pdf` Phase 2: coverletter doctype + `modern`/`classic`/`minimal` named themes + page-count targeting via `$3` arg (`1|2|3|auto`). Doctype is autodetected from YAML front-matter `output_type` or filename heuristic; override with `--doctype=`. Coverletter PDFs go to `{applications_root}/{slug}/cover-letter/`. Page-count targeting iteratively tunes font_size_pt + list_itemsep_pt (resume) or parskip_em (coverletter) toward the target, max 3 iterations.
 - `plugins/jobops/templates/latex/preamble.coverletter.tex.template` — coverletter LaTeX preamble with wider margins, longtable styling for requirements tables, signature image hook.
+- `latex-pdf` Phase 3: generic `document` doctype + `$1` accepts file/glob/directory (matches the old `/pdf` shape). Default doctype fallback is now `document` when no resume/coverletter signals are present. Three preamble templates ship.
+- `plugins/jobops/templates/latex/preamble.document.tex.template` — clean general-purpose preamble for rubrics, briefings, career-analysis, and crisis-management outputs.
 
 ### Changed
 
 - **`plugins/jobops/skills/setup/SKILL.md`** — Step 5 now also copies the `templates/latex/` subdir into the workspace. Step 6 registers `templates.active.latex_config: "default"` so the `latex-pdf` skill can resolve LaTeX assets via the standard template-resolution contract.
 - `latex-pdf` arg `$3` repurposed from doctype-override to page-count target. Doctype-override now lives on the `--doctype=` flag.
+- `latex-pdf` doctype autodetect now falls through to `document` (was: defaulted to `resume`). Step-named files (`step1_*`, `step2_*`, `step3_*`) and files with `resume` in the name still classify as `resume`. Files in `<slug>/resume/` or `<slug>/cover-letter/` are caught by the parent-directory check.
+- `markdown-to-pdf` and `convert-to-pdf` skills are now thin deprecation stubs that delegate to `latex-pdf`. They will be removed in the release AFTER the next one. Existing workflows continue to function with a deprecation warning.
+
+### Deprecated
+
+- `/jobops:markdown-to-pdf` — use `/jobops:latex-pdf` instead. Stub remains for one release.
+- `/jobops:convert-to-pdf` — use `/jobops:latex-pdf` instead. Stub remains for one release.
 
 ## [2.2.1] - 2026-05-24
 
