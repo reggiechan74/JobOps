@@ -9,6 +9,33 @@
       "muted_rgb": [96, 103, 112],
       "font_size_pt": 11,
       "line_spread": 1.05
+    },
+    "modern": {
+      "main_font": "Lato",
+      "heading_font": "Lato",
+      "heading_font_fallback": "TeX Gyre Heros",
+      "accent_rgb": [37, 99, 235],
+      "muted_rgb": [82, 90, 102],
+      "font_size_pt": 10.5,
+      "line_spread": 1.08
+    },
+    "classic": {
+      "main_font": "TeX Gyre Pagella",
+      "heading_font": "TeX Gyre Pagella",
+      "heading_font_fallback": "TeX Gyre Termes",
+      "accent_rgb": [40, 40, 40],
+      "muted_rgb": [110, 110, 110],
+      "font_size_pt": 11,
+      "line_spread": 1.10
+    },
+    "minimal": {
+      "main_font": "TeX Gyre Pagella",
+      "heading_font": "Lato Light",
+      "heading_font_fallback": "TeX Gyre Heros",
+      "accent_rgb": [120, 120, 120],
+      "muted_rgb": [160, 160, 160],
+      "font_size_pt": 10.5,
+      "line_spread": 1.14
     }
   },
   "doctypes": {
@@ -18,6 +45,14 @@
       "page_fill_target": 0.92,
       "list_itemsep_pt": 2.3,
       "section_letterspace": 7.0
+    },
+    "coverletter": {
+      "theme": "navy-serif",
+      "margins_in": { "top": 0.9, "bottom": 0.9, "left": 1.05, "right": 1.05 },
+      "page_fill_target": 0.88,
+      "section_letterspace": 6.0,
+      "parskip_em": 0.7,
+      "signature_image": null
     }
   }
 }
