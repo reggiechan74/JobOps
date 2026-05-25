@@ -5,6 +5,17 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **`plugins/jobops/skills/latex-pdf/SKILL.md`** — new config-driven markdown→LaTeX→PDF pipeline for resumes (Phase 1). User edits markdown content and a JSON config; the skill generates the `.tex` and compiles via xelatex. Zero-config default reproduces the proven `navy-serif` theme exactly. Outputs both the `.pdf` and the generated `.tex` (advanced-override artifact) into `{applications_root}/{slug}/resume/`, plus a `pages=N, last_page_fill≈XX%` report. Phase 2 will add coverletter doctype + named themes; Phase 3 will retire `markdown-to-pdf` and `convert-to-pdf` and repoint `/pdf`. Plan: `docs/superpowers/plans/2026-05-25-markdown-to-latex-pdf-phase1.md`.
+- **`plugins/jobops/templates/latex/`** — bundled LaTeX assets: `preamble.resume.tex.template` (navy-serif preamble with `__TOKEN__` placeholders), `config.json` (themes + doctypes registry), `README.md`. Copied into `.jobops/templates/default/latex/` by `/jobops:setup`.
+
+### Changed
+
+- **`plugins/jobops/skills/setup/SKILL.md`** — Step 5 now also copies the `templates/latex/` subdir into the workspace. Step 6 registers `templates.active.latex_config: "default"` so the `latex-pdf` skill can resolve LaTeX assets via the standard template-resolution contract.
+
 ## [2.2.1] - 2026-05-24
 
 ### Fixed
