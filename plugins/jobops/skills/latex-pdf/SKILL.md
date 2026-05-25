@@ -54,12 +54,13 @@ missing=()
 command -v pandoc  >/dev/null || missing+=("pandoc")
 command -v xelatex >/dev/null || missing+=("xelatex (texlive-xetex)")
 command -v fc-list >/dev/null || missing+=("fc-list (fontconfig)")
+command -v jq      >/dev/null || missing+=("jq")
 if [ ${#missing[@]} -gt 0 ]; then
   echo "MISSING DEPENDENCIES: ${missing[*]}"
   echo "Install on Debian/Ubuntu:"
-  echo "  sudo apt-get install -y texlive-xetex texlive-fonts-extra pandoc poppler-utils fontconfig"
+  echo "  sudo apt-get install -y texlive-xetex texlive-fonts-extra pandoc poppler-utils fontconfig jq"
   echo "On macOS (Homebrew):"
-  echo "  brew install --cask mactex-no-gui && brew install pandoc poppler"
+  echo "  brew install --cask mactex-no-gui && brew install pandoc poppler jq"
   exit 1
 fi
 ```
@@ -218,7 +219,7 @@ if command -v pdftoppm >/dev/null && command -v python3 >/dev/null; then
   png="${work}/lastpage.png"
   pdftoppm -png -r 100 -f "$pages" -l "$pages" "${outdir}/${basename}.pdf" "${work}/lastpage" 2>/dev/null
   # pdftoppm appends -N for page N; find the produced file:
-  produced=$(ls "${work}"/lastpage-*.png 2>/dev/null | head -1)
+  produced=$(find "${work}" -maxdepth 1 -name 'lastpage-*.png' | head -1)
   if [ -n "$produced" ]; then
     fill=$(python3 - "$produced" <<'PY'
 import sys
