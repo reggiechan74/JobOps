@@ -53,6 +53,12 @@
       "section_letterspace": 6.0,
       "parskip_em": 0.7,
       "signature_image": null
+    },
+    "document": {
+      "theme": "modern",
+      "margins_in": { "top": 0.8, "bottom": 0.8, "left": 1.0, "right": 1.0 },
+      "page_fill_target": 0.9,
+      "parskip_em": 0.5
     }
   }
 }
