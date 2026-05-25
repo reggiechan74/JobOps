@@ -8,6 +8,6 @@ copies under `.jobops/templates/custom/latex/` and switch via
 Files:
 - `preamble.resume.tex.template` — navy-serif resume preamble with `__TOKEN__`
   substitutions. Tokens are listed at the top of the template.
-- `config.json` — themes + doctypes registry. See SKILL.md for schema.
+- `config.json` — themes + doctypes registry. See `../../skills/latex-pdf/SKILL.md` for schema.
 
 The skill GENERATES the final `.tex`. You do not edit `.tex` files directly.

@@ -1,0 +1,23 @@
+{
+  "default_theme": "navy-serif",
+  "themes": {
+    "navy-serif": {
+      "main_font": "TeX Gyre Pagella",
+      "heading_font": "Lato",
+      "heading_font_fallback": "TeX Gyre Heros",
+      "accent_rgb": [27, 54, 93],
+      "muted_rgb": [96, 103, 112],
+      "font_size_pt": 11,
+      "line_spread": 1.05
+    }
+  },
+  "doctypes": {
+    "resume": {
+      "theme": "navy-serif",
+      "margins_in": { "top": 0.7, "bottom": 0.7, "left": 0.85, "right": 0.85 },
+      "page_fill_target": 0.92,
+      "list_itemsep_pt": 2.3,
+      "section_letterspace": 7.0
+    }
+  }
+}
