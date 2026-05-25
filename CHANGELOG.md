@@ -5,28 +5,33 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.3.0] - 2026-05-25
 
 ### Added
 
-- **`plugins/jobops/skills/latex-pdf/SKILL.md`** — new config-driven markdown→LaTeX→PDF pipeline for resumes (Phase 1). User edits markdown content and a JSON config; the skill generates the `.tex` and compiles via xelatex. Zero-config default reproduces the proven `navy-serif` theme exactly. Outputs both the `.pdf` and the generated `.tex` (advanced-override artifact) into `{applications_root}/{slug}/resume/`, plus a `pages=N, last_page_fill≈XX%` report. Phase 2 will add coverletter doctype + named themes; Phase 3 will retire `markdown-to-pdf` and `convert-to-pdf` and repoint `/pdf`. Plan: `docs/superpowers/plans/2026-05-25-markdown-to-latex-pdf-phase1.md`.
-- **`plugins/jobops/templates/latex/`** — bundled LaTeX assets: `preamble.resume.tex.template` (navy-serif preamble with `__TOKEN__` placeholders), `config.json` (themes + doctypes registry), `README.md`. Copied into `.jobops/templates/default/latex/` by `/jobops:setup`.
-- `latex-pdf` Phase 2: coverletter doctype + `modern`/`classic`/`minimal` named themes + page-count targeting via `$3` arg (`1|2|3|auto`). Doctype is autodetected from YAML front-matter `output_type` or filename heuristic; override with `--doctype=`. Coverletter PDFs go to `{applications_root}/{slug}/cover-letter/`. Page-count targeting iteratively tunes font_size_pt + list_itemsep_pt (resume) or parskip_em (coverletter) toward the target, max 3 iterations.
-- `plugins/jobops/templates/latex/preamble.coverletter.tex.template` — coverletter LaTeX preamble with wider margins, longtable styling for requirements tables, signature image hook.
-- `latex-pdf` Phase 3: generic `document` doctype + `$1` accepts file/glob/directory (matches the old `/pdf` shape). Default doctype fallback is now `document` when no resume/coverletter signals are present. Three preamble templates ship.
-- `plugins/jobops/templates/latex/preamble.document.tex.template` — clean general-purpose preamble for rubrics, briefings, career-analysis, and crisis-management outputs.
+- **`plugins/jobops/skills/latex-pdf/SKILL.md`** — new config-driven markdown→LaTeX→PDF pipeline replacing the old wkhtmltopdf and Playwright converters. User edits markdown content and an optional JSON config; the skill generates the `.tex` preamble per-invocation and compiles via xelatex (2 passes). Zero-config default reproduces a calibrated `navy-serif` design (TeX Gyre Pagella + Lato, navy/grey palette, needspace-protected role headings). Addresses the failure mode where CSS+wkhtmltopdf couldn't reliably hit page targets and where Playwright-based rendering pulled in a browser dependency just to print HTML to PDF. Plans archived under `docs/superpowers/plans/2026-05-25-{markdown-to-latex-pdf-phase1,latex-pdf-phase2,latex-pdf-phase3}.md`.
+- **Three doctypes** — `resume` (Phase 1), `coverletter` (Phase 2, wider margins + longtable navy-header styling), `document` (Phase 3, generic clean preamble for rubrics / briefings / career-analysis / crisis-management outputs). Autodetected per file via the chain: `--doctype=` flag → YAML `output_type` → parent-dir (`resume/`, `cover-letter/`) → filename substring (`step{1,2,3}`, `resume`, `cover_letter`) → default `document`.
+- **Four themes** — `navy-serif`, `modern`, `classic`, `minimal`. Selected via `$2`. The three new themes port the design intent of the old `convert-to-pdf` CSS themes into LaTeX dimensions (font family, RGB accents, font_size_pt, line_spread).
+- **Page-count targeting** — `$3` accepts `1|2|3|auto` (default `auto`). When a target is set, the skill iteratively tunes `font_size_pt` and `list_itemsep_pt` (resume) or `parskip_em` (coverletter/document) toward the target, max 3 iterations. Falls through with a `WARN: could not hit target` if it can't converge — conservative deltas favor stability over forcing a fit.
+- **Glob / directory input** — `$1` accepts a single file, a glob pattern, or a directory (non-recursive `*.md` expansion). Matches the old `/pdf` invocation shape so existing workflows keep working.
+- **`plugins/jobops/templates/latex/`** — bundled LaTeX assets installed into the workspace by `/jobops:setup`: three preamble templates with `__TOKEN__` placeholders, a `config.json` themes+doctypes registry, and a README.
 
 ### Changed
 
-- **`plugins/jobops/skills/setup/SKILL.md`** — Step 5 now also copies the `templates/latex/` subdir into the workspace. Step 6 registers `templates.active.latex_config: "default"` so the `latex-pdf` skill can resolve LaTeX assets via the standard template-resolution contract.
-- `latex-pdf` arg `$3` repurposed from doctype-override to page-count target. Doctype-override now lives on the `--doctype=` flag.
-- `latex-pdf` doctype autodetect now falls through to `document` (was: defaulted to `resume`). Step-named files (`step1_*`, `step2_*`, `step3_*`) and files with `resume` in the name still classify as `resume`. Files in `<slug>/resume/` or `<slug>/cover-letter/` are caught by the parent-directory check.
-- `markdown-to-pdf` and `convert-to-pdf` skills are now thin deprecation stubs that delegate to `latex-pdf`. They will be removed in the release AFTER the next one. Existing workflows continue to function with a deprecation warning.
+- **`plugins/jobops/skills/setup/SKILL.md`** — Step 5 now also copies the `templates/latex/` subdir into the workspace. Step 6 emits a new `templates.active.latex_config: "default"` key in `.jobops/config.json` so the `latex-pdf` skill can resolve LaTeX assets via the standard `{base_dir}/{active.<key>}/<filename>` template contract.
+- **`plugins/jobops/skills/markdown-to-pdf/SKILL.md`** — replaced wholesale with a thin deprecation stub (174 lines → 30). Prints a DEPRECATED notice and delegates to `/jobops:latex-pdf` with the same `$1`. The old `$2` output-dir argument is no longer honored (the new skill writes per-doctype next to source or into the application folder); the stub warns explicitly if `$2` is passed. Will be removed in the release AFTER 2.3.0 — this is the one-release deprecation window the migration plan called for.
+- **`plugins/jobops/skills/convert-to-pdf/SKILL.md`** — replaced wholesale with a thin deprecation stub (360 lines → 25). Prints a DEPRECATED notice and delegates to `/jobops:latex-pdf` with the same `$1` `$2` `$3` arguments (file, theme, pages). Themes and page-count semantics carry over unchanged. Will be removed in the release AFTER 2.3.0.
 
 ### Deprecated
 
-- `/jobops:markdown-to-pdf` — use `/jobops:latex-pdf` instead. Stub remains for one release.
-- `/jobops:convert-to-pdf` — use `/jobops:latex-pdf` instead. Stub remains for one release.
+- **`/jobops:markdown-to-pdf`** — use `/jobops:latex-pdf` instead. Stub remains for 2.3.0 only; will be deleted in the next release.
+- **`/jobops:convert-to-pdf`** — use `/jobops:latex-pdf` instead. Stub remains for 2.3.0 only; will be deleted in the next release.
+
+### Notes
+
+- The `signature_image` config key on the `coverletter` doctype is reserved but inert in 2.3.0 — a future patch will wire it into the coverletter preamble body.
+- Hand-crafted resume `\role`/`\subrole` macro fidelity (vs pandoc's default `\section`/`\subsection` mapping) requires a Lua filter — deferred to a later release; the navy-serif default already looks correct with vanilla pandoc output.
+- No functional changes to `jobops-ic`; bumped to 2.3.0 only for marketplace alignment.
 
 ## [2.2.1] - 2026-05-24
 
