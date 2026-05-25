@@ -90,7 +90,7 @@ cp -r ${CLAUDE_PLUGIN_ROOT}/templates/latex .jobops/templates/default/
 Report the count of files copied. Expected count after this task runs:
 3 markdown templates (`assessment_rubric_framework.md`, `evidence_verification_framework.md`,
 `assessment_report_structure.md`) plus 1 latex/ subdirectory (`preamble.resume.tex.template`,
-`config.json`, `README.md`).
+`preamble.coverletter.tex.template`, `preamble.document.tex.template`, `config.json`, `README.md`).
 
 If the glob fails in the current execution context (no files matched), fall
 back to:

@@ -64,6 +64,13 @@ if [ ${#missing[@]} -gt 0 ]; then
   echo "  brew install --cask mactex-no-gui && brew install pandoc poppler jq"
   exit 1
 fi
+
+# Optional: pdfinfo (from poppler-utils) — used for page count + page-target iteration.
+# If missing, the skill still produces the PDF but cannot enforce $3 page-count targeting.
+if ! command -v pdfinfo >/dev/null; then
+  echo "WARN: pdfinfo not found (from poppler-utils). Page-count targeting via \$3 will be skipped."
+  echo "      Install with: sudo apt-get install -y poppler-utils  (or brew install poppler)"
+fi
 ```
 
 Stop on missing deps; do NOT proceed.
