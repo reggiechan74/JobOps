@@ -11,10 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **`plugins/jobops/skills/latex-pdf/SKILL.md`** — new config-driven markdown→LaTeX→PDF pipeline for resumes (Phase 1). User edits markdown content and a JSON config; the skill generates the `.tex` and compiles via xelatex. Zero-config default reproduces the proven `navy-serif` theme exactly. Outputs both the `.pdf` and the generated `.tex` (advanced-override artifact) into `{applications_root}/{slug}/resume/`, plus a `pages=N, last_page_fill≈XX%` report. Phase 2 will add coverletter doctype + named themes; Phase 3 will retire `markdown-to-pdf` and `convert-to-pdf` and repoint `/pdf`. Plan: `docs/superpowers/plans/2026-05-25-markdown-to-latex-pdf-phase1.md`.
 - **`plugins/jobops/templates/latex/`** — bundled LaTeX assets: `preamble.resume.tex.template` (navy-serif preamble with `__TOKEN__` placeholders), `config.json` (themes + doctypes registry), `README.md`. Copied into `.jobops/templates/default/latex/` by `/jobops:setup`.
+- `latex-pdf` Phase 2: coverletter doctype + `modern`/`classic`/`minimal` named themes + page-count targeting via `$3` arg (`1|2|3|auto`). Doctype is autodetected from YAML front-matter `output_type` or filename heuristic; override with `--doctype=`. Coverletter PDFs go to `{applications_root}/{slug}/cover-letter/`. Page-count targeting iteratively tunes font_size_pt + list_itemsep_pt (resume) or parskip_em (coverletter) toward the target, max 3 iterations.
+- `plugins/jobops/templates/latex/preamble.coverletter.tex.template` — coverletter LaTeX preamble with wider margins, longtable styling for requirements tables, signature image hook.
 
 ### Changed
 
 - **`plugins/jobops/skills/setup/SKILL.md`** — Step 5 now also copies the `templates/latex/` subdir into the workspace. Step 6 registers `templates.active.latex_config: "default"` so the `latex-pdf` skill can resolve LaTeX assets via the standard template-resolution contract.
+- `latex-pdf` arg `$3` repurposed from doctype-override to page-count target. Doctype-override now lives on the `--doctype=` flag.
 
 ## [2.2.1] - 2026-05-24
 
