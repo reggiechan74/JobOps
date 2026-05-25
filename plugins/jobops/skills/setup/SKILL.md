@@ -83,17 +83,20 @@ Do **not** ask for `default_currency` here — that is owned by `/jobops-ic:setu
 Copy the plugin's bundled templates into the workspace:
 
 ```bash
-cp ${CLAUDE_PLUGIN_ROOT}/templates/* .jobops/templates/default/
+cp ${CLAUDE_PLUGIN_ROOT}/templates/*.md .jobops/templates/default/ 2>/dev/null || true
+cp -r ${CLAUDE_PLUGIN_ROOT}/templates/latex .jobops/templates/default/
 ```
 
 Report the count of files copied. Expected count after this task runs:
-3 files (`assessment_rubric_framework.md`, `evidence_verification_framework.md`,
-`assessment_report_structure.md`).
+3 markdown templates (`assessment_rubric_framework.md`, `evidence_verification_framework.md`,
+`assessment_report_structure.md`) plus 1 latex/ subdirectory (`preamble.resume.tex.template`,
+`config.json`, `README.md`).
 
 If the glob fails in the current execution context (no files matched), fall
 back to:
 ```bash
 find ${CLAUDE_PLUGIN_ROOT}/templates -maxdepth 1 -type f -exec cp {} .jobops/templates/default/ \;
+cp -r ${CLAUDE_PLUGIN_ROOT}/templates/latex .jobops/templates/default/
 ```
 
 Do not touch `.jobops/templates/custom/` — it is user-owned.
@@ -125,7 +128,8 @@ Emit the full schema below with the values gathered in Steps 2 and 4.
     "active": {
       "assessment_rubric_framework": "default",
       "evidence_verification_framework": "default",
-      "assessment_report_structure": "default"
+      "assessment_report_structure": "default",
+      "latex_config": "default"
     }
   },
   "migration": {
