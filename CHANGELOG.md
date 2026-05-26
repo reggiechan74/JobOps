@@ -5,6 +5,16 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-05-26
+
+### Added
+
+- **`plugins/jobops/skills/steelman/SKILL.md`** — added a new application-package steelman skill that combines live public, work-relevant hiring-manager OSINT with an adversarial review of the prepared resume, cover letter, rubric, and assessment materials. The skill requires web access, produces a hiring-manager profile, an explicit interview/no-interview verdict, and a concrete package improvement plan while separating observed facts from inferences and preserving non-fabrication guardrails. Addresses the failure mode where a package can be internally polished but still miss the actual hiring manager's likely mandate, risk sensitivities, credibility triggers, or rejection heuristics.
+
+### Notes
+
+- **`plugins/jobops-ic/.claude-plugin/plugin.json`** — bumped with the core plugin for marketplace alignment; no independent `jobops-ic` functional changes are included in this release.
+
 ## [2.5.2] - 2026-05-25
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "name": "jobops",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "description": "Intelligence-driven career management plugins for Claude Code - resume development, interview prep, OSINT intelligence, career strategy, and independent contractor toolkit",
   "scripts": {
     "install-browsers": "npx playwright install chrome",
