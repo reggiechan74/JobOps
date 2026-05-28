@@ -29,6 +29,11 @@
       "Write",
       "Web"
     ],
-    "websiteURL": "https://github.com/reggiechan74/JobOps"
+    "websiteURL": "https://github.com/reggiechan74/JobOps",
+    "defaultPrompt": [
+      "Use JobOps IC to define consulting services.",
+      "Use JobOps IC to build a rate card.",
+      "Use JobOps IC to draft a client proposal."
+    ]
   }
 }

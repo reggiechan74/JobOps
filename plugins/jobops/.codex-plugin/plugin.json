@@ -30,6 +30,11 @@
       "Write",
       "Web"
     ],
-    "websiteURL": "https://github.com/reggiechan74/JobOps"
+    "websiteURL": "https://github.com/reggiechan74/JobOps",
+    "defaultPrompt": [
+      "Use JobOps to set up my career workspace.",
+      "Use JobOps to build a targeted resume.",
+      "Use JobOps to prepare for an interview."
+    ]
   }
 }
