@@ -41,10 +41,6 @@ function repoPath(relativePath) {
   return path.join(REPO_ROOT, relativePath);
 }
 
-function exists(relativePath) {
-  return fs.existsSync(repoPath(relativePath));
-}
-
 function readText(relativePath) {
   const absolutePath = repoPath(relativePath);
   if (!fs.existsSync(absolutePath)) {
@@ -196,6 +192,17 @@ function validateCodexManifestPathField(pluginName, field, value, pluginRoot) {
   );
 }
 
+function validateCodexComponentPathField(pluginName, field, value, pluginRoot, expectedBasename) {
+  validateCodexManifestPathField(pluginName, field, value, pluginRoot);
+  if (value === undefined || typeof value !== 'string') {
+    return;
+  }
+  check(
+    path.basename(value) === expectedBasename,
+    `${pluginName} ${field} path basename must be ${expectedBasename}`
+  );
+}
+
 function validatePluginManifests(plugin, expectedVersion) {
   const claude = readJson(`${plugin.root}/.claude-plugin/plugin.json`);
   const codex = readJson(`${plugin.root}/.codex-plugin/plugin.json`);
@@ -229,9 +236,9 @@ function validatePluginManifests(plugin, expectedVersion) {
   }
 
   check(!Object.prototype.hasOwnProperty.call(codex, 'dependencies'), `${plugin.name} Codex manifest must not declare dependencies`);
-  for (const field of ['apps', 'mcpServers', 'hooks']) {
-    validateCodexManifestPathField(plugin.name, field, codex[field], plugin.root);
-  }
+  validateCodexComponentPathField(plugin.name, 'apps', codex.apps, plugin.root, '.app.json');
+  validateCodexComponentPathField(plugin.name, 'mcpServers', codex.mcpServers, plugin.root, '.mcp.json');
+  validateCodexManifestPathField(plugin.name, 'hooks', codex.hooks, plugin.root);
 }
 
 function validateSkillFrontmatter(plugin) {
@@ -269,7 +276,10 @@ function main() {
     process.exit(1);
   }
 
-  check(packageJson.version === '2.6.1', `package.json version must be 2.6.1 for this release, got ${packageJson.version}`);
+  check(
+    typeof packageJson.version === 'string' && packageJson.version.trim() !== '',
+    'package.json version must be present'
+  );
   validatePackageScripts(packageJson);
   validateClaudeMarketplace(packageJson.version);
   validateCodexMarketplace(packageJson.version);
