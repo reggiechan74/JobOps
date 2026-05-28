@@ -4,7 +4,9 @@
   "description": "Intelligence-driven career management plugins for Claude Code - resume development, interview prep, OSINT intelligence, career strategy, and independent contractor toolkit",
   "scripts": {
     "install-browsers": "npx playwright install chrome",
-    "install-all": "npm install && npm run install-browsers"
+    "install-all": "npm install && npm run install-browsers",
+    "validate:codex-plugin": "node scripts/validate/validate-codex-plugin-compatibility.js",
+    "test": "npm run validate:codex-plugin"
   },
   "dependencies": {},
   "devDependencies": {

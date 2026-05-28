@@ -52,6 +52,28 @@ node scripts/validate/validate-legacy-profile-block.js
 - 0: Both assessment skills include the required guard
 - 1: One or more guard requirements are missing
 
+### validate-codex-plugin-compatibility.js
+
+Validates that JobOps can be discovered and installed as Codex plugins without drifting from the existing Claude Code plugin manifests.
+
+**Usage:**
+```bash
+node scripts/validate/validate-codex-plugin-compatibility.js
+```
+
+**Checks:**
+- Codex repo marketplace exists at `.agents/plugins/marketplace.json`
+- `jobops` and `jobops-ic` have `.codex-plugin/plugin.json`
+- Codex marketplace entries use `./plugins/jobops` and `./plugins/jobops-ic`
+- Codex manifests point to `./skills/`
+- Versions match across `package.json`, Claude manifests, Codex manifests, and marketplace metadata
+- Every bundled `SKILL.md` has `name` and `description` frontmatter
+- Codex manifests do not point to missing `apps`, `mcpServers`, or `hooks` paths
+
+**Exit codes:**
+- 0: Codex compatibility contract passes
+- 1: One or more compatibility requirements are missing
+
 ## Adding New Validators
 
 Future validators to implement:
