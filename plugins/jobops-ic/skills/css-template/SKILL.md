@@ -1,4 +1,5 @@
 ---
+name: css-template
 description: Manage CSS design system templates for landing pages - view, analyze, or create component libraries
 disable-model-invocation: true
 ---

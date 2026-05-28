@@ -1,4 +1,5 @@
 ---
+name: coverletter
 description: Generate a strategic cover letter with requirements-matching table from Step 3 resume
 disable-model-invocation: true
 ---

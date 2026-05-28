@@ -1,4 +1,5 @@
 ---
+name: defineservices
 description: Define independent contractor service offerings with pricing and positioning
 disable-model-invocation: true
 ---

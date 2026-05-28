@@ -1,4 +1,5 @@
 ---
+name: create-landing-page
 description: Create a professional landing page using tactical CSS design system and copywriting best practices
 disable-model-invocation: true
 ---

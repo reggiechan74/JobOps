@@ -1,4 +1,5 @@
 ---
+name: latex-pdf
 description: Convert a markdown resume to a polished PDF via a config-driven LaTeX pipeline (replaces wkhtmltopdf-based /pdf for resumes)
 disable-model-invocation: true
 argument-hint: "<source.md> [theme] [pages]"

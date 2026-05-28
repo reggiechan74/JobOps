@@ -1,4 +1,5 @@
 ---
+name: assessjob
 description: Perform expert HR assessment of candidate against job posting with domain knowledge
 disable-model-invocation: true
 ---

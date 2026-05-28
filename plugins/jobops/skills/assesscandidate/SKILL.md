@@ -1,4 +1,5 @@
 ---
+name: assesscandidate
 description: Assess candidate against job posting using pre-created scoring rubric
 disable-model-invocation: true
 ---

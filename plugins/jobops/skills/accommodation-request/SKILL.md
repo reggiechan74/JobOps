@@ -1,4 +1,5 @@
 ---
+name: accommodation-request
 description: Build and navigate workplace accommodation requests (disability, religious, medical)
 disable-model-invocation: true
 ---

@@ -1,4 +1,5 @@
 ---
+name: github-portfolio
 description: Create or update GitHub portfolio documentation from repository analysis
 disable-model-invocation: true
 ---

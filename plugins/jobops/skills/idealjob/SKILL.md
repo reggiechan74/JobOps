@@ -1,4 +1,5 @@
 ---
+name: idealjob
 description: Generate a synthetic job description for a near-perfect fit role based on career history and preferences
 disable-model-invocation: true
 ---

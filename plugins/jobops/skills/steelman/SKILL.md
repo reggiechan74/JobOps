@@ -1,4 +1,5 @@
 ---
+name: steelman
 description: Steelman a prepared job application package by OSINTing the hiring manager, building an evidence-based psychographic and behavioral profile, simulating the hiring manager's review, and recommending truthful improvements that increase interview odds
 disable-model-invocation: true
 ---

@@ -1,4 +1,5 @@
 ---
+name: interviewprep
 description: Generate customized interview questions based on job description and tailored resume
 disable-model-invocation: true
 ---

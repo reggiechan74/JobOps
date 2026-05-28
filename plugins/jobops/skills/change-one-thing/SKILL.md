@@ -1,4 +1,5 @@
 ---
+name: change-one-thing
 description: Reflective career analysis exercise identifying one non-obvious career pivot point
 disable-model-invocation: true
 ---

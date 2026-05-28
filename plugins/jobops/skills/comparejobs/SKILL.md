@@ -1,4 +1,5 @@
 ---
+name: comparejobs
 description: Compare assessment files across application folders under applications_root
 disable-model-invocation: true
 ---

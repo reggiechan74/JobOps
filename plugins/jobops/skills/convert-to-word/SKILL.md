@@ -1,4 +1,5 @@
 ---
+name: convert-to-word
 description: Convert markdown documents to professional Word DOCX format using pandoc
 disable-model-invocation: true
 ---

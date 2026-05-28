@@ -1,4 +1,5 @@
 ---
+name: pitchdeck
 description: Generate professional B2B service pitch deck tailored to prospects or industries
 disable-model-invocation: true
 ---

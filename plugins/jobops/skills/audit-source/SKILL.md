@@ -1,4 +1,5 @@
 ---
+name: audit-source
 description: Audit ResumeSourceFolder for structural completeness and layout conformance; interactively fill gaps and write edits back to source markdown
 disable-model-invocation: true
 argument-hint: "[--deep] [--migrate-layout] [--section=<path>] [--dry-run]"

@@ -1,4 +1,5 @@
 ---
+name: ratecard
 description: Generate professional rate card document from service definition with pricing validation
 disable-model-invocation: true
 ---

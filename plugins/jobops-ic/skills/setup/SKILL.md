@@ -1,4 +1,5 @@
 ---
+name: setup
 description: Extend JobOps workspace with independent-contractor directories, templates, and config - requires /jobops:setup to have run first
 disable-model-invocation: true
 ---

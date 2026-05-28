@@ -1,4 +1,5 @@
 ---
+name: severance-review
 description: Analyze severance packages and termination agreements for fairness and negotiation opportunities
 disable-model-invocation: true
 ---

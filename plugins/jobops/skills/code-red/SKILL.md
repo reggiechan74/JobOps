@@ -1,4 +1,5 @@
 ---
+name: code-red
 description: Employment crisis intervention - navigate PIPs, HR conflicts, and termination risk
 disable-model-invocation: true
 ---

@@ -1,4 +1,5 @@
 ---
+name: provenance-check
 description: Perform provenance check on a draft resume against comprehensive work histories
 disable-model-invocation: true
 ---

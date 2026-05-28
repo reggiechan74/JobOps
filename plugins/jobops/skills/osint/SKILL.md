@@ -1,4 +1,5 @@
 ---
+name: osint
 description: Comprehensive company intelligence gathering using distributed OSINT system with parallel specialized agents
 disable-model-invocation: true
 ---

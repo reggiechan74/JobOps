@@ -1,4 +1,5 @@
 ---
+name: auditjobposting
 description: Audit job posting for quality, realism, internal consistency, and market alignment with 100-point scoring
 disable-model-invocation: true
 ---

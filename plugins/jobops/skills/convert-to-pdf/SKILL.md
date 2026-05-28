@@ -1,4 +1,5 @@
 ---
+name: convert-to-pdf
 description: DEPRECATED — wraps /jobops:latex-pdf. Will be removed in a future release.
 disable-model-invocation: true
 argument-hint: "<resume.md> [theme] [pages]"

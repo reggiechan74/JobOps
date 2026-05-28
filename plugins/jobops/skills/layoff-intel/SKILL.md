@@ -1,4 +1,5 @@
 ---
+name: layoff-intel
 description: Assess layoff risk and prepare proactively for potential workforce reduction
 disable-model-invocation: true
 ---

@@ -1,4 +1,5 @@
 ---
+name: workplace-documentation
 description: Build organized documentation of workplace incidents and issues
 disable-model-invocation: true
 ---

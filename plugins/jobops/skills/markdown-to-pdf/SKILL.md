@@ -1,4 +1,5 @@
 ---
+name: markdown-to-pdf
 description: DEPRECATED — wraps /jobops:latex-pdf. Will be removed in a future release.
 disable-model-invocation: true
 argument-hint: "<file|glob|dir> [output_dir_ignored]"

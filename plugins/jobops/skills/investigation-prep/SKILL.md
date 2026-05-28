@@ -1,4 +1,5 @@
 ---
+name: investigation-prep
 description: Prepare for workplace HR or third-party investigations
 disable-model-invocation: true
 ---

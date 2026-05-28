@@ -1,4 +1,5 @@
 ---
+name: discrimination-assessment
 description: Assess potential discrimination patterns and document protected class treatment disparities
 disable-model-invocation: true
 ---

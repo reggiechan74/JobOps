@@ -1,4 +1,5 @@
 ---
+name: reference-shield
 description: Manage reference risk and build reference strategy after difficult departure
 disable-model-invocation: true
 ---

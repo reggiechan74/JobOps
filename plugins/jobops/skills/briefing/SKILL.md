@@ -1,4 +1,5 @@
 ---
+name: briefing
 description: Generate a comprehensive briefing note to address skill gaps or prepare for interviews
 disable-model-invocation: true
 ---

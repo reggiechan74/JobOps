@@ -1,4 +1,5 @@
 ---
+name: constructive-dismissal
 description: Assess whether workplace conditions constitute constructive dismissal
 disable-model-invocation: true
 ---

@@ -1,4 +1,5 @@
 ---
+name: createrubric
 description: Create a detailed scoring rubric from job posting without performing assessment
 disable-model-invocation: true
 ---

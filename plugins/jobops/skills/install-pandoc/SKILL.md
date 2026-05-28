@@ -1,4 +1,5 @@
 ---
+name: install-pandoc
 description: Install pandoc for document conversion functionality
 disable-model-invocation: true
 ---

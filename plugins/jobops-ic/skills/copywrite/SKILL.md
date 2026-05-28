@@ -1,4 +1,5 @@
 ---
+name: copywrite
 description: Generate strategic landing page copy using proven copywriting frameworks and persuasion psychology
 disable-model-invocation: true
 ---

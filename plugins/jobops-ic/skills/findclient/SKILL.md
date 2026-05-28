@@ -1,4 +1,5 @@
 ---
+name: findclient
 description: Identify potential B2B clients matching service definition and ideal client profiles
 disable-model-invocation: true
 ---

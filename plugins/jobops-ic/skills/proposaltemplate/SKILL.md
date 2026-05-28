@@ -1,4 +1,5 @@
 ---
+name: proposaltemplate
 description: Generate professional consulting proposal templates with pricing calculation
 disable-model-invocation: true
 ---

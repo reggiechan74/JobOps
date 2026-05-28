@@ -1,4 +1,5 @@
 ---
+name: unemployment-prep
 description: Prepare for unemployment/EI claim and employer contest defense
 disable-model-invocation: true
 ---

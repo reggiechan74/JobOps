@@ -1,4 +1,5 @@
 ---
+name: copywriting-spec
 description: Create comprehensive copywriting specification document for a brand through structured interviews
 disable-model-invocation: true
 ---

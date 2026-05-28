@@ -1,4 +1,5 @@
 ---
+name: buildresume
 description: Build a complete resume through all 3 steps (draft, provenance check, final)
 disable-model-invocation: true
 ---

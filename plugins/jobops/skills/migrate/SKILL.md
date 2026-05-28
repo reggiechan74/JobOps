@@ -1,4 +1,5 @@
 ---
+name: migrate
 description: Migrate legacy JobOps output files into the v2.0 application-centric layout - dry-run preview with user-editable mapping
 disable-model-invocation: true
 argument-hint: "[--dry-run]"

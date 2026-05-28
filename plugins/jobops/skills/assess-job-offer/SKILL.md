@@ -1,4 +1,5 @@
 ---
+name: assess-job-offer
 description: Comprehensive analysis of employment offer packages including compensation, contract terms, and legal review
 disable-model-invocation: true
 ---

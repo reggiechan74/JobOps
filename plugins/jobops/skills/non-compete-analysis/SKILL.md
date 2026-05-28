@@ -1,4 +1,5 @@
 ---
+name: non-compete-analysis
 description: Analyze non-compete and restrictive covenant agreements for enforceability and risk
 disable-model-invocation: true
 ---
