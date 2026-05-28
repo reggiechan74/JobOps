@@ -20,19 +20,17 @@ JobOps/
     jobops/                           # Core plugin
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
-      hooks/hooks.json
-      scripts/copy-templates.sh
       templates/                      # Bundled templates (copied to workspace on setup)
       skills/                         # 35 skills (flat, no subdirectories)
       agents/                         # 15 Claude Code agents
+      styles/                         # CSS and rendering styles
     jobops-ic/                        # Independent contractor add-on
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
-      hooks/hooks.json
-      scripts/copy-templates.sh
       templates/
       skills/                         # 10 skills
       agents/                         # 1 Claude Code agent
+      styles/                         # CSS and rendering styles
   .claude/styles/                     # CSS for PDF conversion (shared)
 ```
 
@@ -56,8 +54,10 @@ Configured via `.jobops/config.json` (created by `/jobops:setup`, extended by `/
 # Test a plugin locally
 claude --plugin-dir plugins/jobops
 
-# Validate plugin structure
-/plugin validate
+# Validate Claude Code plugin structure
+claude plugin validate plugins/jobops
+claude plugin validate plugins/jobops-ic
+claude plugin validate .
 
 # Validate Codex compatibility contract
 npm test
@@ -65,9 +65,6 @@ npm test
 # Test Codex marketplace discovery locally
 codex plugin marketplace add ./
 codex plugin list
-
-# Run Playwright tests
-npx playwright test
 ```
 
 ## File Naming Conventions
@@ -79,7 +76,7 @@ npx playwright test
 
 ## Coding Style
 
-- Skills use `disable-model-invocation: true` frontmatter
+- Skill frontmatter includes `name`, `description`, and `disable-model-invocation: true`, plus optional `argument-hint` where applicable
 - Every skill (except setup) starts with config preamble reading `.jobops/config.json`
 - jobops-ic skills include prerequisite check for jobops plugin
 - Templates bundled in plugin, copied to `.jobops/templates/default/` via setup

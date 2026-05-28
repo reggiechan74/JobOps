@@ -105,6 +105,7 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 |-------|-------------|
 | `/jobops:osint` | 7-agent parallel company intelligence gathering |
 | `/jobops:auditjobposting` | 100-point job posting quality and realism audit |
+| `/jobops:steelman` | Adversarial application-package review using hiring-manager OSINT |
 
 ### Career Strategy
 
@@ -134,15 +135,17 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 
 | Skill | Description |
 |-------|-------------|
-| `/jobops:convert-to-pdf` | Convert markdown resume to PDF via Playwright |
+| `/jobops:latex-pdf` | Primary config-driven LaTeX PDF pipeline for resumes, cover letters, and documents |
+| `/jobops:convert-to-pdf` | Deprecated PDF wrapper that delegates to `/jobops:latex-pdf` |
 | `/jobops:convert-to-word` | Convert markdown to Word DOCX via pandoc |
-| `/jobops:markdown-to-pdf` | Convert markdown documents to PDF with Obsidian styling |
+| `/jobops:markdown-to-pdf` | Deprecated PDF wrapper that delegates to `/jobops:latex-pdf` |
 
 ### System Setup
 
 | Skill | Description |
 |-------|-------------|
 | `/jobops:install-pandoc` | Install pandoc for document conversion |
+| `/jobops:migrate` | Migrate legacy v1.x outputs into the v2 layout |
 | `/jobops:github-portfolio` | Create or update GitHub portfolio documentation |
 
 ---
@@ -228,17 +231,15 @@ JobOps/
       .codex-plugin/plugin.json
       skills/                        # 35 skills (flat layout)
       agents/                        # 15 Claude Code agents
+      styles/                        # CSS and rendering styles
       templates/                     # Bundled templates
-      hooks/                         # SessionStart hook
-      scripts/                       # Template copy script
     jobops-ic/                       # IC add-on plugin
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
       skills/                        # 10 skills
       agents/                        # 1 Claude Code agent
+      styles/                        # CSS and rendering styles
       templates/                     # Bundled templates
-      hooks/                         # SessionStart hook
-      scripts/                       # Template copy script
 ```
 
 ### Development
@@ -260,10 +261,10 @@ codex plugin list
 
 ### Key Conventions
 
-- Skills use `disable-model-invocation: true` (user-invoked only)
+- Skill frontmatter includes `name`, `description`, and `disable-model-invocation: true` (user-invoked only), plus optional `argument-hint` where applicable
 - Every skill reads `.jobops/config.json` for paths and template resolution
 - jobops-ic skills include prerequisite check for jobops plugin
-- Templates bundled in plugin, copied to workspace via setup script
+- Templates bundled in plugin, copied to workspace during setup
 - Agents are flat (no subdirectories)
 
 ---

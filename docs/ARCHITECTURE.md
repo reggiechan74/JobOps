@@ -36,7 +36,7 @@ Missing-file behavior: every runtime skill (except the two setup skills and `/jo
 
 ## 3. Plugin-root resolution
 
-Skills that need the plugin's own templates or bundled files use `${CLAUDE_PLUGIN_ROOT}` directly inside shell commands in skill markdown. No `hooks/` directory and no `/tmp/` state file are involved.
+Skills that need the plugin's own templates or bundled files use `${CLAUDE_PLUGIN_ROOT}` directly inside shell commands in skill markdown. No hook directory and no `/tmp/` state file are involved.
 
 ## 4. Output layout
 
@@ -73,7 +73,7 @@ Exception: `workplace-documentation` appends to a single continuously-updated lo
 
 Every runtime skill:
 
-1. Begins with YAML frontmatter carrying `description`, `disable-model-invocation: true`, and (optional) `argument-hint`.
+1. Begins with YAML frontmatter that includes `name`, `description`, `disable-model-invocation: true`, and optional `argument-hint` where applicable.
 2. Has a `## Configuration` block using either `JOBOPS_PREAMBLE` (for jobops skills) or `JOBOPS_IC_PREAMBLE` (for jobops-ic skills). See Sections 7.1 and 7.2 of the spec for the verbatim blocks.
 3. If it consumes templates, has a `## Templates` block listing each template by name. Template path resolution is always `{config.templates.base_dir}/{config.templates.active.<name>}/<filename>`.
 4. If it writes to an application folder, has an `## Application Path Resolution` block spelling out the four resolution steps (slug parsing, folder composition, sub-folder, JD pinning).

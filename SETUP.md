@@ -97,9 +97,9 @@ See `docs/ARCHITECTURE.md` for the full contract.
 
 ## Optional Dependencies
 
-### Pandoc — `/jobops:convert-to-word`
+### Pandoc — `/jobops:convert-to-word`, `/jobops:latex-pdf`
 
-Needed to convert markdown to DOCX. Install via the bundled skill:
+Needed to convert markdown to DOCX. `/jobops:latex-pdf` also uses pandoc as part of the LaTeX PDF pipeline. Install via the bundled skill:
 
 ```text
 /jobops:install-pandoc
@@ -110,13 +110,15 @@ Or manually:
 - **macOS**: `brew install pandoc`
 - **Windows**: [pandoc.org/installing.html](https://pandoc.org/installing.html)
 
-### Playwright — `/jobops:convert-to-pdf`, `/jobops:markdown-to-pdf`
+### LaTeX Toolchain — `/jobops:latex-pdf`
 
-PDF conversion uses Playwright for pixel-perfect rendering. If the skill reports a missing browser:
+PDF conversion uses pandoc plus LaTeX and PDF inspection tools. If dependencies are missing, `/jobops:latex-pdf` reports install commands. Core dependencies:
 
-```bash
-npx playwright install chromium
-```
+- `pandoc`
+- `xelatex` / `texlive-xetex`
+- `poppler-utils`
+- `fontconfig`
+- `jq`
 
 ## Migrating from v1.x
 
@@ -139,7 +141,7 @@ If you previously used JobOps v1.x (flat `OutputResumes/` and `Client_Prospects/
 - [ ] In Claude: `/jobops:setup`
 - [ ] (Optional) `/plugin install jobops-ic@jobops-marketplace` then `/jobops-ic:setup`
 - [ ] (Optional) `/jobops:install-pandoc` for Word export
-- [ ] (Optional) `npx playwright install chromium` for PDF export
+- [ ] (Optional) Install LaTeX/PDF prerequisites if `/jobops:latex-pdf` reports missing dependencies
 - [ ] (v1.x users) `/jobops:migrate` to relocate existing outputs
 
 ### Codex
@@ -150,7 +152,7 @@ If you previously used JobOps v1.x (flat `OutputResumes/` and `Client_Prospects/
 - [ ] In a new Codex session: invoke `jobops:setup`
 - [ ] (Optional) `codex plugin add jobops-ic@jobops-marketplace` then invoke `jobops-ic:setup`
 - [ ] (Optional) invoke `jobops:install-pandoc` for Word export
-- [ ] (Optional) `npx playwright install chromium` for PDF export
+- [ ] (Optional) Install LaTeX/PDF prerequisites if `jobops:latex-pdf` reports missing dependencies
 - [ ] (v1.x users) invoke `jobops:migrate` to relocate existing outputs
 
 ## Troubleshooting
@@ -159,7 +161,7 @@ If you previously used JobOps v1.x (flat `OutputResumes/` and `Client_Prospects/
 
 **Codex marketplace not listed**: run `codex plugin marketplace list` and confirm `jobops-marketplace` appears. If it does not, rerun `codex plugin marketplace add reggiechan74/JobOps`, then start a new Codex session.
 
-**Skills not appearing after install**: restart Claude Code. Verify the plugin is listed via `/plugin list`.
+**Skills not appearing after install**: in Claude Code, restart Claude Code and verify the plugin is listed via `/plugin list`. In Codex, start a new Codex session and verify the plugin is listed via `codex plugin list`.
 
 **`/jobops-ic:*` skills fail with prerequisite error**: run `/jobops:setup` before `/jobops-ic:setup`. The IC plugin extends the shared `.jobops/config.json` and will not run standalone.
 
