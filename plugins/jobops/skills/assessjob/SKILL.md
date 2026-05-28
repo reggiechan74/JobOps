@@ -184,12 +184,22 @@ Use three parallel Read tool calls. These templates define the mandatory structu
    - If {{ARG2}} is provided: Use the specified path
    - If {{ARG2}} is not provided: Default to `{config.directories.resume_source}`
 
-2. **Validate source path**:
+2. **Legacy Candidate Profile Artifact Check**:
+   - Let `source_path` be the resolved resume source path from step 1.
+   - If `source_path` is a single-file source named `candidate_profile.json`, stop before assessment. Tell the candidate this legacy JSON profile is deprecated and assessments now read source markdown directly. Instruct the candidate to delete the deprecated file and provide a source markdown file or folder instead. Offer to delete the legacy file for them.
+   - If `source_path` is a directory, check for these legacy artifacts before reading candidate materials:
+     - `{source_path}/.profile/candidate_profile.json`
+     - `{source_path}/candidate_profile.json`
+   - If either legacy artifact exists, stop before assessment. List the exact file path(s), tell the candidate each deprecated candidate profile JSON file must be deleted because JobOps now reads source markdown directly, and offer to delete the legacy artifact(s) for them.
+   - If the candidate approves deletion, delete only the listed legacy artifact file(s), re-run this check, then continue only if no legacy profile artifact remains.
+   - Never load, summarize, or score from `candidate_profile.json`.
+
+3. **Validate source path**:
    - If path is a file: Read the single resume file directly in Phase 2 — this is the only candidate source you have
    - If path is a directory: Phase 2 reads the canonical source files (Identity, Technology, WorkHistory, etc.) from this directory
    - If path doesn't exist: Report error and halt
 
-3. **Load job posting**:
+4. **Load job posting**:
    - Read the job posting from `{config.directories.job_postings}/{{ARG1}}` (add .md extension if needed)
    - If not found, report error and suggest available alternatives
 
@@ -203,6 +213,10 @@ Use three parallel Read tool calls. These templates define the mandatory structu
 > Mark tasks 3 and 4 as `in_progress` before beginning.
 
 Phase 2 combines direct in-session source reads (§2.1) with a parallel domain-research subagent (§2.2). §2.1 requires no subagent — you perform the reads yourself. §2.2 dispatches a Task subagent. Both need only the job posting content (loaded in Phase 1).
+
+### Legacy Candidate Profile Artifact Check
+
+This check was completed in Phase 1 before candidate source reads. Do not skip it if Phase 2 is restarted.
 
 ### 2.1 Read Candidate Source Materials (Task 3)
 

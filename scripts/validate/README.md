@@ -32,6 +32,26 @@ node scripts/validate/validate-job-postings.js Job_Postings/UofT_Exec_Director_A
 - 0: All files valid
 - 1: One or more files have errors
 
+### validate-legacy-profile-block.js
+
+Validates that `/jobops:assessjob` and `/jobops:assesscandidate` block deprecated `candidate_profile.json` artifacts before reading candidate source materials.
+
+**Usage:**
+```bash
+node scripts/validate/validate-legacy-profile-block.js
+```
+
+**Checks:**
+- Legacy profile check is present before candidate source reads
+- `{source_path}/.profile/candidate_profile.json` is blocked
+- `{source_path}/candidate_profile.json` is blocked
+- Single-file `candidate_profile.json` inputs are blocked
+- The command instructs the candidate to delete the deprecated artifact and offers to delete it
+
+**Exit codes:**
+- 0: Both assessment skills include the required guard
+- 1: One or more guard requirements are missing
+
 ## Adding New Validators
 
 Future validators to implement:

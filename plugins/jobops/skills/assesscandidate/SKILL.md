@@ -146,6 +146,18 @@ If job posting doesn't exist in {config.directories.job_postings}/, check the ro
 
 > Mark tasks 2 and 3 as `in_progress`.
 
+### Legacy Candidate Profile Artifact Check
+
+Before reading candidate materials, set `source_path` to `{config.directories.resume_source}` and check for deprecated profile JSON artifacts.
+
+- If `source_path` is a single-file source named `candidate_profile.json`, stop before assessment. Tell the candidate this legacy JSON profile is deprecated and assessments now read source markdown directly. Instruct the candidate to delete the deprecated file and provide a source markdown file or folder instead. Offer to delete the legacy file for them.
+- If `source_path` is a directory, check for these legacy artifacts before reading candidate materials:
+  - `{source_path}/.profile/candidate_profile.json`
+  - `{source_path}/candidate_profile.json`
+- If either legacy artifact exists, stop before assessment. List the exact file path(s), tell the candidate each deprecated candidate profile JSON file must be deleted because JobOps now reads source markdown directly, and offer to delete the legacy artifact(s) for them.
+- If the candidate approves deletion, delete only the listed legacy artifact file(s), re-run this check, then continue only if no legacy profile artifact remains.
+- Never load, summarize, or score from `candidate_profile.json`.
+
 ### 2.1 Read Candidate Source Files (Task 2)
 
 Determine source structure:

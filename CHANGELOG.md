@@ -5,6 +5,17 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.1] - 2026-05-28
+
+### Fixed
+
+- **`plugins/jobops/skills/assessjob/SKILL.md` + `plugins/jobops/skills/assesscandidate/SKILL.md`** — both assessment paths now fail closed when a deprecated `candidate_profile.json` artifact is found in the candidate source folder (`.profile/candidate_profile.json` or root-level `candidate_profile.json`) or passed directly as the source file. The commands stop before assessment, explain that JobOps now reads source markdown directly, instruct the candidate to delete the stale JSON artifact, and offer to delete only the listed legacy file(s). Addresses the upgrade failure mode where older plugin installations left a compressed profile behind and assessment agents could accidentally treat it as usable candidate evidence.
+- **`scripts/validate/validate-legacy-profile-block.js`** — added a focused validator to keep the `assessjob` and `assesscandidate` guards in place and ahead of candidate source reads.
+
+### Notes
+
+- **`plugins/jobops-ic/.claude-plugin/plugin.json`** — bumped with the core plugin for marketplace alignment; no independent `jobops-ic` functional changes are included in this release.
+
 ## [2.6.0] - 2026-05-26
 
 ### Added

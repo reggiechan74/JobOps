@@ -1,6 +1,6 @@
 {
   "name": "jobops",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Intelligence-driven job application system - resume development, interview prep, OSINT intelligence, career strategy, and crisis management using HAM-Z methodology",
   "author": {
     "name": "Reggie Chan"
