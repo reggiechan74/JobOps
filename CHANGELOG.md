@@ -5,6 +5,12 @@ All notable changes to JobOps will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Codex plugin compatibility** — added a Codex repo marketplace at `.agents/plugins/marketplace.json`, Codex manifests for `jobops` and `jobops-ic`, and explicit `name` frontmatter on every skill so Codex can discover and install the existing plugin trees without a separate Codex copy. Added `scripts/validate/validate-codex-plugin-compatibility.js` and `npm test` to guard manifest version drift, marketplace shape, and skill metadata.
+
 ## [2.6.1] - 2026-05-28
 
 ### Fixed

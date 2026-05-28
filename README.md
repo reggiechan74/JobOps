@@ -6,9 +6,11 @@
 
 **Version 2.6.1** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
-Two Claude Code plugins for systematic, intelligence-driven career management — from resume development to independent consulting.
+Two Claude Code and Codex plugins for systematic, intelligence-driven career management — from resume development to independent consulting.
 
 ## Quick Start
+
+### Claude Code
 
 ```bash
 # Add the marketplace
@@ -25,11 +27,26 @@ Two Claude Code plugins for systematic, intelligence-driven career management �
 /jobops-ic:setup
 ```
 
+### Codex
+
+```bash
+# Add the marketplace
+codex plugin marketplace add reggiechan74/JobOps
+
+# Install the core plugin
+codex plugin add jobops@jobops-marketplace
+
+# Optional: install the independent contractor add-on
+codex plugin add jobops-ic@jobops-marketplace
+```
+
+After installation, start a new Codex session and invoke `jobops:setup` through Codex's explicit skill/plugin invocation surface. If you installed `jobops-ic`, run `jobops-ic:setup` after the core setup completes.
+
 ## Plugins
 
 | Plugin | Description | Skills | Prerequisite |
 |--------|-------------|--------|--------------|
-| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization | 32 | None |
+| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization | 35 | None |
 | **jobops-ic** | Independent contractor toolkit — service definitions, client prospecting, pitch decks, proposals, rate cards, landing pages | 10 | jobops |
 
 ---
@@ -203,19 +220,22 @@ All output directories are configurable via `.jobops/config.json`. Default paths
 
 ```
 JobOps/
-  .claude-plugin/marketplace.json    # Marketplace manifest
+  .claude-plugin/marketplace.json    # Claude Code marketplace manifest
+  .agents/plugins/marketplace.json   # Codex marketplace manifest
   plugins/
     jobops/                          # Core plugin
       .claude-plugin/plugin.json
-      skills/                        # 32 skills (flat layout)
-      agents/                        # 16 agents
+      .codex-plugin/plugin.json
+      skills/                        # 35 skills (flat layout)
+      agents/                        # 16 Claude Code agents
       templates/                     # Bundled templates
       hooks/                         # SessionStart hook
       scripts/                       # Template copy script
     jobops-ic/                       # IC add-on plugin
       .claude-plugin/plugin.json
+      .codex-plugin/plugin.json
       skills/                        # 10 skills
-      agents/                        # 1 agent
+      agents/                        # 1 Claude Code agent
       templates/                     # Bundled templates
       hooks/                         # SessionStart hook
       scripts/                       # Template copy script
@@ -224,11 +244,18 @@ JobOps/
 ### Development
 
 ```bash
-# Test a plugin locally
+# Test a Claude Code plugin locally
 claude --plugin-dir plugins/jobops
 
-# Validate plugin structure
-/plugin validate
+# Validate Claude Code plugin structure
+claude plugin validate plugins/jobops
+claude plugin validate plugins/jobops-ic
+claude plugin validate .
+
+# Validate Codex plugin structure
+npm test
+codex plugin marketplace add ./
+codex plugin list
 ```
 
 ### Key Conventions

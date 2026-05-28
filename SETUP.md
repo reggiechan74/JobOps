@@ -1,10 +1,10 @@
 # JobOps Setup
 
-JobOps v2.0 ships as two Claude Code plugins distributed through a self-hosted marketplace. Setup is a three-step flow: install Claude Code, install the plugin(s), then initialize the workspace.
+JobOps v2.6.1 ships as two plugins for Claude Code and Codex through self-hosted marketplaces. Setup is a three-step flow: install a supported agent client, install the plugin(s), then initialize the workspace.
 
-## 1. Install Claude Code
+## 1. Install a Supported Client
 
-Claude Code is the only hard requirement.
+For Claude Code:
 
 ```bash
 npm install -g @anthropic-ai/claude-code
@@ -12,6 +12,12 @@ claude --version
 ```
 
 More at [claude.ai/code](https://claude.ai/code).
+
+For Codex, install and authenticate Codex using OpenAI's current Codex setup flow, then verify:
+
+```bash
+codex --version
+```
 
 ## 2. Install the Plugins
 
@@ -22,7 +28,7 @@ From inside any project directory where you want to use JobOps, launch Claude Co
 /plugin install jobops@jobops-marketplace
 ```
 
-The core `jobops` plugin provides 32 skills: resume development, interview prep, OSINT, career strategy, crisis management, and application finalization.
+The core `jobops` plugin provides 35 skills: resume development, interview prep, OSINT, career strategy, crisis management, and application finalization.
 
 **Optional — independent contractor toolkit:**
 
@@ -31,6 +37,19 @@ The core `jobops` plugin provides 32 skills: resume development, interview prep,
 ```
 
 `jobops-ic` adds 10 skills for service definitions, client prospecting, pitch decks, proposals, rate cards, and landing pages. It depends on `jobops`, so install the core plugin first.
+
+For Codex:
+
+```bash
+codex plugin marketplace add reggiechan74/JobOps
+codex plugin add jobops@jobops-marketplace
+```
+
+Optional independent contractor toolkit:
+
+```bash
+codex plugin add jobops-ic@jobops-marketplace
+```
 
 ## 3. Initialize the Workspace
 
@@ -49,6 +68,8 @@ This creates `.jobops/` in the current workspace:
 ```
 
 It also scaffolds the default output directories (`ResumeSourceFolder/`, `Job_Postings/`, `Applications/`, `Company_Intelligence/`, `Career_Analysis/`, `Crisis_Management/`). Every path is configurable — edit `.jobops/config.json` to relocate anything.
+
+In Codex, start a new session and invoke `jobops:setup` through the explicit skill/plugin invocation surface. If `jobops-ic` is installed, invoke `jobops-ic:setup` after the core setup completes.
 
 If you installed `jobops-ic`, run its setup afterward:
 
@@ -110,6 +131,8 @@ If you previously used JobOps v1.x (flat `OutputResumes/` and `Client_Prospects/
 
 ## Quick Start Checklist
 
+### Claude Code
+
 - [ ] Install Claude Code: `npm install -g @anthropic-ai/claude-code`
 - [ ] In Claude: `/plugin marketplace add reggiechan74/JobOps`
 - [ ] In Claude: `/plugin install jobops@jobops-marketplace`
@@ -119,9 +142,22 @@ If you previously used JobOps v1.x (flat `OutputResumes/` and `Client_Prospects/
 - [ ] (Optional) `npx playwright install chromium` for PDF export
 - [ ] (v1.x users) `/jobops:migrate` to relocate existing outputs
 
+### Codex
+
+- [ ] Verify Codex: `codex --version`
+- [ ] In shell: `codex plugin marketplace add reggiechan74/JobOps`
+- [ ] In shell: `codex plugin add jobops@jobops-marketplace`
+- [ ] In a new Codex session: invoke `jobops:setup`
+- [ ] (Optional) `codex plugin add jobops-ic@jobops-marketplace` then invoke `jobops-ic:setup`
+- [ ] (Optional) invoke `jobops:install-pandoc` for Word export
+- [ ] (Optional) `npx playwright install chromium` for PDF export
+- [ ] (v1.x users) invoke `jobops:migrate` to relocate existing outputs
+
 ## Troubleshooting
 
 **`/plugin` commands not recognized**: update Claude Code (`npm i -g @anthropic-ai/claude-code@latest`) — the plugin system ships in recent versions only.
+
+**Codex marketplace not listed**: run `codex plugin marketplace list` and confirm `jobops-marketplace` appears. If it does not, rerun `codex plugin marketplace add reggiechan74/JobOps`, then start a new Codex session.
 
 **Skills not appearing after install**: restart Claude Code. Verify the plugin is listed via `/plugin list`.
 

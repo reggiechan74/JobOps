@@ -8,6 +8,19 @@
 - `jobops-ic` adds an independent-contractor layer on top. It declares `dependencies: ["jobops"]` in its `plugin.json` so Claude Code refuses to install it without `jobops`. (The current plugin schema accepts a bare array of plugin names; version floors are not expressible here. Enforce version floors at runtime if ever needed.)
 - Both plugins read the same `.jobops/config.json` in the user's workspace. `jobops-ic:setup` extends that file; it does not create a separate one.
 
+## Platform compatibility
+
+JobOps is distributed to both Claude Code and Codex from the same canonical plugin directories:
+
+- Claude Code reads `.claude-plugin/marketplace.json` and each plugin's `.claude-plugin/plugin.json`.
+- Codex reads `.agents/plugins/marketplace.json` and each plugin's `.codex-plugin/plugin.json`.
+- Both platforms read the same `skills/` directories. Every skill frontmatter must include `name`, `description`, and `disable-model-invocation: true`.
+- Keep skill bodies platform-neutral where practical. When a workflow needs platform-specific orchestration, describe the smallest mapping inline instead of creating a duplicate skill tree.
+- Claude Code `Task tool` instructions map conceptually to Codex subagent spawning. Do not rewrite an entire skill solely to rename the orchestration primitive.
+- `${CLAUDE_PLUGIN_ROOT}` remains a Claude-specific variable. Existing uses are tolerated for this compatibility pass; subsequent template/style changes should introduce a small cross-platform path-resolution pattern rather than duplicating skills.
+
+Run `npm test` before committing any manifest, marketplace, or skill-frontmatter change.
+
 ## 2. Config file
 
 Location: `.jobops/config.json` (workspace root, gitignored by default).

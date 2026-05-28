@@ -4,7 +4,7 @@
 
 ## Repository Purpose
 
-**JobOps v2.2.0** — Intelligence-driven career management plugins for Claude Code, distributed via a self-hosted marketplace.
+**JobOps v2.6.1** — Intelligence-driven career management plugins for Claude Code and Codex, distributed via self-hosted marketplaces.
 
 Two plugins:
 - **jobops** — Resume development, interview prep, OSINT intelligence, career strategy, career crisis management, application finalization
@@ -14,22 +14,25 @@ Two plugins:
 
 ```
 JobOps/
-  .claude-plugin/marketplace.json     # Marketplace manifest
+  .claude-plugin/marketplace.json     # Claude Code marketplace manifest
+  .agents/plugins/marketplace.json    # Codex marketplace manifest
   plugins/
     jobops/                           # Core plugin
       .claude-plugin/plugin.json
+      .codex-plugin/plugin.json
       hooks/hooks.json
       scripts/copy-templates.sh
       templates/                      # Bundled templates (copied to workspace on setup)
-      skills/                         # 32 skills (flat, no subdirectories)
-      agents/                         # 16 agents
+      skills/                         # 35 skills (flat, no subdirectories)
+      agents/                         # 16 Claude Code agents
     jobops-ic/                        # Independent contractor add-on
       .claude-plugin/plugin.json
+      .codex-plugin/plugin.json
       hooks/hooks.json
       scripts/copy-templates.sh
       templates/
       skills/                         # 10 skills
-      agents/                         # 1 agent
+      agents/                         # 1 Claude Code agent
   .claude/styles/                     # CSS for PDF conversion (shared)
 ```
 
@@ -55,6 +58,13 @@ claude --plugin-dir plugins/jobops
 
 # Validate plugin structure
 /plugin validate
+
+# Validate Codex compatibility contract
+npm test
+
+# Test Codex marketplace discovery locally
+codex plugin marketplace add ./
+codex plugin list
 
 # Run Playwright tests
 npx playwright test
