@@ -24,7 +24,7 @@ JobOps/
       scripts/copy-templates.sh
       templates/                      # Bundled templates (copied to workspace on setup)
       skills/                         # 35 skills (flat, no subdirectories)
-      agents/                         # 16 Claude Code agents
+      agents/                         # 15 Claude Code agents
     jobops-ic/                        # Independent contractor add-on
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json

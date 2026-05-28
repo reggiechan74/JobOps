@@ -227,7 +227,7 @@ JobOps/
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
       skills/                        # 35 skills (flat layout)
-      agents/                        # 16 Claude Code agents
+      agents/                        # 15 Claude Code agents
       templates/                     # Bundled templates
       hooks/                         # SessionStart hook
       scripts/                       # Template copy script
