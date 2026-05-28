@@ -67,8 +67,9 @@ node scripts/validate/validate-codex-plugin-compatibility.js
 - Codex marketplace entries use `./plugins/jobops` and `./plugins/jobops-ic`
 - Codex manifests point to `./skills/`
 - Versions match across `package.json`, Claude manifests, Codex manifests, and marketplace metadata
-- Every bundled `SKILL.md` has `name` and `description` frontmatter
-- Codex manifests do not point to missing `apps`, `mcpServers`, or `hooks` paths
+- Every bundled `SKILL.md` has `name`, `description`, and `disable-model-invocation: true` frontmatter
+- Optional `apps` and `mcpServers` references point to existing `.app.json` and `.mcp.json` files
+- Hook string paths point to existing paths
 
 **Exit codes:**
 - 0: Codex compatibility contract passes

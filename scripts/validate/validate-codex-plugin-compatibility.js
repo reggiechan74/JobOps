@@ -203,6 +203,34 @@ function validateCodexComponentPathField(pluginName, field, value, pluginRoot, e
   );
 }
 
+function isInlineHookObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function validateCodexHookValue(pluginName, value, pluginRoot, label) {
+  if (typeof value === 'string') {
+    validateCodexManifestPathField(pluginName, label, value, pluginRoot);
+    return;
+  }
+  if (isInlineHookObject(value)) {
+    return;
+  }
+  fail(`${pluginName} ${label} must be a string path or inline hook object`);
+}
+
+function validateCodexHooksField(pluginName, value, pluginRoot) {
+  if (value === undefined) {
+    return;
+  }
+  if (Array.isArray(value)) {
+    for (const [index, hook] of value.entries()) {
+      validateCodexHookValue(pluginName, hook, pluginRoot, `hooks[${index}]`);
+    }
+    return;
+  }
+  validateCodexHookValue(pluginName, value, pluginRoot, 'hooks');
+}
+
 function validatePluginManifests(plugin, expectedVersion) {
   const claude = readJson(`${plugin.root}/.claude-plugin/plugin.json`);
   const codex = readJson(`${plugin.root}/.codex-plugin/plugin.json`);
@@ -238,7 +266,7 @@ function validatePluginManifests(plugin, expectedVersion) {
   check(!Object.prototype.hasOwnProperty.call(codex, 'dependencies'), `${plugin.name} Codex manifest must not declare dependencies`);
   validateCodexComponentPathField(plugin.name, 'apps', codex.apps, plugin.root, '.app.json');
   validateCodexComponentPathField(plugin.name, 'mcpServers', codex.mcpServers, plugin.root, '.mcp.json');
-  validateCodexManifestPathField(plugin.name, 'hooks', codex.hooks, plugin.root);
+  validateCodexHooksField(plugin.name, codex.hooks, plugin.root);
 }
 
 function validateSkillFrontmatter(plugin) {
