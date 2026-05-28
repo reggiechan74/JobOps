@@ -1,0 +1,34 @@
+{
+  "name": "jobops-ic",
+  "version": "2.6.1",
+  "description": "Independent contractor toolkit - services, client prospecting, pitch decks, proposals, rate cards, landing pages. Requires jobops.",
+  "author": {
+    "name": "Reggie Chan"
+  },
+  "homepage": "https://github.com/reggiechan74/JobOps",
+  "repository": "https://github.com/reggiechan74/JobOps",
+  "license": "ISC",
+  "keywords": [
+    "independent-contractor",
+    "consulting",
+    "proposals",
+    "rate-card",
+    "pitch-deck",
+    "landing-page"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "JobOps IC",
+    "shortDescription": "Independent contractor services, prospecting, proposals, rate cards, and landing pages",
+    "longDescription": "Use JobOps IC with the core JobOps workspace to define services, find clients, create pitch decks, draft consulting proposals, publish rate cards, and build landing-page copy and pages.",
+    "developerName": "Reggie Chan",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write",
+      "Web"
+    ],
+    "websiteURL": "https://github.com/reggiechan74/JobOps"
+  }
+}

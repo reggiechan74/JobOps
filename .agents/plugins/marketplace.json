@@ -1,0 +1,36 @@
+{
+  "name": "jobops-marketplace",
+  "interface": {
+    "displayName": "JobOps Marketplace"
+  },
+  "metadata": {
+    "description": "Intelligence-driven career management plugins for Claude Code and Codex",
+    "version": "2.6.1"
+  },
+  "plugins": [
+    {
+      "name": "jobops",
+      "source": {
+        "source": "local",
+        "path": "./plugins/jobops"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "jobops-ic",
+      "source": {
+        "source": "local",
+        "path": "./plugins/jobops-ic"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
