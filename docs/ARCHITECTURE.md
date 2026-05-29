@@ -27,6 +27,8 @@ Location: `.jobops/config.json` (workspace root, gitignored by default).
 
 Schema: see `docs/superpowers/specs/2026-04-23-plugin-config-redesign-design.md` Section 6.2.
 
+`config.candidate` holds the candidate's header contact fields (`name`, `credentials`, `location`, `phone`, `email`, `linkedin`), collected in `/jobops:setup` Step 4b. The `buildresume` and `coverletter` flows source the document header from this block so the resume and cover letter render identical contact lines. `phone` is a distinct field joined with ` | ` (or `•` on resumes); empty fields are omitted with their separator and never concatenated onto an adjacent field.
+
 Creation: only by `/jobops:setup`. Extended by `/jobops-ic:setup`. Never written by runtime skills.
 
 Missing-file behavior: every runtime skill (except the two setup skills and `/jobops:migrate`) exits immediately with:

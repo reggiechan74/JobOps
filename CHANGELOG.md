@@ -7,9 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-05-28
+
 ### Added
 
+- **`config.candidate` contact block** — `/jobops:setup` now collects the candidate's header contact fields (`name`, `credentials`, `location`, `phone`, `email`, `linkedin`) in a new Step 4b and writes them to `config.candidate`, with a matching reconfigure option and an `ARCHITECTURE.md` Section 2 contract note. This gives the résumé and cover-letter headers a single source of truth so both render identical contact lines instead of each flow re-deriving contact info from source material.
+- **Phone field in the cover-letter contact header** — `plugins/jobops/skills/latex-pdf/SKILL.md` and `plugins/jobops/agents/step4-cover-letter.md` (new element 4.0) now define a distinct `{phone}` slot joined with ` | ` and cleanly omit empty fields. Addresses the failure mode where the cover-letter header had no phone slot at all, so a hand-jammed number rendered fused against the email (e.g. `(555) 555-0123name@example.com`). Verified that pandoc renders the `|` separator correctly under xelatex, so no LaTeX template change was needed.
 - **Codex plugin compatibility** — added a Codex repo marketplace at `.agents/plugins/marketplace.json`, Codex manifests for `jobops` and `jobops-ic`, and explicit `name` frontmatter on every skill so Codex can discover and install the existing plugin trees without a separate Codex copy. Added `scripts/validate/validate-codex-plugin-compatibility.js` and `npm test` to guard manifest version drift, marketplace shape, and skill metadata.
+
+### Changed
+
+- **`plugins/jobops/agents/step4-cover-letter.md`** — reversed the opening philosophy from a diagnostic "thesis cold-open" to a **fit-led opening** that leads with the candidate's own track record and names the role first; company and market insight is demoted to a new context paragraph (4.2) so the letter no longer opens by diagnosing an insider's business, which reads as presumptuous. The primary-source verification pipeline now feeds the context paragraph rather than the opening. Encoded eight authoring principles (each with a before/after) and a final regression self-check covering the phone field, em dashes, recited target figures, antithetical cadence, tenure stamps, and the fit-led opener.
+- **Cover-letter authoring rules** — em-dash ban retained at zero; the antithetical-cadence construction ("X is new, Y is not" / "not A, but B") relaxed from a full ban to at most once per letter (repetition is the AI tell, a single instance is the gold-standard move); added a "never recite the target's own figures" rule and a "no explicit total-years-of-experience stamp" de-aging rule. Mirrored into `plugins/jobops/skills/coverletter/SKILL.md`.
+- **`plugins/jobops/agents/step1-resume-draft.md` + `plugins/jobops/agents/step3-final-resume.md`** — added a de-aging rule: no explicit total-years-of-experience stamp in the executive summary, and drop graduation years on degrees earned more than 15 years ago (keeping recent credential dates) so seniority is conveyed through proof rather than age proxies. Resume headers also now source contact fields from `config.candidate` when available, matching the cover letter.
+- **`plugins/jobops/agents/step4-cover-letter.md` output path** — corrected the stale `OutputResumes/Step4_CoverLetter_*` reference to the per-application folder the `/coverletter` skill actually resolves (`{applications_root}/{app_slug}/cover-letter/cover_letter.md`), removing a path the agent would otherwise have contradicted the skill on.
 
 ## [2.6.1] - 2026-05-28
 

@@ -108,6 +108,10 @@ You will work with:
 - Experience details use dash (-) format
 - Clean markdown for professional Word conversion
 
+**De-aging (enforce during hardening):**
+- Strip any explicit total-years-of-experience stamp from the EXECUTIVE SUMMARY ("25 years of experience"); it is an age proxy. Seniority is carried by named roles, dollar figures, and scope, which still satisfy "10+ years" requirements.
+- Remove graduation years from degrees earned more than 15 years ago (keep degree and institution). Keep dates on recent credentials and designations (within ~15 years). Role dates in PROFESSIONAL EXPERIENCE are unaffected.
+
 ## File Management
 Save the final hardened resume to: `/OutputResumes/Step3_Final_Resume_[JobTitle]_[Company]_YYYY-MM-DD.md`
 

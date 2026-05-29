@@ -312,6 +312,12 @@ Before drafting, confirm you have source files covering:
 - Bullet points use single bullet (•) for Core Competencies
 - Bullet points use dash (-) for experience details
 - Clean markdown formatting for professional Word conversion
+- **Header contact line:** when `config.candidate` is available, source the candidate's name, credentials, location, phone, email, and LinkedIn from it so the header matches the cover letter. Phone is its own field; never fuse it onto the email.
+
+**De-aging (avoid age proxies):**
+- **No explicit total-years-of-experience stamp in the EXECUTIVE SUMMARY** ("25 years of experience"). It is an age proxy. Convey seniority through proof: named roles, dollar figures, portfolio scope. This still clears "10+ years" requirements without dating the candidate.
+- **Drop graduation years on degrees earned more than 15 years ago.** List the degree and institution without the year. Keep dates on recent credentials and designations (within ~15 years) — recent dates read as currency, not age.
+- This applies to the EXECUTIVE SUMMARY and EDUCATION & PROFESSIONAL DESIGNATIONS sections. Role dates in PROFESSIONAL EXPERIENCE are unaffected (reverse-chronological history is expected).
 
 ### YAML front matter (mandatory)
 Start the draft with a YAML block capturing provenance so automation can parse it:

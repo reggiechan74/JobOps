@@ -24,7 +24,7 @@ tree, installs templates from the plugin into the workspace, updates
 If `.jobops/config.json` already exists, read it and present three choices:
 
 1. **Reconfigure all** — walk the full interview; overwrite at the end.
-2. **Reconfigure specific sections** — directories only / preferences only / templates only / migration only.
+2. **Reconfigure specific sections** — directories only / preferences only / candidate (contact details) only / templates only / migration only.
 3. **Exit** — leave everything as-is.
 
 If `--reconfigure` was passed, skip the prompt and go straight to option 1.
@@ -79,6 +79,29 @@ Do **not** ask for `default_currency` here — that is owned by `/jobops-ic:setu
 
 ---
 
+## Step 4b: Candidate contact details
+
+Collect the contact fields that populate the resume and cover-letter headers. These
+live in `config.candidate` so every document renders the same header and no field is
+ever fused into another (the cover-letter header had no phone slot historically, which
+produced fused `(xxx) xxx-xxxxemail@example.com` artifacts; the dedicated field fixes
+this).
+
+Ask for each (any may be left blank; blank fields are omitted from the header with
+their separator):
+
+1. **Full name** — e.g., `Jane Doe`
+2. **Credentials / post-nominals** — e.g., `CFA, FRICS` (blank if none)
+3. **Location** — e.g., `Toronto, ON`
+4. **Phone** — e.g., `(555) 555-1234` (its own header field; never concatenated onto the email)
+5. **Email** — e.g., `jane.doe@example.com`
+6. **LinkedIn** — handle or URL, e.g., `linkedin.com/in/janedoe`
+
+If the user prefers to keep contact details out of config, write the block with empty
+strings; the resume and cover-letter skills surface the gap rather than invent a value.
+
+---
+
 ## Step 5: Template installation
 
 Copy the plugin's bundled templates into the workspace:
@@ -124,6 +147,14 @@ Emit the full schema below with the values gathered in Steps 2 and 4.
   "preferences": {
     "cultural_profile": "<step-4 value>",
     "default_jurisdiction": "<step-4 value>"
+  },
+  "candidate": {
+    "name": "<step-4b value>",
+    "credentials": "<step-4b value>",
+    "location": "<step-4b value>",
+    "phone": "<step-4b value>",
+    "email": "<step-4b value>",
+    "linkedin": "<step-4b value>"
   },
   "templates": {
     "base_dir": "./.jobops/templates",

@@ -45,7 +45,7 @@ shape; the filter is tolerant but parity depends on it.
 ```markdown
 # Name, PostNoms
 **One-line tagline**
-City, ST • [email](mailto:…) • [linkedin.com/in/…](https://…) • [github.com/…](https://…)
+City, ST • (555) 555-5555 • [email](mailto:…) • [linkedin.com/in/…](https://…) • [github.com/…](https://…)
 
 ## SECTION NAME
 
@@ -70,7 +70,7 @@ City, ST • [email](mailto:…) • [linkedin.com/in/…](https://…) • [git
 
 ```markdown
 # Name, PostNoms
-City, ST • [email](mailto:…) • [linkedin.com/in/…](https://…)
+City, ST | (555) 555-5555 | [email](mailto:…) | LinkedIn: [linkedin.com/in/…](https://…)
 
 Month DD, YYYY
 
@@ -99,6 +99,15 @@ Name, PostNoms
 
 - The first `#` plus the contact line become the left letterhead (name + navy
   rule + contact). The date line that follows is NOT consumed into the header.
+- **Contact line fields.** The contact line carries up to four distinct fields:
+  `{location} | {phone} | {email} | LinkedIn: {linkedin}`. Phone is its own
+  field — never concatenate it onto another field (the fused
+  `(555) 555-0123name@example.com` artifact came from a header that had no
+  phone slot). Join fields with ` | ` (space-pipe-space) and **omit any empty
+  field cleanly** — no orphan separators, no doubled ` |  | `. If the candidate
+  has no phone on record, drop the field and the adjacent separator so the line
+  reads `City, ST | email | LinkedIn: …`. The filter renders the contact line
+  verbatim, so the separation must be correct in the markdown.
 - Use a trailing `\` for hard line breaks in the recipient block.
 - The 2-column requirements table renders with a navy header row, white bold
   text, zebra striping, and a 29/71 column split.
