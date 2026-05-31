@@ -56,6 +56,38 @@ func TestViewRendersWithoutPanic(t *testing.T) {
 	}
 }
 
+type shrinkingScanner struct{ recs []model.Record }
+
+func (s *shrinkingScanner) Scan() ([]model.Record, error) { return s.recs, nil }
+func (s *shrinkingScanner) Skills() []model.SkillSpec      { return nil }
+
+func TestRescanClampsCursor(t *testing.T) {
+	three := []model.Record{
+		{Title: "A", Slug: "A_20260101"},
+		{Title: "B", Slug: "B_20260101"},
+		{Title: "C", Slug: "C_20260101"},
+	}
+	sc := &shrinkingScanner{recs: three}
+	m := New("/tmp/ws", "claude", sc)
+	m.width, m.height = 100, 30
+	m.cursor = 2
+
+	// The list shrinks to 2 before the rescan.
+	sc.recs = three[:2]
+
+	updated, cmd := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'r'}})
+	if cmd == nil {
+		t.Fatal("expected r to return a rescan command")
+	}
+	updated, _ = updated.(Model).Update(cmd())
+	fm := updated.(Model)
+	if fm.cursor != 1 {
+		t.Errorf("cursor = %d, want clamped to 1 after shrink-rescan", fm.cursor)
+	}
+	// Must not panic rendering the detail pane with the clamped cursor.
+	_ = fm.View()
+}
+
 func TestSpawnMissingAgentFallback(t *testing.T) {
 	m := newTestModel()
 	m.agent = "definitely-not-a-real-agent-xyz"

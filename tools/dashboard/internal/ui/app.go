@@ -128,7 +128,7 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m = m.cycleLifecycle()
 		}
 	case "r":
-		m.records, _ = m.scanner.Scan()
+		return m, func() tea.Msg { return rescanMsg{} }
 	}
 	return m, nil
 }

@@ -17,6 +17,10 @@ type AppsAdapter struct {
 	Cfg *config.Config
 }
 
+// AppsAdapter is the model.Adapter for Phase 2's multi-tab engine; Phase 1 uses
+// it directly via the ui.Scanner interface.
+var _ model.Adapter = AppsAdapter{}
+
 func (a AppsAdapter) Name() string { return "Apps" }
 
 // Skills returns the launch palette for the Apps tab, in pipeline order.

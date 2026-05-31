@@ -26,9 +26,7 @@ const trackerFile = ".tracker.json"
 func ReadTracker(appDir string) (Tracker, error) {
 	data, err := os.ReadFile(filepath.Join(appDir, trackerFile))
 	if err != nil {
-		if os.IsNotExist(err) {
-			return Tracker{Lifecycle: model.DefaultLifecycle()}, nil
-		}
+		// Missing or unreadable tracker -> default (Interested); never fatal.
 		return Tracker{Lifecycle: model.DefaultLifecycle()}, nil
 	}
 	var t Tracker
