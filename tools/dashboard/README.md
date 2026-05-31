@@ -1,7 +1,8 @@
 # jobops-dash
 
-Terminal dashboard for tracking JobOps applications and launching `/jobops`
-skills. Tabs: **Apps** (job applications) and **Companies** (OSINT intelligence).
+Terminal dashboard for tracking JobOps applications and launching `/jobops` and
+`/jobops-ic` skills. Tabs: **Apps** (job applications), **Companies** (OSINT),
+**Career**, **Crisis**, and **Contractor** (shown when jobops-ic is configured).
 
 ## Run
 
