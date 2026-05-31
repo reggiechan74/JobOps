@@ -7,7 +7,7 @@
     "install-all": "npm install && npm run install-browsers",
     "validate:codex-plugin": "node scripts/validate/validate-codex-plugin-compatibility.js",
     "test": "npm run validate:codex-plugin",
-    "dash": "go run ./tools/dashboard"
+    "dash": "cd tools/dashboard && go run ."
   },
   "dependencies": {},
   "devDependencies": {

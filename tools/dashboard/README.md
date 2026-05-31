@@ -6,15 +6,29 @@ Terminal dashboard for tracking JobOps applications and launching `/jobops` and
 
 ## Run
 
-From your JobOps workspace (the directory containing `.jobops/`):
+The dashboard is a self-contained Go module in `tools/dashboard/` (its own
+`go.mod`). Requires Go 1.22+ and a real terminal. Run it from your JobOps
+workspace — the directory that contains `.jobops/`, created by `/jobops:setup`.
+
+Build a binary once (from inside the module), then run it:
 
 ```bash
-npm run dash               # via the repo
-# or build a binary:
-go build -o jobops-dash ./tools/dashboard && ./jobops-dash
+cd tools/dashboard && go build -o jobops-dash .   # -> tools/dashboard/jobops-dash
+# put it on your PATH, or run it from your workspace:
+cd /path/to/your/workspace && /abs/path/to/JobOps/tools/dashboard/jobops-dash
 ```
 
-Use `--workspace <path>` to point at a workspace explicitly.
+Or run it without building, pointing at a workspace explicitly:
+
+```bash
+cd tools/dashboard && go run . --workspace /path/to/your/workspace
+```
+
+From the repo root, `npm run dash` is a shortcut (it `cd`s into the module);
+pass a workspace with `npm run dash -- --workspace /path/to/your/workspace`.
+
+If launched without a configured `.jobops/` workspace, it prints setup guidance
+instead of starting the TUI.
 
 ## Keys
 
