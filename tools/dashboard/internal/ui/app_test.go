@@ -9,7 +9,9 @@ import (
 )
 
 func newTestModel() Model {
-	m := New("/tmp/ws", "claude", staticScanner{recs: sampleRecords()})
+	m := New("/tmp/ws", "claude", []TabSource{
+		{Name: "Apps", Scanner: staticScanner{recs: sampleRecords()}, Lifecycle: true},
+	})
 	m.width, m.height = 100, 30
 	return m
 }
@@ -25,8 +27,8 @@ func (s staticScanner) Skills() []model.SkillSpec {
 func TestCursorMovesDown(t *testing.T) {
 	m := newTestModel()
 	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyDown})
-	if updated.(Model).cursor != 1 {
-		t.Errorf("cursor = %d, want 1", updated.(Model).cursor)
+	if updated.(Model).tabs[0].cursor != 1 {
+		t.Errorf("cursor = %d, want 1", updated.(Model).tabs[0].cursor)
 	}
 }
 
@@ -40,10 +42,9 @@ func TestEnterOpensPalette(t *testing.T) {
 
 func TestStatusKeyCyclesLifecycle(t *testing.T) {
 	m := newTestModel()
-	m.cursor = 0
-	start := m.records[0].Lifecycle
+	start := m.tabs[0].records[0].Lifecycle
 	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'s'}})
-	got := updated.(Model).records[0].Lifecycle
+	got := updated.(Model).tabs[0].records[0].Lifecycle
 	if got == start {
 		t.Errorf("status key should advance lifecycle from %q", start)
 	}
@@ -54,38 +55,6 @@ func TestViewRendersWithoutPanic(t *testing.T) {
 	if m.View() == "" {
 		t.Errorf("View() returned empty string")
 	}
-}
-
-type shrinkingScanner struct{ recs []model.Record }
-
-func (s *shrinkingScanner) Scan() ([]model.Record, error) { return s.recs, nil }
-func (s *shrinkingScanner) Skills() []model.SkillSpec      { return nil }
-
-func TestRescanClampsCursor(t *testing.T) {
-	three := []model.Record{
-		{Title: "A", Slug: "A_20260101"},
-		{Title: "B", Slug: "B_20260101"},
-		{Title: "C", Slug: "C_20260101"},
-	}
-	sc := &shrinkingScanner{recs: three}
-	m := New("/tmp/ws", "claude", sc)
-	m.width, m.height = 100, 30
-	m.cursor = 2
-
-	// The list shrinks to 2 before the rescan.
-	sc.recs = three[:2]
-
-	updated, cmd := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'r'}})
-	if cmd == nil {
-		t.Fatal("expected r to return a rescan command")
-	}
-	updated, _ = updated.(Model).Update(cmd())
-	fm := updated.(Model)
-	if fm.cursor != 1 {
-		t.Errorf("cursor = %d, want clamped to 1 after shrink-rescan", fm.cursor)
-	}
-	// Must not panic rendering the detail pane with the clamped cursor.
-	_ = fm.View()
 }
 
 func TestSpawnMissingAgentFallback(t *testing.T) {
@@ -109,5 +78,51 @@ func TestSpawnMissingAgentFallback(t *testing.T) {
 	}
 	if !strings.Contains(fm.notice, "not found") {
 		t.Errorf("notice = %q, want it to mention 'not found'", fm.notice)
+	}
+}
+
+type shrinkingScanner struct{ recs []model.Record }
+
+func (s *shrinkingScanner) Scan() ([]model.Record, error) { return s.recs, nil }
+func (s *shrinkingScanner) Skills() []model.SkillSpec      { return nil }
+
+func TestRescanClampsCursor(t *testing.T) {
+	three := []model.Record{
+		{Title: "A", Slug: "A_20260101"},
+		{Title: "B", Slug: "B_20260101"},
+		{Title: "C", Slug: "C_20260101"},
+	}
+	sc := &shrinkingScanner{recs: three}
+	m := New("/tmp/ws", "claude", []TabSource{{Name: "Apps", Scanner: sc, Lifecycle: true}})
+	m.width, m.height = 100, 30
+	m.tabs[0].cursor = 2
+
+	sc.recs = three[:2]
+
+	updated, cmd := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'r'}})
+	if cmd == nil {
+		t.Fatal("expected r to return a rescan command")
+	}
+	updated, _ = updated.(Model).Update(cmd())
+	fm := updated.(Model)
+	if fm.tabs[0].cursor != 1 {
+		t.Errorf("cursor = %d, want clamped to 1 after shrink-rescan", fm.tabs[0].cursor)
+	}
+	_ = fm.View()
+}
+
+func TestTabSwitchWraps(t *testing.T) {
+	m := New("/tmp/ws", "claude", []TabSource{
+		{Name: "Apps", Scanner: staticScanner{recs: sampleRecords()}, Lifecycle: true},
+		{Name: "Companies", Scanner: staticScanner{recs: nil}},
+	})
+	m.width, m.height = 100, 30
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRight})
+	if updated.(Model).active != 1 {
+		t.Errorf("active = %d, want 1 after right", updated.(Model).active)
+	}
+	updated, _ = updated.(Model).Update(tea.KeyMsg{Type: tea.KeyRight})
+	if updated.(Model).active != 0 {
+		t.Errorf("active = %d, want 0 after wrap", updated.(Model).active)
 	}
 }

@@ -11,11 +11,18 @@ import (
 	"github.com/reggiechan74/jobops-dashboard/internal/scan"
 )
 
-// Scanner is the minimal adapter surface the UI needs; the real Apps adapter
-// satisfies it, and tests use a static fake.
+// Scanner is the minimal adapter surface the UI needs; the real adapters satisfy
+// it, and tests use static fakes.
 type Scanner interface {
 	Scan() ([]model.Record, error)
 	Skills() []model.SkillSpec
+}
+
+// TabSource describes one tab the dashboard shows.
+type TabSource struct {
+	Name      string
+	Scanner   Scanner
+	Lifecycle bool // records carry a real-world lifecycle (Apps only)
 }
 
 type uiMode int
@@ -26,34 +33,45 @@ const (
 	modeNotice
 )
 
-// Model is the Bubble Tea root model for Phase 1 (single Apps tab).
-type Model struct {
-	root    string // workspace root
-	agent   string // "claude" | "codex"
-	scanner Scanner
+// tab holds the per-tab state.
+type tab struct {
+	name      string
+	scanner   Scanner
+	skills    []model.SkillSpec
+	lifecycle bool
+	records   []model.Record
+	cursor    int
+}
 
-	records []model.Record
-	cursor  int
+// Model is the Bubble Tea root model: a set of tabs plus shared UI state.
+type Model struct {
+	root  string
+	agent string
+
+	tabs   []tab
+	active int
 
 	mode      uiMode
-	paletteAt int // cursor in the palette list
-	skills    []model.SkillSpec
+	paletteAt int
 	notice    string
 
 	width, height int
 }
 
-// New builds a Model. root and agent come from config/prefs; scanner is the
-// Apps adapter (or a fake in tests).
-func New(root, agent string, scanner Scanner) Model {
-	recs, _ := scanner.Scan()
-	return Model{
-		root:    root,
-		agent:   agent,
-		scanner: scanner,
-		records: recs,
-		skills:  scanner.Skills(),
+// New builds a Model from one TabSource per tab, scanning each upfront.
+func New(root, agent string, sources []TabSource) Model {
+	tabs := make([]tab, 0, len(sources))
+	for _, s := range sources {
+		recs, _ := s.Scanner.Scan()
+		tabs = append(tabs, tab{
+			name:      s.Name,
+			scanner:   s.Scanner,
+			skills:    s.Scanner.Skills(),
+			lifecycle: s.Lifecycle,
+			records:   recs,
+		})
 	}
+	return Model{root: root, agent: agent, tabs: tabs}
 }
 
 func (m Model) Init() tea.Cmd { return nil }
@@ -70,11 +88,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width, m.height = msg.Width, msg.Height
 		return m, nil
 	case rescanMsg:
-		m.records, _ = m.scanner.Scan()
-		if m.cursor >= len(m.records) {
-			m.cursor = max(0, len(m.records)-1)
+		t := &m.tabs[m.active]
+		t.records, _ = t.scanner.Scan()
+		if t.cursor >= len(t.records) {
+			t.cursor = max(0, len(t.records)-1)
 		}
-		if len(m.records) == 0 {
+		if len(t.records) == 0 {
 			m.mode = modeNormal
 		}
 		return m, nil
@@ -96,19 +115,24 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	t := &m.tabs[m.active]
 	switch msg.String() {
 	case "q", "ctrl+c":
 		return m, tea.Quit
 	case "down", "j":
-		if m.cursor < len(m.records)-1 {
-			m.cursor++
+		if t.cursor < len(t.records)-1 {
+			t.cursor++
 		}
 	case "up", "k":
-		if m.cursor > 0 {
-			m.cursor--
+		if t.cursor > 0 {
+			t.cursor--
 		}
+	case "right", "tab":
+		m.active = (m.active + 1) % len(m.tabs)
+	case "left", "shift+tab":
+		m.active = (m.active - 1 + len(m.tabs)) % len(m.tabs)
 	case "enter":
-		if len(m.records) > 0 {
+		if len(t.records) > 0 {
 			m.mode = modePalette
 			m.paletteAt = m.nextSkillIndex()
 		}
@@ -124,7 +148,7 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 		_ = launch.SavePrefs(m.root, launch.Prefs{Agent: m.agent})
 	case "s":
-		if len(m.records) > 0 {
+		if t.lifecycle && len(t.records) > 0 {
 			m = m.cycleLifecycle()
 		}
 	case "r":
@@ -134,11 +158,12 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) updatePalette(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	t := &m.tabs[m.active]
 	switch msg.String() {
 	case "esc", "q":
 		m.mode = modeNormal
 	case "down", "j":
-		if m.paletteAt < len(m.skills)-1 {
+		if m.paletteAt < len(t.skills)-1 {
 			m.paletteAt++
 		}
 	case "up", "k":
@@ -158,7 +183,9 @@ func (m Model) updatePalette(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) cycleLifecycle() Model {
-	cur := m.records[m.cursor].Lifecycle
+	t := &m.tabs[m.active]
+	rec := &t.records[t.cursor]
+	cur := rec.Lifecycle
 	if cur == "" {
 		cur = model.DefaultLifecycle()
 	}
@@ -170,24 +197,25 @@ func (m Model) cycleLifecycle() Model {
 		}
 	}
 	next := model.LifecycleOrder[(idx+1)%len(model.LifecycleOrder)]
-	m.records[m.cursor].Lifecycle = next
-	if len(m.records[m.cursor].Paths) == 0 {
+	rec.Lifecycle = next
+	if len(rec.Paths) == 0 {
 		return m
 	}
-	appDir := m.records[m.cursor].Paths[0]
+	appDir := rec.Paths[0]
 	tr, _ := scan.ReadTracker(appDir)
 	tr.Lifecycle = next
 	_ = scan.WriteTracker(appDir, tr)
-	m.records[m.cursor].Started = true
+	rec.Started = true
 	return m
 }
 
 func (m Model) nextSkillIndex() int {
-	if len(m.records) == 0 {
+	t := m.tabs[m.active]
+	if len(t.records) == 0 {
 		return 0
 	}
-	next := m.records[m.cursor].NextSkill
-	for i, s := range m.skills {
+	next := t.records[t.cursor].NextSkill
+	for i, s := range t.skills {
 		if s.Name == next {
 			return i
 		}
@@ -196,17 +224,19 @@ func (m Model) nextSkillIndex() int {
 }
 
 func (m Model) skillAt(i int) model.SkillSpec {
-	if i < 0 || i >= len(m.skills) {
+	t := m.tabs[m.active]
+	if i < 0 || i >= len(t.skills) {
 		return model.SkillSpec{}
 	}
-	return m.skills[i]
+	return t.skills[i]
 }
 
 func (m Model) composeSelected(spec model.SkillSpec) string {
-	if spec.Name == "" || len(m.records) == 0 {
+	t := m.tabs[m.active]
+	if spec.Name == "" || len(t.records) == 0 {
 		return ""
 	}
-	return launch.Compose(spec, m.records[m.cursor])
+	return launch.Compose(spec, t.records[t.cursor])
 }
 
 func (m Model) copyOrNotice(cmd string) Model {
@@ -244,12 +274,13 @@ func (m Model) spawn(cmd string) tea.Cmd {
 }
 
 func (m Model) View() string {
+	t := m.tabs[m.active]
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("┌ JobOps · Apps  (agent: %s) ─[%d]\n", m.agent, len(m.records)))
-	b.WriteString(RenderTable(m.records, m.cursor, m.width))
+	b.WriteString(m.renderTabBar())
+	b.WriteString(RenderTable(t.records, t.cursor, m.width, t.lifecycle))
 	b.WriteString("├─────────────\n")
-	if len(m.records) > 0 {
-		b.WriteString(RenderDetail(m.records[m.cursor]))
+	if len(t.records) > 0 {
+		b.WriteString(RenderDetail(t.records[t.cursor], t.lifecycle))
 	}
 	b.WriteString("├─────────────\n")
 	switch m.mode {
@@ -258,15 +289,29 @@ func (m Model) View() string {
 	case modeNotice:
 		b.WriteString(m.notice + "\n[any key] dismiss\n")
 	default:
-		b.WriteString("↑↓ move  ↵ run  c copy  C agent  s status  r rescan  q quit\n")
+		b.WriteString("↑↓ move  ←→ tab  ↵ run  c copy  C agent  s status  r rescan  q quit\n")
 	}
 	return b.String()
 }
 
+func (m Model) renderTabBar() string {
+	var names []string
+	for i, tb := range m.tabs {
+		if i == m.active {
+			names = append(names, "["+tb.name+"]")
+		} else {
+			names = append(names, tb.name)
+		}
+	}
+	return fmt.Sprintf("┌ JobOps · %s  (agent: %s) ─[%d]\n",
+		strings.Join(names, " "), m.agent, len(m.tabs[m.active].records))
+}
+
 func (m Model) renderPalette() string {
+	t := m.tabs[m.active]
 	var b strings.Builder
-	b.WriteString("Run on " + m.records[m.cursor].Title + ":\n")
-	for i, s := range m.skills {
+	b.WriteString("Run on " + t.records[t.cursor].Title + ":\n")
+	for i, s := range t.skills {
 		cursor := "  "
 		if i == m.paletteAt {
 			cursor = "› "
