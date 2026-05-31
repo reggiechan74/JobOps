@@ -46,6 +46,12 @@ func main() {
 	sources := []ui.TabSource{
 		{Name: "Apps", Scanner: scan.AppsAdapter{Cfg: cfg}, Lifecycle: true},
 		{Name: "Companies", Scanner: scan.CompaniesAdapter{Cfg: cfg}},
+		{Name: "Career", Scanner: scan.CareerAdapter{Cfg: cfg}},
+		{Name: "Crisis", Scanner: scan.CrisisAdapter{Cfg: cfg}},
+	}
+	// Contractor (jobops-ic) only when its root is configured.
+	if cfg.Directories.ContractorRoot != "" {
+		sources = append(sources, ui.TabSource{Name: "Contractor", Scanner: scan.ContractorAdapter{Cfg: cfg}})
 	}
 	model := ui.New(root, prefs.Agent, sources)
 
