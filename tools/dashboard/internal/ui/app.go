@@ -132,7 +132,7 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "left", "shift+tab":
 		m.active = (m.active - 1 + len(m.tabs)) % len(m.tabs)
 	case "enter":
-		if len(t.records) > 0 {
+		if len(t.records) > 0 || len(t.skills) > 0 {
 			m.mode = modePalette
 			m.paletteAt = m.nextSkillIndex()
 		}
@@ -234,8 +234,14 @@ func (m Model) skillAt(i int) model.SkillSpec {
 }
 
 func (m Model) composeSelected(spec model.SkillSpec) string {
+	if spec.Name == "" {
+		return ""
+	}
+	if spec.Arg == model.ArgNone {
+		return launch.Compose(spec, model.Record{})
+	}
 	t := m.tabs[m.active]
-	if spec.Name == "" || len(t.records) == 0 {
+	if len(t.records) == 0 {
 		return ""
 	}
 	return launch.Compose(spec, t.records[t.cursor])
@@ -314,11 +320,12 @@ func (m Model) renderTabBar() string {
 
 func (m Model) renderPalette() string {
 	t := m.tabs[m.active]
-	if len(t.records) == 0 {
-		return ""
+	target := t.name
+	if len(t.records) > 0 {
+		target = t.records[t.cursor].Title
 	}
 	var b strings.Builder
-	b.WriteString("Run on " + t.records[t.cursor].Title + ":\n")
+	b.WriteString("Run on " + target + ":\n")
 	for i, s := range t.skills {
 		cursor := "  "
 		if i == m.paletteAt {

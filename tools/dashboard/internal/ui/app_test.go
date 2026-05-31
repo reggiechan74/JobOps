@@ -170,3 +170,35 @@ func TestTabSwitchLeftWraps(t *testing.T) {
 		t.Errorf("active = %d, want 1 after left-wrap from 0", updated.(Model).active)
 	}
 }
+
+// emptyScanner returns no records but advertises ArgNone skills.
+type emptyScanner struct{ skills []model.SkillSpec }
+
+func (s emptyScanner) Scan() ([]model.Record, error) { return nil, nil }
+func (s emptyScanner) Skills() []model.SkillSpec      { return s.skills }
+
+func TestPaletteOpensWithNoRecords(t *testing.T) {
+	src := emptyScanner{skills: []model.SkillSpec{{Name: "idealjob", Label: "Ideal", Arg: model.ArgNone}}}
+	m := New("/tmp/ws", "claude", []TabSource{{Name: "Career", Scanner: src}})
+	m.width, m.height = 100, 30
+
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	um := updated.(Model)
+	if um.mode != modePalette {
+		t.Fatalf("palette should open with no records when ArgNone skills exist; mode=%v", um.mode)
+	}
+	_ = um.View() // must not panic with zero records
+
+	um.agent = "definitely-not-a-real-agent-xyz"
+	_, cmd := um.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil {
+		t.Fatal("expected a command from ArgNone spawn")
+	}
+	nm, ok := cmd().(noticeMsg)
+	if !ok {
+		t.Fatalf("expected noticeMsg, got %T", cmd())
+	}
+	if !strings.Contains(nm.text, "/jobops:idealjob") {
+		t.Errorf("ArgNone command should compose without a record: %q", nm.text)
+	}
+}
