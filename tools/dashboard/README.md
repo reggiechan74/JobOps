@@ -1,7 +1,7 @@
 # jobops-dash
 
 Terminal dashboard for tracking JobOps applications and launching `/jobops`
-skills. Phase 1 ships the Apps tab.
+skills. Tabs: **Apps** (job applications) and **Companies** (OSINT intelligence).
 
 ## Run
 
@@ -17,8 +17,9 @@ Use `--workspace <path>` to point at a workspace explicitly.
 
 ## Keys
 
-`↑↓`/`jk` move · `↵` open skill palette · `c` copy next-step command ·
-`C` toggle claude/codex · `s` cycle lifecycle status · `r` rescan · `q` quit.
+`↑↓`/`jk` move · `←→`/`tab` switch tabs · `↵` open skill palette · `c` copy
+next-step command · `C` toggle claude/codex · `s` cycle lifecycle status (Apps) ·
+`r` rescan · `q` quit.
 
 Pressing `↵` and selecting a skill spawns an interactive `claude` (or `codex`)
 session with the command pre-filled; on exit the dashboard rescans. This uses
