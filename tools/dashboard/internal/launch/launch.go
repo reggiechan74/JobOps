@@ -10,9 +10,14 @@ import (
 	"github.com/reggiechan74/jobops-dashboard/internal/model"
 )
 
-// Compose builds the slash command for running spec against rec.
+// Compose builds the slash command for running spec against rec. spec.Plugin
+// selects the namespace ("" defaults to "jobops").
 func Compose(spec model.SkillSpec, rec model.Record) string {
-	base := "/jobops:" + spec.Name
+	plugin := spec.Plugin
+	if plugin == "" {
+		plugin = "jobops"
+	}
+	base := "/" + plugin + ":" + spec.Name
 	switch spec.Arg {
 	case model.ArgJD:
 		return fmt.Sprintf("%s %s.md --app=%s", base, rec.Slug, rec.Slug)

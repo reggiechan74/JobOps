@@ -86,11 +86,12 @@ const (
 	ArgNone                    // no positional args
 )
 
-// SkillSpec describes one launchable /jobops skill in a tab's palette.
+// SkillSpec describes one launchable skill in a tab's palette.
 type SkillSpec struct {
-	Name  string // skill name without the /jobops: prefix, e.g. "assessjob"
-	Label string // display label in the palette
-	Arg   ArgStyle
+	Name   string // skill name without the prefix, e.g. "assessjob"
+	Label  string // display label in the palette
+	Arg    ArgStyle
+	Plugin string // command namespace; "" means "jobops" (use "jobops-ic" for IC skills)
 }
 
 // Record is the generic unit every tab renders.

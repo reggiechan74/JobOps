@@ -31,3 +31,15 @@ func TestComposeCompanyUnknown(t *testing.T) {
 		t.Errorf("Compose osint w/o company = %q, want /jobops:osint", got)
 	}
 }
+
+func TestComposePlugin(t *testing.T) {
+	rec := model.Record{Slug: "X_Y_20260101"}
+	got := Compose(model.SkillSpec{Name: "ratecard", Arg: model.ArgNone, Plugin: "jobops-ic"}, rec)
+	if got != "/jobops-ic:ratecard" {
+		t.Errorf("Compose with plugin = %q, want /jobops-ic:ratecard", got)
+	}
+	got2 := Compose(model.SkillSpec{Name: "idealjob", Arg: model.ArgNone}, rec)
+	if got2 != "/jobops:idealjob" {
+		t.Errorf("Compose default plugin = %q, want /jobops:idealjob", got2)
+	}
+}
