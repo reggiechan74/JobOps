@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.11.0] - 2026-05-31
+
+### Added
+
+- **`--fast` flag on `/jobops:dashboard`** — renders the statusboard directly from the stored `tracker.yaml` and stops, skipping the filesystem scan, artifact recompute, and tracker write that a normal run performs. For a quick read-only glance the full reconcile is wasted work (it walks every application folder and rewrites the tracker); `--fast` makes the common "just show me the board" case instant and side-effect-free. Path resolution is read-only under the flag (an absent `application_tracker` key falls back to the default path without the self-heal config write), and a missing tracker prints `No tracker yet — run /jobops:dashboard (without --fast) to build it.` rather than building one. The header's `reconciled {generated}` reflects the last full reconcile, signalling that flags may be stale. `--fast` takes precedence over `--board-only` when both are passed.
+
 ## [2.10.0] - 2026-05-31
 
 ### Added

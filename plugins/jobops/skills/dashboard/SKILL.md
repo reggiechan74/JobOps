@@ -2,7 +2,7 @@
 name: dashboard
 description: Render an application statusboard from a reconciled YAML tracker and (on Claude Code) drive an interactive navigate-and-act loop over the application pipeline
 disable-model-invocation: true
-argument-hint: "[--board-only]"
+argument-hint: "[--board-only] [--fast]"
 ---
 
 # JobOps Application Dashboard
@@ -13,6 +13,11 @@ action). On Codex it renders a read-only board with suggested next actions.
 
 **Flags:**
 - `--board-only` — reconcile and render the board, then stop (no menu loop) on any platform.
+- `--fast` — skip the reconcile entirely: render the board from the tracker **exactly as
+  stored**, then stop (no scan, no tracker write, no menu loop). Use for a quick read-only
+  glance; artifact flags and `next_action` reflect the last full reconcile, not the current
+  filesystem. Takes precedence over `--board-only` (both stop after the board). If `--fast`
+  and `--board-only` are passed together, `--fast` wins.
 
 ---
 
@@ -33,11 +38,18 @@ untouched), and write the whole object back atomically to `.jobops/config.json.t
 same directory, then `mv` over `.jobops/config.json`, and use that path. This lets
 workspaces created before the dashboard existed work with no migration step.
 
+Under `--fast`, resolve the path **read-only**: if the key is absent, use the default
+`{config.directories.applications_root}/tracker.yaml` without writing config back (a fast
+glance never mutates state). If no tracker file exists at the resolved path, print
+`No tracker yet — run /jobops:dashboard (without --fast) to build it.` and exit.
+
 ---
 
 ## Reconcile
 
-Run this every invocation, before rendering.
+Run this every invocation, before rendering — **unless `--fast` was passed**, in which case
+skip this entire section and render the board directly from the stored tracker (no scan, no
+recompute, no write).
 
 1. **Load** the existing tracker YAML at the resolved path, or start with
    `{version: 1, applications: []}` if the file does not exist.
@@ -104,7 +116,9 @@ Run this every invocation, before rendering.
 
 ## Board render
 
-After reconcile, print a summary line then a table sorted by stage rank
+After reconcile (or, under `--fast`, directly from the stored tracker — the header's
+`reconciled {generated}` then reflects the *last* full reconcile, signalling staleness),
+print a summary line then a table sorted by stage rank
 (`interviewing, offer, applied, lead, on_hold, withdrawn, rejected, archived`),
 then by `next_deadline` ascending (nulls last). Count of non-archived apps in the header.
 
@@ -130,7 +144,7 @@ Pipeline dots: assess▸resume▸cover▸osint▸briefing▸prep
 
 ## Interaction
 
-If `--board-only` was passed, stop after the board.
+If `--board-only` or `--fast` was passed, stop after the board (no menu loop).
 
 **Claude Code (AskUserQuestion available):** loop until the user backs out.
 1. Render the board.
