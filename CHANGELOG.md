@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.11.0] - 2026-05-31
+## [2.12.0] - 2026-05-31
+
+### Added
+
+- **`preparing` pipeline stage in `/jobops:dashboard`** — a new application stage inserted into the lifecycle between `lead` and `applied` (`lead → preparing → applied → interviewing → offer`), for the period when an application is being actively worked on (assessment, resume, cover letter) but not yet submitted. Previously there was no way to distinguish a raw lead from one in active preparation. Added to the board's stage-sort rank between `applied` and `lead` (preserving the existing descending-progress order of the non-interviewing active stages) and to the **Update status** stage picker, which now enumerates the full set: the pipeline stages in lifecycle order plus the side states `on_hold`/`withdrawn`/`rejected` (`archived` remains auto-only, set when the app folder disappears).
+
+### Changed
+
+- **`/jobops:dashboard` defaults new applications to `lead`** — a newly-detected application folder is now seeded with `stage: lead` instead of `stage: applied`. The old default asserted the application had been submitted the moment its folder appeared, which is wrong for the common case where the folder is created during preparation (assessment/resume work) well before applying. `lead` is the correct zero-information default; the user advances the stage via **Update status** as the application actually progresses. Existing tracker entries keep their stored stage (only new slugs are affected).
 
 ### Added
 

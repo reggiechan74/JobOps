@@ -89,9 +89,11 @@ recompute, no write).
      `stage`, `applied_date`, `next_deadline`, `contact`, `outcome`, `notes`. (Role
      humanized from a slug is lossy, e.g. `SeniorPM`, so the user's refined `company`/`role`
      are preserved once set.) Overwrite only `artifacts` and `next_action` from the scan.
-   - **New slug:** append `{slug, company, role, stage: applied, applied_date: null,
+   - **New slug:** append `{slug, company, role, stage: lead, applied_date: null,
      next_deadline: null, contact: null, outcome: null, notes: null, artifacts, next_action}`
-     using the derived `company`/`role`.
+     using the derived `company`/`role`. `lead` is the default stage in the absence of any
+     other information — the user advances it via **Update status** as the application
+     progresses.
 5. **Archive** tracker entries whose slug no longer has a folder: set `stage: archived`,
    all `artifacts` false, `next_action: none`. Keep all human-status fields.
 6. **Compute `next_action`** (first false wins; skip for archived → `none`):
@@ -119,7 +121,7 @@ recompute, no write).
 After reconcile (or, under `--fast`, directly from the stored tracker — the header's
 `reconciled {generated}` then reflects the *last* full reconcile, signalling staleness),
 print a summary line then a table sorted by stage rank
-(`interviewing, offer, applied, lead, on_hold, withdrawn, rejected, archived`),
+(`interviewing, offer, applied, preparing, lead, on_hold, withdrawn, rejected, archived`),
 then by `next_deadline` ascending (nulls last). Count of non-archived apps in the header.
 
 ```
@@ -161,7 +163,10 @@ If `--board-only` or `--fast` was passed, stop after the board (no menu loop).
      `{applications_root}/{slug}` as context. On return, re-run **Reconcile** and loop.
    - `Update status` — ask follow-up `AskUserQuestion`(s) for the field to change
      (`stage`, `next_deadline`, `contact`, `outcome`, `notes`), write the new value into
-     that app's human-status zone, re-write the YAML atomically, and loop.
+     that app's human-status zone, re-write the YAML atomically, and loop. For `stage`, the
+     choices are the pipeline stages in lifecycle order — `lead → preparing → applied →
+     interviewing → offer` — plus the side states `on_hold`, `withdrawn`, and `rejected`
+     (`archived` is set automatically when the app folder disappears, not chosen here).
    - `Open folder` — print `{applications_root}/{slug}` and list its contents.
    - `Back to board` — redraw the board; if chosen again at the top level, exit.
 
