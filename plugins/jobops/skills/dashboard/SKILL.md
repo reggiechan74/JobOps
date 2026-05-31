@@ -27,9 +27,11 @@ Use `config.directories.<key>` for all file paths in this skill.
 
 **Tracker path resolution (self-heal):** read `config.directories.application_tracker`.
 If that key is absent, set it to `{config.directories.applications_root}/tracker.yaml`,
-write the updated config back atomically (`.jobops/config.json.tmp` then `mv`), and use
-that path. This lets workspaces created before the dashboard existed work with no
-migration step.
+load the full existing config object, add only `directories.application_tracker` (leaving
+every other key — `directories.*`, `preferences`, `candidate`, `templates`, `migration` —
+untouched), and write the whole object back atomically to `.jobops/config.json.tmp` in the
+same directory, then `mv` over `.jobops/config.json`, and use that path. This lets
+workspaces created before the dashboard existed work with no migration step.
 
 ---
 
@@ -51,9 +53,14 @@ Run this every invocation, before rendering.
    | `osint` | the detected company folder (below) exists under `company_intelligence` |
    | `briefing` | any file matching `interview/briefing*.md` exists |
    | `interview_prep` | any file matching `interview/interview_prep*.md` exists |
+
+   If `applications_root` does not exist or contains no application folders, treat the scan
+   as yielding zero apps (do not error) and continue — existing tracker entries are still
+   archived per step 5 and an empty board is rendered.
 3. **Detect company / role** for each slug:
    - Drop a trailing 8-digit date token (`_YYYYMMDD`) from the slug. The remainder,
-     with `_` → space, is the **humanized title**.
+     with `_` → space, is the **humanized title**. A folder whose name has no trailing
+     8-digit date is still a valid app; its full humanized name becomes the title.
    - List sub-folders of `company_intelligence`. Slugify each folder name (spaces, `&`,
      `-`, `,` → `_`; collapse repeats; trim `_`) and lowercase. If a slugified folder name
      `C` satisfies `lower(slug) == C` or `lower(slug)` starts with `C + "_"`, the company is
@@ -82,7 +89,8 @@ Run this every invocation, before rendering.
    ```
 7. **Sort** `applications` by `slug` ascending. Set top-level `generated` to the current
    UTC time in ISO-8601 (`YYYY-MM-DDTHH:MM:SSZ`).
-8. **Write** the YAML back atomically (`tracker.yaml.tmp` then `mv`). Emit the two zones in
+8. **Write** the YAML back atomically: write `tracker.yaml.tmp` in the same directory as
+   `tracker.yaml`, then `mv` it over `tracker.yaml` so the rename is atomic. Emit the two zones in
    this field order per entry: `slug, company, role, stage, applied_date, next_deadline,
    contact, outcome, notes, artifacts, next_action`; the `artifacts` map in this order:
    `assessment, resume_draft, resume_final, cover_letter, osint, briefing, interview_prep`.
@@ -125,7 +133,9 @@ If `--board-only` was passed, stop after the board.
    pending `next_action` (i.e. not `record-outcome`/`none`), sorted by `next_deadline`
    ascending. Label `"{company-or-title} — {role}"`; description `"{stage} · next: {next_action}"`.
    The tool's auto "Other" lets the user type a slug or table row number for any other app.
-   Resolve the selection to one application.
+   Resolve the selection to one application. Apps already at `record-outcome` are reachable
+   only via the auto "Other" option (the navigate picker excludes them); selecting one jumps
+   straight to the outcome fields.
 3. **Act** — ask a second `AskUserQuestion` with ≤4 options:
    - `Run next: {next_action}` — invoke that skill (`/jobops:{next_action}`, or for
      `record-outcome` go straight to the outcome update below), passing the app folder
