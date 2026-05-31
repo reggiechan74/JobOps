@@ -63,6 +63,8 @@ For each confirmed path, run `mkdir -p <path>`. Report each as
 **created** (newly made) or **exists** (already present). Do not fail if a
 path already exists.
 
+> Skip `application_tracker` — it is a file path, not a directory; its parent (`applications_root`) is already created by this loop.
+
 Also `mkdir -p .jobops .jobops/templates/default .jobops/templates/custom`.
 
 ---
