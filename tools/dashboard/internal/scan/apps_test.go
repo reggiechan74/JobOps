@@ -122,3 +122,20 @@ func TestResumeDraftState(t *testing.T) {
 		t.Errorf("NextSkill = %q, want assessjob (first incomplete)", d.NextSkill)
 	}
 }
+
+func TestReadScoreOverallFallback(t *testing.T) {
+	dir := t.TempDir()
+	adir := filepath.Join(dir, "assessment")
+	if err := os.MkdirAll(adir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	// overall_score only, no normalized_score: 150/200 -> 75%.
+	body := "---\noutput_type: assessment\noverall_score: 150/200\n---\n"
+	if err := os.WriteFile(filepath.Join(adir, "assessment.md"), []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	got := readScore(dir)
+	if got == nil || *got != 75 {
+		t.Errorf("readScore overall fallback = %v, want 75", got)
+	}
+}

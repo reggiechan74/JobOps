@@ -145,8 +145,9 @@ func (a AppsAdapter) stageState(appDir, company, stage string) model.StageState 
 		return globState(filepath.Join(appDir, "interview"), "briefing")
 	case "Prep":
 		return globState(filepath.Join(appDir, "interview"), "interview_prep")
+	default:
+		panic("scan: unhandled pipeline stage " + stage)
 	}
-	return model.Missing
 }
 
 // readScore reads the normalized fit % from assessment.md, falling back to
@@ -209,7 +210,11 @@ func globState(dir, prefix string) model.StageState {
 func latestMtime(dir string) time.Time {
 	var latest time.Time
 	_ = filepath.Walk(dir, func(_ string, info os.FileInfo, err error) error {
-		if err == nil && info.Mode().IsRegular() && info.ModTime().After(latest) {
+		// err != nil means an entry is inaccessible (info is nil); skip it.
+		if err != nil {
+			return nil
+		}
+		if info.Mode().IsRegular() && info.ModTime().After(latest) {
 			latest = info.ModTime()
 		}
 		return nil
