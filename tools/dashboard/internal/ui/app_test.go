@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"strings"
 	"testing"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -52,5 +53,29 @@ func TestViewRendersWithoutPanic(t *testing.T) {
 	m := newTestModel()
 	if m.View() == "" {
 		t.Errorf("View() returned empty string")
+	}
+}
+
+func TestSpawnMissingAgentFallback(t *testing.T) {
+	m := newTestModel()
+	m.agent = "definitely-not-a-real-agent-xyz"
+	m.mode = modePalette
+	m.paletteAt = 0
+	updated, cmd := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	if cmd == nil {
+		t.Fatal("expected a command from the spawn fallback")
+	}
+	msg := cmd()
+	nm, ok := msg.(noticeMsg)
+	if !ok {
+		t.Fatalf("expected noticeMsg, got %T", msg)
+	}
+	final, _ := updated.(Model).Update(nm)
+	fm := final.(Model)
+	if fm.mode != modeNotice {
+		t.Errorf("mode = %v, want modeNotice", fm.mode)
+	}
+	if !strings.Contains(fm.notice, "not found") {
+		t.Errorf("notice = %q, want it to mention 'not found'", fm.notice)
 	}
 }

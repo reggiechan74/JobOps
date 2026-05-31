@@ -61,6 +61,9 @@ func (m Model) Init() tea.Cmd { return nil }
 // rescanMsg is emitted after a spawned agent session returns.
 type rescanMsg struct{}
 
+// noticeMsg asks the model to display a transient notice.
+type noticeMsg struct{ text string }
+
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -71,6 +74,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.cursor >= len(m.records) {
 			m.cursor = max(0, len(m.records)-1)
 		}
+		if len(m.records) == 0 {
+			m.mode = modeNormal
+		}
+		return m, nil
+	case noticeMsg:
+		m.notice = msg.text
+		m.mode = modeNotice
 		return m, nil
 	case tea.KeyMsg:
 		if m.mode == modePalette {
@@ -104,7 +114,7 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 	case "c":
 		if cmd := m.composeSelected(m.skillAt(m.nextSkillIndex())); cmd != "" {
-			m.copyOrNotice(cmd)
+			m = m.copyOrNotice(cmd)
 		}
 	case "C":
 		if m.agent == "claude" {
@@ -115,7 +125,7 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		_ = launch.SavePrefs(m.root, launch.Prefs{Agent: m.agent})
 	case "s":
 		if len(m.records) > 0 {
-			m.cycleLifecycle()
+			m = m.cycleLifecycle()
 		}
 	case "r":
 		m.records, _ = m.scanner.Scan()
@@ -138,7 +148,7 @@ func (m Model) updatePalette(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "c":
 		cmd := m.composeSelected(m.skillAt(m.paletteAt))
 		m.mode = modeNormal
-		m.copyOrNotice(cmd)
+		m = m.copyOrNotice(cmd)
 	case "enter":
 		cmd := m.composeSelected(m.skillAt(m.paletteAt))
 		m.mode = modeNormal
@@ -147,7 +157,7 @@ func (m Model) updatePalette(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m *Model) cycleLifecycle() {
+func (m Model) cycleLifecycle() Model {
 	cur := m.records[m.cursor].Lifecycle
 	if cur == "" {
 		cur = model.DefaultLifecycle()
@@ -162,13 +172,14 @@ func (m *Model) cycleLifecycle() {
 	next := model.LifecycleOrder[(idx+1)%len(model.LifecycleOrder)]
 	m.records[m.cursor].Lifecycle = next
 	if len(m.records[m.cursor].Paths) == 0 {
-		return
+		return m
 	}
 	appDir := m.records[m.cursor].Paths[0]
 	tr, _ := scan.ReadTracker(appDir)
 	tr.Lifecycle = next
 	_ = scan.WriteTracker(appDir, tr)
 	m.records[m.cursor].Started = true
+	return m
 }
 
 func (m Model) nextSkillIndex() int {
@@ -198,9 +209,9 @@ func (m Model) composeSelected(spec model.SkillSpec) string {
 	return launch.Compose(spec, m.records[m.cursor])
 }
 
-func (m *Model) copyOrNotice(cmd string) {
+func (m Model) copyOrNotice(cmd string) Model {
 	if cmd == "" {
-		return
+		return m
 	}
 	if launch.Copy(cmd) {
 		m.notice = "Copied: " + cmd
@@ -208,19 +219,25 @@ func (m *Model) copyOrNotice(cmd string) {
 		m.notice = "No clipboard tool. Copy manually:\n  " + cmd
 	}
 	m.mode = modeNotice
+	return m
 }
 
 // spawn suspends the TUI to run the interactive agent with cmd as its prompt,
-// then triggers a rescan when it returns.
+// then triggers a rescan when it returns. If the agent is not on PATH it copies
+// the command to the clipboard and reports that via a noticeMsg instead.
 func (m Model) spawn(cmd string) tea.Cmd {
 	if cmd == "" {
 		return nil
 	}
 	if _, err := exec.LookPath(m.agent); err != nil {
-		// Agent not installed: fall back to clipboard.
-		mm := m
-		mm.copyOrNotice(cmd)
-		return func() tea.Msg { return rescanMsg{} }
+		copied := launch.Copy(cmd)
+		text := "Agent '" + m.agent + "' not found on PATH. "
+		if copied {
+			text += "Copied command to clipboard:\n  " + cmd
+		} else {
+			text += "Copy it manually:\n  " + cmd
+		}
+		return func() tea.Msg { return noticeMsg{text} }
 	}
 	c := exec.Command(m.agent, cmd)
 	return tea.ExecProcess(c, func(error) tea.Msg { return rescanMsg{} })
