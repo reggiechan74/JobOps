@@ -7,8 +7,8 @@ that carries human-status fields (Acme) and a vanished slug (Soylent).
 
 ## Verify a reconcile
 
-1. `./build-fixture.sh`
-2. Following the algorithm in `plugins/jobops/skills/dashboard/SKILL.md` §Reconcile,
+1. `cd test/fixtures/dashboard && ./build-fixture.sh`
+2. Following the algorithm in `plugins/jobops/skills/dashboard/SKILL.md` §Reconcile (created in Task 3),
    produce `workspace/Applications/tracker.yaml`.
 3. Normalize the volatile timestamp and compare:
    ```bash
