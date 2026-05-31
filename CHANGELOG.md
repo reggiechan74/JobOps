@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-05-31
+
+### Added
+
+- **`/jobops:dashboard` application dashboard** — a new skill that reconciles a YAML application tracker (`config.directories.application_tracker`, default `{applications_root}/tracker.yaml`) from the filesystem on each run: artifact presence across the per-application `Applications/` folders drives each app's pipeline flags and computed `next_action`, while a human-status zone (`stage`, key dates, `contact`, `outcome`, `notes`) is preserved across reconciles. It renders a markdown statusboard and, on Claude Code, drives a two-level `AskUserQuestion` "navigate → act" loop (launch the next pipeline skill, update status, or open the folder); on Codex it prints a read-only board with suggested next steps. `--board-only` skips the loop. Adds the `directories.application_tracker` config key (collected by `/jobops:setup`, and self-healed onto pre-existing workspaces by the dashboard itself). Documented in `docs/ARCHITECTURE.md` §2/§4 and the README.
+
+### Removed
+
+- **Standalone Go TUI dashboard (`tools/dashboard/`)** — the in-development Go terminal dashboard (never released) is replaced by the cross-platform `/jobops:dashboard` skill, which runs in both Claude Code and Codex and can chain directly into other JobOps skills. The `npm run dash` helper script was removed with it.
+
 ## [2.8.0] - 2026-05-31
 
 ### Added
@@ -14,15 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`github` field in `config.candidate`** — `/jobops:setup` Step 4b now collects a GitHub handle/URL alongside LinkedIn, and the field is written to `config.candidate`. The resume header (`plugins/jobops/agents/step1-resume-draft.md`), cover-letter header (`plugins/jobops/skills/coverletter/SKILL.md` and `plugins/jobops/agents/step4-cover-letter.md` element 4.0), and the `latex-pdf` contact-line contract render it as a distinct `GitHub: {github}` segment after LinkedIn, joined with ` | ` and omitted cleanly when blank. Since `config.candidate` is the single source of truth shared by both documents (see `docs/ARCHITECTURE.md`), the field was threaded through every header consumer so the resume and cover letter keep rendering identical contact lines.
 - **Persisted domain research in `/jobops:assessjob`** — the Phase 2 domain-research subagent's findings are now saved verbatim to `{applications_root}/{app_slug}/assessment/domain_research.md` (new §2.2.1), with its own YAML front matter block. Previously the research existed only in session context: it calibrated the rubric and was then discarded, so the cited sources and data points behind the scoring were unrecoverable after the run. Saving in Phase 2 (rather than deferring to Phase 5) preserves the full text before the scoring phases crowd it out of context and keeps the artifact even if a later phase fails. `assessment/` now holds three artifacts — `domain_research.md`, `rubric.md`, `assessment.md` — documented in `docs/ARCHITECTURE.md` and the README.
 - **Candidate Configuration section in `README.md`** — documents the full `config.candidate` field set (including `github`) and the two-line header render format.
-- **`/jobops:dashboard` application dashboard** — a new skill that reconciles a YAML application tracker (`config.directories.application_tracker`, default `{applications_root}/tracker.yaml`) from the filesystem on each run: artifact presence across the per-application `Applications/` folders drives each app's pipeline flags and computed `next_action`, while a human-status zone (`stage`, key dates, `contact`, `outcome`, `notes`) is preserved across reconciles. It renders a markdown statusboard and, on Claude Code, drives a two-level `AskUserQuestion` "navigate → act" loop (launch the next pipeline skill, update status, or open the folder); on Codex it prints a read-only board with suggested next steps. `--board-only` skips the loop. Adds the `directories.application_tracker` config key (collected by `/jobops:setup`, and self-healed onto pre-existing workspaces by the dashboard itself). Documented in `docs/ARCHITECTURE.md` §2/§4 and the README.
 
 ### Changed
 
 - **Renamed `plugins/jobops/templates/latex/omers-filter.lua` → `jobops-filter.lua`** — "OMERS" was the specific employer the filter was first built for; the name carried job-specific branding into a general-purpose pandoc filter. Renamed via `git mv` (history preserved) and neutralized the OMERS wording in the filter header, the preamble templates, the latex README, and `skills/latex-pdf/SKILL.md` (including the `pandoc --lua-filter` invocation). Historical CHANGELOG entries that reference the old filename are left intact as a record of what shipped at the time.
-
-### Removed
-
-- **Standalone Go TUI dashboard (`tools/dashboard/`)** — the in-development Go terminal dashboard (never released) is replaced by the cross-platform `/jobops:dashboard` skill, which runs in both Claude Code and Codex and can chain directly into other JobOps skills. The `npm run dash` helper script was removed with it.
 
 ## [2.7.0] - 2026-05-28
 
