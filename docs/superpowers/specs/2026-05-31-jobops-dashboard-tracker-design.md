@@ -169,11 +169,14 @@ Pipeline dots: assess▸resume▸cover▸osint▸briefing▸prep
 - `●` = stage complete · `○` = missing · `◐` = resume only (draft present, no `step3_final`).
 - `⚠` = `next_deadline` within 3 days of `generated`.
 
-## 9. Setup, migrate & docs
+## 9. Setup, config self-heal & docs
 
-- `/jobops:setup` Step 2 directory interview gains one row:
+- `/jobops:setup` Step 2 directory interview gains one row and Step 6 JSON gains one key:
   `application_tracker → ./Applications/tracker.yaml`.
-- `/jobops:migrate` adds the key to existing configs (idempotent; no overwrite if present).
+- **Existing workspaces self-heal** (no `/jobops:migrate` change): if
+  `config.directories.application_tracker` is absent, the dashboard defaults it to
+  `{applications_root}/tracker.yaml` and persists the key back into `config.json`
+  (atomic `.tmp`+`mv`) on first run. Idempotent thereafter.
 - The dashboard skill follows the standard contract: frontmatter (`name`,
   `description`, `disable-model-invocation: true`), `## Configuration` preamble reading
   `.jobops/config.json`, and the `JOBOPS NOT CONFIGURED` exit when the config is absent.
