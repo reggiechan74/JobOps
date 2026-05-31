@@ -25,7 +25,7 @@ func sampleRecords() []model.Record {
 }
 
 func TestRenderTableShowsRowsAndCursor(t *testing.T) {
-	out := RenderTable(sampleRecords(), 0, 80)
+	out := RenderTable(sampleRecords(), 0, 80, true)
 	if !strings.Contains(out, "Acme Product Manager") || !strings.Contains(out, "Beta Capital Analyst") {
 		t.Errorf("table missing rows:\n%s", out)
 	}
@@ -35,10 +35,20 @@ func TestRenderTableShowsRowsAndCursor(t *testing.T) {
 	if !strings.Contains(out, "▶") {
 		t.Errorf("table missing cursor marker:\n%s", out)
 	}
+	if !strings.Contains(out, "Lifecycle") {
+		t.Errorf("lifecycle table should have a Lifecycle column:\n%s", out)
+	}
+}
+
+func TestRenderTableNoLifecycleColumn(t *testing.T) {
+	out := RenderTable(sampleRecords(), 0, 80, false)
+	if strings.Contains(out, "Lifecycle") {
+		t.Errorf("non-lifecycle table should omit the Lifecycle column:\n%s", out)
+	}
 }
 
 func TestRenderDetailShowsStagesAndNext(t *testing.T) {
-	out := RenderDetail(sampleRecords()[0])
+	out := RenderDetail(sampleRecords()[0], true)
 	if !strings.Contains(out, "Assess") || !strings.Contains(out, "✓") || !strings.Contains(out, "○") {
 		t.Errorf("detail missing stage glyphs:\n%s", out)
 	}
@@ -51,8 +61,15 @@ func TestRenderDetailShowsStagesAndNext(t *testing.T) {
 }
 
 func TestRenderDetailBacklogNoScore(t *testing.T) {
-	out := RenderDetail(sampleRecords()[1])
+	out := RenderDetail(sampleRecords()[1], true)
 	if !strings.Contains(out, "—") {
 		t.Errorf("backlog detail should show — for missing score:\n%s", out)
+	}
+}
+
+func TestRenderDetailNoLifecycle(t *testing.T) {
+	out := RenderDetail(sampleRecords()[0], false)
+	if strings.Contains(out, "Lifecycle") {
+		t.Errorf("no-lifecycle detail should not print Lifecycle:\n%s", out)
 	}
 }
