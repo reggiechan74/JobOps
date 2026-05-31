@@ -53,7 +53,7 @@ Three destination patterns.
       │   ├── step2_provenance.md
       │   └── step3_final.md
       ├── cover-letter/cover_letter.md
-      ├── assessment/{rubric,assessment}.md
+      ├── assessment/{domain_research,rubric,assessment}.md
       └── interview/{briefing,interview_prep}.md
 
 **Company-centric** — per-company OSINT, shared across applications to the same company:

@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 2.7.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 2.8.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 Two Claude Code and Codex plugins for systematic, intelligence-driven career management — from resume development to independent consulting.
 
@@ -92,7 +92,7 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 
 | Skill | Description |
 |-------|-------------|
-| `/jobops:assessjob` | Dynamic rubric generation + full candidate assessment |
+| `/jobops:assessjob` | Dynamic rubric generation + full candidate assessment; saves domain research, rubric, and assessment to `assessment/` |
 | `/jobops:assesscandidate` | Assess candidate using pre-created scoring rubric |
 | `/jobops:createrubric` | Create reusable 200-point scoring rubric |
 | `/jobops:comparejobs` | Compare 2-4 job assessments side-by-side |
@@ -214,6 +214,28 @@ All output directories are configurable via `.jobops/config.json`. Default paths
 | `career_analysis` | `./Career_Analysis` | Career-level outputs (idealjob, comparejobs, change-one-thing) |
 | `crisis_management` | `./Crisis_Management` | Crisis-skill outputs (severance, non-compete, etc.) |
 | `contractor_root` | `./Contractor` | `jobops-ic` outputs; added by `/jobops-ic:setup` |
+
+### Candidate Configuration
+
+`/jobops:setup` also collects your contact details into `config.candidate`. The
+resume and cover-letter flows source the document header from this block so both
+render an identical contact line. Any field may be left blank — blank fields are
+omitted from the header along with their separator, never invented or fused onto
+an adjacent field.
+
+| Key | Example | Purpose |
+|-----|---------|---------|
+| `name` | `Jane Doe` | Full name (header line 1) |
+| `credentials` | `CFA, FRICS` | Post-nominals after the name (blank if none) |
+| `location` | `Toronto, ON` | City/region (header line 2) |
+| `phone` | `(555) 555-1234` | Its own header field; never concatenated onto the email |
+| `email` | `jane.doe@example.com` | Contact email |
+| `linkedin` | `linkedin.com/in/janedoe` | LinkedIn handle or URL |
+| `github` | `github.com/janedoe` | GitHub handle or URL (blank if none) |
+
+The header renders as `{name}, {credentials}` on the first line and
+`{location} | {phone} | {email} | LinkedIn: {linkedin} | GitHub: {github}` on the
+second, with empty fields dropped cleanly.
 
 ---
 

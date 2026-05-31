@@ -100,7 +100,7 @@ Create these tasks immediately at the start:
 | 1 | Load assessment framework templates | Loading assessment framework templates | 1 |
 | 2 | Validate job posting and resume source | Validating job posting and resume source | 1 |
 | 3 | Read candidate source materials | Reading candidate source materials | 2 |
-| 4 | Research domain and industry context | Researching domain and industry context | 2 |
+| 4 | Research domain context and save findings | Researching domain and industry context | 2 |
 | 5 | Create job-specific scoring rubric | Creating job-specific scoring rubric | 3 |
 | 6 | Score Skills Inventory (Category 1) | Scoring Skills Inventory against rubric | 4 |
 | 7 | Score Experience Relevance (Category 2) | Scoring Experience Relevance against rubric | 4 |
@@ -119,8 +119,21 @@ Create these tasks immediately at the start:
 
 ## YAML FRONT MATTER FOR GENERATED FILES
 
-Every markdown artifact you create (rubric and assessment report) must start with YAML metadata populated with real values.
+Every markdown artifact you create (domain research, rubric, and assessment report) must start with YAML metadata populated with real values.
 
+- **Domain research file** (`{applications_root}/{app_slug}/assessment/domain_research.md`):
+  ```yaml
+  ---
+  job_file: {config.directories.job_postings}/{{ARG1}}
+  role: <role title>
+  company: <company name>
+  generated_by: /assessjob domain-research
+  generated_on: <ISO8601 timestamp>
+  output_type: domain_research
+  status: final
+  version: 2.0
+  ---
+  ```
 - **Rubric file** (`{applications_root}/{app_slug}/assessment/rubric.md`):
   ```yaml
   ---
@@ -259,7 +272,15 @@ Be specific - cite sources and data points where possible."
 
 **IMPORTANT**: §2.1 (source reading) is done in-session via direct Read tool calls — it is NOT a subagent dispatch. §2.2 (domain research) is a Task tool subagent dispatch. Dispatch §2.2 BEFORE starting §2.1's reads so the two run concurrently — do not wait for §2.1's reads to complete before launching the §2.2 subagent.
 
-> **Task:** When each subagent completes, mark its respective task (3 or 4) as `completed`.
+### 2.2.1 Persist Domain Research (Task 4)
+
+As soon as the §2.2 subagent returns, save its findings **verbatim** — do not summarize, paraphrase, or trim. The raw research (including the 7-area structure and any cited sources or data points) is the audit record; the rubric captures only its *effect* on calibration, not the underlying evidence. Save now, in Phase 2, rather than deferring to Phase 5, so the full text is preserved before the scoring phases crowd it out of context and so the artifact survives a failure in a later phase.
+
+1. Resolve `{app_slug}` per the Application Path Resolution protocol at the top of this skill. This is the first write of the run, so it triggers folder creation: `mkdir -p {applications_root}/{app_slug}/assessment/`, then pin the JD — copy `{config.directories.job_postings}/{{ARG1}}` → `{applications_root}/{app_slug}/job_posting.md` if not already present.
+2. Write the subagent's full structured summary to `{applications_root}/{app_slug}/assessment/domain_research.md`, prepended with the **Domain research file** YAML front matter block defined above.
+3. Preserve the 7-area organization and every source citation exactly as returned by the subagent.
+
+> **Task:** When the §2.1 reads complete, mark task 3 `completed`. Mark task 4 `completed` only after the research file is written in §2.2.1.
 
 ---
 
@@ -457,7 +478,11 @@ Resolve `{app_slug}` per the Application Path Resolution protocol at the top of 
    - Document all scores with evidence mapping and confidence flags
    - Provide clear traceability between rubric criteria and candidate evaluation
 
-No timestamped audit sub-folder is required — the app folder itself is the self-contained audit container, and the pinned `job_posting.md` copy guarantees the JD cannot drift after the fact.
+3. **Verify Domain Research**: `{applications_root}/{app_slug}/assessment/domain_research.md`
+   - Already written in Phase 2 §2.2.1; confirm the file exists.
+   - If it is missing (e.g. a resumed run that skipped Phase 2), write it now from the research summary held in context, using the **Domain research file** YAML front matter block.
+
+No timestamped audit sub-folder is required — the app folder itself is the self-contained audit container. After this skill runs, `assessment/` holds three artifacts — `domain_research.md`, `rubric.md`, and `assessment.md` — and the pinned `job_posting.md` copy guarantees the JD cannot drift after the fact.
 
 **Save Steps:**
 1. Compute `{app_slug}` from the job-posting filename (or `--app=<slug>` override)
@@ -502,7 +527,7 @@ If issues are encountered:
 - **Traceability**: Always reference which rubric was used for which assessment
 - **Objectivity**: Be evidence-based in scoring using the job-specific criteria with detailed justification
 - **Domain Research**: Domain research informs rubric calibration - thresholds and weights should reflect industry reality
-- **Documentation**: Save both rubric and assessment for complete audit trail
+- **Documentation**: Save the domain research, rubric, and assessment for a complete audit trail
 - **Confidence Levels**: All scores must include HIGH/MED/LOW confidence flags
 - **Quality Control**: The generated rubric must be as detailed as the framework rubric - no shortcuts or simplified versions allowed
 
