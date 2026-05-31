@@ -58,14 +58,14 @@ applications:
     notes: "Recruiter screen went well"
     # ── artifact flags: OVERWRITTEN every reconcile from the filesystem scan ──
     artifacts:
-      resume_draft: true
-      resume_provenance: true
-      resume_final: true
+      assessment: true
+      resume_draft: true                 # step1_draft.md OR step2_provenance.md present
+      resume_final: true                 # step3_final.md present
       cover_letter: true
-      assessment: false
+      osint: true                        # Company_Intelligence/{Company}/ folder exists
+      briefing: false
       interview_prep: false
-      osint: true                        # Company_Intelligence/{Company}/summary.md exists
-    next_action: assessjob               # computed each reconcile
+    next_action: briefing                # computed each reconcile
 ```
 
 **Zone contract:** the human-status zone is owned by the user (edited only via the
@@ -79,19 +79,21 @@ Runs at the top of every dashboard invocation:
 1. Load existing YAML (or start with an empty `applications: []`).
 2. Scan `applications_root` for `{Company}_{Role}_{YYYYMMDD}/` folders. For each,
    probe the fixed sub-paths to set the `artifacts` block:
-   | Flag | Source path (relative to the app folder) |
+   | Flag | True when… |
    |---|---|
-   | `resume_draft` | `resume/step1_draft.md` |
-   | `resume_provenance` | `resume/step2_provenance.md` |
-   | `resume_final` | `resume/step3_final.md` |
-   | `cover_letter` | `cover-letter/cover_letter.md` |
-   | `assessment` | `assessment/assessment.md` |
-   | `interview_prep` | `interview/interview_prep.md` |
-   | `osint` | `{company_intelligence}/{Company}/summary.md` exists |
-   > The exact filenames above mirror `docs/ARCHITECTURE.md` §4. During planning,
-   > confirm each against the producing skill's output section and the deleted Go
-   > scanner's lifecycle logic in git history (`git show` on `internal/scan/apps.go`),
-   > which already encoded most of this mapping.
+   | `assessment` | `assessment/assessment.md` exists |
+   | `resume_draft` | `resume/step1_draft.md` **or** `resume/step2_provenance.md` exists |
+   | `resume_final` | `resume/step3_final.md` exists |
+   | `cover_letter` | `cover-letter/cover_letter.md` exists |
+   | `osint` | `{company_intelligence}/{Company}/` folder exists |
+   | `briefing` | any `interview/briefing*.md` exists |
+   | `interview_prep` | any `interview/interview_prep*.md` exists |
+   > Mapping pinned against each producing skill's output section and the deleted Go
+   > scanner's lifecycle logic (`git show 6d9a6de:tools/dashboard/internal/scan/apps.go`).
+   > `buildresume` produces all three resume steps internally (`step1-resume-draft` →
+   > `step2-provenance-check` → `step3-final-resume`), so a single `buildresume` covers
+   > the whole resume stage. `briefing`/`interview_prep` use prefix-glob to catch the
+   > multi-part outputs (`interview_prep_part1.md`, …).
 3. **Merge rule:**
    - slug already in YAML → keep the human-status zone verbatim; overwrite only `artifacts` + `next_action`.
    - new folder → append a skeleton entry (`stage: applied`, human fields null/empty, `company`/`role` parsed from slug).
@@ -101,21 +103,22 @@ Runs at the top of every dashboard invocation:
 
 ## 6. Next-action state machine
 
-First unmet step wins, ordered by the real pipeline:
+First unmet step wins, ordered by the real pipeline (mirrors the Go scanner's proven
+`pipelineOrder`, led by assessment):
 
 ```
-osint missing            → osint
-resume_draft missing     → buildresume
-resume_provenance missing→ provenance-check
-resume_final missing     → finalize-resume      (skill name confirmed during planning)
-cover_letter missing     → coverletter
-assessment missing       → assessjob
-interview_prep missing   → interviewprep
-all artifacts present     → "record outcome" (prompt to set stage offer/rejected + outcome)
+assessment   == false   → assessjob
+resume_final == false   → buildresume        (produces draft → provenance → final in one run)
+cover_letter == false   → coverletter        (needs step3_final resume)
+osint        == false   → osint
+briefing     == false   → briefing
+interview_prep == false → interviewprep
+all artifacts true       → record-outcome     (prompt to set stage offer/rejected + outcome)
 ```
 
-`archived` apps have `next_action: none`. The skill-name↔step mapping is pinned during
-planning against each skill's actual outputs.
+`archived` apps have `next_action: none`. `resume_draft` is not its own next-action — it
+only distinguishes a half-dot (●◐○) in the board; `buildresume` is the action for any
+incomplete resume.
 
 ## 7. Interaction loop
 
@@ -151,19 +154,19 @@ Markdown, renders on both platforms. Summary line, then a table sorted by stage 
 ```
 JobOps Application Tracker · 5 active · reconciled 2026-05-31 14:02
 
-Stage          Company / Role             Pipeline            Next            Deadline
-─────────────  ─────────────────────────  ──────────────────  ──────────────  ──────────
-interviewing   Acme / Senior PM           ●●●●○○ OSINT✓        interviewprep   Jun 2  ⚠
-applied        Globex / Director Ops       ●●●○○○ OSINT✓        coverletter     Jun 5
-applied        Initech / PM               ●○○○○○ OSINT✗        osint           —
-offer          Umbrella / VP Product      ●●●●●● OSINT✓        record outcome  —
-archived       Soylent / Lead PM          ——                  —               —
+Stage          Company / Role             Pipeline       Next             Deadline
+─────────────  ─────────────────────────  ─────────────  ───────────────  ──────────
+interviewing   Acme / Senior PM           ●●●●●○         interviewprep    Jun 2  ⚠
+applied        Globex / Director Ops       ●●●◐○○         osint            Jun 5
+applied        Initech / PM               ●◐○○○○         buildresume      —
+offer          Umbrella / VP Product      ●●●●●●         record-outcome   —
+archived       Soylent / Lead PM          ——             —                —
 
-Pipeline: resume▸prov▸final▸cover▸assess▸interview
+Pipeline dots: assess▸resume▸cover▸osint▸briefing▸prep
 ```
 
-- `●/○` = the six artifact flags in pipeline order.
-- `OSINT✓/✗` = company-intel link.
+- Six dots, one per pipeline stage in order: `assess · resume · cover · osint · briefing · prep`.
+- `●` = stage complete · `○` = missing · `◐` = resume only (draft present, no `step3_final`).
 - `⚠` = `next_deadline` within 3 days of `generated`.
 
 ## 9. Setup, migrate & docs
