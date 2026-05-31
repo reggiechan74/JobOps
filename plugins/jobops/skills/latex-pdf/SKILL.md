@@ -22,7 +22,7 @@ This skill resolves the LaTeX config and preamble via:
 
 Templates referenced: `config.json`, `preamble.base.tex.template`,
 `preamble.resume.tex.template`, `preamble.coverletter.tex.template`,
-`preamble.document.tex.template`, and `omers-filter.lua` (the Tier 2 pandoc
+`preamble.document.tex.template`, and `jobops-filter.lua` (the Tier 2 pandoc
 filter). The final `.tex` is assembled as **base + doctype delta + body**:
 `preamble.base.tex.template` holds everything shared (fonts, palette,
 de-numbering, helper macros, section style, `\role`/`\subrole`, table helpers);
@@ -36,7 +36,7 @@ If `config.templates.active.latex_config` is unset (older config), fall back to
 
 ## Markdown authoring contract
 
-The OMERS Lua filter maps a specific markdown shape onto the gold-standard
+The JobOps Lua filter maps a specific markdown shape onto the gold-standard
 LaTeX. The `buildresume` and `coverletter` skills MUST emit markdown in this
 shape; the filter is tolerant but parity depends on it.
 
@@ -70,7 +70,7 @@ City, ST • (555) 555-5555 • [email](mailto:…) • [linkedin.com/in/…](ht
 
 ```markdown
 # Name, PostNoms
-City, ST | (555) 555-5555 | [email](mailto:…) | LinkedIn: [linkedin.com/in/…](https://…)
+City, ST | (555) 555-5555 | [email](mailto:…) | LinkedIn: [linkedin.com/in/…](https://…) | GitHub: [github.com/…](https://…)
 
 Month DD, YYYY
 
@@ -99,14 +99,15 @@ Name, PostNoms
 
 - The first `#` plus the contact line become the left letterhead (name + navy
   rule + contact). The date line that follows is NOT consumed into the header.
-- **Contact line fields.** The contact line carries up to four distinct fields:
-  `{location} | {phone} | {email} | LinkedIn: {linkedin}`. Phone is its own
-  field — never concatenate it onto another field (the fused
+- **Contact line fields.** The contact line carries up to five distinct fields:
+  `{location} | {phone} | {email} | LinkedIn: {linkedin} | GitHub: {github}`.
+  Phone is its own field — never concatenate it onto another field (the fused
   `(555) 555-0123name@example.com` artifact came from a header that had no
   phone slot). Join fields with ` | ` (space-pipe-space) and **omit any empty
   field cleanly** — no orphan separators, no doubled ` |  | `. If the candidate
   has no phone on record, drop the field and the adjacent separator so the line
-  reads `City, ST | email | LinkedIn: …`. The filter renders the contact line
+  reads `City, ST | email | LinkedIn: … | GitHub: …`; a blank `github` drops the
+  trailing `GitHub: …` segment and its separator. The filter renders the contact line
   verbatim, so the separation must be correct in the markdown.
 - Use a trailing `\` for hard line breaks in the recipient block.
 - The 2-column requirements table renders with a navy header row, white bold
@@ -379,11 +380,11 @@ srcdir=$(dirname "$src")
 find "$srcdir" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) \
   -exec cp {} "$work/" \; 2>/dev/null || true
 
-# The OMERS Lua filter maps the markdown onto the hand-built LaTeX vocabulary
+# The JobOps Lua filter maps the markdown onto the hand-built LaTeX vocabulary
 # (header block, \section, \role/\subrole, navy+zebra tables). It needs to know
 # the doctype; it is pass-through for `document`.
 pandoc "$src" -t latex -o "${work}/body.tex" --no-highlight --wrap=none \
-  --lua-filter="${latex_dir}/omers-filter.lua" -M doctype="$doctype"
+  --lua-filter="${latex_dir}/jobops-filter.lua" -M doctype="$doctype"
 ```
 
 ## Step 7: Generate preamble + assemble

@@ -10,7 +10,7 @@
 \setlength{\parskip}{__PARSKIP_EM__em}
 
 % ---- Requirements-table tuning. The navy header row and zebra striping are
-%      emitted by the OMERS Lua filter as explicit \rowcolor / \rowshade rows,
+%      emitted by the JobOps Lua filter as explicit \rowcolor / \rowshade rows,
 %      so no fragile \toprule redefinition is needed here. ----
 \setlength{\tabcolsep}{8pt}
 \renewcommand{\arraystretch}{1.35}

@@ -75,9 +75,9 @@ I'm launching the `step4-cover-letter` agent to create your cover letter. The ag
 The letter opens with a contact block sourced from `config.candidate` (set during `/jobops:setup`), rendered as two lines:
 
     {name}, {credentials}
-    {location} | {phone} | {email} | LinkedIn: {linkedin}
+    {location} | {phone} | {email} | LinkedIn: {linkedin} | GitHub: {github}
 
-Phone is a distinct field joined with ` | `; it is never concatenated onto the email. Empty fields are omitted cleanly with no orphan separators. Contact values are never hand-typed into the letter; they come from config so they stay consistent and never get fused.
+Phone is a distinct field joined with ` | `; it is never concatenated onto the email. Empty fields are omitted cleanly with no orphan separators (a blank `github` drops the `GitHub: …` segment and its separator). Contact values are never hand-typed into the letter; they come from config so they stay consistent and never get fused.
 
 ### The Seven-Element Structure
 
@@ -121,7 +121,7 @@ The agent writes the body in this order. Each element is mandatory unless explic
 Imitate this letter for structure and voice, not for content. All names, firms, contact values, and product references below are placeholders (John Smith / ABC Inc. / XYZ Corp / `(555) 555-0123` etc.) — the real letter substitutes the actual hiring manager, target firm, prior employers, named systems from the candidate's record, and the contact values from `config.candidate`. Notice the contact header with a distinct phone field, how the **fit-led opening leads with the candidate's own record** (not a diagnosis of the employer), how company insight is demoted to the **context paragraph**, and how the honest-limitation paragraph uses the explicit AI-authorship split.
 
 > John Smith, CFA, FRICS
-> Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith
+> Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith | GitHub: /johnsmith
 >
 > May 28, 2026
 >

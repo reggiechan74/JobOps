@@ -156,7 +156,7 @@ For all achievement bullet points, you MUST use the **HAM-Z Method**:
 
 **STEP 1C - Draft Creation:**
 1. **Professional Resume Structure (Target 3 pages maximum):**
-   - **Header:** Name, job title, contact info (phone, email, LinkedIn)
+   - **Header:** Name, job title, contact info (phone, email, LinkedIn, GitHub)
    - **EXECUTIVE SUMMARY:** 3-4 lines highlighting senior-level qualifications
    - **CORE COMPETENCIES:** Keyword-rich bullet points organized by category
    - **PROFESSIONAL EXPERIENCE:** Reverse chronological with company/role/dates
@@ -312,7 +312,7 @@ Before drafting, confirm you have source files covering:
 - Bullet points use single bullet (•) for Core Competencies
 - Bullet points use dash (-) for experience details
 - Clean markdown formatting for professional Word conversion
-- **Header contact line:** when `config.candidate` is available, source the candidate's name, credentials, location, phone, email, and LinkedIn from it so the header matches the cover letter. Phone is its own field; never fuse it onto the email.
+- **Header contact line:** when `config.candidate` is available, source the candidate's name, credentials, location, phone, email, LinkedIn, and GitHub from it so the header matches the cover letter. Phone is its own field; never fuse it onto the email. GitHub follows LinkedIn and is omitted cleanly when blank.
 
 **De-aging (avoid age proxies):**
 - **No explicit total-years-of-experience stamp in the EXECUTIVE SUMMARY** ("25 years of experience"). It is an age proxy. Convey seniority through proof: named roles, dollar figures, portfolio scope. This still clears "10+ years" requirements without dating the candidate.

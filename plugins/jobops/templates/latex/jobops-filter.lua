@@ -1,10 +1,10 @@
 --[[
-  JobOps latex-pdf — OMERS Lua filter (Tier 2 parity).
+  JobOps latex-pdf — document Lua filter (Tier 2 parity).
 
-  Maps the JobOps markdown authoring contract onto the hand-built OMERS LaTeX
+  Maps the JobOps markdown authoring contract onto the hand-built JobOps LaTeX
   vocabulary so resumes and cover letters render to the gold standard.
 
-  Activated by the skill via:  pandoc ... --lua-filter=omers-filter.lua -M doctype=<doctype>
+  Activated by the skill via:  pandoc ... --lua-filter=jobops-filter.lua -M doctype=<doctype>
 
   Behaviour by doctype:
     resume       first H1 (name + post-noms) + following tagline/contact lines
@@ -68,7 +68,7 @@ local function is_header_material(block)
   pandoc.walk_block(block, { Link = function() has_link = true; return nil end })
   if has_link then return true end
   local txt = stringify(block)
-  if txt:find('@') or txt:find('https?://') or txt:lower():find('linkedin') then return true end
+  if txt:find('@') or txt:find('https?://') or txt:lower():find('linkedin') or txt:lower():find('github') then return true end
   if txt:find('•') or txt:find('|') then return true end
   if #block.content == 1 and block.content[1].t == 'Strong' then return true end
   return false
@@ -153,13 +153,13 @@ local function build_header(doctype, name_text, consumed)
   end
 end
 
--- Build an OMERS-styled longtable (navy header row + zebra body) from a Table.
+-- Build a JobOps-styled longtable (navy header row + zebra body) from a Table.
 local function build_table(tbl, doctype)
   local ncol = #tbl.colspecs
   if ncol == 0 then return nil end
 
   -- Column fractions. The 2-col cover-letter requirements table is a known
-  -- shape, so force the OMERS 29/71 split for parity. Otherwise honour
+  -- shape, so force the 29/71 split for parity. Otherwise honour
   -- pandoc-provided relative widths, falling back to an equal split.
   local fracs = {}
   if ncol == 2 and doctype == 'coverletter' then

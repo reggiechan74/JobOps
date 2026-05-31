@@ -14,8 +14,8 @@ Files:
 - `preamble.resume.tex.template` — resume delta (body spacing only).
 - `preamble.coverletter.tex.template` — coverletter delta (parskip, requirements-table tuning).
 - `preamble.document.tex.template` — generic document delta (parskip, sub/subsub headings, tables).
-- `omers-filter.lua` — pandoc Lua filter that maps the JobOps markdown onto the
-  OMERS LaTeX vocabulary (header block, `\section`, `\role`/`\subrole`, navy+zebra
+- `jobops-filter.lua` — pandoc Lua filter that maps the JobOps markdown onto the
+  JobOps LaTeX vocabulary (header block, `\section`, `\role`/`\subrole`, navy+zebra
   tables). Pass-through for the `document` doctype.
 - `config.json` — themes + doctypes registry. See `../../skills/latex-pdf/SKILL.md` for schema.
 

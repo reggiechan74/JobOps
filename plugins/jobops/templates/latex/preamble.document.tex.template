@@ -3,7 +3,7 @@
 % and the JSON config instead. This file is regenerated on every run.
 %
 % Shared styling (fonts, palette, section look, de-numbering, helper macros,
-% keepaspectratio) lives in preamble.base.tex.template. The OMERS Lua filter
+% keepaspectratio) lives in preamble.base.tex.template. The JobOps Lua filter
 % is pass-through for this doctype, so pandoc's default heading mapping applies
 % (H1 -> \section, H2 -> \subsection, H3 -> \subsubsection); the base styles
 % \section and the deltas below style the deeper levels.

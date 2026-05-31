@@ -106,12 +106,13 @@ The letter opens with the candidate's contact block, sourced from `config.candid
 Render the header as two lines:
 
     {name}, {credentials}
-    {location} | {phone} | {email} | LinkedIn: {linkedin}
+    {location} | {phone} | {email} | LinkedIn: {linkedin} | GitHub: {github}
 
 Rules:
 - **Phone is its own field.** Never adjacency-concatenate it onto the email or any other field. A header with no phone slot is exactly what produced the fused `(555) 555-0123name@example.com` artifact; the field now exists in `config.candidate`, so use it.
 - Join the second line's fields with ` | ` (space-pipe-space).
-- **Omit any empty field cleanly** — no orphan separators, no doubled ` |  | `. If `config.candidate.phone` is blank, the line reads `{location} | {email} | LinkedIn: {linkedin}`.
+- **GitHub is its own field**, rendered as `GitHub: {github}` after LinkedIn. Like every other field, it is sourced from `config.candidate.github`; omit the whole segment cleanly when blank.
+- **Omit any empty field cleanly** — no orphan separators, no doubled ` |  | `. If `config.candidate.phone` is blank, the line reads `{location} | {email} | LinkedIn: {linkedin} | GitHub: {github}`. If `config.candidate.github` is blank, the line ends `… | LinkedIn: {linkedin}`.
 - If a field is missing from `config.candidate`, surface the gap to the user; do not invent a value.
 
 The contact header is followed by the date line, the recipient block, and the salutation (first-name when known), then the seven body elements below.
@@ -320,7 +321,7 @@ LLM prose has a tell: uniform medium-length sentences, parallel three-item lists
 This letter is the **canonical worked example**. Imitate it for structure and voice, not for content. All names, firms, contact values, and product references below are placeholders (John Smith / ABC Inc. / XYZ Corp / `(555) 555-0123` etc.) — the real letter substitutes the actual hiring manager, target firm, prior employers, named systems from the candidate's record, and the contact values from `config.candidate`. Notice the contact header with a distinct phone field, how the **fit-led opening leads with the candidate's own record** (not a diagnosis of the employer), how company insight is demoted to the **context paragraph**, how each "On X:" paragraph carries exactly one named artifact with metrics, and how the honest-limitation move uses the explicit AI-authorship split.
 
 > John Smith, CFA, FRICS
-> Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith
+> Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith | GitHub: /johnsmith
 >
 > May 28, 2026
 >
@@ -348,7 +349,7 @@ This letter is the **canonical worked example**. Imitate it for structure and vo
 
 **What this exemplar does that the model must imitate:**
 
-- **Contact header (4.0):** Placeholder fields joined with ` | ` — `Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith`. Phone is its own field, never fused onto the email. Real values come from `config.candidate`; empty fields are omitted with their separator.
+- **Contact header (4.0):** Placeholder fields joined with ` | ` — `Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith | GitHub: /johnsmith`. Phone is its own field, never fused onto the email; GitHub follows LinkedIn. Real values come from `config.candidate`; empty fields are omitted with their separator.
 - **Fit-led opening (4.1):** Leads with the role name and the candidate's own proven record ("I have spent my career taking technical requirements all the way to running software…"), then an honest pivot ("Enterprise AI governance at this scale is new to me; the translation work … is not."). It does **not** open by diagnosing the employer.
 - **Context and role reframe (4.2):** Company insight is demoted here, as context that frames the role. Sources appear as their *consequences* ("draws a hard line," "binding constraint is no longer capability"), never as press-release paraphrase. Locates the role with a fragment ("That is this role") and stakes the claim ("That intersection is the center of my experience").
 - **Requirements table (4.3):** Each row carries a named system and a quantity (enterprise SaaS rollout / 90% adoption / 3,000+ commits / FTS5 + sqlite-vec / nine-year VP tenure). No abstract claims.

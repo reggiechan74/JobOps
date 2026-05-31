@@ -96,6 +96,7 @@ their separator):
 4. **Phone** — e.g., `(555) 555-1234` (its own header field; never concatenated onto the email)
 5. **Email** — e.g., `jane.doe@example.com`
 6. **LinkedIn** — handle or URL, e.g., `linkedin.com/in/janedoe`
+7. **GitHub** — handle or URL, e.g., `github.com/janedoe` (blank if none)
 
 If the user prefers to keep contact details out of config, write the block with empty
 strings; the resume and cover-letter skills surface the gap rather than invent a value.
@@ -115,7 +116,7 @@ Report the count of files copied. Expected count after this task runs:
 3 markdown templates (`assessment_rubric_framework.md`, `evidence_verification_framework.md`,
 `assessment_report_structure.md`) plus 1 latex/ subdirectory (`preamble.base.tex.template`,
 `preamble.resume.tex.template`, `preamble.coverletter.tex.template`,
-`preamble.document.tex.template`, `omers-filter.lua`, `config.json`, `README.md`).
+`preamble.document.tex.template`, `jobops-filter.lua`, `config.json`, `README.md`).
 
 If the glob fails in the current execution context (no files matched), fall
 back to:
@@ -154,7 +155,8 @@ Emit the full schema below with the values gathered in Steps 2 and 4.
     "location": "<step-4b value>",
     "phone": "<step-4b value>",
     "email": "<step-4b value>",
-    "linkedin": "<step-4b value>"
+    "linkedin": "<step-4b value>",
+    "github": "<step-4b value>"
   },
   "templates": {
     "base_dir": "./.jobops/templates",
