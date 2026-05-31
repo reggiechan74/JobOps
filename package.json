@@ -6,8 +6,7 @@
     "install-browsers": "npx playwright install chrome",
     "install-all": "npm install && npm run install-browsers",
     "validate:codex-plugin": "node scripts/validate/validate-codex-plugin-compatibility.js",
-    "test": "npm run validate:codex-plugin",
-    "dash": "cd tools/dashboard && go run ."
+    "test": "npm run validate:codex-plugin"
   },
   "dependencies": {},
   "devDependencies": {
