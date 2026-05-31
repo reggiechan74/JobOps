@@ -48,6 +48,9 @@ starts with `./`).
 | `company_intelligence` | `./Company_Intelligence` | OSINT output tree (shared across applications to same company) |
 | `career_analysis` | `./Career_Analysis` | Career-level outputs (idealjob, change-one-thing, comparejobs) |
 | `crisis_management` | `./Crisis_Management` | Crisis-skill outputs (severance, non-compete, etc.) |
+| `application_tracker` | `./Applications/tracker.yaml` | Application status tracker maintained by `/jobops:dashboard` (one YAML file, not a folder) |
+
+> `application_tracker` is a **file** path, not a directory — Step 3 must not `mkdir` it. Its parent directory (`applications_root`) is already created, so no extra action is needed.
 
 For each path: validate the parent is writable. If not, surface the specific
 error and allow the user to correct it before continuing.
@@ -143,7 +146,8 @@ Emit the full schema below with the values gathered in Steps 2 and 4.
     "applications_root": "<step-2 value>",
     "company_intelligence": "<step-2 value>",
     "career_analysis": "<step-2 value>",
-    "crisis_management": "<step-2 value>"
+    "crisis_management": "<step-2 value>",
+    "application_tracker": "<step-2 value>"
   },
   "preferences": {
     "cultural_profile": "<step-4 value>",
