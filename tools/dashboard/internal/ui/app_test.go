@@ -126,3 +126,47 @@ func TestTabSwitchWraps(t *testing.T) {
 		t.Errorf("active = %d, want 0 after wrap", updated.(Model).active)
 	}
 }
+
+func TestPerTabCursorIndependent(t *testing.T) {
+	m := New("/tmp/ws", "claude", []TabSource{
+		{Name: "Apps", Scanner: staticScanner{recs: sampleRecords()}, Lifecycle: true},
+		{Name: "Companies", Scanner: staticScanner{recs: sampleRecords()}},
+	})
+	m.width, m.height = 100, 30
+	// Move cursor down on tab 0.
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyDown})
+	// Switch to tab 1.
+	updated, _ = updated.(Model).Update(tea.KeyMsg{Type: tea.KeyRight})
+	fm := updated.(Model)
+	if fm.tabs[0].cursor != 1 {
+		t.Errorf("tab 0 cursor = %d, want 1 (preserved)", fm.tabs[0].cursor)
+	}
+	if fm.tabs[1].cursor != 0 {
+		t.Errorf("tab 1 cursor = %d, want 0 (independent)", fm.tabs[1].cursor)
+	}
+}
+
+func TestStatusNoOpOnNonLifecycleTab(t *testing.T) {
+	m := New("/tmp/ws", "claude", []TabSource{
+		{Name: "Companies", Scanner: staticScanner{recs: sampleRecords()}}, // Lifecycle: false
+	})
+	m.width, m.height = 100, 30
+	start := m.tabs[0].records[0].Lifecycle
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'s'}})
+	if updated.(Model).tabs[0].records[0].Lifecycle != start {
+		t.Errorf("s on a non-lifecycle tab should be a no-op; lifecycle changed from %q", start)
+	}
+}
+
+func TestTabSwitchLeftWraps(t *testing.T) {
+	m := New("/tmp/ws", "claude", []TabSource{
+		{Name: "Apps", Scanner: staticScanner{recs: sampleRecords()}, Lifecycle: true},
+		{Name: "Companies", Scanner: staticScanner{recs: nil}},
+	})
+	m.width, m.height = 100, 30
+	// From tab 0, left should wrap to the last tab.
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyLeft})
+	if updated.(Model).active != 1 {
+		t.Errorf("active = %d, want 1 after left-wrap from 0", updated.(Model).active)
+	}
+}

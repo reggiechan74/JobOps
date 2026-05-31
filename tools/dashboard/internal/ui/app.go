@@ -137,8 +137,10 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.paletteAt = m.nextSkillIndex()
 		}
 	case "c":
-		if cmd := m.composeSelected(m.skillAt(m.nextSkillIndex())); cmd != "" {
-			m = m.copyOrNotice(cmd)
+		if len(t.records) > 0 {
+			if cmd := m.composeSelected(m.skillAt(m.nextSkillIndex())); cmd != "" {
+				m = m.copyOrNotice(cmd)
+			}
 		}
 	case "C":
 		if m.agent == "claude" {
@@ -274,6 +276,9 @@ func (m Model) spawn(cmd string) tea.Cmd {
 }
 
 func (m Model) View() string {
+	if len(m.tabs) == 0 {
+		return "No tabs configured.\n"
+	}
 	t := m.tabs[m.active]
 	var b strings.Builder
 	b.WriteString(m.renderTabBar())
@@ -309,6 +314,9 @@ func (m Model) renderTabBar() string {
 
 func (m Model) renderPalette() string {
 	t := m.tabs[m.active]
+	if len(t.records) == 0 {
+		return ""
+	}
 	var b strings.Builder
 	b.WriteString("Run on " + t.records[t.cursor].Title + ":\n")
 	for i, s := range t.skills {
