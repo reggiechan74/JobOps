@@ -29,7 +29,10 @@ Schema: see `docs/superpowers/specs/2026-04-23-plugin-config-redesign-design.md`
 
 `config.candidate` holds the candidate's header contact fields (`name`, `credentials`, `location`, `phone`, `email`, `linkedin`, `github`), collected in `/jobops:setup` Step 4b. The `buildresume` and `coverletter` flows source the document header from this block so the resume and cover letter render identical contact lines. `phone` is a distinct field joined with ` | ` (or `•` on resumes); empty fields are omitted with their separator and never concatenated onto an adjacent field.
 
-Creation: only by `/jobops:setup`. Extended by `/jobops-ic:setup`. Never written by runtime skills.
+Creation: only by `/jobops:setup`. Extended by `/jobops-ic:setup`. Runtime skills never
+write it, with one narrow exception: `/jobops:dashboard` adds the
+`directories.application_tracker` key (preserving all other keys) if a pre-existing
+workspace lacks it — a one-time self-heal.
 
 Missing-file behavior: every runtime skill (except the two setup skills and `/jobops:migrate`) exits immediately with:
 
@@ -70,6 +73,12 @@ Three destination patterns.
     {contractor_root}/<subfolder>/<filename>
 
 Exception: `workplace-documentation` appends to a single continuously-updated log (`workplace_documentation_log.md`), not a timestamped file.
+
+**Application tracker** — a single YAML file (`config.directories.application_tracker`,
+default `{applications_root}/tracker.yaml`) maintained exclusively by `/jobops:dashboard`.
+It is reconciled from the filesystem on each run: filesystem presence drives the
+`artifacts` flags and `next_action`; the human-status zone (`stage`, dates, `contact`,
+`outcome`, `notes`) is preserved across reconciles. No other skill reads or writes it.
 
 ## 5. Skill-authoring contract
 
