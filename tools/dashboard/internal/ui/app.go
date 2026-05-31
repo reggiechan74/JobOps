@@ -137,7 +137,7 @@ func (m Model) updateNormal(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			m.paletteAt = m.nextSkillIndex()
 		}
 	case "c":
-		if len(t.records) > 0 {
+		if len(t.records) > 0 || len(t.skills) > 0 {
 			if cmd := m.composeSelected(m.skillAt(m.nextSkillIndex())); cmd != "" {
 				m = m.copyOrNotice(cmd)
 			}

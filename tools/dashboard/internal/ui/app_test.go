@@ -202,3 +202,17 @@ func TestPaletteOpensWithNoRecords(t *testing.T) {
 		t.Errorf("ArgNone command should compose without a record: %q", nm.text)
 	}
 }
+
+func TestCopyShortcutOnEmptyArgNoneTab(t *testing.T) {
+	src := emptyScanner{skills: []model.SkillSpec{{Name: "idealjob", Label: "Ideal", Arg: model.ArgNone}}}
+	m := New("/tmp/ws", "claude", []TabSource{{Name: "Career", Scanner: src}})
+	m.width, m.height = 100, 30
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'c'}})
+	um := updated.(Model)
+	if um.mode != modeNotice {
+		t.Fatalf("c on an empty ArgNone tab should produce a notice; mode=%v", um.mode)
+	}
+	if !strings.Contains(um.notice, "/jobops:idealjob") {
+		t.Errorf("notice should contain the composed command: %q", um.notice)
+	}
+}
