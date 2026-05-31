@@ -18,6 +18,7 @@ type Config struct {
 		CompanyIntelligence string `json:"company_intelligence"`
 		CareerAnalysis      string `json:"career_analysis"`
 		CrisisManagement    string `json:"crisis_management"`
+		ContractorRoot      string `json:"contractor_root"`
 	} `json:"directories"`
 
 	Root string `json:"-"` // workspace root (the dir that contains .jobops/)
@@ -69,6 +70,9 @@ func (c *Config) resolve(p string) string {
 	return filepath.Join(c.Root, filepath.Clean(p))
 }
 
-func (c *Config) JobPostingsDir() string  { return c.resolve(c.Directories.JobPostings) }
-func (c *Config) ApplicationsDir() string { return c.resolve(c.Directories.ApplicationsRoot) }
-func (c *Config) CompanyIntelDir() string { return c.resolve(c.Directories.CompanyIntelligence) }
+func (c *Config) JobPostingsDir() string      { return c.resolve(c.Directories.JobPostings) }
+func (c *Config) ApplicationsDir() string     { return c.resolve(c.Directories.ApplicationsRoot) }
+func (c *Config) CompanyIntelDir() string     { return c.resolve(c.Directories.CompanyIntelligence) }
+func (c *Config) CareerAnalysisDir() string   { return c.resolve(c.Directories.CareerAnalysis) }
+func (c *Config) CrisisManagementDir() string { return c.resolve(c.Directories.CrisisManagement) }
+func (c *Config) ContractorDir() string       { return c.resolve(c.Directories.ContractorRoot) }

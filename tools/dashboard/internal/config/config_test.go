@@ -64,3 +64,37 @@ func TestLoadResolvesDirs(t *testing.T) {
 		t.Errorf("ApplicationsDir = %q", cfg.ApplicationsDir())
 	}
 }
+
+func TestFlatAndContractorDirs(t *testing.T) {
+	root := t.TempDir()
+	dir := filepath.Join(root, ".jobops")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	body := `{
+  "directories": {
+    "career_analysis": "./Career_Analysis",
+    "crisis_management": "./Crisis_Management",
+    "contractor_root": "./Contractor"
+  }
+}`
+	if err := os.WriteFile(filepath.Join(dir, "config.json"), []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	cfg, err := Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.CareerAnalysisDir() != filepath.Join(root, "Career_Analysis") {
+		t.Errorf("CareerAnalysisDir = %q", cfg.CareerAnalysisDir())
+	}
+	if cfg.CrisisManagementDir() != filepath.Join(root, "Crisis_Management") {
+		t.Errorf("CrisisManagementDir = %q", cfg.CrisisManagementDir())
+	}
+	if cfg.ContractorDir() != filepath.Join(root, "Contractor") {
+		t.Errorf("ContractorDir = %q", cfg.ContractorDir())
+	}
+	if cfg.Directories.ContractorRoot != "./Contractor" {
+		t.Errorf("ContractorRoot field = %q", cfg.Directories.ContractorRoot)
+	}
+}
