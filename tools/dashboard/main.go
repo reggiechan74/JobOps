@@ -43,7 +43,11 @@ func main() {
 	}
 
 	prefs := launch.LoadPrefs(root)
-	model := ui.New(root, prefs.Agent, scan.AppsAdapter{Cfg: cfg})
+	sources := []ui.TabSource{
+		{Name: "Apps", Scanner: scan.AppsAdapter{Cfg: cfg}, Lifecycle: true},
+		{Name: "Companies", Scanner: scan.CompaniesAdapter{Cfg: cfg}},
+	}
+	model := ui.New(root, prefs.Agent, sources)
 
 	if _, err := tea.NewProgram(model, tea.WithAltScreen()).Run(); err != nil {
 		fmt.Fprintln(os.Stderr, "dashboard error:", err)
