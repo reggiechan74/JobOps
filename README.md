@@ -46,7 +46,7 @@ After installation, start a new Codex session and invoke `jobops:setup` through 
 
 | Plugin | Description | Skills | Prerequisite |
 |--------|-------------|--------|--------------|
-| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization | 35 | None |
+| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization; application dashboard (`/jobops:dashboard`) — a reconciled statusboard across all your applications with an interactive "do the next step" loop on Claude Code | 35 | None |
 | **jobops-ic** | Independent contractor toolkit — service definitions, client prospecting, pitch decks, proposals, rate cards, landing pages | 10 | jobops |
 
 ---
@@ -87,6 +87,12 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 | `/jobops:buildresume` | Complete 3-step resume process (draft, provenance check, final) |
 | `/jobops:provenance-check` | Standalone credibility analysis on a draft resume |
 | `/jobops:coverletter` | Strategic cover letter with requirements-matching table |
+
+### Application Tracking
+
+| Skill | Description |
+|-------|-------------|
+| `/jobops:dashboard` | Reconcile the application tracker from your `Applications/` folders and render a statusboard. On Claude Code, navigate to an application and launch its next pipeline step interactively; on Codex, prints a read-only board with suggested next steps. Pass `--board-only` to skip the interactive loop. |
 
 ### Interview Prep
 
