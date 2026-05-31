@@ -77,13 +77,13 @@ company: {{ARG1}}
 report_type: corporate|legal|leadership|compensation|culture|market
 generated_by: /osint
 generated_on: <ISO8601 timestamp>
-output_type: intelligence_report
+output_type: osint_corporate|osint_legal|osint_leadership|osint_compensation|osint_culture|osint_market
 status: final
 version: 1.0
 ---
 ```
 
-Set `report_type` to the appropriate domain. Update timestamps and versioning on reruns.
+Set `report_type` to the appropriate domain and `output_type` to the matching `osint_{report_type}` (e.g. corporate → `osint_corporate`) — this is the filename-independent detection key downstream tooling trusts. Update timestamps and versioning on reruns.
 
 Example deployment pattern:
 ```
@@ -113,7 +113,7 @@ sources:
   - compensation
   - culture
   - market
-output_type: intelligence_report_master
+output_type: osint_summary
 status: final
 version: 1.0
 ---

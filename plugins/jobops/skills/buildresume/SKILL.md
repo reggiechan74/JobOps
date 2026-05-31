@@ -27,7 +27,7 @@ Templates referenced by this skill: evidence_verification_framework
 
 This skill writes to a per-application folder. Before writing any output:
 
-1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied. The slug MUST be canonical: a **leading** PascalCase `{Company}` token (matching the `Company_Intelligence/{Company}/` folder so OSINT links), a PascalCase `{Role}` (underscores between words allowed), and a **trailing** compact 8-digit date (`20260519` — no hyphens, no time). Reject leading date/time prefixes such as `2026-04-15_214414_...`; if the source filename carries one, recompose it into canonical form (`{Company}_{Role}_{YYYYMMDD}`) before composing the folder path.
 2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
 3. Resolve this skill's sub-folder by category:
    - resume-development (buildresume, provenance-check) → `resume/`
@@ -36,9 +36,19 @@ This skill writes to a per-application folder. Before writing any output:
    - briefing / interview prep (briefing, interviewprep) → `interview/`
 4. If the app folder does not exist, `mkdir -p` it, then copy
    `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
-   so the pinned JD cannot silently change under completed work.
+   so the pinned JD cannot silently change under completed work. Ensure the pinned copy
+   begins with YAML front matter carrying `output_type: job_posting`: if the source JD
+   already has a front-matter block, add the key to it; otherwise wrap a new block
+   (`---` / `output_type: job_posting` / `source_jd: {filename}` / `---`) above the JD body.
 5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
    already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+6. **Output filenames** (fixed; only the sub-folder above is resolved dynamically). Pass the
+   fully resolved absolute path to each step's agent in its Task instruction:
+   - Step 1 draft → `resume/step1_draft.md`
+   - Step 2 provenance analysis → `resume/step2_provenance.md`
+   - Step 3 final resume → `resume/step3_final.md`
+   Any PDF/TeX/DOCX derivative shares the **exact basename** of its source `.md` and lives in
+   the **same** sub-folder (e.g. `resume/step3_final.pdf`) — never a separate `latex/` folder.
 
 ## Arguments
 
@@ -52,7 +62,7 @@ Runs the three-step resume build sequentially:
 
 ## Output metadata
 
-Every markdown file generated during this skill must begin with a YAML front-matter block so downstream tooling can parse metadata without heuristics. Populate the fields with real values before writing any body content. The output path for each step is determined by the Application Path Resolution protocol (to be added in a later task); `job_file` in the front matter is always the absolute path to the input JD.
+Every markdown file generated during this skill must begin with a YAML front-matter block so downstream tooling can parse metadata without heuristics. Populate the fields with real values before writing any body content. The output path for each step is determined by step 6 of the Application Path Resolution protocol above (step 1 → `resume/step1_draft.md`, step 2 → `resume/step2_provenance.md`, step 3 → `resume/step3_final.md`); `job_file` in the front matter is always the absolute path to the input JD.
 
 - **Step 1 draft** — set `generated_by: /buildresume step1-resume-draft`, `output_type: resume_step1`, `status: draft`, `version: 1.0`.
 - **Step 2 provenance analysis** — set `generated_by: /buildresume step2-provenance-check`, `output_type: resume_provenance`, `status: analysis`.
@@ -93,6 +103,8 @@ I'm launching the step1-resume-draft agent to create an initial tailored resume 
 - **Explicitly justify any credential exclusions in agent output**
 - Create a targeted first draft optimized for the role
 
+I pass the resolved absolute output path (`{app_slug}/resume/step1_draft.md`, per step 6 of Application Path Resolution) to the agent in its Task instruction.
+
 ## Step 2: Provenance Analysis
 ✓ Executing credibility verification sweep
 
@@ -107,6 +119,8 @@ Now I'll launch the step2-provenance-check agent to analyze the Step 1 draft for
 - **Credential-to-job mapping: Flag any excluded credentials that map to job requirements**
 - Recommendations for strengthening credibility
 
+I pass the Step 1 draft path (`{app_slug}/resume/step1_draft.md`) to read and the resolved output path (`{app_slug}/resume/step2_provenance.md`) to write, both in the agent's Task instruction.
+
 ## Step 3: Final Hardened Resume
 ✓ Producing deployment-ready final resume
 
@@ -117,6 +131,8 @@ Finally, I'll launch the step3-final-resume agent to:
 - Address credibility concerns while maintaining competitive positioning
 - Produce a fully defensible final resume
 - Ensure maximum interview potential
+
+I pass the Step 1 draft (`{app_slug}/resume/step1_draft.md`) and Step 2 provenance analysis (`{app_slug}/resume/step2_provenance.md`) paths to read and the resolved output path (`{app_slug}/resume/step3_final.md`) to write, all in the agent's Task instruction.
 
 ## Mission Summary
 

@@ -222,8 +222,7 @@ Replace rigid "3-5 bullets per role" with strategic allocation based on relevanc
 - Brief descriptions only
 
 ## File Management
-- Save the initial draft to: `/OutputResumes/Step1_Draft_[JobTitle]_[Company]_YYYY-MM-DD.md`
-- Use clean, descriptive filenames
+- Save the initial draft to the target path provided by the dispatching skill (convention: `{app_slug}/resume/step1_draft.md`). The calling skill resolves the absolute path per its Application Path Resolution protocol and passes it in the Task instruction — do not invent a filename, encode role/company/date in the filename, or write to a legacy `OutputResumes/` root.
 - Preserve original source materials without modification
 
 ## Input Requirements

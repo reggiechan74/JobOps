@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-05-31
+
+### Added
+
+- **`/jobops:normalize-apps` skill** — a new dry-run-first, reversible normalization pass that brings *already-migrated* v2.0 application folders into line with the canonical output naming standard. It renames leading-date slugs (`2026-04-15_214414_GTAA_Director…` → `GTAA_Director…_20260415`), moves flat root files into their fixed sub-folders, renames drifted filenames to canonical (`resume_step3_final.md` → `step3_final.md`), folds stray `latex/` outputs into the matching content sub-folder basename-matched, and backfills missing `output_type` front matter inferred from the now-canonical location. Distinct from `/jobops:migrate` (which moves legacy v1.x top-level `OutputResumes/`-style folders into the v2.0 layout). Addresses the failure mode where historical folders drifted in shape and the dashboard reported false `○` for work that actually existed.
+- **`output_type` contract documented in `docs/ARCHITECTURE.md` §4** — every Markdown output now has a documented, stable `output_type` key that is the filename-independent detection signal downstream tooling trusts over filenames, with the full canonical-value table and the "PDF/TeX/DOCX shares the source basename, same sub-folder, never a separate `latex/` folder" rule.
+
+### Changed
+
+- **`buildresume` now writes canonical resume paths (core fix)** — the producing agents (`step1-resume-draft`, `step2-provenance-check`, `step3-final-resume`) still hardcoded the legacy `/OutputResumes/Step1_Draft_*` / `Step3_Final_Resume_*` paths, so the canonical `resume/step1_draft.md`, `resume/step2_provenance.md`, and `resume/step3_final.md` that `dashboard` and `convert-to-word` expected were **never actually produced**. `buildresume/SKILL.md` now resolves and passes each step's absolute output path to its agent (mirroring the `osint` agent pattern), the "to be added in a later task" placeholder is replaced with an explicit Output-filename step, and each agent reads/writes only the dispatched path.
+- **Explicit "Output filename" step added to every `## Application Path Resolution` block** — `buildresume`, `createrubric`, `assessjob`, `coverletter`, `provenance-check`, `briefing`, `interviewprep`, `assesscandidate`, and `auditjobposting` now pin their fixed output filename(s) as step 6, enforce a canonical slug in step 1 (leading PascalCase company, trailing 8-digit date; leading date/time prefixes rejected at creation), and inject `output_type: job_posting` front matter onto the pinned JD copy in step 4.
+- **`provenance-check` and `candidate-assessment` agent output paths** — `provenance-check/SKILL.md` now names and passes the canonical `resume/step2_provenance.md`, and the `candidate-assessment` agent's stale `OutputResumes/Assessment_*` write path was corrected to the dispatched `assessment/assessment.md` (the artifact the dashboard's `assessment` flag detects), eliminating another silent false `○`.
+- **`dashboard` reconcile is now drift-tolerant** — each artifact flag resolves in order canonical-path → `output_type` front matter (the durable signal) → filename glob (legacy safety net), scanning the whole app folder rather than only the expected sub-folder, so flat-layout and pre-standard files still register.
+- **`osint` output types aligned to the standard** — the six area reports now set `output_type: osint_{area}` (e.g. `osint_corporate`) and the master report sets `output_type: osint_summary`, replacing the generic `intelligence_report` / `intelligence_report_master` so the front-matter key is a reliable per-area detection signal.
+
 ## [2.9.0] - 2026-05-31
 
 ### Added

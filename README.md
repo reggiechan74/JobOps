@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 2.9.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 2.10.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 Two Claude Code and Codex plugins for systematic, intelligence-driven career management — from resume development to independent consulting.
 
@@ -46,7 +46,7 @@ After installation, start a new Codex session and invoke `jobops:setup` through 
 
 | Plugin | Description | Skills | Prerequisite |
 |--------|-------------|--------|--------------|
-| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization; application dashboard (`/jobops:dashboard`) — a reconciled statusboard across all your applications with an interactive "do the next step" loop on Claude Code | 35 | None |
+| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization; application dashboard (`/jobops:dashboard`) — a reconciled statusboard across all your applications with an interactive "do the next step" loop on Claude Code | 36 | None |
 | **jobops-ic** | Independent contractor toolkit — service definitions, client prospecting, pitch decks, proposals, rate cards, landing pages | 10 | jobops |
 
 ---
@@ -152,6 +152,7 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 |-------|-------------|
 | `/jobops:install-pandoc` | Install pandoc for document conversion |
 | `/jobops:migrate` | Migrate legacy v1.x outputs into the v2 layout |
+| `/jobops:normalize-apps` | Normalize existing application folders to the canonical naming standard (slug, sub-folder filenames, `output_type`) |
 | `/jobops:github-portfolio` | Create or update GitHub portfolio documentation |
 
 ---
@@ -257,7 +258,7 @@ JobOps/
     jobops/                          # Core plugin
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
-      skills/                        # 35 skills (flat layout)
+      skills/                        # 36 skills (flat layout)
       agents/                        # 15 Claude Code agents
       styles/                        # CSS and rendering styles
       templates/                     # Bundled templates

@@ -11,8 +11,8 @@ Create the final hardened resume by systematically incorporating all recommendat
 
 ## Input Requirements
 You will work with:
-- **Step 1 Draft Resume:** Located in `/OutputResumes/Step1_Draft_*`
-- **Step 2 Provenance Analysis:** Located in `/OutputResumes/Step2_Provenance_Analysis_*`
+- **Step 1 Draft Resume:** at the path provided by the dispatching skill (convention: `{app_slug}/resume/step1_draft.md`)
+- **Step 2 Provenance Analysis:** at the path provided by the dispatching skill (convention: `{app_slug}/resume/step2_provenance.md`)
 - **Master Resume Materials:** Available in `/ResumeSourceFolder/`
 - **Original Job Description:** The target role requirements
 
@@ -20,8 +20,8 @@ You will work with:
 
 **STEP 3A - File Loading and Analysis Review (MANDATORY FIRST STEP):**
 1. **Load Required Files:**
-   - Read Step 1 draft resume from `/OutputResumes/Step1_Draft_*`
-   - Read Step 2 provenance analysis from `/OutputResumes/Step2_Provenance_Analysis_*`
+   - Read Step 1 draft resume from the path provided by the dispatching skill (convention: `{app_slug}/resume/step1_draft.md`)
+   - Read Step 2 provenance analysis from the path provided by the dispatching skill (convention: `{app_slug}/resume/step2_provenance.md`)
    - Read ALL files in `/ResumeSourceFolder/` directory for source verification
    - Read original job description for context
 
@@ -113,7 +113,7 @@ You will work with:
 - Remove graduation years from degrees earned more than 15 years ago (keep degree and institution). Keep dates on recent credentials and designations (within ~15 years). Role dates in PROFESSIONAL EXPERIENCE are unaffected.
 
 ## File Management
-Save the final hardened resume to: `/OutputResumes/Step3_Final_Resume_[JobTitle]_[Company]_YYYY-MM-DD.md`
+Save the final hardened resume to the target path provided by the dispatching skill (convention: `{app_slug}/resume/step3_final.md`). The calling skill resolves the absolute path per its Application Path Resolution protocol and passes it in the Task instruction — do not invent a filename or write to a legacy `OutputResumes/` root.
 
 ### YAML front matter (mandatory)
 Insert the following metadata before the resume content:

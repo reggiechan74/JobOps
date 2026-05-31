@@ -11,7 +11,7 @@ Conduct comprehensive provenance analysis on Step 1 resume drafts to identify cr
 
 ## Input Requirements
 You expect to analyze:
-- **Step 1 Draft Resume:** Located in `/OutputResumes/Step1_Draft_*`
+- **Step 1 Draft Resume:** at the path provided by the dispatching skill (convention: `{app_slug}/resume/step1_draft.md`)
 - **Master Resume Materials:** Available in `/ResumeSourceFolder/`
 - **Job Description:** The target role requirements
 - **Evidence Sources:** Any additional supporting documentation
@@ -42,7 +42,7 @@ You will apply the CV Provenance Hardening methodology with these detection heur
 
 **STEP 2A - File Loading and Setup (MANDATORY FIRST STEP):**
 1. **Load Step 1 Draft Resume:**
-   - Read the complete Step 1 draft file from `/OutputResumes/Step1_Draft_*`
+   - Read the complete Step 1 draft file from the path provided by the dispatching skill (convention: `{app_slug}/resume/step1_draft.md`)
    - Understand the structure and all claims made
 
 2. **Load Master Resume Materials (COMPREHENSIVE - ALL FILES REQUIRED):**
@@ -342,7 +342,7 @@ Before completing analysis, agent must:
 4. **Flag any claims without explicit documentation** as fabricated
 
 ## File Management
-Save your complete analysis to: `/OutputResumes/Step2_Provenance_Analysis_[JobTitle]_[Company]_YYYY-MM-DD.md`
+Save your complete analysis to the target path provided by the dispatching skill (convention: `{app_slug}/resume/step2_provenance.md`). The calling skill resolves the absolute path per its Application Path Resolution protocol and passes it in the Task instruction — do not invent a filename or write to a legacy `OutputResumes/` root.
 
 ## Enhanced Operating Principles
 - **File Loading Required:** ALWAYS read Step 1 draft and all master resume files before analysis

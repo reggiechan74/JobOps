@@ -43,16 +43,21 @@ Run this every invocation, before rendering.
    `{version: 1, applications: []}` if the file does not exist.
 2. **Scan** `config.directories.applications_root` for immediate sub-directories whose
    name is not dot-prefixed. Each such folder is an application keyed by its name (`slug`).
-   For each slug, set the `artifacts` map by testing these paths relative to the app folder:
-   | Flag | True when |
+   For each slug, set the `artifacts` map using the resolution order below — **first match
+   wins**. The canonical path is checked first; the `output_type` YAML front-matter key is the
+   **durable** fallback (trust it over the filename); a filename glob is the last-resort safety
+   net for files written before producers were standardized. Scan the **whole app folder**
+   (recursively), not just the expected sub-folder, so flat-layout legacy apps still register.
+   When testing `output_type`, read the first front-matter block (the file's first ~30 lines).
+   | Flag | True when (first match wins) |
    |---|---|
-   | `assessment` | `assessment/assessment.md` exists |
-   | `resume_draft` | `resume/step1_draft.md` **or** `resume/step2_provenance.md` exists |
-   | `resume_final` | `resume/step3_final.md` exists |
-   | `cover_letter` | `cover-letter/cover_letter.md` exists |
+   | `assessment` | `assessment/assessment.md` exists, **OR** any `.md` in the app has `output_type: assessment` |
+   | `resume_draft` | `resume/step1_draft.md` or `resume/step2_provenance.md` exists, **OR** any `.md` has `output_type ∈ {resume_step1, resume_provenance}`, **OR** glob `resume/*step1*.md`, `resume/*draft*.md`, `resume/*provenance*.md` matches |
+   | `resume_final` | `resume/step3_final.md` exists, **OR** any `.md` has `output_type: resume_final`, **OR** glob `resume/*step3*final*.md` / `resume/*final*.md` matches (excluding `*provenance*`) |
+   | `cover_letter` | `cover-letter/cover_letter.md` exists, **OR** any `.md` has `output_type: cover_letter`, **OR** glob `cover-letter/*cover*letter*.md` matches |
    | `osint` | the detected company folder (below) exists under `company_intelligence` |
-   | `briefing` | any file matching `interview/briefing*.md` exists |
-   | `interview_prep` | any file matching `interview/interview_prep*.md` exists |
+   | `briefing` | glob `interview/briefing*.md` matches, **OR** any `.md` has `output_type: briefing` |
+   | `interview_prep` | glob `interview/interview_prep*.md` matches, **OR** any `.md` has `output_type: interview_prep` |
 
    If `applications_root` does not exist or contains no application folders, treat the scan
    as yielding zero apps (do not error) and continue — existing tracker entries are still

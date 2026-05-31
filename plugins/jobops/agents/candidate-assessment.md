@@ -65,7 +65,7 @@ Apply the 100-point scoring rubric with evidence:
 
 ### Phase 4: Report Generation
 
-Create comprehensive assessment report in `OutputResumes/Assessment_[Company]_[Role]_[Date].md` with:
+Create the comprehensive assessment report at the target path provided by the dispatching skill (convention: `{app_slug}/assessment/assessment.md`). The calling skill resolves the absolute path per its Application Path Resolution protocol and passes it in the Task instruction — do not invent a filename or write to a legacy `OutputResumes/` root. Begin the file with:
 
 ```yaml
 ---

@@ -80,6 +80,32 @@ It is reconciled from the filesystem on each run: filesystem presence drives the
 `artifacts` flags and `next_action`; the human-status zone (`stage`, dates, `contact`,
 `outcome`, `notes`) is preserved across reconciles. No other skill reads or writes it.
 
+**Output-type contract** — every Markdown output carries a stable `output_type` key in its
+YAML front matter. This is the **filename-independent** detection key: downstream tooling
+(notably the dashboard reconcile) trusts it over the filename, falling back to canonical
+paths and globs only as a safety net for drifted/legacy files. Filenames inside each
+sub-folder are fixed (resolved by step 6 of `## Application Path Resolution`); only the
+sub-folder is resolved dynamically. Canonical `output_type` values:
+
+| `output_type` | Producing skill | Canonical file |
+|---|---|---|
+| `job_posting` | path-resolution JD pin | `job_posting.md` |
+| `rubric` | createrubric / assessjob | `assessment/rubric.md` |
+| `assessment` | assessjob | `assessment/assessment.md` |
+| `resume_step1` | buildresume (step 1) | `resume/step1_draft.md` |
+| `resume_provenance` | buildresume (step 2) / provenance-check | `resume/step2_provenance.md` |
+| `resume_final` | buildresume (step 3) | `resume/step3_final.md` |
+| `cover_letter` | coverletter | `cover-letter/cover_letter.md` |
+| `osint_corporate` … `osint_market` | osint | `{company_intelligence}/{Company}/<area>.md` |
+| `osint_summary` | osint | `{company_intelligence}/{Company}/summary.md` |
+| `briefing` | briefing | `interview/briefing.md` (`_partN` if split) |
+| `interview_prep` | interviewprep | `interview/interview_prep.md` (`_partN` if split) |
+
+A PDF/TeX/DOCX derivative shares the **exact basename** of its source `.md` and lives in the
+**same** sub-folder — never a separate `latex/` folder. `/jobops:normalize-apps` brings
+drifted existing application folders into line with this contract (slug rename, file moves,
+filename normalization, `latex/` fold, `output_type` backfill).
+
 ## 5. Skill-authoring contract
 
 Every runtime skill:
@@ -87,7 +113,7 @@ Every runtime skill:
 1. Begins with YAML frontmatter that includes `name`, `description`, `disable-model-invocation: true`, and optional `argument-hint` where applicable.
 2. Has a `## Configuration` block using either `JOBOPS_PREAMBLE` (for jobops skills) or `JOBOPS_IC_PREAMBLE` (for jobops-ic skills). See Sections 7.1 and 7.2 of the spec for the verbatim blocks.
 3. If it consumes templates, has a `## Templates` block listing each template by name. Template path resolution is always `{config.templates.base_dir}/{config.templates.active.<name>}/<filename>`.
-4. If it writes to an application folder, has an `## Application Path Resolution` block spelling out the four resolution steps (slug parsing, folder composition, sub-folder, JD pinning).
+4. If it writes to an application folder, has an `## Application Path Resolution` block spelling out the resolution steps: canonical-slug parsing (leading PascalCase company, trailing 8-digit date; leading date/time prefixes rejected at creation), folder composition, sub-folder, JD pinning (with `output_type: job_posting` front matter on the pinned copy), collision handling, and the fixed output filename(s). Every Markdown output it writes carries its `output_type` (see Section 4).
 5. If it writes to a company folder, has a `## Company-Intelligence Path Resolution` block including the refresh / append / skip prompt for the existing-folder case.
 6. Never hardcodes a directory name — always reads `config.directories.<key>`.
 

@@ -27,7 +27,7 @@ Templates referenced by this skill: evidence_verification_framework
 
 This skill writes to a per-application folder. Before writing any output:
 
-1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied.
+1. Parse `{Company}_{Role}_{YYYYMMDD}` from the job-posting filename, or honor `--app=<slug>` if supplied. The slug MUST be canonical: a **leading** PascalCase `{Company}` token (matching the `Company_Intelligence/{Company}/` folder so OSINT links), a PascalCase `{Role}` (underscores between words allowed), and a **trailing** compact 8-digit date (`20260519` — no hyphens, no time). Reject leading date/time prefixes such as `2026-04-15_214414_...`; if the source filename carries one, recompose it into canonical form (`{Company}_{Role}_{YYYYMMDD}`) before composing the folder path.
 2. Compose the app folder: `{config.directories.applications_root}/{app_slug}/`.
 3. Resolve this skill's sub-folder by category:
    - resume-development (buildresume, provenance-check) → `resume/`
@@ -36,9 +36,13 @@ This skill writes to a per-application folder. Before writing any output:
    - briefing / interview prep (briefing, interviewprep) → `interview/`
 4. If the app folder does not exist, `mkdir -p` it, then copy
    `{config.directories.job_postings}/{filename}` → `{app_slug}/job_posting.md`
-   so the pinned JD cannot silently change under completed work.
+   so the pinned JD cannot silently change under completed work. Ensure the pinned copy
+   begins with YAML front matter carrying `output_type: job_posting`: if the source JD
+   already has a front-matter block, add the key to it; otherwise wrap a new block
+   (`---` / `output_type: job_posting` / `source_jd: {filename}` / `---`) above the JD body.
 5. Exact-slug collisions (same Company+Role+Date) are not auto-suffixed. If the folder
    already contains the same output type, require the user to pass `--app=<distinct-slug>`.
+6. **Output filename** (fixed; only the sub-folder above is resolved dynamically): write the provenance analysis to `resume/step2_provenance.md`.
 
 ## Step 1: Loading Source Materials
 
@@ -83,7 +87,7 @@ The analysis will use the CV Provenance Hardening methodology to ensure your res
 
 ## Output
 
-The provenance analysis will be saved with detailed findings including:
+The provenance analysis is saved to `{app_slug}/resume/step2_provenance.md` (step 6 of Application Path Resolution). I pass that resolved absolute path, along with the draft path `$1`, to the step2-provenance-check agent in its Task instruction. It includes detailed findings:
 - Specific line references to issues in the draft
 - Cross-references to supporting evidence in master documents
 - Actionable recommendations for each credibility concern
