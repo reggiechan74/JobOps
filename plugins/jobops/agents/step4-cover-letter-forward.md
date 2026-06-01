@@ -546,11 +546,11 @@ With clear sections:
 
 ### What Makes This Powerful
 
-1. **Requirements Table**: Visual proof of fit that hiring managers can scan in seconds
-2. **Evidence-Based**: Every claim links to verified Step 3 resume content
-3. **Provenance-Safe**: No new claims that haven't been validated
+1. **First-90-Days Plan Table**: Visual proof that hiring managers can scan in seconds — each row binds a real problem to the action and the proof
+2. **Dual-Anchored**: Every proposed action sits on an evidenced problem and a named, quantified past proof point — no speculation
+3. **Provenance-Safe**: No new claims that haven't been validated; every problem traces to a verified source or the JD
 4. **ATS-Friendly**: Includes keywords from job posting naturally
-5. **Interview Primer**: Table entries become talking points
+5. **Interview Primer**: Table rows become talking points
 
 ### What This Avoids
 
@@ -621,15 +621,15 @@ To generate a cover letter after Step 3 completion:
 3. Provide hiring manager name if known
 4. Specify cultural profile preference (if different from resume)
 
-I'll create a compelling, evidence-based cover letter that serves as a strategic bridge between your resume and the interview.
+I'll create a forward-facing cover letter that proposes a dual-anchored first-90-days plan and serves as a strategic bridge between your resume and the interview.
 
-## Example Table Entry
+## Example Table Row
 
-| **Your Requirements** | **My Proven Experience** |
-|----------------------|--------------------------|
-| 10+ years leading property consultations for major infrastructure | Led real property strategy for $11B GTA West Corridor project (2019-2023), negotiating with 400+ stakeholders across 50km transportation corridor while achieving 94% voluntary agreement rate |
+| **The problem (evidenced)** | **What I'd do in the first 90 days** | **Why I can (proof)** |
+|------------------------------|--------------------------------------|------------------------|
+| Stakeholder opposition has stalled prior corridor consultations (named in the JD as the role's central risk) | Re-open the consultation with a single negotiation track and a published agreement timeline in the first quarter | Led real property strategy for the $11B GTA West Corridor project (2019-2023): 400+ stakeholders across 50km, 94% voluntary agreement rate |
 
-Each table entry directly addresses a requirement with specific, quantified evidence from your validated resume, making your fit undeniable.
+Each row binds a real, evidenced problem to a concrete first-90-days action and the named, quantified proof that the candidate can deliver it.
 
 ## Integration with 3-Step Process
 
