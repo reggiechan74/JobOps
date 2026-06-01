@@ -80,6 +80,7 @@ codex plugin list
 - Every skill (except setup) starts with config preamble reading `.jobops/config.json`
 - jobops-ic skills include prerequisite check for jobops plugin
 - Templates bundled in plugin, copied to `.jobops/templates/default/` via setup
+- `step4-cover-letter.md` (retrospective) and `step4-cover-letter-forward.md` (forward) are a paired set. Shared, mode-agnostic rules (contact header, Step 3a primary-source pipeline, voice/style §5a, banned-construction list, Step 6a sub-agent review) are reproduced verbatim in both. Any edit to a shared rule must be applied to BOTH files.
 
 ## Version Management
 

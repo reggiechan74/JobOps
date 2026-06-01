@@ -86,7 +86,7 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 |-------|-------------|
 | `/jobops:buildresume` | Complete 3-step resume process (draft, provenance check, final) |
 | `/jobops:provenance-check` | Standalone credibility analysis on a draft resume |
-| `/jobops:coverletter` | Strategic cover letter with requirements-matching table |
+| `/jobops:coverletter` | Strategic cover letter — retrospective (requirements→proof) or forward mode (`--mode=forward`: dual-anchored first-90-days plan via a short interview), set by `preferences.cover_letter_mode` |
 
 ### Application Tracking
 
