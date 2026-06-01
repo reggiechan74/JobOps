@@ -22,7 +22,11 @@ mode requires interviewing the user for specifics before drafting.
 
 - Add a forward-facing cover letter mode alongside the existing retrospective mode.
 - Make the mode selectable via `.jobops/config.json`, with a per-invocation override.
-- Keep forward statements **credible** — anchored to past proof, not aspirational.
+- Keep forward statements **credible** — every proposed action sits on two anchors:
+  a **real, evidenced problem** (relevance — not speculation) and a **past proof point**
+  (capability — the candidate has done this before).
+- Frame the plan over a **layered horizon**: concrete first-90-days actions, then a line
+  on the 6–12 month arc.
 - Gather the forward specifics through a structured interview at the skill level.
 - Preserve everything that makes the retrospective letter strong (voice discipline,
   provenance verification, sub-agent review) in the new mode.
@@ -39,7 +43,8 @@ mode requires interviewing the user for specifics before drafting.
 
 | Decision | Choice |
 |----------|--------|
-| Credibility model | **Evidence-anchored forward** — each forward commitment is grounded in a past proof point, then pivots to intent. |
+| Credibility model | **Dual-anchored forward** — each forward commitment sits on two anchors: a real problem evidenced by deep research / the JD (relevance), and a past proof point (capability). No speculation. |
+| Time horizon | **Layered** — concrete first-90-days actions, then one line on the 6–12 month arc. |
 | Interview flow | **Mandatory skill-level interview** — the `/coverletter` skill runs a structured interview in the main conversation before dispatch; forward mode never runs without it. |
 | Mode selection | **Config default + flag override** — `preferences.cover_letter_mode` sets the default; `--mode=` overrides per-invocation. |
 | Code structure | **Separate agent file** — a new `step4-cover-letter-forward.md`; the skill routes to the correct agent by mode. |
@@ -87,20 +92,33 @@ at the skill level.)
 
 Fixed question set:
 
-1. **Role thesis** — what is this role actually there to solve? The binding constraint,
-   in the candidate's own words.
-2. **First priorities** — the 2–3 things the candidate would tackle first, and roughly in
-   what order or horizon (e.g., first 90 days / first 12 months).
-3. **Per-requirement approach** — for each of the top requirements, how the candidate
-   would approach it *and* the past work that backs that approach. This is the
-   evidence-anchoring input; without it the letter would be aspirational.
+1. **Role thesis / problem set** — what is this role actually there to solve? The binding
+   constraint and the concrete problems behind it, in the candidate's own words. (The
+   skill primes this from cheap, already-available sources — the JD and any existing
+   `Company_Intelligence/{Company}/` specialist files — so the candidate reacts to
+   evidence rather than inventing problems. The agent's full Step 3a pipeline later
+   verifies and anchors these problems; see the sequencing note below.)
+2. **First-90-days actions** — the 2–3 things the candidate would do first to address
+   that problem set, and one line on the longer 6–12 month arc.
+3. **Per-action proof** — for each first-90-days action, the past work that backs the
+   candidate's ability to do it. This is the capability anchor; without it the action is
+   aspirational.
 4. **Gap & plan** — the real gap the candidate carries and how he would work around or
    with it, **without** trivializing it as quickly closeable.
 5. **Company-specific notes** — anything about the firm's situation the candidate wants
-   reflected in the context paragraph.
+   reflected in the context paragraph or problem set.
 
 The skill collects the answers and passes them inline to the forward agent in its
 dispatch prompt. Answers are not persisted to disk in this iteration.
+
+**Sequencing — interview primes cheap, agent verifies deep.** The interview is primed
+from the JD and existing OSINT files only (no web calls), so it runs fast at the skill
+level. The agent's full Step 3a pipeline (WebSearch + WebFetch verification) runs after
+dispatch and is what actually *anchors* each forward action to a verified problem. The
+contract between the two stages: a forward action whose problem is **not** traceable to a
+verified primary source or the JD is speculation. The agent must either reframe it
+conservatively against the JD or drop the action — it must not ship a proposal built on
+an unverifiable problem, even if the candidate named that problem in the interview.
 
 ### Component 4 — New agent `step4-cover-letter-forward.md`
 
@@ -128,21 +146,25 @@ rules must be applied to both files.)
 |---------|---------------|---------|
 | Opening (fit-led) | Names role, leads with candidate's record, honest pivot | **Unchanged** |
 | Context & role reframe | Verified-source synthesis, binding constraint | **Unchanged** |
-| Requirements element | **Requirements Alignment** table: requirement → past evidence | **Forward Priorities** table: requirement → *intended approach*, with a proof anchor in each cell (named entity + quantity required). Still capped at 5 rows. |
-| Body paragraphs | "On X:" — one past-tense named, quantified artifact each | **"How I'd approach X:"** — each opens with a role demand, states the intended action scoped to that requirement, then grounds it in one concrete past artifact (named system + quantity). Intent + proof, never intent alone. |
+| Requirements element | **Requirements Alignment** table: requirement → past evidence | **First-90-Days Plan** table: each row is `problem (evidenced) → intended action → proof anchor`. The problem must trace to a verified source or the JD; the proof anchor needs a named entity + quantity. Still capped at 5 rows. |
+| Body paragraphs | "On X:" — one past-tense named, quantified artifact each | **"How I'd approach X:"** — each opens with a role demand, names the **real problem** it addresses (evidenced), states the **intended action** scoped to that problem, then grounds it in **one concrete past artifact** (named system + quantity). Problem + intent + proof; never intent alone, never a problem the research can't support. |
 | Honest-limitation | gap → rarer strength → tie to binding constraint | **Unchanged in structure**; gap-trivializing ban **stays** (no "learnable in N weeks"). |
-| Forward close | near-term mandate + confident ask | **Unchanged** |
+| Forward close | near-term mandate + confident ask | **Layered horizon**: the close leads with the first-90-days throughline, adds one line on the 6–12 month arc, and ends with the confident, specific ask. |
 | Signature | Sincerely / image / name + post-nominals | **Unchanged** |
 
 **The critical voice change — future-tense ban is narrowed, not lifted:**
 
-- **Allowed in forward mode:** future-tense intent when it is (a) scoped to a named
-  requirement AND (b) anchored to a concrete proof point.
+- **Allowed in forward mode:** future-tense intent when it sits on **both** anchors —
+  (a) it addresses a real problem traceable to a verified source or the JD, AND (b) it is
+  grounded in a concrete past proof point.
 - **Still banned:** ungrounded or generic future promises ("I would bring my passion,"
   "I would contribute my dedication," any value-proposition claim without a proof
-  anchor), and trivializing a gap as quickly closeable.
-- The Step 6a reviewer gets **one added check**: flag any forward claim that has no proof
-  anchor (a promise with nothing behind it is a CUT).
+  anchor), **speculative actions** that address a problem the research cannot support, and
+  trivializing a gap as quickly closeable.
+- The Step 6a reviewer gets a **dual-anchor check**: for every forward claim, flag (i) any
+  claim with no proof anchor and (ii) any claim whose problem is not traceable to a
+  verified source or the JD. Either failure is a CUT — a promise with nothing behind it,
+  or a plan to solve a problem that may not exist, both go.
 
 **Agent input:** the forward agent receives, in addition to the Step 3 resume and JD, the
 five interview answers from Component 3.
@@ -172,17 +194,23 @@ five interview answers from Component 3.
       forward
         │
         ▼
+  read JD + existing Company_Intelligence files  ──► prime problem set (cheap, no web)
+        │
+        ▼
   skill-level intake interview (5 questions, main conversation)
         │
         ▼
   dispatch step4-cover-letter-forward
-     (resume + JD + interview answers)
+     (resume + JD + primed problem set + interview answers)
         │
         ▼
-  Step 3a primary-source verification ──► draft ──► Step 6 self-check
+  Step 3a primary-source verification ──► anchor each action to a verified problem
+        │                                  (drop/reframe speculative actions)
+        ▼
+  draft ──► Step 6 self-check
         │
         ▼
-  Step 6a independent sub-agent review (+ forward proof-anchor check)
+  Step 6a independent sub-agent review (+ dual-anchor check: problem + proof)
         │
         ▼
   cover_letter.md  (same path, with primary_sources YAML ledger)
@@ -196,9 +224,15 @@ five interview answers from Component 3.
 - **Forward mode, user declines/abandons the interview:** do not draft. Forward mode is
   defined as never running without the interview. Surface that retrospective mode is
   available if the user wants a letter without the interview.
-- **Insufficient verified primary sources (<2):** same fallback as retrospective — leaner
-  context paragraph, `primary_sources: []`, skip-condition comment. The fit-led opening
-  and forward body are unaffected.
+- **Insufficient verified primary sources (<2):** the context paragraph takes the same
+  leaner fallback as retrospective (`primary_sources: []`, skip-condition comment). In
+  forward mode this also constrains the body: with no verified sources, forward actions
+  may only anchor their *problem* to the JD itself. Actions are kept conservative and
+  JD-scoped rather than citing a market situation the research could not confirm.
+- **Candidate named a problem the research cannot verify:** the agent does not ship a plan
+  built on it. It either reframes the action against a JD-stated requirement or drops the
+  action. Surfaced to the user in the agent's notes so they know which interview input
+  was set aside and why.
 - **Sub-agent review fails twice:** same as retrospective — surface the reviewer report
   rather than ship a weak letter.
 
@@ -210,8 +244,10 @@ five interview answers from Component 3.
   forward agent dispatched. Run with `--mode=retrospective` against the same config →
   retrospective agent dispatched, no interview. Run with a fresh config lacking the key →
   retrospective.
-- Manual review of a generated forward letter: every forward claim has a proof anchor; no
-  banned generic promises; gap not trivialized; em-dash count zero; structure complete.
+- Manual review of a generated forward letter: every forward claim has **both** anchors
+  (a problem traceable to a verified source or the JD, and a proof point); no speculative
+  actions; no banned generic promises; gap not trivialized; the close shows the layered
+  90-days-then-6–12-months horizon; em-dash count zero; structure complete.
 
 ## Open risks
 
