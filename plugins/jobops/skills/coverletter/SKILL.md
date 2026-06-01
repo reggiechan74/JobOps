@@ -15,6 +15,27 @@ Use `config.directories.<key>` for all file paths in this skill.
 Use `config.preferences.cultural_profile` if this skill generates resume-style content.
 Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sensitive logic (crisis/legal skills accept `--jurisdiction=<ISO-3166-2>` to override).
 
+### Cover letter mode
+
+Resolve the **effective mode**: the `--mode=` flag if present and valid, else `config.preferences.cover_letter_mode`, else `retrospective` (a config written before this key existed has no `cover_letter_mode`; treat the absence as `retrospective`). Reject an invalid `--mode=` value with: `Invalid --mode value. Use retrospective or forward.`
+
+- **retrospective** → dispatch the `step4-cover-letter` agent (Step 3 below), unchanged.
+- **forward** → run the forward intake interview, then dispatch the `step4-cover-letter-forward` agent.
+
+#### Forward intake interview (mandatory for forward mode)
+
+Forward mode never drafts without this interview, because the agent runs non-interactively and cannot ask the candidate anything mid-run. Before dispatch:
+
+1. **Prime the problem set cheaply.** Read the JD ($2) and, if it exists, the specialist files under `{config.directories.company_intelligence}/{Company}/` (`corporate.md`, `legal.md`, `leadership.md`, `market.md`). Do not run web searches here — the agent's Step 3a pipeline does the deep verification. Summarize the candidate-facing problem set in 2–4 bullets so the candidate reacts to evidence rather than inventing problems.
+2. **Ask the five questions, one at a time**, in the main conversation:
+   1. **Role thesis / problem set** — given the primed bullets, what is this role actually there to solve?
+   2. **First-90-days actions** — the 2–3 things you'd do first to address that problem set, plus one line on the 6–12 month arc.
+   3. **Per-action proof** — for each action, the past work that backs your ability to do it.
+   4. **Gap & plan** — the real gap you carry and how you'd work with it (without trivializing it as quickly closeable).
+   5. **Company-specific notes** — anything about the firm's situation to reflect in the context paragraph or problem set.
+3. **If the candidate declines or abandons the interview, do not draft.** Tell them forward mode requires the interview, and that retrospective mode (`--mode=retrospective`) produces a letter without one.
+4. **Pass the answers and the primed problem set inline** to the `step4-cover-letter-forward` agent in its dispatch prompt.
+
 ## Templates
 
 For each template used by this skill, resolve the full path as:
@@ -47,8 +68,9 @@ This skill writes to a per-application folder. Before writing any output:
 - `$1`: Step 3 final resume file path (required)
 - `$2`: Job description file path (required)
 - `$3`: Hiring manager name (optional, defaults to "Hiring Manager")
+- `--mode=retrospective|forward` (optional): overrides `config.preferences.cover_letter_mode` for this invocation. Invalid values are rejected with a message listing the two valid values; the skill does not silently fall back.
 
-Produces a compelling cover letter based on the validated Step 3 resume, featuring a strategic requirements-matching table that directly demonstrates fit for the role. Process:
+Produces a compelling cover letter based on the validated Step 3 resume. In the default **retrospective** mode it features a strategic requirements-matching table that directly demonstrates fit for the role; in **forward** mode (`--mode=forward`) it produces a dual-anchored first-90-days plan instead (see Configuration). The retrospective process:
 
 1. Load and analyze the validated Step 3 resume.
 2. Extract critical requirements from the job description.
@@ -72,7 +94,12 @@ Now loading the job description to extract critical requirements:
 
 **Running Step 4 Agent...**
 
-I'm launching the `step4-cover-letter` agent to create your cover letter. The agent enforces a refined methodology: every cover letter has a contact header followed by the same seven body elements in the same order, written in a declarative first-person voice that leads with the candidate's fit and demonstrates insight rather than stating intent.
+**If the effective mode is `forward`, run the intake interview (see Configuration → "Forward intake interview") before dispatching.** Retrospective mode requires no interview; proceed directly to dispatch.
+
+I dispatch the agent that matches the effective mode resolved in Configuration:
+
+- **retrospective** → the `step4-cover-letter` agent: a contact header followed by seven body elements (fit-led opening, context/role reframe, Requirements Alignment table, "On X:" evidence paragraphs, honest-limitation, forward-looking close, signature), every claim traced to the Step 3 resume and verified primary sources.
+- **forward** → the `step4-cover-letter-forward` agent, with the intake-interview answers and primed problem set passed in. It proposes a **dual-anchored first-90-days plan**: a First-90-Days Plan table (problem → action → proof) and "How I'd approach X:" paragraphs, where every proposed action sits on a real evidenced problem and a concrete past proof point. The fit-led opening, context paragraph, honest-limitation, voice discipline, primary-source verification, and Step 6a sub-agent review are shared with retrospective mode.
 
 ### The Contact Header
 
@@ -84,6 +111,8 @@ The letter opens with a contact block sourced from `config.candidate` (set durin
 Phone is a distinct field joined with ` | `; it is never concatenated onto the email. Empty fields are omitted cleanly with no orphan separators (a blank `github` drops the `GitHub: …` segment and its separator). Contact values are never hand-typed into the letter; they come from config so they stay consistent and never get fused.
 
 ### The Seven-Element Structure
+
+> **Applies to retrospective mode.** Everything from here to the end of this skill (the seven-element structure, the requirements-matching table, and the gold-standard exemplar) specifies the **retrospective** letter. In **forward** mode the `step4-cover-letter-forward` agent is authoritative instead: it produces a dual-anchored first-90-days plan with a First-90-Days Plan table and "How I'd approach X:" paragraphs. The contact header (above), voice discipline, and provenance rules are shared across both modes; the seven-element structure and Requirements Alignment table below do **not** apply to a forward letter.
 
 The agent writes the body in this order. Each element is mandatory unless explicitly marked optional in the agent.
 
