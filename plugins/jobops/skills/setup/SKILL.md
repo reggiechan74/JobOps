@@ -78,6 +78,13 @@ Ask in order:
 2. **Default jurisdiction** — ISO 3166-2 code (e.g., `CA-ON`, `US-CA`).
    Default `CA-ON`. Used by crisis skills; they accept
    `--jurisdiction=<code>` to override per-invocation.
+3. **Cover letter mode** — enum `retrospective` | `forward`. Default `retrospective`.
+   Controls how `/jobops:coverletter` writes the letter. `retrospective` maps the job's
+   requirements to what the candidate has already done. `forward` proposes what the
+   candidate would do in the first 90 days, tying each action to a real problem the role
+   faces and to past work that proves the candidate can do it; it runs a short interview
+   each time it is used. Override per-invocation with
+   `/jobops:coverletter --mode=retrospective|forward`.
 
 Do **not** ask for `default_currency` here — that is owned by `/jobops-ic:setup`
 (see Step 4 of that flow).
@@ -153,7 +160,8 @@ Emit the full schema below with the values gathered in Steps 2 and 4.
   },
   "preferences": {
     "cultural_profile": "<step-4 value>",
-    "default_jurisdiction": "<step-4 value>"
+    "default_jurisdiction": "<step-4 value>",
+    "cover_letter_mode": "<step-4 value>"
   },
   "candidate": {
     "name": "<step-4b value>",
