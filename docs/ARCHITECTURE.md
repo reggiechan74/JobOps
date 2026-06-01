@@ -29,6 +29,8 @@ Schema: see `docs/superpowers/specs/2026-04-23-plugin-config-redesign-design.md`
 
 `config.candidate` holds the candidate's header contact fields (`name`, `credentials`, `location`, `phone`, `email`, `linkedin`, `github`), collected in `/jobops:setup` Step 4b. The `buildresume` and `coverletter` flows source the document header from this block so the resume and cover letter render identical contact lines. `phone` is a distinct field joined with ` | ` (or `•` on resumes); empty fields are omitted with their separator and never concatenated onto an adjacent field.
 
+`config.preferences.cover_letter_mode` (`retrospective` | `forward`, default `retrospective`) selects how `/jobops:coverletter` writes the letter. A config written before this key existed has no `cover_letter_mode`; consumers treat the absence as `retrospective`. `/jobops:coverletter --mode=` overrides it per-invocation. `forward` mode runs a mandatory skill-level intake interview and dispatches `step4-cover-letter-forward` instead of `step4-cover-letter`; both agents share voice, provenance, and sub-agent-review rules.
+
 Creation: only by `/jobops:setup`. Extended by `/jobops-ic:setup`. Runtime skills never
 write it, with one narrow exception: `/jobops:dashboard` adds the
 `directories.application_tracker` key (preserving all other keys) if a pre-existing

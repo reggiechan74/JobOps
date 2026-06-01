@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.13.0] - 2026-06-01
+
+### Added
+
+- **Forward-facing cover letter mode (`/jobops:coverletter --mode=forward`, or `preferences.cover_letter_mode: forward`)** — an alternate to the default retrospective letter. Instead of matching the job's requirements to past work, forward mode proposes a **dual-anchored first-90-days plan**: every proposed action sits on a real problem (traceable to a verified primary source or the JD, never speculation) and a concrete past proof point. The `/coverletter` skill runs a mandatory five-question intake interview (primed cheaply from the JD and existing OSINT) before dispatching a new `step4-cover-letter-forward` agent. The agent reuses the retrospective letter's voice discipline, primary-source verification, and independent sub-agent review, and adds a dual-anchor reviewer check that cuts any forward claim lacking a proof anchor or aimed at an unverifiable problem. The table becomes a First-90-Days Plan (problem → action → proof), body paragraphs become "How I'd approach X:", and the close layers a first-90-days throughline with the 6–12 month arc. Retrospective remains the default; configs lacking the new key behave exactly as before.
+
 ## [2.12.0] - 2026-05-31
 
 ### Added

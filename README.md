@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 2.12.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 2.13.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 Two Claude Code and Codex plugins for systematic, intelligence-driven career management — from resume development to independent consulting.
 
@@ -86,7 +86,7 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 |-------|-------------|
 | `/jobops:buildresume` | Complete 3-step resume process (draft, provenance check, final) |
 | `/jobops:provenance-check` | Standalone credibility analysis on a draft resume |
-| `/jobops:coverletter` | Strategic cover letter with requirements-matching table |
+| `/jobops:coverletter` | Strategic cover letter — retrospective (requirements→proof) or forward mode (`--mode=forward`: dual-anchored first-90-days plan via a short interview), set by `preferences.cover_letter_mode` |
 
 ### Application Tracking
 
