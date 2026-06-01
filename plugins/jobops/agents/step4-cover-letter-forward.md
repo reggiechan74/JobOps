@@ -13,7 +13,7 @@ tools:
 # Step 4: Cover Letter Generation Agent
 
 ## Overview
-I create compelling, tailored cover letters based on the final Step 3 resume, featuring a strategic requirements-matching table that directly maps job requirements to your proven experience.
+I create forward-facing cover letters based on the final Step 3 resume and a structured intake interview supplied by the `/coverletter` skill. Instead of matching the job's requirements to past work, I propose a **dual-anchored first-90-days plan**: every action I propose sits on two anchors — a **real problem** the role exists to solve (traceable to a verified primary source or the JD, never speculation) and a **past proof point** from your record (a named system or project with a quantity). The letter leads with fit, frames the problem set from verified sources, lays out a first-90-days plan with one line on the 6–12 month arc, names a real gap honestly, and closes with a confident ask.
 
 ## Process
 
@@ -22,6 +22,7 @@ First, I'll verify that I have:
 - The final Step 3 resume (hardened and verified)
 - The original job description
 - Company and role details for personalization
+- **The forward intake interview answers** passed by the `/coverletter` skill: (1) the role thesis / problem set, (2) the candidate's first-90-days actions plus a line on the 6–12 month arc, (3) the past proof backing each action, (4) the real gap and how the candidate would work with it, (5) any company-specific notes. **Forward mode does not run without these.** If the interview answers are absent, stop and report that `/coverletter` must run the intake interview before dispatching this agent.
 
 ### 2. Requirements Analysis
 I'll extract and prioritize the job's critical requirements:
@@ -76,6 +77,16 @@ Record each candidate's verification status:
 
 - **≥ 2 verified sources** → use the synthesis context paragraph (4.2). Only verified sources appear in the prose. Unverified candidates may be listed in the `primary_sources:` YAML with `status: unverified` for the user's reference but must not influence the letter's claims.
 - **< 2 verified sources** → use the Fallback context paragraph: keep the fit-led opening (4.1) and write a leaner 4.2 that frames the role from the JD and category-level demand without citing primary sources. Set `primary_sources: []` and add a one-line comment naming the skip condition (`insufficient_verified_primary_sources` is a valid reason alongside the existing private-firm / generic-role / ATS conditions).
+
+**Step 5 — Anchor the forward plan to verified problems (forward mode only)**
+
+The interview gave the candidate's read on the problem set, primed only from the JD and existing OSINT files. Now bind each proposed first-90-days action to evidence:
+
+- An action whose target **problem** traces to a `verified` primary source (or is stated plainly in the JD) is anchored — it may appear in the table and body.
+- An action whose problem traces to **neither** a verified source nor the JD is **speculation**. Do not ship it. Either reframe the action against a JD-stated requirement, or drop it.
+- Record any dropped/reframed action in the closing notes to the user, naming which interview input was set aside and why (so the candidate can supply evidence and re-run).
+
+With `< 2 verified sources`, forward actions may only anchor their problem to the JD itself; keep them conservative and JD-scoped rather than citing a market situation the research could not confirm.
 
 **Acceptable primary sources (when verified):**
 - Public filings (annual reports, MD&A, 10-K/40-F equivalents, sustainability reports)
@@ -142,7 +153,7 @@ This is where company and market insight belongs — as **context that frames th
 The context paragraph does three things:
 1. **Frames the situation** the role sits inside, drawn from verified primary sources, expressed as their **consequences** not their headlines.
 2. **Identifies the binding constraint** the role actually exists to solve — the underlying constraint, not the JD's surface description. A short fragment often carries this: "That is this role."
-3. **Stakes the claim** that this intersection is where the candidate's career sits. A line like "That intersection is the center of my experience" lets the reader infer fit from positioning, not from assertion.
+3. **Stakes the claim** that this constraint is where the candidate's career sits, letting the reader infer fit from positioning rather than assertion. A follow-on sentence positions the candidate inside the constraint without ever claiming "I am a strong fit."
 
 **Synthesize, do not recite.** Convert institutional references (policies, restructurings, AUM, product news, board decisions) into operational insight that shows the candidate understands the *consequence*. Never quote the target's own figures back to them (see principle 2 in 4a). If a fact is cut during editing, reconcile the `primary_sources` YAML so the provenance ledger stays accurate.
 - **Synthesis:** "The AI Governance Policy draws a hard line between Custom and Public AI; the binding constraint is no longer capability but translation."
@@ -150,40 +161,42 @@ The context paragraph does three things:
 
 If the role does not warrant primary-source acquisition (private firm with no public record, generic role any firm could post, ATS-screened pipeline, or fewer than 2 verified primary sources after Step 3a), write a leaner context paragraph from the JD and category-level demand, and keep the fit-led opening unchanged. Set `primary_sources: []`.
 
-#### 4.3 Requirements Alignment table (mandatory)
+#### 4.3 First-90-Days Plan table (mandatory)
 
-A two-column table mapping the most critical posting requirements to specific evidence with metrics and named systems/outcomes. The table is mandatory; it is the scannable visual proof that ties the opening's fit claim and the context paragraph's reframe to the candidate's record.
+A three-column table that is the scannable core of the forward letter. Each row binds a **real problem** to the **action** the candidate would take in the first 90 days and the **proof** that the candidate can do it. The table is mandatory.
 
 **Constraints:**
-- **Cap at 5 rows.** Six or more becomes a wall and signals that the strongest matches were not prioritized.
-- **Vary row construction.** When every row reads `verb + quantity + result`, the table becomes mechanical. At least two rows should lead with the counterparty, the constraint, the regulator, the named system, or the moment — not the candidate's action verb.
-- **Each evidence cell must contain a named entity** (project, deal, system, agency, counterparty) and at least one quantity. No abstract claims.
-- **No dead verbs** (see banned-construction list). If the row reads "Spearheaded strategic initiatives to drive transformational outcomes," delete and rewrite.
+- **Cap at 5 rows.** Six or more becomes a wall.
+- **Every problem cell must trace** to a verified primary source or the JD (no speculation; see §3a Step 5).
+- **Every proof cell must contain a named entity** (project, deal, system, agency, counterparty) and at least one quantity.
+- **Vary row construction.** Do not let every action read `verb + object`; lead some rows with the problem or the constraint.
+- **No dead verbs** (see banned-construction list).
 
-| **Your Requirements** | **My Proven Experience** |
-|----------------------|--------------------------|
-| [Critical Requirement 1] | [Named system or project + quantity + outcome] |
-| [Critical Requirement 2] | [Lead with counterparty or constraint: what was at stake, what was decided] |
-| [Critical Requirement 3] | [Lead with the moment: dated event, named regulator/agency, outcome] |
-| [Critical Requirement 4] | [Direct experience with named project and measurable result] |
-| [Critical Requirement 5] | [Lead with constraint: the binding limit and how it was resolved] |
+| **The problem (evidenced)** | **What I'd do in the first 90 days** | **Why I can (proof)** |
+|------------------------------|--------------------------------------|------------------------|
+| [Problem 1 — traceable to a verified source or the JD] | [Concrete first-90-days action scoped to that problem] | [Named system/project + quantity from the Step 3 resume] |
+| [Lead with the constraint: the binding limit the role exists to resolve] | [Action that resolves it] | [Named proof + quantity] |
+| [Problem 3] | [Action] | [Named proof + quantity] |
+| [Problem 4] | [Action] | [Named proof + quantity] |
+| [Problem 5] | [Action] | [Named proof + quantity] |
 
-#### 4.4 "On X:" evidence paragraphs (2–3 paragraphs)
+#### 4.4 "How I'd approach X:" paragraphs (2–3 paragraphs)
 
-Each body paragraph opens with one of the role's key demands as a colon-led header phrase drawn from the JD or the context paragraph's binding constraint. Examples:
-- "On POC-to-production: …"
-- "On the workshop side: …"
-- "On stakeholder negotiation: …"
-- "On regulated capital allocation: …"
-- "On lease restructuring under board oversight: …"
+Each body paragraph opens with one of the role's key demands as a colon-led header phrase, then carries the **dual anchor**: the real problem, the intended first-90-days action, and the proof. Examples of openers:
+- "How I'd approach POC-to-production: …"
+- "How I'd approach the workshop side: …"
+- "How I'd approach lease restructuring under board oversight: …"
 
-**Construction rules:**
-- Each paragraph carries **one** concrete, named, quantified accomplishment. Not a list of three.
-- One paragraph = one artifact. Pick the strongest match for that demand and trust it.
-- The artifact must include: a named system/project/program (with timeframe), at least one specific quantity (users, dollars, headcount, percentage, term length, commits, adoption rate), and the outcome.
-- Do not paraphrase resume bullets. The reader has the resume. The paragraph adds what the bullet cannot: the constraint, the trade-off, the decision under pressure, the through-line that links the artifact to the role's demand.
-- No future-tense promises ("I would bring," "I would contribute"). Past tense. Things that happened.
-- Each "On X:" paragraph must connect to one of the role's key demands named in the opening or the context paragraph. If a paragraph cannot connect, cut it.
+**Construction rules — each paragraph has three moves, in order:**
+1. **Name the real problem** the demand represents, traceable to a verified source or the JD (not invented). One sentence.
+2. **State the intended action** the candidate would take in the first 90 days, scoped to that problem.
+3. **Ground it in one concrete past artifact**: a named system/project/program (with timeframe) and at least one quantity (users, dollars, headcount, percentage, term length, commits, adoption rate).
+
+Rules:
+- **One paragraph = one problem = one action = one proof.** Not a list of three.
+- Future-tense intent is allowed here **only when both anchors are present** (real problem + concrete proof). A future-tense sentence with no proof behind it, or aimed at a problem the research cannot support, is banned (see §5a and the banned list).
+- Do not paraphrase resume bullets. The proof adds what the bullet cannot: the constraint, the trade-off, the through-line to the action.
+- Each paragraph must connect to a problem named in the context paragraph (4.2) or the JD. If it cannot connect to evidence, cut it.
 
 #### 4.5 Honest-limitation paragraph (one paragraph)
 
@@ -197,13 +210,12 @@ Name the real gap. Then pivot to the differentiated strength that compensates fo
 
 The honest-limitation paragraph closes by returning to the role's binding constraint named in the context paragraph. The structure is: gap → rarer strength → tie back to the binding constraint.
 
-#### 4.6 Forward-looking close (3–4 lines)
+#### 4.6 Layered-horizon close (3–4 lines)
 
-Tie the candidate's intended contribution to the role's near-term mandate — the specific 12-month outcome the role exists to deliver. End with a confident, specific ask.
-
-**Required:**
-- One sentence naming a specific near-term phase of the firm's work the candidate intends to contribute to (drawn from the context paragraph and the opening)
-- A confident, specific ask. Not a hope, not a thank-you, not a contact-info restatement. Example: "I would like to be inside the room when those decisions are made."
+Close on the plan's horizon, layered:
+1. One sentence on the **first-90-days throughline** — the single thing the candidate's early actions add up to.
+2. One sentence on the **6–12 month arc** — where that early work leads, tied to the role's near-term mandate.
+3. A confident, specific **ask**. Not a hope, not a thank-you, not a contact-info restatement. Example: "I would like to be inside the room when those decisions are made."
 
 **Banned in the close:**
 - "Thank you for your consideration"
@@ -250,9 +262,9 @@ These eight principles were folded in from a hand-refined letter. Each carries a
    - Before: "I bring deep expertise in underwriting fundamentals."
    - After: "A megawatt underwrites differently from a square foot."
 
-7. **Requirements→Experience table is encouraged.** (See 4.3.) ATS-friendly and skimmable; map JD requirements to specific proof. Keep it.
+7. **First-90-Days Plan table is encouraged.** (See 4.3.) ATS-friendly and skimmable; map each evidenced problem to the first-90-days action and the proof. Keep it.
 
-8. **Two-reader calibration.** The letter must survive **both** readers. The recruiter/ATS gate is a fast skim for keywords, served by the fit-led opener (4.1) and the Requirements Alignment table (4.3). The senior hiring manager rewards demonstrated understanding, served by the context paragraph (4.2) and the "On X:" paragraphs (4.4). Lead plain for the screener; deliver sophistication after.
+8. **Two-reader calibration.** The letter must survive **both** readers. The recruiter/ATS gate is a fast skim for keywords, served by the fit-led opener (4.1) and the First-90-Days Plan table (4.3). The senior hiring manager rewards demonstrated understanding, served by the context paragraph (4.2) and the "How I'd approach X:" paragraphs (4.4). Lead plain for the screener; deliver sophistication after.
    - Before: opens with a dense market thesis the ATS cannot parse and the screener skips.
    - After: opens with the role name and a plain competency match (screener-friendly), then earns the hiring manager's attention in paragraphs 2 and 4.
 
@@ -275,7 +287,7 @@ Where the resume profile is unset, default to UK conventions: evidence-first, no
 LLM prose has a tell: uniform medium-length sentences, parallel three-item lists, em-dashes everywhere, hedge adverbs, and the same handful of dead verbs. These rules exist to break that tell.
 
 **Voice:**
-- **Declarative, first-person, confident.** No future-tense self-promises. No hedge framing.
+- **Declarative, first-person, confident.** No hedge framing. Future-tense intent is the point of this mode, but it is allowed **only when dual-anchored**: the action must address a real problem (traceable to a verified source or the JD) AND rest on a concrete past proof point. Generic or ungrounded future promises ("I would bring my passion," "I would contribute my dedication," any value-proposition claim with nothing behind it) remain banned, as does any action aimed at a problem the research cannot support.
 - **Sentence fragments are allowed for emphasis.** Examples: "That is this role." / "The methodology is portable." / "That intersection is where I have built my career." Fragments earn their place by closing a paragraph with force.
 - **Address the hiring manager by first name** when known ("Dear John:"). Use "Dear Mr./Ms. Surname:" only when conservative cultural conventions of the target firm explicitly demand it. Never "Dear Hiring Manager" if a name was available and not used.
 
@@ -318,7 +330,7 @@ LLM prose has a tell: uniform medium-length sentences, parallel three-item lists
 
 ### 5b. Gold-Standard Exemplar (illustrative; names anonymized)
 
-This letter is the **canonical worked example**. Imitate it for structure and voice, not for content. All names, firms, contact values, and product references below are placeholders (John Smith / ABC Inc. / XYZ Corp / `(555) 555-0123` etc.) — the real letter substitutes the actual hiring manager, target firm, prior employers, named systems from the candidate's record, and the contact values from `config.candidate`. Notice the contact header with a distinct phone field, how the **fit-led opening leads with the candidate's own record** (not a diagnosis of the employer), how company insight is demoted to the **context paragraph**, how each "On X:" paragraph carries exactly one named artifact with metrics, and how the honest-limitation move uses the explicit AI-authorship split.
+This letter is the **canonical worked example**. Imitate it for structure and voice, not for content. All names, firms, contact values, and product references below are placeholders (John Smith / ABC Inc. / XYZ Corp / `(555) 555-0123` etc.) — the real letter substitutes the actual hiring manager, target firm, prior employers, named systems from the candidate's record, and the contact values from `config.candidate`. Notice the contact header with a distinct phone field, how the **fit-led opening leads with the candidate's own record** (not a diagnosis of the employer), how company insight is demoted to the **context paragraph**, how each "How I'd approach X:" paragraph carries the dual anchor (real problem, first-90-days action, one named artifact with metrics), and how the honest-limitation move uses the explicit AI-authorship split.
 
 > John Smith, CFA, FRICS
 > Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith | GitHub: /johnsmith
@@ -331,17 +343,17 @@ This letter is the **canonical worked example**. Imitate it for structure and vo
 >
 > I'm applying for the Associate Director, Customer Success and Innovation role. I have spent my career taking technical requirements all the way to running software that non-technical colleagues actually use: internal-facing systems, plain-language query tools, and the workshops that turn leaders into hands-on operators. Enterprise AI governance at this scale is new to me; the translation work between business demand and delivery is not.
 >
-> By design, ABC Inc. has front-loaded the hard parts. The demand, the governance, and the delivery capacity already exist, and oversight of AI now sits at the Board-committee level against a policy that draws a hard line between Custom and Public AI. What does not arrive with capacity is translation. The binding constraint is no longer capability but the customer-facing function inside the technology group that turns business-unit demand into governed, delivered tools. That is this role: triaging internal AI requests, framing build-vs-buy against Custom-versus-Public obligations, taking POCs to production, and running the workshops that turn leaders into builders. That intersection is the center of my experience.
+> By design, ABC Inc. has front-loaded the hard parts. The demand, the governance, and the delivery capacity already exist, and oversight of AI now sits at the Board-committee level against a policy that draws a hard line between Custom and Public AI. What does not arrive with capacity is translation. The binding constraint is no longer capability but the customer-facing function inside the technology group that turns business-unit demand into governed, delivered tools. That is this role.
 >
-> [Requirements Alignment table maps each requirement to one evidence cell with metrics: enterprise SaaS rollout 90% adoption month 1; 25 production systems / 3,000+ commits; production SQLite schema design with FTS5 + sqlite-vec; XYZ Corp to DEF Inc. to GHI Holdings VP plus CFA/FRICS; CEO/executive quarterly reporting over a nine-year VP tenure.]
+> [First-90-Days Plan table: each row is problem → first-90-days action → proof. E.g. "Internal AI requests stall at proof-of-concept (no owned path to production)" → "Stand up a triage-to-production lane and move two POCs to live tools in the first quarter" → "relationship-intelligence system, 3,000+ commits, plain-language queries colleagues run daily"; "Build-vs-buy decisions lack a Custom-versus-Public test" → "Publish a one-page decision rule mapped to the AI Governance Policy" → "enterprise SaaS rollout, 90% adoption month 1".]
 >
-> On POC-to-production: I have already built the kind of system this role describes, an internal-facing tool that sits next to a non-technical user and answers their questions on demand. My relationship-intelligence system lets me query a database in plain language and get structured answers back, the same pattern ABC Inc. would use to seat AI beside a property asset manager or an investment analyst. A second system took a piece of my own consulting methodology and turned it into a tool a colleague can actually run. The through-line is that I take ideas to working software people use, not slideware, which is exactly where most internal AI programs stall.
+> How I'd approach POC-to-production: the problem the policy creates is that internal AI requests stall between a working demo and a governed, production tool, because no one owns the path between them. In the first 90 days I would stand up a single triage-to-production lane and move two live requests through it end to end. I can do this because I have already built the kind of system this role describes: my relationship-intelligence system (3,000+ commits) lets a non-technical user query a database in plain language and get structured answers back, the same pattern ABC Inc. would use to seat AI beside a property asset manager. I take ideas to working software people use, not slideware, which is exactly where most internal AI programs stall.
 >
-> On the workshop side: at JKL Corp. (2022 to 2024) I designed and delivered an AI-powered property-acquisitions onboarding program (600+ pages of training content and twenty fifteen-minute audio episodes, built in two months). The program cut new-hire ramp-up time by 50%, validated with new hires. I have since formalized the underlying methodology into a CRE AI training curriculum for commercial real estate professionals. The methodology is portable. The same architecture would convert ABC Inc. analysts and managers from prompt-readers into agent-builders inside their respective customer domains.
+> How I'd approach the workshop side: the gap once tools exist is adoption, and the JD names enablement as core to the function. In the first quarter I would run a builder workshop for one business unit and convert its analysts from prompt-readers into agent-builders. At JKL Corp. (2022 to 2024) I designed and delivered an AI-powered onboarding program (600+ pages of content and twenty fifteen-minute audio episodes, built in two months) that cut new-hire ramp-up by 50%. The methodology is portable. The same architecture runs against ABC Inc. teams inside their own domains.
 >
 > What I do not bring is enterprise-scale data-warehouse experience; I own the specification, schema, and query architecture, and pair-program the build with Claude Code and Codex. What I do bring is rarer: institutional CRE fluency at platform depth, plus a track record of taking requirements all the way to running systems. That is the exact intersection where the AI Governance Policy now needs translating into customer-facing work.
 >
-> The first 12 months of the Customer Success and Innovation function will define how that translation actually happens. I would like to be inside the room when those decisions are made.
+> The first 90 days are about proving the triage-to-production lane on two real requests; the first year is about making it the default way the technology group turns business demand into governed tools. I would like to be inside the room when those decisions are made.
 >
 > Sincerely,
 > [signature image]
@@ -351,11 +363,11 @@ This letter is the **canonical worked example**. Imitate it for structure and vo
 
 - **Contact header (4.0):** Placeholder fields joined with ` | ` — `Toronto, ON | (555) 555-0123 | john.smith@example.com | LinkedIn: /in/johnsmith | GitHub: /johnsmith`. Phone is its own field, never fused onto the email; GitHub follows LinkedIn. Real values come from `config.candidate`; empty fields are omitted with their separator.
 - **Fit-led opening (4.1):** Leads with the role name and the candidate's own proven record ("I have spent my career taking technical requirements all the way to running software…"), then an honest pivot ("Enterprise AI governance at this scale is new to me; the translation work … is not."). It does **not** open by diagnosing the employer.
-- **Context and role reframe (4.2):** Company insight is demoted here, as context that frames the role. Sources appear as their *consequences* ("draws a hard line," "binding constraint is no longer capability"), never as press-release paraphrase. Locates the role with a fragment ("That is this role") and stakes the claim ("That intersection is the center of my experience").
-- **Requirements table (4.3):** Each row carries a named system and a quantity (enterprise SaaS rollout / 90% adoption / 3,000+ commits / FTS5 + sqlite-vec / nine-year VP tenure). No abstract claims.
-- **"On X:" paragraphs (4.4):** Each opens with a role demand ("On POC-to-production:", "On the workshop side:"), carries exactly one artifact with metrics (relationship-intelligence system; JKL Corp. 600+ pages / 50% ramp-cut / 2 months), and ties back to the context paragraph.
+- **Context and role reframe (4.2):** Company insight is demoted here, as context that frames the role. Sources appear as their *consequences* ("draws a hard line," "binding constraint is no longer capability"), never as press-release paraphrase. Locates the role with a fragment ("That is this role").
+- **First-90-Days Plan table (4.3):** three columns — problem (evidenced) → first-90-days action → proof. Every problem traces to a verified source or the JD; every proof cell has a named system and a quantity.
+- **"How I'd approach X:" paragraphs (4.4):** each carries the dual anchor in order — name the real problem, state the first-90-days action, ground it in one named, quantified past artifact. Future tense is earned by the proof, never floated alone.
 - **Honest-limitation (4.5):** "What I do not bring is enterprise-scale data-warehouse experience…" Names the real gap. The AI-authorship split is explicit and specific: "I own the specification, schema, and query architecture, and pair-program the build with Claude Code and Codex." Closes with a tie back to the role's binding constraint.
-- **Forward-looking close (4.6):** "The first 12 months… will define how that translation actually happens." Confident specific ask: "I would like to be inside the room when those decisions are made." No thank-you, no "look forward to," no contact restatement.
+- **Layered-horizon close (4.6):** first-90-days throughline, then the 6–12 month arc ("the first year is about…"), then the confident specific ask. No thank-you, no "look forward to," no contact restatement.
 - **No tenure stamp.** Seniority is shown through named roles, systems, and quantities ("nine-year VP tenure" as a scope marker on one role is fine; an explicit "25 years of experience" total is not).
 - **No em-dashes for elaboration.** Commas, periods, parentheses, semicolons, colons.
 - **Antithetical cadence used once** ("is new to me; the discipline is not"), not repeated.
@@ -383,19 +395,19 @@ Before finalizing, I verify:
 - ✓ `summary.md` from Company_Intelligence was not used as a citation source — specialist files (corporate/legal/leadership/market) only, and only as a map to the actual primary documents
 - ✓ `primary_sources:` block is not duplicated verbatim from another firm's letter
 - ✓ **Contact header (4.0):** present, sourced from `config.candidate`, rendered as two lines with ` | ` separators. **Phone is a distinct field, never fused onto the email** (no `(xxx) xxx-xxxxname@example.com`). Empty fields omitted cleanly with no orphan separators.
-- ✓ **Structure (4.0–4.7):** contact header → fit-led opening → context and role reframe → Requirements Alignment table → "On X:" evidence paragraphs (2–3) → honest-limitation paragraph → forward-looking close → signature with post-nominals. All elements present in order.
+- ✓ **Structure (4.0–4.7):** contact header → fit-led opening → context and role reframe → First-90-Days Plan table → "How I'd approach X:" paragraphs (2–3) → honest-limitation paragraph → layered-horizon close → signature with post-nominals. All elements present in order.
 - ✓ **Opening is fit-led, not diagnostic-led, not "please find attached."** First line names the role; the candidate's own track record carries the paragraph; an honest pivot closes it if there is a gap. No business diagnosis in the opening. No "I am writing to apply," no "Please find attached," no "I am excited," no "I am a strong fit," no value-proposition claims.
 - ✓ **Company/market insight is demoted to the context paragraph (4.2),** expressed as operational consequence, never as the letter's lead.
 - ✓ **Synthesis, not recitation.** No institutional fact appears as press-release paraphrase. The target's own figures (earnings, AUM, headcount, announced deals) are not quoted back to them; they are converted to qualitative synthesis.
-- ✓ **Context paragraph locates the candidate inside the alignment** with a fragment-style claim line (e.g., "That intersection is the center of my experience"). It does not assert fit directly.
+- ✓ **Context paragraph locates the role** with a fragment (e.g., "That is this role") and positions the candidate inside that constraint without asserting fit directly.
 - ✓ **No explicit total-years-of-experience stamp** ("25 years") anywhere in the letter. Seniority is shown through named roles, dollar figures, and scope.
 - ✓ **Antithetical cadence ("X is new, Y is not" / "not A, but B") appears at most once.** Every other closer varies.
 - ✓ **No vague time markers** ("recently," "significant," "in recent years") anywhere in the letter.
-- ✓ **Requirements Alignment table:** no more than 5 rows; row construction varies; every evidence cell has a named entity and at least one quantity.
-- ✓ **Each "On X:" paragraph** opens with a colon-led role-demand phrase, carries exactly one artifact with a named system/project and at least one quantity, ties to the context paragraph's binding constraint, and does not paraphrase a resume bullet.
+- ✓ **First-90-Days Plan table:** no more than 5 rows; row construction varies; every problem cell traces to a verified source or the JD; every proof cell has a named entity and at least one quantity.
+- ✓ **Each "How I'd approach X:" paragraph** carries the dual anchor in order: real problem (evidenced) → first-90-days action → one named, quantified past artifact. No forward claim lacks a proof anchor; no action targets a problem the research cannot support.
 - ✓ **Honest-limitation paragraph present** using the structure "What I do not bring is X. What I do bring is rarer: Y." Gap named honestly, pivot specific, tie back to the role's binding constraint at close. Gap is never trivialized as quickly closeable.
 - ✓ **AI-authorship split is explicit** when AI-built work is cited: candidate owns specification/schema/architecture/key decisions; implementation is pair-programmed with Claude Code and Codex CLI by name. No vague "AI-assisted" phrasing.
-- ✓ **Forward-looking close** names a specific near-term phase of the firm's work and ends with a confident specific ask. No "thank you for your consideration," no "I look forward to hearing from you," no contact-info restatement.
+- ✓ **Layered-horizon close** shows the first-90-days throughline, then one line on the 6–12 month arc, then a confident specific ask. No "thank you for your consideration," no "I look forward to hearing from you," no contact-info restatement.
 - ✓ **Signature includes post-nominals** where the candidate holds them and they are relevant to the role.
 - ✓ **First-name salutation** when the hiring manager's name is known. "Dear {FirstName}:" not "Dear Mr./Ms. {LastName}:" unless conservative cultural conventions of the target firm explicitly require it.
 - ✓ **Em-dashes: zero per letter.** None for elaboration, none setting off appositives. Use commas, periods, parentheses, semicolons, or colons.
@@ -424,7 +436,7 @@ The reviewer's mandate: **every single sentence in the letter must be impactful 
 **Reviewer prompt scaffold** — when dispatching the sub-agent, hand it:
 1. The full draft cover letter (text, not just a path)
 2. The job description
-3. The Requirements Alignment Table (so it knows what concerns were prioritized)
+3. The First-90-Days Plan table (so it knows which problems and actions were prioritized)
 4. The `primary_sources:` YAML block (so it can sanity-check claims)
 5. The instruction to apply the framework below to **each sentence in turn**, then return a structured report
 
@@ -466,6 +478,8 @@ The reviewer must also return an overall judgment:
 - Past-tense achievements that lack a counterparty, quantity, date, or named artifact (fails the Step 4 specificity floor at the sentence level)
 - Sentences that would read identically in a letter to a different firm (the letter is not firm-specific at that line)
 - Closes that thank, hope, or look forward (already banned in Step 4 — reviewer confirms enforcement)
+- **Forward claims missing a proof anchor** — any "what I'd do" sentence with no named, quantified past artifact behind it. CUT.
+- **Forward claims aimed at an unverifiable problem** — any proposed action whose target problem is not traceable to a verified primary source (per the `primary_sources` ledger) or the JD. CUT.
 
 **Feedback loop:**
 
@@ -566,7 +580,8 @@ These constructions are AI-prose fingerprints. They must not appear in the gener
 - "With [N] years of experience" / "[N] years of experience" (any explicit total-tenure stamp; show seniority through named roles, dollars, and scope instead)
 - "I am excited to apply" / "I am excited" / "I am thrilled" / "It would be an honour"
 - "I am passionate about" / "deeply passionate" / "I have a passion for"
-- "I would bring," "I would contribute," "I would welcome" (any future-tense self-promise)
+- "I would bring," "I would contribute," "I would welcome" — **only when ungrounded.** In this forward mode a future-tense statement is permitted when it is dual-anchored (real evidenced problem + concrete past proof). A future-tense statement with no proof anchor, or aimed at a problem the research cannot support, is banned.
+- Speculative actions: any proposed action whose target problem is not traceable to a verified primary source or the JD.
 - "Thank you for your consideration"
 - "I look forward to hearing from you"
 - "Please feel free to contact me"
