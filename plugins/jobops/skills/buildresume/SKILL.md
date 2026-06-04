@@ -45,6 +45,7 @@ This skill writes to a per-application folder. Before writing any output:
 6. **Output filenames** (fixed; only the sub-folder above is resolved dynamically). Pass the
    fully resolved absolute path to each step's agent in its Task instruction:
    - Step 1 draft → `resume/step1_draft.md`
+   - Step 1 manifest (revise mode only) → `resume/step1_manifest.md`
    - Step 2 provenance analysis → `resume/step2_provenance.md`
    - Step 3 final resume → `resume/step3_final.md`
    Any PDF/TeX/DOCX derivative shares the **exact basename** of its source `.md` and lives in
@@ -75,7 +76,7 @@ Determine the build mode BEFORE dispatching any step agent.
 
 1. **Flag shortcuts.** `--from-scratch` → mode = `scratch`, skip to dispatch.
    `--base=<path>` → verify the file exists and is `.md`; mode = `revise` with that
-   base, skip to dispatch.
+   base, skip to dispatch. (Stamping and fit assessment are skipped; if the forced base lacks `role_family`, the promotion offer will ask for one.)
 2. **Library check.** Read `config.directories.tailored_cv`. If the key is absent, or
    the directory is missing or contains no `.md` files → mode = `scratch`, and tell
    the user once:
@@ -102,7 +103,7 @@ Determine the build mode BEFORE dispatching any step agent.
    phrased in the user's own category labels. No numeric scores.
 5. **Decision gate (the user always confirms).**
    - Any STRONG candidate → recommend revising from the strongest one; offer
-     [revise from <file> / build from scratch / pick another base].
+     [revise from <file> / build from scratch / pick another base]. "Pick another base" re-presents the remaining candidates with their verdicts; the user's choice proceeds to dispatch as the selected base.
    - Only PARTIAL candidates → present both options, naming the specific gaps
      (e.g., "base covers the summary and primary role, but the JD's P&L emphasis is
      not covered"); offer [revise from <file> / build from scratch].
@@ -134,7 +135,7 @@ Always write the front matter before any markdown headings or narrative body.
 
 All three files also carry `build_mode: revise` or `build_mode: scratch`. In revise
 mode, step 1 and step 3 outputs additionally carry `base_resume: <absolute path to the
-selected base>`.
+selected base>`. The step agents' own front-matter templates do not list these fields — I pass the `build_mode` value (and, in revise mode, the `base_resume` path) in every step agent's Task instruction with the instruction to include them in the output's front matter.
 
 Revise mode writes one additional file — the change manifest:
 
@@ -178,7 +179,7 @@ based on the job requirements. This agent will:
 - Create a targeted first draft optimized for the role
 
 I pass the resolved absolute output path (`{app_slug}/resume/step1_draft.md`, per step 6
-of Application Path Resolution) to the agent in its Task instruction.
+of Application Path Resolution) to the agent in its Task instruction. I also pass `build_mode: scratch` for the agent to include in the draft's front matter.
 
 ## Step 2: Provenance Analysis
 ✓ Executing credibility verification sweep
@@ -200,7 +201,7 @@ In revise mode I additionally pass `build_mode: revise`, the base resume path, a
 manifest path (`{app_slug}/resume/step1_manifest.md`) so the agent tags every finding
 with its origin (`BASE` = carried from the base, including the user's manual edits;
 `NEW` = introduced or modified by the manifest) per its Revise-Mode Delta Tagging
-section.
+section. In both modes I pass the `build_mode` value for the agent to include in the provenance file's front matter.
 
 ## Step 3: Final Hardened Resume
 ✓ Producing deployment-ready final resume
@@ -218,7 +219,7 @@ I pass the Step 1 draft (`{app_slug}/resume/step1_draft.md`) and Step 2 provenan
 In revise mode I additionally pass `build_mode: revise` and the base resume path so the
 agent follows its Revise-Mode Edit Protocol: copy the draft to the final, apply
 targeted edits only for Step 2 findings, and prove with a diff gate that nothing else
-changed.
+changed. In both modes I pass the `build_mode` value (and, in revise mode, the `base_resume` path) for the agent to include in the final's front matter.
 
 ## Mission Summary
 
