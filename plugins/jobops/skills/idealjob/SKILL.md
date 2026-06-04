@@ -123,7 +123,7 @@ Glob `{config.directories.applications_root}/*/assessment/assessment.md`. For ea
 - **Primary selector:** `normalized_score` ≥ 90%.
 - **Legacy fallback:** if `normalized_score` is absent and `overall_score` carries no `/200` suffix, treat `overall_score` as a 0–100 value and select ≥ 90.
 
-Read the top 3–5 qualifying assessments and extract success patterns:
+Read the top 3–5 qualifying assessments — retaining their file paths for the `based_on_assessments` front-matter key — and extract success patterns:
 
 - **Role characteristics** — titles, industries, seniority, scope that scored highest.
 - **Skill alignment** — required skills where the candidate rated expert with direct evidence.
@@ -229,7 +229,7 @@ Launch THREE `ideal-role-architect` agents IN PARALLEL — a single message with
 1. The archetype charter (one of):
    - **Anchor** — highest-probability fit; role exists in volume in today's market; candidate would be a top-decile applicant; build ONLY from `evidenced` preferences.
    - **Stretch** — one level up in scope, seniority, or mandate; gaps permitted only if bridgeable within ~12 months; draw on `aspirational` tags.
-   - **Pivot** — skills recombined into an adjacent field, seeded by the interview's pivot-curiosity findings; novel titles allowed but must be validated against real postings.
+   - **Pivot** — skills recombined into an adjacent field, seeded by the dossier's Interview Findings (pivot curiosity); novel titles allowed but must be validated against real postings.
 2. The full candidate dossier from 4.1.
 3. The run context, restated explicitly — current date (ISO 8601) and `config.preferences.default_jurisdiction`. It also appears inside the dossier's Run Context section; the redundancy is deliberate so neither copy can be dropped.
 4. The archetype's output path (for reference only — the agent returns content; this skill writes the files).
@@ -249,7 +249,7 @@ Launch THREE `ideal-role-architect` agents IN PARALLEL — a single message with
 3. Score the candidate against the archetype JD on the 200-point rubric, in this main context (one scorer = one consistent scale). Score HONESTLY — gaps score as gaps, especially for Stretch and Pivot.
 4. Thresholds: **Anchor ≥ 90%** normalized; **Stretch ≥ 85%**; **Pivot ≥ 85%**.
 5. Below threshold → ONE revision cycle: fix the JD where it over-reached its charter (required items without dossier evidence; gaps that are not bridgeable). NEVER inflate the score. Re-score once and accept the result either way.
-6. Record each final score for the file's front matter. Residual Stretch/Pivot gaps become inputs to the gap-closing plans in Phase 6.
+6. Record each final score for the file's front matter. If any archetype remains below its threshold after the revision cycle, disclose it plainly in the summary file — which archetype, final score, threshold. Residual Stretch/Pivot gaps become inputs to the gap-closing plans in Phase 6.
 
 > **Task:** Mark task 5 `completed`.
 
@@ -283,14 +283,14 @@ For each archetype: the YAML front matter defined above, then the agent's return
 Sections, in order:
 
 1. **Interview Record** — the four confirmed round playbacks, verbatim.
-2. **Cross-Archetype Comparison** — table: archetype | title | normalized score | comp range | key trade-off accepted | one-line value proposition.
+2. **Cross-Archetype Comparison** — table: archetype | title | normalized score | comp range | key trade-off accepted | one-line value proposition. Flag any archetype that remained below its threshold (e.g., "82% — below 85% threshold").
 3. **Gap-Closing Plans** (Stretch and Pivot) — for each gap surfaced by the self-score: the action (certification, project, or experience to acquire), a rough timeline, and which archetype(s) it unlocks.
 4. **comparejobs Handoff** — include verbatim (with paths resolved):
 
    > To benchmark a real application against an archetype:
    > `/comparejobs {Company}_{Role}_{YYYYMMDD} {career_analysis}/idealjob_{YYYYMMDD}_anchor.md`
 
-5. **Omissions** — only if an agent failed twice or live matches were incomplete: state exactly what is missing.
+5. **Omissions** — only if an agent failed twice, live matches were incomplete, or an archetype remained below its threshold after revision: state exactly what is missing or below target.
 
 > **Task:** Mark task 7 `completed`.
 
@@ -314,7 +314,7 @@ Before finalizing, verify:
 - [ ] Archetypes mutually distinct in title, industry, and value proposition
 - [ ] Every Required item in every archetype carries an evidence citation
 - [ ] Zero banned constructions (see the ideal-role-architect agent's list)
-- [ ] Score thresholds met, or the revision cycle is documented in the file
+- [ ] Score thresholds met, or the revision cycle is documented in the file and the sub-threshold result is disclosed in the summary
 - [ ] One live-posting link per archetype spot-checked via fetch (mark "unverified" if fetch unavailable)
 - [ ] All Vision preferences honored; all Anti-Vision elements absent
 - [ ] Search kits use the configured jurisdiction
