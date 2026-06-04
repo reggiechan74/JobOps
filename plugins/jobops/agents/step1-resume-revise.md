@@ -31,34 +31,39 @@ The measure of success is that `diff <base> <draft>` shows ONLY the manifest cha
 ## Phase 1 — Gap Analysis
 1. Read the base resume completely.
 2. Read the job description completely. Extract the top requirements, ATS keywords, and emphasis (e.g., P&L, team scale, domain).
-3. Read master inventory files as needed to find swap-in candidates for JD demands the base does not cover (follow the same source-file discovery patterns as the from-scratch step1 agent: Experience/, Education, Publications, Skills files).
+3. Read master inventory files as needed to find swap-in candidates for JD demands the base does not cover. Discover sources the same way the from-scratch step1-resume-draft agent does: recursively list `.md` files in the master inventory root and read by category — work experience (`Experience/*.md`), education/credentials (`*Education*.md`, `*Designation*.md`, `*Certification*.md`), publications (`*Publication*.md`, `*Writing*.md`), professional activities/development, and skills/competencies (`*Skills*.md`, `*Technology*.md`, `*Competenc*.md`).
 4. For each JD requirement, classify the base's coverage: COVERED (leave frozen) / WEAK (candidate for rewrite or re-emphasis) / MISSING (candidate for swap-in from inventory).
 
 ## Phase 2 — Change Manifest
 Write the manifest to the manifest output path BEFORE touching the draft. Front matter:
 
-    ---
-    job_file: <absolute path to JD>
-    role: <role title from JD>
-    company: <hiring company>
-    candidate: <full candidate name from base>
-    base_resume: <absolute path to base>
-    generated_by: /buildresume step1-resume-revise
-    generated_on: <ISO8601 timestamp>
-    output_type: resume_manifest
-    status: manifest
-    version: 1.0
-    ---
+```yaml
+---
+job_file: <absolute path to JD>
+role: <role title from JD>
+company: <hiring company>
+candidate: <full candidate name from base>
+base_resume: <absolute path to base>
+generated_by: /buildresume step1-resume-revise
+generated_on: <ISO8601 timestamp>
+output_type: resume_manifest
+build_mode: revise
+status: manifest
+version: 1.0
+---
+```
 
 Body — one entry per change, numbered:
 
-    ## Change N: <short title>
-    - **Target:** <section name + quoted anchor text identifying the exact location>
-    - **Operation:** rewrite | swap-in | swap-out | reorder | keyword-injection | re-emphasis
-    - **JD requirement:** "<quoted requirement text from the JD>"
-    - **Before:** "<exact current text from the base, verbatim>" (or `N/A` for swap-in)
-    - **After:** "<exact replacement text>" (or `N/A` for swap-out)
-    - **Source evidence:** <master-inventory file + line reference for any NEW claim; or `carried from base`>
+```markdown
+## Change N: <short title>
+- **Target:** <section name + quoted anchor text identifying the exact location>
+- **Operation:** rewrite | swap-in | swap-out | reorder | keyword-injection | re-emphasis
+- **JD requirement:** "<quoted requirement text from the JD>"
+- **Before:** "<exact current text from the base, verbatim>" (or `N/A` for swap-in; required for swap-out — it is the text being removed)
+- **After:** "<exact replacement text>" (or `N/A` for swap-out/removal)
+- **Source evidence:** <master-inventory file + line reference for any NEW claim; or `carried from base`>
+```
 
 Manifest rules:
 - Every change must cite a JD requirement. No "general improvements."
@@ -71,21 +76,25 @@ Manifest rules:
 1. Copy the base file to the draft output path with `cp`.
 2. Update ONLY the YAML front matter of the draft:
 
-    ---
-    job_file: <absolute path to JD>
-    role: <role title>
-    company: <hiring company>
-    candidate: <full candidate name>
-    generated_by: /buildresume step1-resume-revise
-    generated_on: <ISO8601 timestamp>
-    output_type: resume_step1
-    status: draft
-    build_mode: revise
-    base_resume: <absolute path to base>
-    version: 1.0
-    ---
+```yaml
+---
+job_file: <absolute path to JD>
+role: <role title>
+company: <hiring company>
+candidate: <full candidate name>
+generated_by: /buildresume step1-resume-revise
+generated_on: <ISO8601 timestamp>
+output_type: resume_step1
+status: draft
+build_mode: revise
+base_resume: <absolute path to base>
+version: 1.0
+---
+```
 
    (Remove base-library keys such as `role_family` and `promoted_from` from the draft's front matter; they belong to the library copy.)
+
+If you regenerate the manifest or draft on a re-run, update `generated_on` and bump `version` in both files.
 3. Apply each manifest change with a targeted Edit operation using the exact Before/After text. Never rewrite the whole file. Never apply changes not in the manifest.
 4. If a change's Before text cannot be found in the draft (the base drifted since the manifest was written), STOP and report the failed change — do not regenerate the section or fall back to rewriting.
 
@@ -109,3 +118,8 @@ After completing all phases, report:
 - **Frozen-by-default** — untouched content is byte-identical to the base
 - **Minimum effective change** — fewer, better-justified changes beat broad rewrites
 - **Inherit the base's voice** — no cultural-profile or positioning re-selection unless the dispatching skill passes one
+
+## Next Steps
+Inform the user that this is Step 1 of 3 (revise mode):
+- **Step 2:** The `step2-provenance-check` agent audits the full draft with `BASE`/`NEW` delta tagging
+- **Step 3:** The `step3-final-resume` agent applies provenance fixes in edit mode behind a second diff gate
