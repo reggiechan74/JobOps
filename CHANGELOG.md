@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.14.0] - 2026-06-04
+
+### Added
+
+- **`/jobops:idealjob` overhaul — interview-driven three-archetype ideal-role targeting.** The skill now opens with a clarity-gated structured interview (four themed rounds — energy audit, forced trade-offs, context, boundaries & ambition — each with explicit exit criteria, no question budget, and a confirmed-playback closure ritual), writes confirmed preference deltas back to `Preferences/Vision.md` with user approval, then dispatches three parallel `ideal-role-architect` agents to generate distinct archetypes: **Anchor** (highest-probability fit), **Stretch** (one level up, gaps bridgeable in ~12 months), and **Pivot** (skills recombined into an adjacent field). Each archetype is self-scored inline against the 200-point assessment rubric (Anchor ≥ 90%, Stretch/Pivot ≥ 85%, one honest revision cycle with sub-threshold results disclosed in the summary), market-validated with 3–5 real linked postings (never fabricated), and shipped with a ready-to-use search kit (boolean strings, title variants, 10+ target companies, networking targets) plus gap-closing plans. Outputs are four flat files — a summary (`output_type: ideal_job_summary`) and three archetype siblings (`output_type: ideal_job_archetype`) carrying assessjob-compatible score keys.
+- **`ideal-role-architect` agent** — generates one market-validated archetype from a candidate dossier with hard evidence-traceability (every Required item cites a source file), title realism (validated against live postings), a banned-construction list, and 1–2 deliberate non-ideal-but-tolerable elements per role.
+- **`/jobops:comparejobs` accepts direct file paths** — any argument containing `/` or ending in `.md` is read as-is, so `/idealjob` archetypes serve as standing benchmarks against real applications; synthetic benchmarks are labeled in the report.
+
+### Fixed
+
+- **`/jobops:idealjob` high-scorer mining matched nothing** — it grepped for a 0–100 `overall_score` while `assessjob` v2.0 writes `overall_score: <XX/200>` + `normalized_score: <XX%>`. Mining now keys off `normalized_score ≥ 90%` with a legacy 0–100 fallback. Also removed: hardcoded "2025" and "Canada" in market research (now current-date and `default_jurisdiction` driven), the non-contract `Sample_Output/` reference, and the stale `WorkHistory/` directory reference (canonical: `Experience/`).
+
 ## [2.13.0] - 2026-06-01
 
 ### Added
