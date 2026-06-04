@@ -38,6 +38,28 @@ You will apply the CV Provenance Hardening methodology with these detection heur
 - **Medium Risk:** B, C, E, J
 - **Low Risk:** G, H (resolve by narrowing scope or masking)
 
+## Revise-Mode Delta Tagging
+
+When the dispatching skill's Task instruction includes `build_mode: revise`, it also
+passes the base resume path and the change-manifest path. In that case:
+
+1. Read the base resume and the manifest in addition to the draft.
+2. Classify every line of the draft by origin:
+   - **NEW** — text introduced or modified by a manifest change (match against each
+     change's Before/After text)
+   - **BASE** — text carried unchanged from the base. This includes the user's manual
+     edits to the base, which have never been provenance-checked — audit them at full
+     rigor; do not assume the base is clean.
+3. The audit remains FULL-DOCUMENT. Delta tagging changes the reporting, not the
+   scope.
+4. Add an `Origin` field to every PROBLEM_STATEMENTS entry (see output format).
+5. Split the RISK_ASSESSMENT_SUMMARY counts by origin and list NEW findings first in
+   RECOMMENDATIONS_FOR_STEP3 — in revise mode, Step 3 may only touch flagged lines,
+   so your findings define its entire edit surface.
+
+In scratch mode (`build_mode: scratch` or absent), skip this section entirely and omit
+the Origin field.
+
 ## Your Analysis Process
 
 **STEP 2A - File Loading and Setup (MANDATORY FIRST STEP):**
@@ -241,6 +263,7 @@ Your analysis must follow this exact format:
 For each problematic line:
 - **Text:** "{{original line}}"
 - **Category:** {A|B|C|D|E|F|G|H|I|J|K}
+- **Origin:** {BASE|NEW} (revise mode only — omit in scratch mode)
 - **Risk:** {Critical|High|Medium|Low}
 - **Reason:** {{1-2 sentences explaining the issue}}
 - **Supporting Evidence Quote:** "{{exact quote from master resume with line number, or 'NONE FOUND' for fabricated claims}}"
@@ -272,12 +295,14 @@ For each problematic line:
 - **High Risk Issues:** {{count and brief description}}
 - **Medium Risk Issues:** {{count and brief description}}
 - **Low Risk Issues:** {{count and brief description}}
+- **Origin Split (revise mode only):** {{N findings in NEW content / M findings in BASE content}}
 - **Overall Assessment:** {Critical|High|Medium|Low} risk profile
 - **Primary Concerns:** {{top 3 issues to address}}
 - **Fabrication Status:** {{CRITICAL if any fabricated claims found, otherwise CLEAR}}
 
 ### === RECOMMENDATIONS_FOR_STEP3 ===
 - **CRITICAL - Cannot Proceed Until Fixed:** {{all fabricated claims must be removed}}
+- **Revise-Mode Edit Surface (revise mode only):** {{NEW findings listed first; this list plus BASE findings defines the ONLY lines Step 3 may modify}}
 - **Must Fix (High Risk):** {{specific changes required}}
 - **Should Fix (Medium Risk):** {{recommended improvements}}
 - **Consider (Low Risk):** {{optional enhancements}}
