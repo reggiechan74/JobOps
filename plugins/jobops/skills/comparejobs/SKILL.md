@@ -187,6 +187,8 @@ Analyze deeper implications:
 | {{ARG3}} | [Role] | [Company] | [Score]/100 | [Recommendation] | [Date] |
 | {{ARG4}} | [Role] | [Company] | [Score]/100 | [Recommendation] | [Date] |
 
+For any input whose front matter has `synthetic: true`, append ` (synthetic benchmark)` to its Company cell in this table and prefix its name with `Synthetic:` everywhere it appears in the report.
+
 ## Detailed Score Comparison
 
 ### Overall Performance Rankings
@@ -317,7 +319,7 @@ Analyze deeper implications:
 
 > **Task:** Mark task 6 `in_progress`.
 
-Save the comparative analysis to: `{config.directories.career_analysis}/comparison_{YYYYMMDD}_{slug}.md`, where `{slug}` is built from the companies being compared, lowercased and joined with `_vs_` (e.g., `google_vs_meta`, or `google_vs_meta_vs_amazon` for 3+).
+Save the comparative analysis to: `{config.directories.career_analysis}/comparison_{YYYYMMDD}_{slug}.md`, where `{slug}` is built from the companies being compared, lowercased and joined with `_vs_` (e.g., `google_vs_meta`, or `google_vs_meta_vs_amazon` for 3+). For an input with no company (e.g., an `/idealjob` archetype), use its input filename stem instead (e.g., `google_vs_idealjob_20260604_anchor`).
 
 > **Task:** Mark task 6 `completed`.
 
@@ -350,5 +352,8 @@ Save the comparative analysis to: `{config.directories.career_analysis}/comparis
 ## Example Usage
 ```bash
 claude /comparejobs JLL_VP_Office_Leasing_2025-09-25 Canerector_Vice_President_Real_Estate_2025-09-26
+
+# Benchmark a real application against an /idealjob archetype (direct file path)
+claude /comparejobs JLL_VP_Office_Leasing_2025-09-25 Career_Analysis/idealjob_20260604_anchor.md
 ```
-(Each argument is an application slug under `{config.directories.applications_root}`.)
+(Each argument is either an application slug under `{config.directories.applications_root}` or a direct assessment-file path — see Your Task.)
