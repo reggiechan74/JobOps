@@ -76,6 +76,8 @@ Three destination patterns.
 
 Exception: `workplace-documentation` appends to a single continuously-updated log (`workplace_documentation_log.md`), not a timestamped file.
 
+Exception: `idealjob` writes four flat siblings per invocation — `idealjob_{YYYYMMDD}.md` (summary, `output_type: ideal_job_summary`) plus `idealjob_{YYYYMMDD}_{anchor,stretch,pivot}.md` (`output_type: ideal_job_archetype`, with assessjob-compatible `overall_score`/`normalized_score` keys so `/comparejobs` can ingest them by direct path).
+
 **Application tracker** — a single YAML file (`config.directories.application_tracker`,
 default `{applications_root}/tracker.yaml`) maintained exclusively by `/jobops:dashboard`.
 It is reconciled from the filesystem on each run: filesystem presence drives the

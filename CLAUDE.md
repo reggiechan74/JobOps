@@ -72,7 +72,7 @@ codex plugin list
 - Job Postings: `Job_Postings/{Company}_{Role}_{YYYYMMDD}.md`
 - Application artifacts: `Applications/{Company}_{Role}_{YYYYMMDD}/<subfolder>/<fixed-filename>.md` (slug parsed from the JD filename; sub-folder and filename are plugin convention — see `docs/ARCHITECTURE.md` Section 4)
 - OSINT: `Company_Intelligence/{Company}/{corporate,legal,leadership,compensation,culture,market,summary}.md`
-- Career / crisis / contractor: single timestamped file per invocation under the appropriate root
+- Career / crisis / contractor: single timestamped file per invocation under the appropriate root (exception: `/idealjob` writes a summary plus three archetype siblings — `idealjob_{YYYYMMDD}{,_anchor,_stretch,_pivot}.md`)
 
 ## Coding Style
 

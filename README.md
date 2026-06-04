@@ -117,7 +117,7 @@ The folder names (`Experience/`, `CareerHighlights/`, `Technology/`) and the fro
 
 | Skill | Description |
 |-------|-------------|
-| `/jobops:idealjob` | Generate synthetic ideal job description from career history |
+| `/jobops:idealjob` | Interview-driven ideal-role targeting — three scored archetypes (Anchor/Stretch/Pivot) with live posting matches and search kits |
 | `/jobops:change-one-thing` | Career retrospective with counterfactual pivot analysis |
 | `/jobops:assess-job-offer` | Comprehensive offer analysis (compensation, legal, alignment) |
 
