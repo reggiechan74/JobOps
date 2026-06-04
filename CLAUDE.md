@@ -21,8 +21,8 @@ JobOps/
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
       templates/                      # Bundled templates (copied to workspace on setup)
-      skills/                         # 36 skills (flat, no subdirectories)
-      agents/                         # 15 Claude Code agents
+      skills/                         # 37 skills (flat, no subdirectories)
+      agents/                         # 17 Claude Code agents
       styles/                         # CSS and rendering styles
     jobops-ic/                        # Independent contractor add-on
       .claude-plugin/plugin.json

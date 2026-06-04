@@ -46,7 +46,7 @@ After installation, start a new Codex session and invoke `jobops:setup` through 
 
 | Plugin | Description | Skills | Prerequisite |
 |--------|-------------|--------|--------------|
-| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization; application dashboard (`/jobops:dashboard`) — a reconciled statusboard across all your applications with an interactive "do the next step" loop on Claude Code | 36 | None |
+| **jobops** | Resume development, interview prep, OSINT intelligence, career strategy, crisis management, application finalization; application dashboard (`/jobops:dashboard`) — a reconciled statusboard across all your applications with an interactive "do the next step" loop on Claude Code | 37 | None |
 | **jobops-ic** | Independent contractor toolkit — service definitions, client prospecting, pitch decks, proposals, rate cards, landing pages | 10 | jobops |
 
 ---
@@ -258,8 +258,8 @@ JobOps/
     jobops/                          # Core plugin
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
-      skills/                        # 36 skills (flat layout)
-      agents/                        # 15 Claude Code agents
+      skills/                        # 37 skills (flat layout)
+      agents/                        # 17 Claude Code agents
       styles/                        # CSS and rendering styles
       templates/                     # Bundled templates
     jobops-ic/                       # IC add-on plugin
