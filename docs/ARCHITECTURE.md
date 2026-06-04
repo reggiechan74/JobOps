@@ -31,6 +31,8 @@ Schema: see `docs/superpowers/specs/2026-04-23-plugin-config-redesign-design.md`
 
 `config.preferences.cover_letter_mode` (`retrospective` | `forward`, default `retrospective`) selects how `/jobops:coverletter` writes the letter. A config written before this key existed has no `cover_letter_mode`; consumers treat the absence as `retrospective`. `/jobops:coverletter --mode=` overrides it per-invocation. `forward` mode runs a mandatory skill-level intake interview and dispatches `step4-cover-letter-forward` instead of `step4-cover-letter`; both agents share voice, provenance, and sub-agent-review rules.
 
+`config.directories.tailored_cv` (default `./Tailored_CV`) is the base resume library for revise-first `/jobops:buildresume`: one user-curated `.md` base per role family, each carrying `output_type: resume_base` and a free-text `role_family` label in front matter (the taxonomy is entirely user-defined — no built-in category list exists). A config written before this key existed has no `tailored_cv`; `buildresume` treats the absent key (or an empty directory) as "no library" and falls back to the from-scratch pipeline with a setup hint — it never self-heals the config. The library is written only via buildresume's explicit promotion offer; the one-time `role_family` stamping of untagged files edits front matter only.
+
 Creation: only by `/jobops:setup`. Extended by `/jobops-ic:setup`. Runtime skills never
 write it, with one narrow exception: `/jobops:dashboard` adds the
 `directories.application_tracker` key (preserving all other keys) if a pre-existing
@@ -78,6 +80,10 @@ Exception: `workplace-documentation` appends to a single continuously-updated lo
 
 Exception: `idealjob` writes four flat siblings per invocation — `idealjob_{YYYYMMDD}.md` (summary, `output_type: ideal_job_summary`) plus `idealjob_{YYYYMMDD}_{anchor,stretch,pivot}.md` (`output_type: ideal_job_archetype`, with assessjob-compatible `overall_score`/`normalized_score` keys so `/comparejobs` can ingest them by direct path).
 
+**Base library** — user-curated revise-mode inputs, written only via buildresume's explicit promotion offer:
+
+    {tailored_cv}/<base>.md            (output_type: resume_base, role_family: <user label>)
+
 **Application tracker** — a single YAML file (`config.directories.application_tracker`,
 default `{applications_root}/tracker.yaml`) maintained exclusively by `/jobops:dashboard`.
 It is reconciled from the filesystem on each run: filesystem presence drives the
@@ -99,6 +105,8 @@ sub-folder is resolved dynamically. Canonical `output_type` values:
 | `resume_step1` | buildresume (step 1) | `resume/step1_draft.md` |
 | `resume_provenance` | buildresume (step 2) / provenance-check | `resume/step2_provenance.md` |
 | `resume_final` | buildresume (step 3) | `resume/step3_final.md` |
+| `resume_manifest` | buildresume (revise-mode step 1) | `resume/step1_manifest.md` |
+| `resume_base` | buildresume promotion offer | `{tailored_cv}/<base>.md` |
 | `cover_letter` | coverletter | `cover-letter/cover_letter.md` |
 | `osint_corporate` … `osint_market` | osint | `{company_intelligence}/{Company}/<area>.md` |
 | `osint_summary` | osint | `{company_intelligence}/{Company}/summary.md` |

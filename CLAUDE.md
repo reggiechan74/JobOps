@@ -46,6 +46,7 @@ Configured via `.jobops/config.json` (created by `/jobops:setup`, extended by `/
 | `company_intelligence` | `Company_Intelligence/` | OSINT output tree, one folder per company |
 | `career_analysis` | `Career_Analysis/` | Flat timestamped career-level outputs |
 | `crisis_management` | `Crisis_Management/` | Flat timestamped crisis-skill outputs |
+| `tailored_cv` | `Tailored_CV/` | Base resume library for revise-first `/buildresume` (one `.md` per user-defined role family; written only via promotion offer) |
 | `contractor_root` | `Contractor/` | `jobops-ic` outputs (services, prospects, proposals, pitches, rate-cards, landing-pages); added by `/jobops-ic:setup` |
 
 ## Development & Testing
