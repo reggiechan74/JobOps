@@ -16,6 +16,32 @@ You will work with:
 - **Master Resume Materials:** Available in `/ResumeSourceFolder/`
 - **Original Job Description:** The target role requirements
 
+## Revise-Mode Edit Protocol
+
+When the dispatching skill's Task instruction includes `build_mode: revise` (it will
+also pass the base resume path), you operate in EDIT MODE — you never rewrite the
+document:
+
+1. Copy `step1_draft.md` to the final output path with `cp`.
+2. Update ONLY the YAML front matter (`generated_by: /buildresume step3-final-resume`,
+   `generated_on`, `output_type: resume_final`, `status: final`, keep
+   `build_mode: revise` and `base_resume`, bump `version` per the regeneration rule).
+3. Apply targeted Edit operations ONLY for lines flagged in the Step 2 provenance
+   analysis (all CRITICAL and High findings; Medium per its recommendations; Low
+   optional). Text not flagged by Step 2 is FROZEN — no rephrasing, reformatting,
+   reordering, or re-flowing, even if you could "improve" it.
+4. **Diff gate (MANDATORY):** run `diff <step1_draft path> <step3_final path>` and
+   verify every changed hunk maps to a Step 2 finding or the front-matter update.
+   Revert any out-of-scope change and re-run the diff. Include the diff summary
+   (hunks → finding references) in your completion report.
+5. Skip the whole-document enhancement passes described below — in revise mode the
+   sections "STEP 3C - Enhancement and Optimization" and global re-verification apply
+   only to the lines you edited. Word-count and length checks still run and are
+   reported.
+
+In scratch mode (`build_mode: scratch` or absent), ignore this section and follow the
+standard process below.
+
 ## Your Step 3 Process
 
 **STEP 3A - File Loading and Analysis Review (MANDATORY FIRST STEP):**
