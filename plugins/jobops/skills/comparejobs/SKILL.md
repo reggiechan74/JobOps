@@ -17,9 +17,12 @@ Use `config.preferences.default_jurisdiction` if this skill has jurisdiction-sen
 
 ## Your Task
 
-Compare 2-4 assessment files produced by `/assessjob` (one per application folder under `{config.directories.applications_root}`) to analyze candidate performance across different roles, identify patterns, and provide strategic hiring recommendations.
+Compare 2-4 assessment files produced by `/assessjob` (one per application folder under `{config.directories.applications_root}`) — or ideal-role archetype files produced by `/idealjob` — to analyze candidate performance across different roles, identify patterns, and provide strategic hiring recommendations.
 
-Each `{{ARGn}}` is the application slug (`{Company}_{Role}_{Date}`) whose assessment should be compared. The skill loads `{applications_root}/{{ARGn}}/assessment/assessment.md` for each slug.
+Each `{{ARGn}}` is either:
+
+- an **application slug** (`{Company}_{Role}_{Date}`) — the skill loads `{applications_root}/{{ARGn}}/assessment/assessment.md`, or
+- a **direct file path** — any argument containing `/` or ending in `.md` is read as-is (e.g., `{career_analysis}/idealjob_{YYYYMMDD}_anchor.md`). `/idealjob` archetype files carry assessjob-compatible score keys (`overall_score: <XX/200>`, `normalized_score: <XX%>`) and compare like any assessment. Their `synthetic: true` front matter MUST be called out in the report (label the column/row "synthetic benchmark") so an ideal-role benchmark is never mistaken for a real application.
 
 ---
 
@@ -84,11 +87,12 @@ Replace the placeholder comment with the additional assessment filenames you com
 
 > **Task:** Mark task 1 `in_progress`.
 
-**Read ALL assessment files in a single parallel batch using multiple Read tool calls:**
-- `{config.directories.applications_root}/{{ARG1}}/assessment/assessment.md`
-- `{config.directories.applications_root}/{{ARG2}}/assessment/assessment.md`
-- `{config.directories.applications_root}/{{ARG3}}/assessment/assessment.md` (if provided)
-- `{config.directories.applications_root}/{{ARG4}}/assessment/assessment.md` (if provided)
+**Read ALL assessment files in a single parallel batch using multiple Read tool calls.** Resolve each `{{ARGn}}` first:
+
+- If `{{ARGn}}` contains `/` or ends in `.md`, read it directly as a file path (e.g., an `/idealjob` archetype file).
+- Otherwise read `{config.directories.applications_root}/{{ARGn}}/assessment/assessment.md`.
+
+Load `{{ARG1}}` and `{{ARG2}}` always; `{{ARG3}}` and `{{ARG4}}` if provided.
 
 **CRITICAL**: Use parallel Read tool calls for all files in a single message. Do NOT read them sequentially.
 
