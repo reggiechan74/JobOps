@@ -70,7 +70,7 @@ Use the existing scoring rubric from {{ARG1}} to evaluate the candidate against 
 Phase 1 (Parallel batch):    Load templates + rubric + job posting (4 parallel reads)
 Phase 2 (Sequential):        Read source files directly + Validate rubric alignment
 Phase 3 (Sequential):        Optional domain research (if rubric is stale)
-Phase 4 (Sequential, visible): Score Cat 1 → 2 → 3 → 4 → 5 → 6
+Phase 4 (Sequential, visible): Score Cat 1 → 2 → 3 → 4 → 5
 Phase 5 (Sequential):        Generate report → Save files
 ```
 
