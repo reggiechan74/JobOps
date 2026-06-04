@@ -53,12 +53,62 @@ This skill writes to a per-application folder. Before writing any output:
 ## Arguments
 
 - `$1`: Job description file path (required)
-- `$2`: Cultural profile (optional, defaults to "Canadian")
+- `$2`: Cultural profile (optional). In scratch mode, defaults to "Canadian". In revise
+  mode, the base resume's voice is inherited and the profile menus are skipped; passing
+  `$2` explicitly overrides the inherited voice.
+- `--base=<path>`: Force a specific base resume file. Skips fit assessment; implies revise mode.
+- `--from-scratch`: Skip base discovery entirely; run the from-scratch pipeline.
 
-Runs the three-step resume build sequentially:
-1. **Step 1**: Create initial tailored resume draft using HAM-Z methodology
-2. **Step 2**: Perform comprehensive provenance analysis for credibility
-3. **Step 3**: Create final hardened resume addressing all issues
+First selects a build mode (see Build Mode Selection below), then runs the three-step
+build sequentially:
+1. **Step 1**: Revise the selected base toward the JD via change manifest and surgical
+   edits (revise mode) or create an initial tailored draft using HAM-Z methodology
+   (scratch mode)
+2. **Step 2**: Perform comprehensive provenance analysis for credibility (delta-tagged
+   `BASE`/`NEW` in revise mode)
+3. **Step 3**: Create final hardened resume addressing all issues (edit-mode with diff
+   gate in revise mode)
+
+## Build Mode Selection
+
+Determine the build mode BEFORE dispatching any step agent.
+
+1. **Flag shortcuts.** `--from-scratch` → mode = `scratch`, skip to dispatch.
+   `--base=<path>` → verify the file exists and is `.md`; mode = `revise` with that
+   base, skip to dispatch.
+2. **Library check.** Read `config.directories.tailored_cv`. If the key is absent, or
+   the directory is missing or contains no `.md` files → mode = `scratch`, and tell
+   the user once:
+
+   > No base resume library found. Building from scratch. To enable revise mode,
+   > re-run /jobops:setup and curate base resumes in your Tailored_CV directory —
+   > a great first base is the final this run produces (see promotion offer at the end).
+
+   Non-`.md` files in the directory are ignored with a one-line note.
+3. **Stamp untagged bases (one-time, per file).** For each candidate `.md` lacking
+   front matter with `output_type: resume_base` and a `role_family` value: infer a
+   short category label from the file's content, propose it to the user, let them
+   confirm or type their own label (free text — the taxonomy is entirely
+   user-defined; never assume a built-in category list), then stamp the file's front
+   matter with `output_type: resume_base` and the confirmed `role_family` (create the
+   front-matter block if the file has none). Do not alter the resume body.
+4. **Fit assessment (inline — do not dispatch a sub-agent).** Read the JD. For each
+   candidate base, assess fit on four axes:
+   - declared `role_family` match to the JD's role family,
+   - positioning level (1–5 IC→C-suite scale, as used by the step1 agents),
+   - domain/industry overlap,
+   - requirement-keyword coverage.
+   Verdict per candidate: **STRONG / PARTIAL / POOR**, each with a one-line rationale
+   phrased in the user's own category labels. No numeric scores.
+5. **Decision gate (the user always confirms).**
+   - Any STRONG candidate → recommend revising from the strongest one; offer
+     [revise from <file> / build from scratch / pick another base].
+   - Only PARTIAL candidates → present both options, naming the specific gaps
+     (e.g., "base covers the summary and primary role, but the JD's P&L emphasis is
+     not covered"); offer [revise from <file> / build from scratch].
+   - All POOR → mode = `scratch`; state why no base fits.
+6. Record the chosen mode and (in revise mode) the absolute base path. Carry both
+   through every step dispatch below.
 
 ## Output metadata
 
@@ -82,6 +132,17 @@ generated_on: <ISO8601 timestamp>
 
 Always write the front matter before any markdown headings or narrative body.
 
+All three files also carry `build_mode: revise` or `build_mode: scratch`. In revise
+mode, step 1 and step 3 outputs additionally carry `base_resume: <absolute path to the
+selected base>`.
+
+Revise mode writes one additional file — the change manifest:
+
+- **Step 1 manifest** (revise mode only) — `resume/step1_manifest.md`, with
+  `generated_by: /buildresume step1-resume-revise`, `output_type: resume_manifest`,
+  `status: manifest`, and `base_resume` set. Written by the step1-resume-revise agent
+  before it touches the draft.
+
 ## Step 1: Creating Initial Resume Draft
 ✓ Initiating strike package assembly
 
@@ -91,11 +152,24 @@ First, let me read the job description:
 
 @$1
 
-Now I'll run the step1-resume-draft agent with the specified cultural profile:
+**If mode = revise — Deploying Step 1 Agent - Base Revision**
 
-**✓ Deploying Step 1 Agent - Initial Draft Creation**
+I'm launching the `step1-resume-revise` agent. In its Task instruction I pass, as
+absolute paths: the selected base resume, the JD ($1), the master inventory root
+(`config.directories.resume_source`), the manifest output path
+(`{app_slug}/resume/step1_manifest.md`), and the draft output path
+(`{app_slug}/resume/step1_draft.md`). I pass `$2` only if the user supplied it —
+otherwise the agent inherits the base's voice and skips the profile menus. This agent
+will:
+- Gap-analyze the base against the JD
+- Write an explicit change manifest (every change justified by a named JD requirement)
+- Copy the base and apply only the manifest changes as surgical edits
+- Run the diff gate proving unchanged content is byte-identical to the base
 
-I'm launching the step1-resume-draft agent to create an initial tailored resume draft based on the job requirements. This agent will:
+**If mode = scratch — Deploying Step 1 Agent - Initial Draft Creation**
+
+I'm launching the step1-resume-draft agent to create an initial tailored resume draft
+based on the job requirements. This agent will:
 - Analyze the job requirements from $1
 - Apply the $2 cultural profile preferences
 - Use the HAM-Z methodology for strategic positioning
@@ -103,7 +177,8 @@ I'm launching the step1-resume-draft agent to create an initial tailored resume 
 - **Explicitly justify any credential exclusions in agent output**
 - Create a targeted first draft optimized for the role
 
-I pass the resolved absolute output path (`{app_slug}/resume/step1_draft.md`, per step 6 of Application Path Resolution) to the agent in its Task instruction.
+I pass the resolved absolute output path (`{app_slug}/resume/step1_draft.md`, per step 6
+of Application Path Resolution) to the agent in its Task instruction.
 
 ## Step 2: Provenance Analysis
 ✓ Executing credibility verification sweep
@@ -121,6 +196,12 @@ Now I'll launch the step2-provenance-check agent to analyze the Step 1 draft for
 
 I pass the Step 1 draft path (`{app_slug}/resume/step1_draft.md`) to read and the resolved output path (`{app_slug}/resume/step2_provenance.md`) to write, both in the agent's Task instruction.
 
+In revise mode I additionally pass `build_mode: revise`, the base resume path, and the
+manifest path (`{app_slug}/resume/step1_manifest.md`) so the agent tags every finding
+with its origin (`BASE` = carried from the base, including the user's manual edits;
+`NEW` = introduced or modified by the manifest) per its Revise-Mode Delta Tagging
+section.
+
 ## Step 3: Final Hardened Resume
 ✓ Producing deployment-ready final resume
 
@@ -134,6 +215,11 @@ Finally, I'll launch the step3-final-resume agent to:
 
 I pass the Step 1 draft (`{app_slug}/resume/step1_draft.md`) and Step 2 provenance analysis (`{app_slug}/resume/step2_provenance.md`) paths to read and the resolved output path (`{app_slug}/resume/step3_final.md`) to write, all in the agent's Task instruction.
 
+In revise mode I additionally pass `build_mode: revise` and the base resume path so the
+agent follows its Revise-Mode Edit Protocol: copy the draft to the final, apply
+targeted edits only for Step 2 findings, and prove with a diff gate that nothing else
+changed.
+
 ## Mission Summary
 
 All three steps of the resume assembly process will be completed:
@@ -142,3 +228,25 @@ All three steps of the resume assembly process will be completed:
 - Step 3: Final hardened resume produced
 
 Your deployment-ready resume will be ready for mission execution with full credibility and competitive positioning.
+
+## Promotion Offer (both modes)
+
+After Step 3 delivers `resume/step3_final.md`, offer exactly once:
+
+> Promote this final to your Tailored_CV library as a base for future applications?
+> 1. Update an existing base (pick which)
+> 2. Save as a new variant (pick a filename and a role_family label)
+> 3. Skip
+
+Skip this offer entirely if `config.directories.tailored_cv` is not configured.
+
+On **update**: copy `step3_final.md` over the chosen base file, then restamp the
+library copy's front matter: `output_type: resume_base`, the base's existing
+`role_family` (confirm with the user), `promoted_from: <app_slug>`, and bump
+`version`. Remove application-specific keys (`job_file`, `build_mode`, `status`).
+
+On **new variant**: same restamp, but ask the user for the target filename and the
+`role_family` label — offer the labels already present in the library plus
+"new category" (free text). This is how the user's taxonomy grows.
+
+Never write to the library without this explicit confirmation.
