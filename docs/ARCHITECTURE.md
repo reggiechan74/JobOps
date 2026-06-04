@@ -49,7 +49,7 @@ Skills that need the plugin's own templates or bundled files use `${CLAUDE_PLUGI
 
 ## 4. Output layout
 
-Three destination patterns.
+Four destination patterns.
 
 **Application-centric** — per-application folders, fixed subfolder convention:
 
@@ -106,7 +106,7 @@ sub-folder is resolved dynamically. Canonical `output_type` values:
 | `resume_provenance` | buildresume (step 2) / provenance-check | `resume/step2_provenance.md` |
 | `resume_final` | buildresume (step 3) | `resume/step3_final.md` |
 | `resume_manifest` | buildresume (revise-mode step 1) | `resume/step1_manifest.md` |
-| `resume_base` | buildresume promotion offer | `{tailored_cv}/<base>.md` |
+| `resume_base` | buildresume promotion offer | `{tailored_cv}/<base>.md` (user-defined filename) |
 | `cover_letter` | coverletter | `cover-letter/cover_letter.md` |
 | `osint_corporate` … `osint_market` | osint | `{company_intelligence}/{Company}/<area>.md` |
 | `osint_summary` | osint | `{company_intelligence}/{Company}/summary.md` |
