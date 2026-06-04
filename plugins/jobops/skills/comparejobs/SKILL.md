@@ -107,7 +107,7 @@ Load `{{ARG1}}` and `{{ARG2}}` always; `{{ARG3}}` and `{{ARG4}}` if provided.
 Extract key information from each assessment:
 - **Candidate Information**: Name, role applied for, company
 - **Front Matter Keys**: `overall_score` (XX/200), `normalized_score` (XX%), `role_variant` (Technical IC | People Manager | Executive), and `synthetic` if present
-- **Scoring Breakdown**: Per-category raw points, variant-adjusted maximum, and percentage for the five rubric categories (Skills Inventory, Experience Relevance, Demonstrated Impact, Credentials, Fit & Readiness)
+- **Scoring Breakdown**: Per-category raw points, variant-adjusted maximum, and percentage for the five rubric categories (Skills Inventory, Experience Relevance, Demonstrated Impact, Credentials, Fit & Readiness). Read these from the assessment body's category scoring sections — front matter carries only the overall score. If a category's numbers are absent from the body, mark its cells `not reported`; never invent them.
 - **Strengths & Gaps**: Key strengths and areas of concern
 - **Hiring Recommendations**: Final recommendations and rationale
 - **Assessment Date**: When evaluation was conducted
@@ -314,7 +314,7 @@ Category maxima vary by role variant (e.g., Skills Inventory is /60 for a Techni
 
 ## Appendix
 ### Assessment Scoring Summary
-[Detailed table showing all scores across all categories]
+[Detailed table showing all scores across the five rubric categories — points, variant max, and percentage per assessment]
 
 ### Key Evidence Mapping
 [Cross-reference of major claims/achievements across assessments]
