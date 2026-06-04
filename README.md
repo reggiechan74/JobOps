@@ -4,7 +4,7 @@
   <img src="Images/JobOps_logo.png" alt="JobOps Logo" width="400">
 </p>
 
-**Version 2.15.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
+**Version 2.16.0** | [Changelog](CHANGELOG.md) | [Why I Built This](Why_I_Built_This.md)
 
 Two Claude Code and Codex plugins for systematic, intelligence-driven career management — from resume development to independent consulting.
 
@@ -259,7 +259,7 @@ JobOps/
       .claude-plugin/plugin.json
       .codex-plugin/plugin.json
       skills/                        # 37 skills (flat layout)
-      agents/                        # 16 Claude Code agents
+      agents/                        # 17 Claude Code agents
       styles/                        # CSS and rendering styles
       templates/                     # Bundled templates
     jobops-ic/                       # IC add-on plugin

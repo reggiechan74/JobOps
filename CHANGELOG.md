@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.16.0] - 2026-06-04
+
+### Added
+
+- **Revise-first `/jobops:buildresume`** — full from-scratch regeneration re-rolled the dice on settled content every run, producing four recurring artifact classes: lost manual edits, content drift on already-hardened bullets, formatting/structure drift that broke PDF/Word conversion consistency, and unstable achievement selection across runs. The skill now opens with a **Build Mode Selection** phase: it scans a user-curated base-resume library (new `tailored_cv` config key, default `./Tailored_CV`, added by `/jobops:setup`), fit-assesses each base against the JD on four axes (user-defined `role_family` label match, positioning level, domain overlap, keyword coverage) with qualitative STRONG/PARTIAL/POOR verdicts, and — with user confirmation — revises the best-fit base instead of rebuilding. From-scratch remains the fallback (empty/absent library, all-POOR verdicts, or `--from-scratch`); `--base=<path>` forces a specific base. The role-family taxonomy is entirely user-defined: labels live in base-file front matter (`output_type: resume_base`, `role_family`), stamped once per untagged file with user confirmation — no built-in category list exists.
+- **`step1-resume-revise` agent** (agent count now 17) — revise-mode Step 1. Writes an explicit change manifest (`resume/step1_manifest.md`, `output_type: resume_manifest`) in which every change is justified by a named JD requirement and every new claim cites master-inventory evidence, then copies the base and applies only the manifest changes as targeted edits. A mandatory diff gate proves unchanged content is byte-identical to the base; an empty manifest (base already fits) and a >15-change poor-fit bailout are both first-class outcomes. Cultural-profile and positioning menus are inherited from the base, not re-asked.
+- **Promotion offer** — after Step 3 in either mode, `/buildresume` offers once to promote the final into the library (update an existing base or save as a new variant under an existing or new `role_family` label). This is how from-scratch builds seed new role families and how revise-mode improvements converge the library; nothing is ever written to it without explicit confirmation.
+
+### Changed
+
+- **`step2-provenance-check` delta tagging** — in revise mode the audit stays full-document (the user's manual edits to a base were never provenance-checked) but every finding now carries an `Origin: BASE|NEW` field, the risk summary splits counts by origin, and a new "Revise-Mode Edit Surface" line tells Step 3 the only lines it may modify.
+- **`step3-final-resume` edit-mode protocol** — in revise mode the agent copies the draft to the final and applies targeted edits only for Step 2 findings behind a second mandatory diff gate; unflagged text is frozen. Scratch mode is unchanged.
+- **Output metadata contract** — all three resume outputs now carry `build_mode: revise|scratch` (passed by the dispatching skill in each Task instruction); revise-mode step 1/3 outputs also carry `base_resume`. `docs/ARCHITECTURE.md` documents the `tailored_cv` config key, the new `resume_manifest`/`resume_base` output types, and the Base library as a fourth destination pattern.
+
 ## [2.15.0] - 2026-06-04
 
 ### Changed
