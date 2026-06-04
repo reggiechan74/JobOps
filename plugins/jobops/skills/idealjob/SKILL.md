@@ -285,7 +285,7 @@ Sections, in order:
 1. **Interview Record** — the four confirmed round playbacks, verbatim.
 2. **Cross-Archetype Comparison** — table: archetype | title | normalized score | comp range | key trade-off accepted | one-line value proposition. Flag any archetype that remained below its threshold (e.g., "82% — below 85% threshold").
 3. **Gap-Closing Plans** (Stretch and Pivot) — for each gap surfaced by the self-score: the action (certification, project, or experience to acquire), a rough timeline, and which archetype(s) it unlocks.
-4. **comparejobs Handoff** — include verbatim (with paths resolved):
+4. **comparejobs Handoff** — include verbatim (with paths resolved — use the actual anchor path, including any `$1`-derived basename):
 
    > To benchmark a real application against an archetype:
    > `/comparejobs {Company}_{Role}_{YYYYMMDD} {career_analysis}/idealjob_{YYYYMMDD}_anchor.md`
