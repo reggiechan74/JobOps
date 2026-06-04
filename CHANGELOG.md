@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.14.1] - 2026-06-04
+
+### Fixed
+
+- **`/jobops:comparejobs` report template aligned to the 200-point rubric** — Phase 2 extraction and the Phase 4 report still used the retired 100-point structure (six categories: Technical /25, Experience /25, Responsibilities /20, Achievements /15, Cultural /5), which mismatched every assessment produced by `assessjob` v2.0+ and the new `/idealjob` archetypes. The skill now extracts `overall_score` (XX/200), `normalized_score`, and `role_variant` from front matter, reports the five rubric categories (Skills Inventory, Experience Relevance, Demonstrated Impact, Credentials, Fit & Readiness) as raw points against each assessment's variant-adjusted maximum, and compares on percentages — category maxima legitimately differ across role variants, so raw cross-variant point comparisons are apples-to-oranges. Legacy 0–100 assessments compare at the overall normalized level only, with category cells marked `N/A (legacy scale)`.
+
 ## [2.14.0] - 2026-06-04
 
 ### Added

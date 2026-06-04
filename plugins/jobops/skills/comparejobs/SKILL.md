@@ -106,11 +106,13 @@ Load `{{ARG1}}` and `{{ARG2}}` always; `{{ARG3}}` and `{{ARG4}}` if provided.
 
 Extract key information from each assessment:
 - **Candidate Information**: Name, role applied for, company
-- **Scoring Breakdown**: Detailed scores by category (Technical Skills, Experience, Responsibilities, Achievements, Education, Cultural Fit)
+- **Front Matter Keys**: `overall_score` (XX/200), `normalized_score` (XX%), `role_variant` (Technical IC | People Manager | Executive), and `synthetic` if present
+- **Scoring Breakdown**: Per-category raw points, variant-adjusted maximum, and percentage for the five rubric categories (Skills Inventory, Experience Relevance, Demonstrated Impact, Credentials, Fit & Readiness)
 - **Strengths & Gaps**: Key strengths and areas of concern
 - **Hiring Recommendations**: Final recommendations and rationale
 - **Assessment Date**: When evaluation was conducted
-- **Overall scores and ratings**
+
+**Legacy inputs:** if an assessment carries a bare 0–100 `overall_score` (no `/200` suffix), treat that value as its normalized percentage and compare it at the overall level only — its category cells in the report read `N/A (legacy scale)`.
 
 > **Task:** Mark task 2 `completed`.
 
@@ -180,63 +182,68 @@ Analyze deeper implications:
 
 ## Assessment Overview
 
-| Assessment | Role | Company | Overall Score | Recommendation | Date |
-|------------|------|---------|---------------|-----------------|------|
-| {{ARG1}} | [Role] | [Company] | [Score]/100 | [Recommendation] | [Date] |
-| {{ARG2}} | [Role] | [Company] | [Score]/100 | [Recommendation] | [Date] |
-| {{ARG3}} | [Role] | [Company] | [Score]/100 | [Recommendation] | [Date] |
-| {{ARG4}} | [Role] | [Company] | [Score]/100 | [Recommendation] | [Date] |
+| Assessment | Role | Company | Variant | Overall Score | Recommendation | Date |
+|------------|------|---------|---------|---------------|-----------------|------|
+| {{ARG1}} | [Role] | [Company] | [Variant] | [XXX]/200 ([XX%]) | [Recommendation] | [Date] |
+| {{ARG2}} | [Role] | [Company] | [Variant] | [XXX]/200 ([XX%]) | [Recommendation] | [Date] |
+| {{ARG3}} | [Role] | [Company] | [Variant] | [XXX]/200 ([XX%]) | [Recommendation] | [Date] |
+| {{ARG4}} | [Role] | [Company] | [Variant] | [XXX]/200 ([XX%]) | [Recommendation] | [Date] |
 
 For any input whose front matter has `synthetic: true`, append ` (synthetic benchmark)` to its Company cell in this table and prefix its name with `Synthetic:` everywhere it appears in the report.
 
 ## Detailed Score Comparison
 
 ### Overall Performance Rankings
-1. **[Highest Scoring Role]**: [Score]/100 - [Company] - [Brief rationale]
-2. **[Second Highest]**: [Score]/100 - [Company] - [Brief rationale]
-3. **[Third]**: [Score]/100 - [Company] - [Brief rationale]
-4. **[Lowest]**: [Score]/100 - [Company] - [Brief rationale]
+
+Rank by `normalized_score` — the percentage is the cross-assessment comparison basis; raw points are context.
+
+1. **[Highest Scoring Role]**: [XXX]/200 ([XX%]) - [Company] - [Brief rationale]
+2. **[Second Highest]**: [XXX]/200 ([XX%]) - [Company] - [Brief rationale]
+3. **[Third]**: [XXX]/200 ([XX%]) - [Company] - [Brief rationale]
+4. **[Lowest]**: [XXX]/200 ([XX%]) - [Company] - [Brief rationale]
 
 ### Category Performance Analysis
 
-#### Technical Skills & Competencies
-| Role/Company | Required Skills | Preferred Skills | Total | Analysis |
-|--------------|-----------------|-------------------|-------|----------|
-| [Role 1] | [X]/15 | [X]/10 | [X]/25 | [Strength/Gap summary] |
-| [Role 2] | [X]/15 | [X]/10 | [X]/25 | [Strength/Gap summary] |
+Category maxima vary by role variant (e.g., Skills Inventory is /60 for a Technical IC assessment but /40 for People Manager), so **compare on percentages, not raw points**. `[Max]` is each assessment's variant-adjusted category maximum from its rubric. For legacy 0–100 inputs, every category cell reads `N/A (legacy scale)`.
+
+#### 1. Skills Inventory
+| Role/Company | Points | Variant Max | % | Analysis |
+|--------------|--------|-------------|---|----------|
+| [Role 1] | [X] | [Max] | [XX%] | [Strength/Gap summary] |
+| [Role 2] | [X] | [Max] | [XX%] | [Strength/Gap summary] |
 
 **Key Insights:**
 - [Consistent technical strengths across roles]
 - [Skills gaps that appear across multiple assessments]
 - [Role-specific technical advantages]
 
-#### Experience & Background
-| Role/Company | Years | Industry | Role-Specific | Total | Analysis |
-|--------------|-------|----------|---------------|-------|----------|
-| [Role 1] | [X]/10 | [X]/10 | [X]/5 | [X]/25 | [Experience alignment] |
-| [Role 2] | [X]/10 | [X]/10 | [X]/5 | [X]/25 | [Experience alignment] |
+#### 2. Experience Relevance
+| Role/Company | Points | Variant Max | % | Analysis |
+|--------------|--------|-------------|---|----------|
+| [Role 1] | [X] | [Max] | [XX%] | [Experience alignment] |
+| [Role 2] | [X] | [Max] | [XX%] | [Experience alignment] |
 
 **Key Insights:**
 - [Best experience matches and why]
 - [Experience transfer opportunities]
 
-#### Key Responsibilities Alignment
-| Role/Company | Primary Duties | Scope & Complexity | Total | Analysis |
-|--------------|----------------|--------------------|-------|----------|
-| [Role 1] | [X]/12 | [X]/8 | [X]/20 | [Responsibility match] |
-| [Role 2] | [X]/12 | [X]/8 | [X]/20 | [Responsibility match] |
+#### 3. Demonstrated Impact
+| Role/Company | Points | Variant Max | % | Analysis |
+|--------------|--------|-------------|---|----------|
+| [Role 1] | [X] | [Max] | [XX%] | [Impact evidence] |
+| [Role 2] | [X] | [Max] | [XX%] | [Impact evidence] |
 
-#### Achievements & Impact Performance
-| Role/Company | Quantifiable Results | Innovation/Leadership | Total | Analysis |
-|--------------|---------------------|----------------------|-------|----------|
-| [Role 1] | [X]/10 | [X]/5 | [X]/15 | [Impact potential] |
-| [Role 2] | [X]/10 | [X]/5 | [X]/15 | [Impact potential] |
+#### 4. Credentials
+| Role/Company | Points | Variant Max | % | Analysis |
+|--------------|--------|-------------|---|----------|
+| [Role 1] | [X] | [Max] | [XX%] | [Credential match] |
+| [Role 2] | [X] | [Max] | [XX%] | [Credential match] |
 
-#### Cultural Fit Analysis
-| Role/Company | Communication | Values Alignment | Total | Analysis |
-|--------------|---------------|-------------------|-------|----------|
-| [Role 1] | [X]/3 | [X]/2 | [X]/5 | [Cultural fit assessment] |
-| [Role 2] | [X]/3 | [X]/2 | [X]/5 | [Cultural fit assessment] |
+#### 5. Fit & Readiness
+| Role/Company | Points | Variant Max | % | Analysis |
+|--------------|--------|-------------|---|----------|
+| [Role 1] | [X] | [Max] | [XX%] | [Fit assessment] |
+| [Role 2] | [X] | [Max] | [XX%] | [Fit assessment] |
 
 ## Strategic Analysis
 
@@ -252,7 +259,7 @@ For any input whose front matter has `synthetic: true`, append ` (synthetic benc
 ### Role-Specific Advantages
 #### Best Fit: [Role Name] at [Company]
 - **Why it's the strongest match**: [Detailed reasoning]
-- **Score advantage**: [X] points higher than average
+- **Score advantage**: [X] percentage points above the average normalized score
 - **Success probability**: [High/Medium/Low] with rationale
 
 #### Alternative Strong Fit: [Role Name] at [Company]
