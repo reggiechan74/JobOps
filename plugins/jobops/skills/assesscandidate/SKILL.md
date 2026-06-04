@@ -91,14 +91,13 @@ Phase 5 (Sequential):        Generate report → Save files
 | 1 | Load templates, rubric, and job posting | Loading templates, rubric, and job posting |
 | 2 | Read candidate source files | Reading candidate source files directly |
 | 3 | Validate rubric-job alignment | Validating rubric-job posting alignment |
-| 4 | Score Technical Skills & Competencies | Scoring Technical Skills & Competencies |
-| 5 | Score Relevant Experience | Scoring Relevant Experience |
-| 6 | Score Key Responsibilities | Scoring Key Responsibilities alignment |
-| 7 | Score Achievements & Impact | Scoring Achievements & Impact |
-| 8 | Score Education & Certifications | Scoring Education & Certifications |
-| 9 | Score Cultural Fit | Scoring Cultural Fit |
-| 10 | Generate assessment report | Generating comprehensive assessment report |
-| 11 | Save assessment files | Saving assessment and rubric files |
+| 4 | Score Skills Inventory | Scoring Skills Inventory |
+| 5 | Score Experience Relevance | Scoring Experience Relevance |
+| 6 | Score Demonstrated Impact | Scoring Demonstrated Impact |
+| 7 | Score Credentials | Scoring Credentials |
+| 8 | Score Fit & Readiness | Scoring Fit & Readiness |
+| 9 | Generate assessment report | Generating comprehensive assessment report |
+| 10 | Save assessment files | Saving assessment and rubric files |
 
 **Task Update Rules:**
 - Mark each task `in_progress` BEFORE starting work on it
@@ -122,12 +121,14 @@ generated_by: /assesscandidate
 generated_on: <ISO8601 timestamp>
 output_type: assessment
 status: draft
-version: 1.0
-overall_score: <XX/100>
+version: 2.0
+role_variant: <Technical IC | People Manager | Executive>
+overall_score: <XX/200>
+normalized_score: <XX%>
 ---
 ```
 
-Insert this block before any headings and update timestamps, scores, and versioning on reruns.
+Carry `role_variant` through from the rubric's front matter. Insert this block before any headings and update timestamps, scores, and versioning on reruns.
 
 ---
 
@@ -217,53 +218,47 @@ Score each rubric category against the source files you read in Phase 2. For eac
 
 **CRITICAL**: Apply the evidence verification framework from the evidence verification framework template to all scoring decisions.
 
-### 4.1 Score Technical Skills & Competencies (25 pts)
+Score the five rubric categories using each category's **variant-adjusted maximum from the rubric** (the rubric's weight table fixes the allocation; the five categories always total 200 points).
+
+### 4.1 Score Skills Inventory
 
 > **Task:** Mark task 4 `in_progress`.
 
-Use the specific required/preferred skills from the rubric to map against candidate evidence.
+Score required (1A) and preferred (1B) skills from the rubric against candidate evidence, using the 0-6 proficiency scale and experience-type classification (Direct | Adjacent | Transferable | Assumed) per the rubric framework.
 
 > **Task:** Mark task 4 `completed`.
 
-### 4.2 Score Relevant Experience (25 pts)
+### 4.2 Score Experience Relevance
 
 > **Task:** Mark task 5 `in_progress`.
 
-Evaluate against the years, industry, and domain requirements defined in the rubric.
+Evaluate industry/domain alignment (2A), career trajectory & growth (2B), and recency of relevant work (2C) against the definitions in the rubric.
 
 > **Task:** Mark task 5 `completed`.
 
-### 4.3 Score Key Responsibilities (20 pts)
+### 4.3 Score Demonstrated Impact
 
 > **Task:** Mark task 6 `in_progress`.
 
-Match candidate experience to the primary duties extracted in the rubric.
+Verify quantified achievements (3A), scale & complexity managed (3B), and innovation & initiative (3C) against the thresholds defined in the rubric.
 
 > **Task:** Mark task 6 `completed`.
 
-### 4.4 Score Achievements & Impact (15 pts)
+### 4.4 Score Credentials
 
 > **Task:** Mark task 7 `in_progress`.
 
-Verify metrics against the expected outcomes defined in the rubric.
+Check education (4A) and certifications (4B) against the specific requirements listed in the rubric.
 
 > **Task:** Mark task 7 `completed`.
 
-### 4.5 Score Education & Certifications (10 pts)
+### 4.5 Score Fit & Readiness
 
 > **Task:** Mark task 8 `in_progress`.
 
-Check against the specific requirements listed in the rubric.
+Assess communication evidence (5A), cultural alignment (5B), and role-specific readiness (5C) based on the criteria in the rubric.
 
 > **Task:** Mark task 8 `completed`.
-
-### 4.6 Score Cultural Fit (5 pts)
-
-> **Task:** Mark task 9 `in_progress`.
-
-Assess based on the company values and work environment from the rubric.
-
-> **Task:** Mark task 9 `completed`.
 
 ---
 
@@ -271,7 +266,7 @@ Assess based on the company values and work environment from the rubric.
 
 ### 5.1 Generate Comprehensive Assessment Report
 
-> **Task:** Mark task 10 `in_progress`.
+> **Task:** Mark task 9 `in_progress`.
 
 Follow the report structure defined in the assessment report structure template exactly.
 
@@ -287,11 +282,11 @@ Follow the report structure defined in the assessment report structure template 
   - **Rubric Application Analysis** section evaluating rubric effectiveness
   - **Audit Trail** with rubric file reference and assessment method
 
-> **Task:** Mark task 10 `completed`.
+> **Task:** Mark task 9 `completed`.
 
 ### 5.2 Save Assessment Report
 
-> **Task:** Mark task 11 `in_progress`.
+> **Task:** Mark task 10 `in_progress`.
 
 **File Save Location (app-centric layout):**
 
@@ -313,7 +308,7 @@ The app folder itself is the self-contained audit container — no timestamped a
 - Recommended next steps
 - File locations for both rubric copy and assessment report
 
-> **Task:** Mark task 11 `completed`.
+> **Task:** Mark task 10 `completed`.
 
 ---
 

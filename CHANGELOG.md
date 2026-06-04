@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.15.0] - 2026-06-04
+
+### Changed
+
+- **`/jobops:assesscandidate` upgraded to the 200-point rubric** — the skill applied 200-point rubrics from `/createrubric` through a stale 100-point reporting skeleton: its scoring phases and progress tasks named the retired six categories (Technical /25 … Cultural Fit /5) and its front matter emitted `overall_score: <XX/100>`. Phases and tasks now map to the five rubric categories (Skills Inventory, Experience Relevance, Demonstrated Impact, Credentials, Fit & Readiness) with variant-adjusted maxima read from the rubric, and the front matter emits `overall_score: <XX/200>`, `normalized_score: <XX%>`, and `role_variant` (carried from the rubric), output `version: 2.0` — matching `assessjob`. With this, no active producer emits 100-point assessments; `/comparejobs`' legacy path now serves only historical files.
+
+### Fixed
+
+- **`assessment_report_structure.md` template aligned to the 200-point rubric** — the report-structure template both assessors are told to follow "exactly" still defined the retired 100-point six-category body. The scoring skeleton now mirrors the rubric framework's actual structure: `Overall Score: [XXX/200] ([XX%] normalized)`, role variant + variant category weights in the Rubric Applied block, five categories with their subcategories (1A/1B, 2A–2C, 3A–3C, 4A/4B, 5A–5C), 0-6 proficiency scale and experience-type classification for skills, and hiring-recommendation bands expressed as percentage + points (180-200, 160-179, …) matching the rubric's interpretation table. All non-scoring sections (Evidence Mapping, Interview Strategy, Audit Trail, …) are unchanged.
+
+### Removed
+
+- **Orphaned `candidate-assessment` agent** — referenced by no skill, it embedded the retired 100-point rubric and pre-config hardcoded paths (`ResumeSourceFolder/`, `Job_Postings/`). Deleted rather than upgraded; agent count is now 16.
+
 ## [2.14.1] - 2026-06-04
 
 ### Fixed

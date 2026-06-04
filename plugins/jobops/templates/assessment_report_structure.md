@@ -21,193 +21,140 @@ This template defines the standard format for candidate assessment reports. It e
 ## Executive Summary
 [2-3 sentence overview of fit and recommendation based on rubric criteria]
 
-## Overall Score: [XX/100]
+## Overall Score: [XXX/200] ([XX%] normalized)
 *Scored against [pre-created/dynamic] rubric: [rubric filename]*
 
 ### Rubric Applied
 **Rubric Creation Date:** [Date from rubric file]
+**Role Variant:** [Technical IC | People Manager | Executive | Default] (from rubric front matter)
+**Variant Category Weights:** Skills Inventory [Max] | Experience Relevance [Max] | Demonstrated Impact [Max] | Credentials [Max] | Fit & Readiness [Max] (must total 200)
 **Job-Specific Criteria:** [Brief summary of rubric focus areas]
 
 ### Detailed Scoring Breakdown
 
-#### 1. Technical Skills & Competencies: [XX/25]
+Category maxima are the rubric's **variant-adjusted** allocations (e.g., Skills Inventory is 60 pts for Technical IC, 40 for People Manager, 30 for Executive, 50 default); subcategory base points scale proportionally per the rubric. Every scored item uses the 3-level detail format: rubric criteria applied → candidate evidence with source citations → score justification.
 
-**Required Skills (15 points total) - From Rubric:**
-- [Skill 1 from rubric]: [X/3] - [Evidence from candidate's history]
+#### 1. Skills Inventory: [XX/Max]
+
+**1A. Required Technical Skills (base 36, scaled per variant) - From Rubric:**
+- [Skill 1 from rubric]: [X/6] - [Proficiency demonstrated]
   - Rubric Criteria Applied: [Specific criteria used from rubric]
-  - Candidate Evidence: [Detailed evidence mapping with CV line numbers]
-  - Score Justification: [Why this score level was assigned]
+  - Candidate Evidence: [Detailed evidence mapping with source file citations]
+  - Experience Type: [Direct | Adjacent | Transferable | Assumed]
+  - Score Justification: [Why this proficiency score (0-6 scale) was assigned]
 
-- [Skill 2 from rubric]: [X/3] - [Evidence from candidate's history]
+- [Skill 2 from rubric]: [X/6] - [Proficiency demonstrated]
   - Rubric Criteria Applied: [Specific criteria used from rubric]
-  - Candidate Evidence: [Detailed evidence mapping with CV line numbers]
-  - Score Justification: [Why this score level was assigned]
+  - Candidate Evidence: [Detailed evidence mapping with source file citations]
+  - Experience Type: [Direct | Adjacent | Transferable | Assumed]
+  - Score Justification: [Why this proficiency score (0-6 scale) was assigned]
 
-- [Skill 3 from rubric]: [X/3] - [Evidence from candidate's history]
-  - Rubric Criteria Applied: [Specific criteria used from rubric]
-  - Candidate Evidence: [Detailed evidence mapping with CV line numbers]
-  - Score Justification: [Why this score level was assigned]
+[... one entry per required skill in the rubric; 0-6 proficiency scale normalized to the rubric's point allocation]
 
-- [Skill 4 from rubric]: [X/3] - [Evidence from candidate's history]
-  - Rubric Criteria Applied: [Specific criteria used from rubric]
-  - Candidate Evidence: [Detailed evidence mapping with CV line numbers]
-  - Score Justification: [Why this score level was assigned]
-
-- [Skill 5 from rubric]: [X/3] - [Evidence from candidate's history]
-  - Rubric Criteria Applied: [Specific criteria used from rubric]
-  - Candidate Evidence: [Detailed evidence mapping with CV line numbers]
-  - Score Justification: [Why this score level was assigned]
-
-**Preferred Skills (10 points total) - From Rubric:**
-- [Preferred 1 from rubric]: [X/2] - [Evidence and reasoning]
+**1B. Preferred Skills (base 14, scaled per variant) - From Rubric:**
+- [Preferred skill 1 from rubric]: [X/allocated] - [Evidence and reasoning]
   - Rubric Criteria Applied: [Specific criteria used]
+  - Candidate Evidence: [Evidence with source citations]
   - Score Justification: [Reasoning for score]
 
-- [Preferred 2 from rubric]: [X/2] - [Evidence and reasoning]
-  - Rubric Criteria Applied: [Specific criteria used]
-  - Score Justification: [Reasoning for score]
+[... one entry per preferred skill; points allocated per the rubric's job-posting emphasis]
 
-- [Preferred 3 from rubric]: [X/2] - [Evidence and reasoning]
-  - Rubric Criteria Applied: [Specific criteria used]
-  - Score Justification: [Reasoning for score]
+#### 2. Experience Relevance: [XX/Max]
 
-- [Preferred 4 from rubric]: [X/2] - [Evidence and reasoning]
-  - Rubric Criteria Applied: [Specific criteria used]
-  - Score Justification: [Reasoning for score]
+**2A. Industry/Domain Alignment (base 20) - Per Rubric Definitions:**
+- Primary Industry Match: [X/10] - [Industry alignment vs rubric]
+  - Rubric Requirement: [Required industry from rubric]
+  - Candidate Evidence: [Actual background with source citations]
+  - Experience Type: [Direct | Adjacent | Transferable | Assumed]
+  - Score Justification: [Which scoring tier achieved and why]
 
-- [Preferred 5 from rubric]: [X/2] - [Evidence and reasoning]
-  - Rubric Criteria Applied: [Specific criteria used]
-  - Score Justification: [Reasoning for score]
-
-#### 2. Relevant Experience: [XX/25]
-
-**Years of Experience (10 points) - Per Rubric Requirements:**
-- Total Years: [X/5] - [Actual years vs rubric requirement]
-  - Rubric Requirement: [Years specified in rubric]
-  - Candidate Experience: [Actual experience]
-  - Score Level: [Which rubric level achieved]
-
-- Relevant Years: [X/5] - [Directly applicable experience]
-  - Rubric Criteria: [Relevance criteria from rubric]
-  - Assessment: [How candidate meets criteria]
-
-**Industry/Domain Experience (10 points) - Per Rubric Definitions:**
-- Industry Match: [X/5] - [Specific industry alignment vs rubric]
-  - Required Industry: [From rubric]
-  - Candidate Industry: [Actual background]
-  - Alignment Level: [Which scoring tier achieved]
-
-- Domain Knowledge: [X/5] - [Technical domain expertise vs rubric]
-  - Required Domains: [From rubric]
-  - Candidate Domains: [Demonstrated expertise]
+- Domain Expertise: [X/6] - [Domain depth vs rubric]
+  - Rubric Requirement: [Required domains from rubric]
+  - Candidate Evidence: [Demonstrated expertise with source citations]
   - Score Justification: [Evidence for score level]
 
-**Role-Specific Experience (5 points) - Per Rubric Standards:**
-- Similar Roles: [X/5] - [Comparable position experience vs rubric]
-  - Rubric Requirements: [Role criteria from rubric]
-  - Candidate Roles: [Previous positions]
-  - Overlap Assessment: [Percentage match analysis]
-
-#### 3. Key Responsibilities: [XX/20]
-
-**Primary Duties Match (12 points) - From Rubric:**
-- [Responsibility 1 from rubric]: [X/3] - [Evidence of capability]
-  - Rubric Expectation: [Specific duty requirement]
-  - Candidate Evidence: [Demonstrated experience with CV citations]
-  - Score Level: [Expert/Proficient/Basic/None explanation]
-
-- [Responsibility 2 from rubric]: [X/3] - [Evidence of capability]
-  - Rubric Expectation: [Specific duty requirement]
-  - Candidate Evidence: [Demonstrated experience with CV citations]
-  - Score Level: [Expert/Proficient/Basic/None explanation]
-
-- [Responsibility 3 from rubric]: [X/3] - [Evidence of capability]
-  - Rubric Expectation: [Specific duty requirement]
-  - Candidate Evidence: [Demonstrated experience with CV citations]
-  - Score Level: [Expert/Proficient/Basic/None explanation]
-
-- [Responsibility 4 from rubric]: [X/3] - [Evidence of capability]
-  - Rubric Expectation: [Specific duty requirement]
-  - Candidate Evidence: [Demonstrated experience with CV citations]
-  - Score Level: [Expert/Proficient/Basic/None explanation]
-
-**Scope & Complexity (8 points) - Per Rubric Framework:**
-- Team Size/Budget: [X/4] - [Scale of responsibility vs rubric metrics]
-  - Rubric Thresholds: [Specific metrics from rubric]
-  - Candidate Scale: [Actual scope managed with evidence]
-  - Score Tier: [Which level achieved with justification]
-
-- Project Complexity: [X/4] - [Technical/business complexity vs rubric]
-  - Rubric Standards: [Complexity criteria from rubric]
-  - Candidate Projects: [Demonstrated complexity with examples]
-  - Assessment: [How candidate meets criteria]
-
-#### 4. Achievements & Impact: [XX/15]
-
-**Quantifiable Results (10 points) - Per Rubric Metrics:**
-- Measurable Outcomes: [X/5] - [Specific metrics vs rubric thresholds]
-  - Rubric Thresholds: [Quantitative criteria from rubric]
-  - Candidate Achievements: [Actual metrics delivered with CV citations]
-  - Score Level: [Which tier achieved]
-
-- Business Impact: [X/5] - [Revenue, cost, efficiency gains vs rubric]
-  - Rubric Standards: [Impact criteria from rubric]
-  - Candidate Impact: [Demonstrated business results]
-  - Score Justification: [Evidence for score level]
-
-**Innovation & Leadership (5 points) - Per Rubric Expectations:**
-- Innovation: [X/2.5] - [New approaches, technologies vs rubric]
-  - Rubric Criteria: [Innovation expectations from rubric]
-  - Candidate Innovation: [Demonstrated innovation with examples]
-  - Score Assessment: [Level achieved]
-
-- Leadership: [X/2.5] - [Team leadership, mentoring vs rubric]
-  - Rubric Standards: [Leadership criteria from rubric]
-  - Candidate Leadership: [Leadership evidence with specifics]
-  - Score Rationale: [Justification for score]
-
-#### 5. Education & Certifications: [XX/10]
-
-**Education Requirements (6 points) - Per Rubric Standards:**
-- Degree Level: [X/3] - [Educational achievement vs rubric requirement]
-  - Rubric Requirement: [Degree requirement from rubric]
-  - Candidate Education: [Actual educational background]
-  - Score Level: [Which tier achieved]
-
-- Field Relevance: [X/3] - [Subject matter alignment vs rubric]
-  - Required Field: [From rubric]
-  - Candidate Field: [Actual major/specialization]
-  - Relevance Assessment: [Alignment evaluation]
-
-**Certifications (4 points) - Per Rubric Specifications:**
-- Required Certs: [X/2] - [Must-have certifications vs rubric]
-  - Rubric Requirements: [Required certifications from rubric]
-  - Candidate Certifications: [Current certifications held]
-  - Score Assessment: [Compliance level]
-
-- Preferred Certs: [X/2] - [Nice-to-have certifications vs rubric]
-  - Rubric Preferences: [Preferred certifications from rubric]
-  - Additional Certifications: [Extra certifications held]
-  - Value Assessment: [Additional value provided]
-
-#### 6. Cultural Fit: [XX/5]
-
-**Communication Skills (3 points) - Per Rubric Criteria:**
-- Written Communication: [X/1.5] - [Evidence vs rubric standards]
-  - Rubric Expectations: [Communication criteria from rubric]
-  - Candidate Evidence: [Demonstrated communication skills]
-  - Score Level: [Assessment against criteria]
-
-- Verbal/Presentation: [X/1.5] - [Inferred from experience vs rubric]
-  - Rubric Standards: [Presentation criteria from rubric]
-  - Candidate Indicators: [Experience suggesting capability]
-  - Assessment: [Evaluation against standards]
-
-**Values Alignment (2 points) - Per Rubric Framework:**
-- Company Values: [X/2] - [Alignment vs rubric values]
-  - Company Values: [From rubric]
-  - Candidate Alignment: [Evidence of value alignment]
+- Market/Segment Knowledge: [X/4] - [Segment familiarity vs rubric]
+  - Rubric Requirement: [Market/segment criteria from rubric]
+  - Candidate Evidence: [Demonstrated knowledge with source citations]
   - Score Justification: [Assessment reasoning]
+
+**2B. Career Trajectory & Growth (base 12) - Per Rubric Standards:**
+- Progression Pattern: [X/6] - [Career advancement vs rubric expectations]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
+- Scope Expansion: [X/4] - [Growth in responsibility over time]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
+- Role Stability: [X/2] - [Tenure pattern vs rubric thresholds]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
+
+**2C. Recency of Relevant Work (base 8) - Per Rubric Thresholds:**
+- Recency: [X/8] - [How current the relevant experience is]
+  - Rubric Thresholds: [Recency tiers from rubric]
+  - Candidate Evidence: [Most recent relevant work with dates and citations]
+  - Score Justification: [Tier achieved]
+
+#### 3. Demonstrated Impact: [XX/Max]
+
+**3A. Quantified Achievements (base 30, scaled per variant) - Per Rubric Metrics:**
+- [Achievement area 1 from rubric]: [X/allocated] - [Metrics vs rubric thresholds]
+  - Rubric Thresholds: [Quantitative criteria from rubric]
+  - Candidate Evidence: [Actual metrics delivered with source citations]
+  - Score Justification: [Which tier achieved]
+
+[... one entry per achievement area defined in the rubric]
+
+**3B. Scale & Complexity Managed (base 18, scaled per variant) - Per Rubric Framework:**
+- Team Size / Budget / Portfolio: [X/allocated] - [Scale vs rubric metrics]
+  - Rubric Thresholds: [Specific scale metrics from rubric]
+  - Candidate Evidence: [Actual scope managed with source citations]
+  - Score Justification: [Which level achieved]
+
+- Project/Deal Complexity: [X/allocated] - [Complexity vs rubric standards]
+  - Rubric Standards: [Complexity criteria from rubric]
+  - Candidate Evidence: [Demonstrated complexity with examples and citations]
+  - Score Justification: [How candidate meets criteria]
+
+**3C. Innovation & Initiative (base 12, scaled per variant) - Per Rubric Expectations:**
+- Innovation: [X/allocated] - [New approaches, tools, methods vs rubric]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
+- Initiative: [X/allocated] - [Self-started work, beyond-role contributions]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
+
+#### 4. Credentials: [XX/Max]
+
+**4A. Education (base 12, scaled per variant) - Per Rubric Standards:**
+- Degree Level: [X/allocated] - [Educational achievement vs rubric requirement]
+  - Rubric Requirement: [Degree requirement from rubric]
+  - Candidate Evidence: [Actual educational background]
+  - Score Justification: [Which tier achieved; note any waiver rationale]
+
+- Field Relevance: [X/allocated] - [Subject alignment vs rubric]
+  - Rubric Requirement: [Required field from rubric]
+  - Candidate Evidence: [Actual major/specialization]
+  - Score Justification: [Alignment evaluation]
+
+**4B. Certifications (base 8, scaled per variant) - Per Rubric Specifications:**
+- Required Certifications: [X/allocated] - [Must-haves vs rubric]
+  - Rubric Requirement / Candidate Evidence / Score Justification
+- Preferred Certifications: [X/allocated] - [Nice-to-haves vs rubric]
+  - Rubric Requirement / Candidate Evidence / Score Justification
+
+#### 5. Fit & Readiness: [XX/Max]
+
+**5A. Communication Evidence (base 12, scaled per variant) - Per Rubric Criteria:**
+- Written Communication: [X/allocated] - [Evidence vs rubric standards]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
+- Verbal/Presentation: [X/allocated] - [Inferred from experience vs rubric]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
+
+**5B. Cultural Alignment (base 10, scaled per variant) - Per Rubric Framework:**
+- Values Alignment: [X/allocated] - [Alignment vs rubric values]
+  - Rubric Criteria Applied: [Company values from rubric]
+  - Candidate Evidence: [Evidence of value alignment with citations]
+  - Score Justification: [Assessment reasoning]
+
+**5C. Role-Specific Readiness (base 8, scaled per variant) - Per Rubric Criteria:**
+- Readiness: [X/allocated] - [Time-to-productivity indicators vs rubric]
+  - Rubric Criteria Applied / Candidate Evidence / Score Justification
 
 ## Detailed Analysis
 
@@ -255,12 +202,12 @@ This template defines the standard format for candidate assessment reports. It e
 
 ## Hiring Recommendation
 
-[ ] **90-100**: Exceptional candidate - exceeds requirements significantly
-[ ] **80-89**: Excellent candidate - strong match, minor gaps if any
-[ ] **70-79**: Good candidate - solid match, some development areas
-[ ] **60-69**: Potential candidate - meets core requirements, notable gaps
-[ ] **50-59**: Borderline candidate - significant gaps, consider if high potential
-[ ] **Below 50**: Not recommended - major gaps in critical areas
+[ ] **Exceptional - 90-100% (180-200 pts)**: Exceeds requirements significantly - priority hire, expedite process
+[ ] **Excellent - 80-89% (160-179 pts)**: Strong match, minor gaps if any - proceed to final interviews
+[ ] **Good - 70-79% (140-159 pts)**: Solid match, some development areas - proceed with targeted questions
+[ ] **Potential - 60-69% (120-139 pts)**: Meets core requirements, notable gaps - proceed if high-potential indicators
+[ ] **Borderline - 50-59% (100-119 pts)**: Significant gaps - proceed only with strong justification
+[ ] **Not Recommended - below 50% (<100 pts)**: Major gaps in critical areas - do not proceed
 
 ### Justification
 [Evidence-based reasoning using rubric criteria and scoring]
